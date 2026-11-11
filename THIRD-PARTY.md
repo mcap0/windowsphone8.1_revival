@@ -11,11 +11,12 @@ The project's own code is AGPL-3.0-or-later (`LICENSE`). The parts below keep th
 | `apps/TgNative/third_party/zlib/` | zlib | zlib licence |
 | `apps/TgNative/third_party/opus/` | Opus | BSD-3-Clause |
 | `apps/Authenticator81/Authenticator81/lib/ZXing.*` | ZXing.Net | Apache-2.0 |
-| `apps/Meteo/Meteo/Assets/Haru/` | Weather icons from Haru | MIT (`LICENSE-Haru.txt`) |
+| `apps/Meteo/Meteo/Assets/Haru/` | Weather design and icons from Haru by FriendsNone (github.com/FriendsNone/Haru) | MIT (`LICENSE-Haru.txt`) |
 | `apps/Browser/Browser/cacert.pem` | Mozilla CA bundle (via curl.se) | MPL-2.0 |
 | `share/isrgrootx1.cer` | ISRG Root X1 certificate (Let's Encrypt) | public certificate |
 | `engine/port/blocklist/pgl.txt` | Peter Lowe's ad and tracking server list (pgl.yoyo.org) | McRae General Public License; credit required |
-| `engine/patches/` | Patches against WebKit (not vendored) | same as the files they patch: LGPL-2.1 / BSD-2-Clause |
+| `engine/patches/metrosurf/`, `engine/patches/0001-metrosurf-overlay.patch` | The MetroSurf project's changes to WebKitGTK 2.54.1 (github.com/MetroSurf/MetroSurf), as diffs | same as the WebKit files they patch: LGPL-2.1 / BSD-2-Clause |
+| `engine/patches/0002-lumia.patch` | Our changes on top (WebKit not vendored) | same as the files they patch |
 | `vosk/patches/` | Patches against Vosk API, Kaldi, OpenFst (Apache-2.0) and OpenBLAS (BSD-3-Clause), none vendored | same as the files they patch |
 | `tools/wsr/testi/pinocchio1.txt` | Opening of *Le avventure di Pinocchio* (C. Collodi, 1883) | public domain |
 

@@ -23,8 +23,10 @@ As far as I could find, these had not been done on Windows Phone 8.1 before:
 - **Native incoming-call screen from a push** — a locked Lumia rings with the system call UI from a raw push of
   that server (`apps/ProvaVoip`): the VoIP agent registration, the out-of-process host that a Silverlight 8.1
   package needs, and the CRT-free 3.5 KB host exe that makes it start.
-- **A current WebKit on WP8.1** — `engine/` is a port of WebKit built from source with clang for ARM Windows Phone
-  8.1 (own port layer, threaded compositor on ANGLE/Direct3D 11 level 9_3, own network and disk cache, ad blocker,
+- **A fast browser on a current WebKit** — `engine/` builds WebKitGTK 2.54.1 from source with clang for ARM
+  Windows Phone 8.1. It stands on the work of [MetroSurf](https://github.com/MetroSurf/MetroSurf), who first
+  brought this WebKit to the platform: their changes to WebKit are the base (`engine/patches/metrosurf`), ours come
+  on top (`engine/patches/0002-lumia.patch`) together with a port layer written here (`engine/port`: threaded compositor on ANGLE/Direct3D 11 level 9_3, own network and disk cache, ad blocker,
   ThinLTO + PGO with profiles collected on the phone). `apps/Browser` ("Internet") is the browser on top of it.
 - **Offline voice assistant** — `apps/Assistente` understands Italian commands (timers, alarms, calls, music, open
   app, notes, calendar, weather) with nothing leaving the phone: speech through a Vosk/Kaldi build for WP8.1 ARM
@@ -54,7 +56,7 @@ As far as I could find, these had not been done on Windows Phone 8.1 before:
 | `apps/Posta` | IMAP/SMTP mail client with a background task |
 | `apps/Musica` | Music player (local library and online sources) |
 | `apps/Perle`, `Perle81`, `PerleTV` | YouTube client and DLNA casting to a TV |
-| `apps/Meteo`, `Orologio`, `Calendario`, `Sincro`, `Appunti`, `File`, `Registratore`, `Serpente` | Weather (Haru assets, MIT), clock/alarms, calendar, Google sync, clipboard from the PC, file manager, recorder, snake |
+| `apps/Meteo`, `Orologio`, `Calendario`, `Sincro`, `Appunti`, `File`, `Registratore`, `Serpente` | Weather (design and assets from [Haru](https://github.com/FriendsNone/Haru) by FriendsNone, MIT), clock/alarms, calendar, Google sync, clipboard from the PC, file manager, recorder, snake |
 | `apps/Authenticator81` | TOTP/HOTP codes with QR import (ZXing) |
 | `apps/Cerca`, `Risultati` | What the hardware Search key opens instead of Bing |
 | `apps/Remoto`, `FotoPixel`, `Telecomando` | Android apps on the Lumia; photo upload through an Android phone; Samsung TV remote |
