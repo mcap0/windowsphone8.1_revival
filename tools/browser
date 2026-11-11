@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# browser [install|stage] — stage the engine (engine/out: webkit.dll, MetroSurf's ANGLE DLLs, ICU data, CA roots, lumiaweb.h) into
+# apps/Browser, check the DLLs' imports against the phone's, then build (and optionally install) "Internet" through the
+# VM with wp81build. ENGINE_OUT=<dir> stages a variant engine build (e.g. engine/out/webkit-lto) instead.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+engine=$root/engine
+dest=$root/apps/Browser/Browser
+cp "${ENGINE_OUT:-$engine/out/webkit}/bin/webkit.dll" "$engine/out/angle/bin/libEGL.dll" "$engine/out/angle/bin/libGLESv2.dll" \
+    "$engine/out/deps/lib/icudt77l.dat" "$engine/include/lumiaweb.h" "$dest/"
+# ENGINE_FIXED_BASE=1: the staged copy without the DYNAMIC_BASE bit (engine/tools/fixedbase.py, a test).
+[[ -n ${ENGINE_FIXED_BASE:-} ]] && python3 -I "$engine/tools/fixedbase.py" "$dest/webkit.dll"
+# HTTPS roots: Fedora's copy of the Mozilla CA list (the same set as curl's cacert.pem).
+install -m 644 /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem "$dest/cacert.pem"
+python3 -I "$engine/tools/checkimports.py" "$dest/webkit.dll" --package "$dest"
+# "stage": only the files above (tools/siteapp copies the staged shell into each site app).
+[[ ${1:-} == stage ]] && exit 0
+# AppDeployCmd /update only takes a higher package version (0x81030137 otherwise): the last field goes up by one at
+# every build.
+manifest=$root/apps/Browser/Browser/Package.appxmanifest
+python3 -I - "$manifest" <<'PY'
+import re, sys
+path = sys.argv[1]
+text = open(path, encoding='utf-8').read()
+def bump(m):
+    parts = m.group(2).split('.')
+    parts[3] = str(int(parts[3]) + 1)
+    return m.group(1) + '.'.join(parts) + '"'
+text, n = re.subn(r'(<Identity [^>]*Version=")([0-9.]+)"', bump, text, count=1)
+assert n == 1
+open(path, 'w', encoding='utf-8').write(text)
+print('versione', re.search(r'<Identity [^>]*Version="([0-9.]+)"', text).group(1))
+PY
+# The link map of this engine, kept per version: a profile or crash line from a phone still running an older build is
+# symbolised against its own map (tools/profile.py --map, tools/sym.py), not the one of the latest link.
+version=$(grep -o '<Identity [^>]*Version="[0-9.]*"' "$manifest" | grep -o '[0-9.]*"$' | tr -d '"')
+mkdir -p "$root/releases/maps"
+cp "${ENGINE_OUT:-$engine/out/webkit}/bin/webkit.map" "$root/releases/maps/webkit-$version.map"
+"$root/tools/wp81build" Browser Browser.sln "$@"
+# After an install the app starts again by itself when the phone's screen is unlocked (tools/phonelaunch): with the app
+# keeping the screen on while the PC drives it (StayAwakeForPC), a run of builds and benches needs no hand on the phone.
+# NO_LAUNCH=1 leaves it closed (tools/pgo prendi and tools/phonelog read its folder only then).
+if [[ ${1:-} == install && -z ${NO_LAUNCH:-} ]]; then
+    "$root/tools/phonelaunch" 2>&1 | grep -q 'Errore' && echo "avvio: schermo bloccato, apri Internet a mano" || echo "avvio: Internet aperta"
+fi

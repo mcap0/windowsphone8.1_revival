@@ -1,0 +1,7 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Posta.csproj references Core's dll by path: build Core first, then the app. -->
+  <Target Name="Build">
+    <MSBuild Projects="Core\Posta.Core.csproj" Targets="Build" />
+    <MSBuild Projects="Posta.csproj" Targets="Build" />
+  </Target>
+</Project>

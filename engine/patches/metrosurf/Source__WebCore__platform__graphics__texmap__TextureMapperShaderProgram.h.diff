@@ -1,0 +1,31 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapperShaderProgram.h
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapperShaderProgram.h
+@@ -32,6 +32,11 @@
+ 
+ namespace WebCore {
+ 
++#if defined(WP81)
++WEBCORE_EXPORT extern bool (*g_wp81LoadShaderProgram)(unsigned program, std::span<const char> vertex, std::span<const char> fragment);
++WEBCORE_EXPORT extern void (*g_wp81StoreShaderProgram)(unsigned program, std::span<const char> vertex, std::span<const char> fragment);
++#endif
++
+ #define TEXMAP_ATTRIBUTE_VARIABLES(macro) \
+     macro(vertex) \
+ 
+@@ -136,13 +141,13 @@
+ private:
+     TextureMapperShaderProgram(const String& vertexShaderSource, const String& fragmentShaderSource);
+ 
+-    GLuint m_vertexShader;
+-    GLuint m_fragmentShader;
++    GLuint m_vertexShader { 0 };
++    GLuint m_fragmentShader { 0 };
+ 
+     enum VariableType { UniformVariable, AttribVariable };
+     GLuint getLocation(VariableID, ASCIILiteral, VariableType);
+ 
+-    GLuint m_id;
++    GLuint m_id { 0 };
+     HashMap<VariableID, GLuint, IntHash<VariableID>, WTF::StrongEnumHashTraits<VariableID>> m_variables;
+ };
+ 

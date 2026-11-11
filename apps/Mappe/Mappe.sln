@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mappe", "Mappe\Mappe.csproj", "{6B1E2C7A-4D35-4F0B-9A8E-3C2D5F7A1B90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B1E2C7A-4D35-4F0B-9A8E-3C2D5F7A1B90}.Debug|ARM.ActiveCfg = Debug|ARM
+		{6B1E2C7A-4D35-4F0B-9A8E-3C2D5F7A1B90}.Debug|ARM.Build.0 = Debug|ARM
+		{6B1E2C7A-4D35-4F0B-9A8E-3C2D5F7A1B90}.Release|ARM.ActiveCfg = Release|ARM
+		{6B1E2C7A-4D35-4F0B-9A8E-3C2D5F7A1B90}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

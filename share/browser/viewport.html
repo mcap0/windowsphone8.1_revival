@@ -1,0 +1,68 @@
+<!doctype html><html><head><meta charset="utf-8">
+<script>
+// Viewport cases, one page load each (the meta tag is written while <head> parses, as a static one would be): what the
+// page sees (innerWidth, layout width, page scale) against Safari on an iPhone 480 px wide. Results go to the PC
+// (share/inbox/browser.txt); ?auto runs every case in turn and shows the summary.
+var CASES = [
+  // name, meta content (null = none), width of the striped box, expected layout width, expected scale ("fit": the
+  // screen's 480 px over the content's width, as Safari does without an initial-scale)
+  ["senza meta (desktop)", null, 0, 980, "fit"],
+  ["device-width, initial-scale=1", "width=device-width, initial-scale=1", 0, 480, 1],
+  ["device-width, initial-scale=1, contenuto 1000 px", "width=device-width, initial-scale=1", 1000, 480, 1],
+  ["device-width senza initial-scale, contenuto 1000 px", "width=device-width", 1000, 480, "fit"],
+  ["width=1200", "width=1200", 0, 1200, "fit"],
+  ["senza meta, contenuto 1400 px", null, 1400, 980, "fit"],
+  ["user-scalable=no, maximum-scale=1", "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", 0, 480, 1]
+];
+var params = location.search.replace(/^\?/, "").split("&");
+var index = 0, auto = false;
+for (var i = 0; i < params.length; i++) {
+  var kv = params[i].split("=");
+  if (kv[0] === "case") index = parseInt(kv[1], 10) || 0;
+  if (kv[0] === "auto") auto = true;
+}
+var CASE = CASES[Math.min(index, CASES.length - 1)];
+if (CASE[1] !== null)
+  document.write('<meta name="viewport" content="' + CASE[1] + '">');
+</script>
+<title>Viewport</title>
+<style>
+body{font:18px sans-serif;margin:16px;background:#fff;color:#111}
+h2{font-weight:300;margin:0 0 12px}
+#wide{height:40px;background:repeating-linear-gradient(90deg,#1976d2 0 50px,#90caf9 50px 100px);margin:12px 0}
+pre{font:14px monospace;white-space:pre-wrap;background:#eee;padding:8px}
+a{color:#1976d2}
+</style></head><body>
+<h2 id="title"></h2>
+<div id="wide"></div>
+<p>Il riquadro a strisce &egrave; largo quanto il contenuto del caso; a pagina appena aperta deve stare tutto nello
+schermo quando la regola &egrave; &ldquo;adatta&rdquo;, e con due dita si deve poter allargare e stringere fino a vederlo intero.</p>
+<pre id="out"></pre>
+<p><a id="next" href="#">caso successivo</a> &middot; <a href="viewport.html?auto">tutti in fila</a></p>
+<script src="common.js"></script><script>
+T.$("title").textContent = (index + 1) + "/" + CASES.length + ": " + CASE[0];
+var wide = T.$("wide");
+if (CASE[2]) wide.style.width = CASE[2] + "px";
+T.$("next").href = "viewport.html?case=" + ((index + 1) % CASES.length);
+
+function measure() {
+  var scale = window.visualViewport ? visualViewport.scale : NaN;
+  var layout = document.documentElement.clientWidth;
+  var content = document.documentElement.scrollWidth;
+  var expected = CASE[4] === "fit" ? 480 / Math.max(CASE[3], content) : CASE[4];
+  var ok = Math.abs(layout - CASE[3]) <= 1 && Math.abs(scale - expected) < 0.01 && Math.abs(window.innerWidth - 480 / expected) <= 3;
+  var lines = [
+    (ok ? "OK  " : "NO  ") + CASE[0],
+    "  innerWidth " + window.innerWidth + " (atteso " + Math.round(480 / expected) + "), innerHeight " + window.innerHeight,
+    "  larghezza layout " + layout + " (attesa " + CASE[3] + "), scala " + scale.toFixed(3) + " (attesa " + expected.toFixed(3) + ")",
+    "  screen " + screen.width + "x" + screen.height + ", contenuto " + content + " px"
+  ];
+  T.$("out").textContent = lines.join("\n");
+  T.send("viewport", lines, function () {
+    if (auto && index + 1 < CASES.length)
+      location.replace("viewport.html?auto&case=" + (index + 1));
+  });
+}
+// After the load and a couple of frames: the scale that fits the content is applied after layout.
+window.addEventListener("load", function () { setTimeout(function () { T.afterPaint(measure); }, 1200); });
+</script></body></html>

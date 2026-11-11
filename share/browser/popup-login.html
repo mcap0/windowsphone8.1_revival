@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Login di prova</title><style>
+body{font:18px sans-serif;background:#123;color:#fff;margin:16px}
+button{display:block;width:100%;color:#fff;background:#2e7d32;border:0;padding:14px;margin:10px 0;font:20px sans-serif}
+</style></head><body>
+<h2>Login di prova</h2>
+<p id="who"></p>
+<button id="ok">Accedi (risponde e chiude)</button>
+<button id="stay">Rispondi senza chiudere</button>
+<script>
+var opener = window.opener;
+document.getElementById("who").textContent = opener ? "window.opener c'e': posso rispondere alla pagina." : "window.opener e' null: la pagina non potra' sapere niente.";
+function reply() { if (opener) opener.postMessage({ login: "ok", utente: "lumia", da: location.search }, "*"); }
+document.getElementById("ok").onclick = function () { reply(); window.close(); };
+document.getElementById("stay").onclick = reply;
+</script></body></html>

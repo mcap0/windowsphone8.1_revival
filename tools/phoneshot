@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# phoneshot [n] — copy the phone's last n screenshots (default 1) into share/screens, over USB through the Windows VM:
+# the phone is an MTP device there ("Windows Phone\Phone\Pictures\Screenshots"). Nothing to do on the phone, no
+# Esplora console. The USB device is re-attached first: Windows keeps an MTP listing from before the last screenshot.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+count=${1:-1}
+usb_xml=$root/tools/lumia-usb.xml
+while virsh -c qemu:///system detach-device Windows-Debugger "$usb_xml" --live >/dev/null 2>&1; do :; done
+virsh -c qemu:///system attach-device Windows-Debugger "$usb_xml" --live >/dev/null 2>&1 || true
+sleep 10
+script=$(mktemp --suffix=.ps1)
+trap 'rm -f "$script"' EXIT
+cat > "$script" <<PS
+\$ErrorActionPreference = 'Continue'
+\$shell = New-Object -ComObject Shell.Application
+\$phone = \$shell.Namespace(17).Items() | Where-Object { \$_.Name -like '*Phone*' } | Select-Object -First 1
+if (-not \$phone) { 'nessun telefono MTP'; exit }
+\$storage = \$phone.GetFolder.Items() | Where-Object { \$_.Name -eq 'Phone' } | Select-Object -First 1
+\$pictures = \$storage.GetFolder.Items() | Where-Object { \$_.Name -eq 'Pictures' } | Select-Object -First 1
+\$shots = \$pictures.GetFolder.Items() | Where-Object { \$_.Name -eq 'Screenshots' } | Select-Object -First 1
+\$latest = @(\$shots.GetFolder.Items()) | Sort-Object { \$_.Name } | Select-Object -Last $count
+\$dest = 'C:\lumia\shots'
+if (Test-Path \$dest) { Remove-Item -Recurse -Force \$dest }
+New-Item -ItemType Directory -Force \$dest | Out-Null
+\$target = \$shell.Namespace(\$dest)
+foreach (\$i in \$latest) { \$target.CopyHere(\$i, 4 + 16) }
+for (\$k = 0; \$k -lt 40; \$k++) { Start-Sleep -Milliseconds 500; if (@(Get-ChildItem \$dest).Count -ge @(\$latest).Count) { break } }
+Start-Sleep -Seconds 1
+Get-ChildItem \$dest | ForEach-Object { 'FILE ' + \$_.Name }
+PS
+"$root/tools/vps" "$script" | tr -d '\r' | sed -n 's/^FILE //p' | while read -r name; do
+    "$root/tools/vmssh" scp -q "user@192.168.122.21:C:/lumia/shots/$name" "$root/share/screens/$name"
+    echo "$root/share/screens/$name"
+done

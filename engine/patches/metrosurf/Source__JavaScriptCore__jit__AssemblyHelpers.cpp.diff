@@ -1,0 +1,16 @@
+--- a/Source/JavaScriptCore/jit/AssemblyHelpers.cpp
++++ b/Source/JavaScriptCore/jit/AssemblyHelpers.cpp
+@@ -2178,6 +2178,13 @@
+ #endif
+ #endif // ENABLE(WEBASSEMBLY)
+ 
++#if USE(JSVALUE32_64)
++AssemblyHelpers::JumpList AssemblyHelpers::loadMegamorphicGetterSetter(VM&, GPRReg, GPRReg, UniquedStringImpl*, GPRReg, GPRReg, GPRReg, GPRReg)
++{
++    RELEASE_ASSERT_NOT_REACHED();
++}
++#endif
++
+ } // namespace JSC
+ 
+ #endif // ENABLE(JIT)

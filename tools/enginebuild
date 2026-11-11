@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# enginebuild [target...] — build the WebKit port for the Lumia on this PC (engine/out/webkit, log in
+# engine/logs/build-<targets>.log). Configures first if needed. Default target: jsctest. Meant to run in the background.
+# Variant builds: ENGINE_OUT=<dir> (and ENGINE_EXTRA_FLAGS for the compiler, see engine/configure.sh), log
+# build-<dir name>-<targets>.log.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+engine=$root/engine
+targets=("$@")
+(( ${#targets[@]} )) || targets=(jsctest)
+out=${ENGINE_OUT:-$engine/out/webkit}
+variant=$(basename "$out"); [[ $variant == webkit ]] && variant= || variant=$variant-
+log=$engine/logs/build-$variant$(IFS=-; echo "${targets[*]}").log
+mkdir -p "$engine/logs"
+if [[ ! -f $out/build.ninja ]]; then
+    ENGINE_OUT=$out "$engine/configure.sh" > "$engine/logs/${variant}webkit-configure.log" 2>&1
+fi
+# One build per output directory, and no more compilers than the free memory holds: a WebCore unified source takes up
+# to 2 GB in clang-cl, and ninja's default (cores + 2), or two builds at once, ran the PC out of memory on 2026-11-10
+# (32 GB, but the Windows VM holds 5 and the swap is zram). ENGINE_JOBS overrides.
+exec 9> "$out/.enginebuild.lock"
+flock -n 9 || { echo "enginebuild: another build is running in $out"; exit 1; }
+jobs=${ENGINE_JOBS:-$(awk -v cores="$(nproc)" '/^MemAvailable:/ { n = int($2 / 1048576 / 3); if (n > cores) n = cores; if (n < 1) n = 1; print n }' /proc/meminfo)}
+start=$SECONDS
+status=0
+ninja -C "$out" -j "$jobs" -k 0 "${targets[@]}" > "$log" 2>&1 || status=$?
+failed=$(grep -c '^FAILED:' "$log" || true)
+echo "enginebuild ${targets[*]}: exit $status, $failed failed steps, $(( (SECONDS - start) / 60 )) min — $log"
+grep -m 20 -E '(: (fatal )?error|lacks|MISSING DLL)' "$log" | cut -c1-400 | sed "s|$engine/||g" || true
+exit $status

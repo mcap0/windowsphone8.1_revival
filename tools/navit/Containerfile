@@ -1,0 +1,6 @@
+# Build/run environment for Navit's maptool and the PC-side Navit tests (no packages on the host).
+FROM docker.io/library/ubuntu:24.04
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        cmake make gcc g++ pkg-config libglib2.0-dev zlib1g-dev libprotobuf-c-dev protobuf-c-compiler \
+        osmium-tool gettext librsvg2-bin libpng-dev xsltproc ca-certificates curl python3 python3-pil \
+    && rm -rf /var/lib/apt/lists/*

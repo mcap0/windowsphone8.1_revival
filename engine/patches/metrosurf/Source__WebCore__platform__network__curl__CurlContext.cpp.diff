@@ -1,0 +1,11 @@
+--- a/Source/WebCore/platform/network/curl/CurlContext.cpp
++++ b/Source/WebCore/platform/network/curl/CurlContext.cpp
+@@ -343,7 +343,7 @@
+ 
+     setSslCtxCallbackFunction(willSetupSslCtxCallback, this);
+ 
+-#if OS(WINDOWS)
++#if OS(WINDOWS) && !defined(WP81)
+     curl_easy_setopt(m_handle, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+ #else
+     if (auto* path = std::get_if<String>(&sslHandle.getCACertInfo()))

@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blocco</title><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+#out{font:12px monospace;white-space:pre-wrap}
+</style></head><body>
+<div>Blocco di pubblicit&agrave; e tracker: le richieste ai nomi in lista devono fallire, le altre no. Ogni riga deve dire OK.</div>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var lines = [], out = T.$("out"), pending = 0;
+  function say(s) { lines.push(s); out.textContent = lines.join("\n"); }
+  function done() { if (--pending === 0) T.send("blocco", lines); }
+  // want: true = the request must be stopped.
+  function image(name, url, want) {
+    pending++;
+    var i = new Image(), t = T.now();
+    function end(blocked) {
+      say((blocked === want ? "OK " : "ERRORE ") + name + ": " + (blocked ? "fermata" : "passata") + " in " + Math.round(T.now() - t) + " ms");
+      done();
+    }
+    i.onload = function () { end(false); };
+    i.onerror = function () { end(true); };
+    i.src = url;
+  }
+  function script(name, url, want) {
+    pending++;
+    var s = document.createElement("script"), t = T.now();
+    function end(blocked) {
+      say((blocked === want ? "OK " : "ERRORE ") + name + ": " + (blocked ? "fermato" : "passato") + " in " + Math.round(T.now() - t) + " ms");
+      done();
+    }
+    s.onload = function () { end(false); };
+    s.onerror = function () { end(true); };
+    s.src = url;
+    document.head.appendChild(s);
+  }
+  function request(name, url, want) {
+    pending++;
+    var x = new XMLHttpRequest(), t = T.now();
+    x.onloadend = function () {
+      var blocked = x.status === 0;
+      say((blocked === want ? "OK " : "ERRORE ") + name + ": " + (blocked ? "fermata" : "passata, stato " + x.status) + " in " + Math.round(T.now() - t) + " ms");
+      done();
+    };
+    x.open("GET", url);
+    x.send();
+  }
+  var n = Date.now();
+  image("immagine google-analytics.com", "https://www.google-analytics.com/collect?v=1&t=pageview&tid=UA-0-0&cid=" + n, true);
+  image("immagine sottodominio di doubleclick.net", "https://stats.g.doubleclick.net/r/collect?v=1&z=" + n, true);
+  script("script googletagmanager.com", "https://www.googletagmanager.com/gtag/js?id=G-PROVA" + n, true);
+  script("script hotjar.com", "https://static.hotjar.com/c/hotjar-1.js?sv=6&n=" + n, true);
+  request("XHR clarity.ms (lista nostra)", "https://www.clarity.ms/tag/prova?" + n, true);
+  image("immagine del PC (non in lista)", "/banco/wikipedia/085dc7f201573dd4.png?" + n, false);
+  image("immagine wikipedia (non in lista)", "https://en.wikipedia.org/static/favicon/wikipedia.ico?" + n, false);
+  request("XHR al PC (non in lista)", "/browser/common.js?" + n, false);
+})();
+</script></body></html>

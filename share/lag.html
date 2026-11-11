@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>lag</title><style>body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+input{font-size:22px;width:100%;padding:8px;box-sizing:border-box}button{font-size:22px;padding:12px 24px;margin:12px 0}
+#log{font-size:13px;color:#aaa;white-space:pre-wrap}</style></head>
+<body><h3>Prova ritardo</h3>
+<p>1) tocca il pulsante 5 volte &nbsp; 2) tocca la casella e scrivi "ciao come stai" &nbsp; 3) premi Invia</p>
+<button id="b">Tocca</button><input id="i" placeholder="scrivi qui"><button id="s">Invia</button>
+<div id="log"></div><script>
+var rows=[],t0=performance.now();
+function now(){return performance.now();}
+function rec(e,extra){var n=now();var d=Math.round(n-e.timeStamp);
+  var line=Math.round(n-t0)+" "+e.type+" coda="+(d>=0&&d<100000?d:"?")+(extra||"");
+  requestAnimationFrame(function(){requestAnimationFrame(function(){rows.push(line+" disegno="+Math.round(now()-n));
+    document.getElementById("log").textContent=rows.slice(-12).join("\n");});});}
+["touchstart","touchend","pointerdown","pointerup","mousedown","mouseup","click"].forEach(function(t){
+  document.getElementById("b").addEventListener(t,function(e){rec(e," btn");});
+  document.getElementById("i").addEventListener(t,function(e){rec(e," box");});});
+["focus","keydown","keyup","beforeinput","input","compositionupdate"].forEach(function(t){
+  document.getElementById("i").addEventListener(t,function(e){rec(e," '"+(e.data||e.key||"")+"' val="+document.getElementById("i").value.length);});});
+var frames=[],last=now();(function f(){var n=now();frames.push(n-last);last=n;if(frames.length>600)frames.shift();requestAnimationFrame(f);})();
+document.getElementById("s").addEventListener("click",function(){
+  var fs=frames.slice().sort(function(a,b){return a-b;});
+  var summary="frame mediano "+Math.round(fs[fs.length>>1])+" ms, 95% "+Math.round(fs[Math.floor(fs.length*0.95)])+" ms, max "+Math.round(fs[fs.length-1])+" ms";
+  var x=new XMLHttpRequest();x.open("POST","/lag");x.send(navigator.userAgent+"\n"+summary+"\n"+rows.join("\n"));
+  document.getElementById("log").textContent="inviato\n"+summary;});
+</script></body></html>

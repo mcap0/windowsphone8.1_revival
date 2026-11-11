@@ -1,0 +1,217 @@
+#!/usr/bin/env python3
+"""icons — one icon style for all our WP8.1 apps: a white Adwaita symbolic glyph on the app's flat colour.
+
+  tools/icons preview            contact sheet in the scratch file given by $OUT (default /tmp/icons-preview.png)
+  tools/icons tile-icons         Internet: the preset icons for pinned pages (apps/Browser/Browser/Assets/TileIcons)
+  tools/icons apply [App ...]    write Assets\\*.scale-100/140/240.png, set the manifest colours, fix the project
+
+The PNGs are transparent: the tile and app list use BackgroundColor="transparent", so the phone paints them in the
+user's accent colour like the system apps; the splash screen and store logo keep the app colour.
+Every size is rendered from the vector glyph (no upscaling: the old single
+150x150 files were stretched 2.4x on the Lumia 1020 and looked blurry).
+"""
+import os, re, subprocess, sys, tempfile
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ADW = "/usr/share/icons/Adwaita/symbolic"
+
+# app: (project folder with Assets and Package.appxmanifest, project file, glyph, colour)
+APPS = {
+    "Perle81":        ("apps/Perle81/Perle81.App", "Perle81.App.csproj", "media-playback-start", "#D32F2F"),
+    "PerleTV":        ("apps/PerleTV/Perle81.App", "Perle81.App.csproj", "tv", "#7B1FA2"),
+    "Calendario":     ("apps/Calendario/Calendario", "Calendario.csproj", "x-office-calendar", "#3949AB"),
+    "Musica":         ("apps/Musica/Musica", "Musica.vcxproj", "audio-x-generic", "#EF6C00"),
+    "Authenticator81": ("apps/Authenticator81/Authenticator81", "Authenticator81.csproj", "channel-secure", "#00695C"),
+    "Posta":          ("apps/Posta", "Posta.csproj", "mail-unread", "#1565C0"),
+    "TelegramWeb":    ("apps/TelegramWeb/TelegramWeb", "TelegramWeb.csproj", "paper-plane", "#229ED9"),
+    "Telegram":       ("apps/Telegram/Telegram", "Telegram.vcxproj", "paper-plane", "#229ED9"),
+    "Registratore":   ("apps/Registratore/Registratore", "Registratore.vcxproj", "audio-input-microphone", "#E53935"),
+    "Assistente":     ("apps/Assistente/Assistente", "Assistente.vcxproj", "audio-input-microphone", "#4285F4"),
+    # Mappe (apps/Mappe/Mappe81) uses the system Maps glyph instead: tools/navit/mappe_icons.py
+    "Sincro":         ("apps/Sincro/Sincro", "Sincro.csproj", "view-refresh", "#0097A7"),
+    "Appunti":        ("apps/Appunti/Appunti", "Appunti.csproj", "edit-paste", "#6D4C41"),
+    "File":           ("apps/File/File", "File.vcxproj", "folder", "#C79100"),
+    "Claude":         ("apps/Claude", "Claude.csproj", "starred", "#C15F3C"),
+    "Serpente":       ("apps/Serpente/Serpente", "Serpente.vcxproj", "input-gaming", "#43A047"),
+    "Esplora":        ("apps/Esplora/Esplora", "Esplora.vcxproj", "system-file-manager", "#455A64"),
+    "Orologio":       ("apps/Orologio/Orologio", "Orologio.vcxproj", "alarm", "#5E35B1"),
+    "TdTest":         ("apps/TdTest/TdTest", "TdTest.csproj", "utilities-terminal", "#616161"),
+    "Avvisi":         ("apps/Avvisi/Avvisi", "Avvisi.vcxproj", "preferences-system-notifications", "#BF360C"),
+    "Risultati":      ("apps/Risultati/Risultati", "Risultati.vcxproj", "system-search", "#000000"),
+    "Meteo":          ("apps/Meteo/Meteo", "Meteo.vcxproj", "weather-few-clouds", "#0288D1"),
+    "Browser":        ("apps/Browser/Browser", "Browser.vcxproj", "globe", "#1976D2"),
+    "Telecomando":    ("apps/Telecomando/Telecomando", "Telecomando.vcxproj", "remote", "#37474F"),
+    "Remoto":         ("apps/Remoto/Remoto", "Remoto.vcxproj", "remote-pixel", "#00897B"),
+    # site apps (tools/siteapp): generated folders, written at every build
+    "Poste":          ("apps/Poste/Browser", "Browser.vcxproj", "postbox", "#0047BB"),
+    "Gmail":          ("apps/Gmail/Browser", "Browser.vcxproj", "envelope-m", "#C5221F"),
+}
+
+# apps opened from the Search key: plain black splash (no glyph) so the switch from the system screens is seamless
+BLACK_SPLASH = {"Risultati", "Assistente"}
+
+# apps with the wide Start tile (Wide310x150Logo)
+WIDE = {"Meteo"}
+
+# glyphs drawn here (16x16 grid, white) when Adwaita has none that fits
+CUSTOM = {
+    "paper-plane": '<path fill="#ffffff" d="M0.6 7.4 L15.2 1.3 L12.6 14.2 L8.3 11.1 L6.2 13.4 L5.9 10.0 L12.4 3.9 L4.6 8.9 Z"/>',
+    # Internet (our browser): a wire globe, parallels bowed toward the equator so it reads round even at 44 px.
+    # Telecomando: a remote seen from above, round direction pad and two key rows
+    "remote": ('<g fill="none" stroke="#ffffff" stroke-width="0.9">'
+               '<rect x="4.4" y="0.9" width="7.2" height="14.2" rx="2.2"/>'
+               '<circle cx="8" cy="5.2" r="2.1"/></g>'
+               '<g fill="#ffffff"><circle cx="8" cy="5.2" r="0.75"/><circle cx="6.4" cy="9.6" r="0.6"/>'
+               '<circle cx="9.6" cy="9.6" r="0.6"/><circle cx="6.4" cy="12" r="0.6"/><circle cx="9.6" cy="12" r="0.6"/></g>'),
+    # Remoto: a phone outline with a smaller one inside it (another phone's screen on this one)
+    "remote-pixel": ('<g fill="none" stroke="#ffffff" stroke-width="0.9" stroke-linejoin="round">'
+                     '<rect x="3.6" y="0.9" width="8.8" height="14.2" rx="0.4"/>'
+                     '<rect x="5.6" y="3.4" width="4.8" height="7.6"/></g>'
+                     '<rect x="7.0" y="12.6" width="2.0" height="0.9" fill="#ffffff"/>'),
+    # Gmail (site app): an envelope whose flap is an M
+    "envelope-m": ('<g fill="none" stroke="#ffffff" stroke-width="0.95" stroke-linejoin="round">'
+                   '<rect x="1.2" y="3.4" width="13.6" height="9.6"/>'
+                   '<path d="M1.6 3.8 L5.2 7.4 L8 9.6 L10.8 7.4 L14.4 3.8 M3.8 13 V6.2 M12.2 13 V6.2"/></g>'),
+    # Poste (site app): a letter box seen from the front, slot and door
+    "postbox": ('<g fill="none" stroke="#ffffff" stroke-width="0.9" stroke-linejoin="round">'
+                '<path d="M3.2 14.6 V5.6 Q3.2 1.6 8 1.6 Q12.8 1.6 12.8 5.6 V14.6 Z"/>'
+                '<rect x="5.2" y="8.6" width="5.6" height="4.2"/></g>'
+                '<rect x="5.4" y="5.0" width="5.2" height="1.1" fill="#ffffff"/>'),
+    "globe": ('<g fill="none" stroke="#ffffff" stroke-linecap="round">'
+              '<circle cx="8" cy="8" r="6.6" stroke-width="0.9"/>'
+              '<ellipse cx="8" cy="8" rx="3.05" ry="6.6" stroke-width="0.75"/>'
+              '<path d="M8 1.4 V14.6 M1.4 8 H14.6 M2.55 4.45 Q8 6.35 13.45 4.45 M2.55 11.55 Q8 9.65 13.45 11.55" stroke-width="0.75"/>'
+              '</g>'),
+}
+
+SCALES = (100, 140, 240)
+# asset: (width, height at scale 100, glyph size as a fraction of the shorter side, filled background)
+ASSETS = {
+    "Square150x150Logo": (150, 150, 0.40, False),
+    "Square71x71Logo":   (71, 71, 0.50, False),
+    "Square44x44Logo":   (44, 44, 0.62, False),
+    "StoreLogo":         (50, 50, 0.60, True),
+    "SplashScreen":      (480, 800, 0.25, False),
+}
+
+
+def glyph_svg(name):
+    if name in CUSTOM:
+        return CUSTOM[name]
+    for sub in os.listdir(ADW):
+        path = os.path.join(ADW, sub, name + "-symbolic.svg")
+        if os.path.exists(path):
+            text = open(path).read()
+            inner = re.search(r"<svg[^>]*>(.*)</svg>", text, re.S).group(1)
+            inner = re.sub(r'fill="#[0-9a-fA-F]{3,6}"', 'fill="#ffffff"', inner)
+            inner = re.sub(r"fill:#[0-9a-fA-F]{3,6}", "fill:#ffffff", inner)
+            return inner
+    raise SystemExit("glyph not found: " + name)
+
+
+def render(glyph, colour, width, height, fraction, filled, out):
+    size = min(width, height) * fraction
+    scale = size / 16.0
+    x, y = (width - size) / 2, (height - size) / 2
+    background = '<rect width="%d" height="%d" fill="%s"/>' % (width, height, colour) if filled else ""
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d">%s'
+           '<g transform="translate(%.3f %.3f) scale(%.5f)">%s</g></svg>'
+           % (width, height, width, height, background, x, y, scale, glyph))
+    with tempfile.NamedTemporaryFile("w", suffix=".svg", delete=False) as f:
+        f.write(svg)
+    subprocess.run(["magick", "-background", "none", f.name, "PNG32:" + out], check=True)
+    os.unlink(f.name)
+
+
+# Internet: the icons offered when pinning a page to Start (apps/Browser, TileIcons[] in MainPage.xaml.cpp): the same white
+# glyph on a transparent tile, so these follow the phone's accent colour. A site's own icon keeps its own colours.
+TILE_ICONS = ["globe", "mail-unread", "chat-message-new", "x-office-calendar", "x-office-document", "document-edit", "folder",
+              "image-x-generic", "camera-photo", "video-x-generic", "audio-x-generic", "media-playback-start", "tv",
+              "weather-few-clouds", "emoji-travel", "emoji-food", "emoji-nature", "emoji-people", "user-available", "starred",
+              "channel-secure", "dialog-password", "phone", "printer", "network-wireless", "system-search",
+              "applications-games", "applications-science", "utilities-terminal"]
+
+
+def tile_icons():
+    folder = os.path.join(ROOT, "apps/Browser/Browser/Assets/TileIcons")
+    os.makedirs(folder, exist_ok=True)
+    for name in TILE_ICONS:
+        render(glyph_svg(name), "#000000", 360, 360, 0.40, False, os.path.join(folder, name + ".png"))
+    print(len(TILE_ICONS), "icone in", folder)
+
+
+def apply(app):
+    folder, project, glyph_name, colour = APPS[app]
+    folder = os.path.join(ROOT, folder)
+    if not os.path.isdir(folder):
+        print("%-16s (cartella assente, salto)" % app)
+        return
+    assets = os.path.join(folder, "Assets")
+    glyph = glyph_svg(glyph_name)
+    assets_list = dict(ASSETS)
+    if app in WIDE:
+        assets_list["Wide310x150Logo"] = (310, 150, 0.40, False)
+    for name, (w, h, fraction, filled) in assets_list.items():
+        if name == "SplashScreen" and app in BLACK_SPLASH:
+            continue
+        plain = os.path.join(assets, name + ".png")
+        if os.path.exists(plain):
+            os.remove(plain)  # an unqualified file next to the scale-* ones confuses the resource index
+        for scale in SCALES:
+            render(glyph, colour, round(w * scale / 100), round(h * scale / 100), fraction, filled,
+                   os.path.join(assets, "%s.scale-%d.png" % (name, scale)))
+    for old in ("SmallTile.png",):
+        if os.path.exists(os.path.join(assets, old)):
+            os.remove(os.path.join(assets, old))
+
+    manifest = os.path.join(folder, "Package.appxmanifest")
+    text = open(manifest, encoding="utf-8-sig").read()
+    # tile and app list follow the phone's accent colour like the system apps; the splash keeps the app colour
+    text = re.sub(r'BackgroundColor="[^"]*"', 'BackgroundColor="%s"' % ("#000000" if app in BLACK_SPLASH else colour), text)
+    text = re.sub(r'(<m3:VisualElements[^>]*?BackgroundColor=")[^"]*"', r'\1transparent"', text, flags=re.S)
+    if "Square71x71Logo" not in text:
+        text = re.sub(r"(<m3:VisualElements[^>]*>)", r'\1\n        <m3:DefaultTile Square71x71Logo="Assets\\Square71x71Logo.png" />', text, count=1)
+    text = text.replace('ForegroundText="dark"', 'ForegroundText="light"')
+    open(manifest, "w", encoding="utf-8").write(text)
+
+    proj = os.path.join(folder, project)
+    text = open(proj, encoding="utf-8-sig").read()
+    if project.endswith(".vcxproj"):
+        lines = [l for l in text.split("\n")
+                 if not re.search(r'<Image Include="Assets\\(SplashScreen|Square\w+Logo|StoreLogo|SmallTile)\.png"', l)]
+        text = "\n".join(lines)
+        if 'Image Include="Assets\\*.png"' not in text:
+            text = text.replace("<ItemGroup>", '<ItemGroup>\n    <Image Include="Assets\\*.png" />', 1)
+        open(proj, "w", encoding="utf-8").write(text)
+    print("%-16s %s %s" % (app, colour, glyph_name))
+
+
+def preview(out):
+    tiles = []
+    tmp = tempfile.mkdtemp()
+    for app, (_, _, glyph_name, colour) in APPS.items():
+        glyph = glyph_svg(glyph_name)
+        big = os.path.join(tmp, app + "-tile.png")
+        small = os.path.join(tmp, app + "-list.png")
+        render(glyph, colour, 360, 360, 0.40, True, big)
+        render(glyph, colour, 106, 106, 0.62, True, small)
+        cell = os.path.join(tmp, app + ".png")
+        subprocess.run(["magick", "-size", "400x520", "xc:#111111", big, "-geometry", "+20+20", "-composite",
+                        small, "-geometry", "+20+400", "-composite", "-fill", "white", "-pointsize", "30",
+                        "-annotate", "+140+460", app, cell], check=True)
+        tiles.append(cell)
+    subprocess.run(["magick", "montage"] + tiles + ["-tile", "5x", "-geometry", "+0+0", "-background", "#111111", out],
+                   check=True)
+    print(out)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2 or sys.argv[1] not in ("preview", "apply", "tile-icons"):
+        print(__doc__); sys.exit(1)
+    if sys.argv[1] == "tile-icons":
+        tile_icons()
+    elif sys.argv[1] == "preview":
+        preview(os.environ.get("OUT", "/tmp/icons-preview.png"))
+    else:
+        for app in (sys.argv[2:] or list(APPS)):
+            apply(app)

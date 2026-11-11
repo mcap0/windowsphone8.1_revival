@@ -1,0 +1,12 @@
+--- a/Source/WebCore/rendering/RenderText.cpp
++++ b/Source/WebCore/rendering/RenderText.cpp
+@@ -110,7 +110,9 @@
+     uint32_t bitfields : 14;
+ };
+ 
++#if !defined(WP81)
+ static_assert(sizeof(RenderText) == sizeof(SameSizeAsRenderText), "RenderText should stay small");
++#endif
+ 
+ class SecureTextTimer final : private TimerBase {
+     WTF_MAKE_TZONE_ALLOCATED_INLINE(SecureTextTimer);

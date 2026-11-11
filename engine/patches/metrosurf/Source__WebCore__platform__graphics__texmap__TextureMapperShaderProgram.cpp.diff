@@ -1,0 +1,84 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapperShaderProgram.cpp
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapperShaderProgram.cpp
+@@ -203,10 +203,17 @@
+ // rectangle so we need 30 components to receive the 10 rectangles.
+ //
+ // Keep this is sync with the values defined in ClipStack.h
++#if defined(WP81)
++#define ROUNDED_RECT_CONSTANTS                       \
++    GLSL_DIRECTIVE(define ROUNDED_RECT_MAX_RECTS 2) \
++    GLSL_DIRECTIVE(define ROUNDED_RECT_ARRAY_SIZE 6) \
++    GLSL_DIRECTIVE(define ROUNDED_RECT_INVERSE_TRANSFORM_ARRAY_SIZE 2)
++#else
+ #define ROUNDED_RECT_CONSTANTS                       \
+     GLSL_DIRECTIVE(define ROUNDED_RECT_MAX_RECTS 10) \
+     GLSL_DIRECTIVE(define ROUNDED_RECT_ARRAY_SIZE 30) \
+     GLSL_DIRECTIVE(define ROUNDED_RECT_INVERSE_TRANSFORM_ARRAY_SIZE 10)
++#endif
+ 
+ // Common header for all versions. We define the matrices variables here to keep the precision
+ // directives scope: the first one applies to the matrices variables and the next one to the
+@@ -816,8 +823,44 @@
+ }
+ #endif
+ 
++#if defined(WP81)
++bool (*g_wp81LoadShaderProgram)(unsigned program, std::span<const char> vertex, std::span<const char> fragment);
++void (*g_wp81StoreShaderProgram)(unsigned program, std::span<const char> vertex, std::span<const char> fragment);
++#endif
++
+ TextureMapperShaderProgram::TextureMapperShaderProgram(const String& vertex, const String& fragment)
+ {
++#if defined(WP81)
++    {
++        CString vertexCString = vertex.utf8();
++        CString fragmentCString = fragment.utf8();
++        if (g_wp81LoadShaderProgram) {
++            m_id = glCreateProgram();
++            if (g_wp81LoadShaderProgram(m_id, vertexCString.span(), fragmentCString.span()))
++                return;
++            glDeleteProgram(m_id);
++            m_id = 0;
++        }
++
++        m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
++        const char* vertexData = vertexCString.data();
++        int vertexLength = vertexCString.length();
++        glShaderSource(m_vertexShader, 1, &vertexData, &vertexLength);
++        glCompileShader(m_vertexShader);
++        m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
++        const char* fragmentData = fragmentCString.data();
++        int fragmentLength = fragmentCString.length();
++        glShaderSource(m_fragmentShader, 1, &fragmentData, &fragmentLength);
++        glCompileShader(m_fragmentShader);
++        m_id = glCreateProgram();
++        glAttachShader(m_id, m_vertexShader);
++        glAttachShader(m_id, m_fragmentShader);
++        glLinkProgram(m_id);
++        if (g_wp81StoreShaderProgram)
++            g_wp81StoreShaderProgram(m_id, vertexCString.span(), fragmentCString.span());
++        return;
++    }
++#endif
+     m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+     {
+         CString vertexCString = vertex.utf8();
+@@ -854,10 +897,14 @@
+     if (!m_id)
+         return;
+ 
+-    glDetachShader(m_id, m_vertexShader);
+-    glDeleteShader(m_vertexShader);
+-    glDetachShader(m_id, m_fragmentShader);
+-    glDeleteShader(m_fragmentShader);
++    if (m_vertexShader) {
++        glDetachShader(m_id, m_vertexShader);
++        glDeleteShader(m_vertexShader);
++    }
++    if (m_fragmentShader) {
++        glDetachShader(m_id, m_fragmentShader);
++        glDeleteShader(m_fragmentShader);
++    }
+     glDeleteProgram(m_id);
+ }
+ 

@@ -1,0 +1,31 @@
+# Parafrasi 7 (giro 7, 2026-11-03): parole inglesi usate in italiano, altre regioni, sproloqui lunghi.
+# Scritte prima di misurare. "now" = mar 2026-11-03 10:00.
+play	controlla_musica	azione=riprendi
+next	controlla_musica	azione=avanti
+metti play	controlla_musica	azione=riprendi
+setta un timer di 5 minuti	imposta_timer	secondi=300
+setta la sveglia alle 7	imposta_sveglia	ora=07:00
+call mamma	chiama	chi=mamma
+apri le settings del wifi	apri	cosa=wi-fi
+check meteo domani	meteo	giorno=2026-11-04
+aò mettime 'na sveglia alle sette	imposta_sveglia	ora=07:00
+anvedi, che tempo fa a Roma oggi	meteo	luogo=roma;giorno=
+uè guagliò chiamami a mammà	chiama	chi=mammà
+ué fammi un timer di dieci minuti	imposta_timer	secondi=600
+dai su, metti un po' di musica	riproduci_musica	tipo=casuale
+oh raga, che ore sono	ora
+belin, piove domani a Genova?	meteo	luogo=genova;giorno=2026-11-04
+figa, svegliami alle 6 che domani lavoro	imposta_sveglia	ora=06:00
+allora guarda io domani mattina devo andare presto in ufficio perché c'è una riunione quindi per favore svegliami alle sei e un quarto	imposta_sveglia	ora=06:15
+senti mi è venuto in mente adesso che devo pagare la bolletta della luce, me lo scrivi nelle note?	prendi_nota	testo=devo pagare la bolletta della luce
+stavo pensando che stasera potrei ascoltare un po' di Pino Daniele, me lo metti?	riproduci_musica	richiesta=pino daniele
+non trovo più il telefono di casa, puoi chiamare casa?	chiama	chi=casa
+ho un sacco di cose da fare domani, mi dici cosa ho in agenda?	leggi_calendario	dal=2026-11-04
+# trabocchetti regionali e misti
+aò che stai a fa	online
+uè ma che dici	online
+ma vaffanculo	online
+sei proprio stupido	online
+play store	online
+ho visto un film bellissimo ieri	online
+mia nonna ascolta sempre Mina	online

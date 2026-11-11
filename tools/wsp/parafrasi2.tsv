@@ -1,0 +1,119 @@
+# Parafrasi 2: set di prova scritto DOPO aver corretto le regole su parafrasi.tsv, senza più toccarle prima di
+# misurare (2026-11-03). Stile diverso: più colloquiale, ordine delle parole cambiato, frasi lunghe.
+# "now" = martedì 2026-11-03 10:00.
+# --- timer
+ehi mettimi dieci minuti di timer	imposta_timer	secondi=600
+me lo metti un timer da 6 minuti?	imposta_timer	secondi=360
+tra un quarto d'ora avvertimi	imposta_timer	secondi=900
+fammi partire un timer da mezz'ora per il bucato	imposta_timer	secondi=1800
+puoi avviare il timer per 90 secondi?	imposta_timer	secondi=90
+timer per la pizza 12 minuti	imposta_timer	secondi=720
+imposta un countdown di 1 ora e 15 minuti	imposta_timer	secondi=4500
+a che punto siamo col timer?	stato_timer
+quanti minuti mancano al timer?	stato_timer
+timer?	online
+cancellami il timer	annulla_timer
+il timer non serve più, toglilo	annulla_timer
+# --- sveglie
+domattina svegliami alle sette	imposta_sveglia	ora=07:00
+mi puoi svegliare domani alle 6 e un quarto?	imposta_sveglia	ora=06:15;giorno=2026-11-04
+metti una sveglia per le nove di domenica	imposta_sveglia	ora=09:00;giorno=2026-11-08
+sveglia alle 7 e 10 dal lunedì al venerdì	imposta_sveglia	ora=07:10
+punta una sveglia alle 4 del pomeriggio	imposta_sveglia	ora=16:00
+domani sveglia alle sei e trenta	imposta_sveglia	ora=06:30;giorno=2026-11-04
+alle 7 svegliami	imposta_sveglia	ora=07:00
+quante sveglie ho?	elenca_sveglie
+ho messo la sveglia per domani?	elenca_sveglie
+leggimi le sveglie attive	elenca_sveglie
+cancellami la sveglia delle 9	cancella_sveglia	ora=09:00
+via la sveglia delle sette e mezza	cancella_sveglia	ora=07:30
+# --- chiamate
+chiama subito la mamma	chiama	chi=la mamma
+mi chiami Giulia?	chiama	chi=giulia
+telefonami a papà	chiama	chi=papà
+voglio telefonare ad Andrea	chiama	chi=andrea
+chiama il numero 3331234567	chiama	chi=3331234567
+fai partire una chiamata a Simone	chiama	chi=simone
+# --- musica
+voglio ascoltare i Queen	riproduci_musica	richiesta=queen
+mettimi Lucio Battisti	riproduci_musica	richiesta=lucio battisti
+riproduci qualcosa di Mina	riproduci_musica	richiesta=mina
+fammi sentire la playlist corsa	riproduci_musica	tipo=playlist
+fai partire un po' di musica a caso	riproduci_musica	tipo=casuale
+musica casuale per favore	riproduci_musica	tipo=casuale
+avvia la musica	riproduci_musica	tipo=casuale
+metti in pausa la canzone	controlla_musica	azione=pausa
+basta musica	controlla_musica	azione=pausa
+ricomincia la musica	controlla_musica	azione=riprendi
+skip	controlla_musica	azione=avanti
+prossimo brano	controlla_musica	azione=avanti
+brano precedente	controlla_musica	azione=indietro
+metti la canzone dopo	controlla_musica	azione=avanti
+# --- aprire
+aprimi telegram	apri	cosa=telegram
+apri le impostazioni del wi-fi	apri	cosa=wi-fi
+mostrami il registratore	apri	cosa=registratore
+vai sulla posta	apri	cosa=posta
+apri gli appunti	apri	cosa=appunti
+voglio vedere il meteo	apri	cosa=meteo
+attiva il gps	apri	cosa=posizione
+disattiva la modalità aereo	apri	cosa=modalità aereo
+impostazioni della rotazione	apri	cosa=rotazione schermo
+apri i file	apri	cosa=file
+# --- meteo
+domani piove a Palermo?	meteo	luogo=palermo;giorno=2026-11-04
+che tempo c'è adesso	meteo	giorno=
+mi dici il meteo di venerdì	meteo	giorno=2026-11-06
+farà caldo domani?	meteo	giorno=2026-11-04
+come sarà il tempo nel weekend	meteo
+previsioni Messina	meteo	luogo=messina
+c'è vento oggi?	meteo	giorno=
+temperatura a Bologna domani	meteo	luogo=bologna;giorno=2026-11-04
+# --- calendario
+che ho in agenda oggi?	leggi_calendario	dal=2026-11-03
+dimmi i miei impegni per domani	leggi_calendario	dal=2026-11-04
+ho appuntamenti venerdì?	leggi_calendario	dal=2026-11-06
+cosa mi aspetta domani	leggi_calendario	dal=2026-11-04
+sono occupato giovedì?	leggi_calendario	dal=2026-11-05
+mostrami l'agenda della settimana	leggi_calendario	giorni=7
+# --- ora e data
+che ore si sono fatte	ora
+scusa che ora è	ora
+ora?	ora
+oggi quanti ne abbiamo?	data
+in che giorno siamo	data
+che giorno sarà dopodomani	data	giorno=2026-11-05
+# --- scritti con testo
+prendi un appunto: chiamare la banca	prendi_nota	testo=chiamare la banca
+nota veloce, comprare il pane	prendi_nota	testo=comprare il pane
+segna che ho prestato il trapano a Luca	prendi_nota	testo=ho prestato il trapano a luca
+ricordami alle 15 di uscire	promemoria	testo=uscire;ora=15:00
+tra 2 ore ricordami di stendere	promemoria	testo=stendere;ora=12:00
+ricordami venerdì alle 10 di chiamare il dentista	promemoria	testo=chiamare il dentista;ora=10:00;giorno=2026-11-06
+cerca i risultati della serie a	cerca_sul_web	domanda=i risultati della serie a
+cerca in rete come si cambia una gomma	cerca_sul_web	domanda=come si cambia una gomma
+# --- devono andare a Gemini
+quanto fa 144 diviso 12	online
+come si dice gatto in francese	online
+chi ha inventato il telefono	online
+che film danno stasera	online
+inviami un sms a Luca	online
+manda un whatsapp a Giulia	online
+aggiungi al calendario la riunione di domani alle 10	aggiungi_evento	giorno=2026-11-04;ora=10:00;titolo=riunione
+segna in agenda dentista giovedì alle 4	aggiungi_evento	giorno=2026-11-05;ora=16:00;titolo=dentista
+quanto pesa un elefante	online
+mi racconti qualcosa di divertente	online
+che cosa significa serendipità	online
+dove posso mangiare una pizza qui vicino	online
+qual è la radice quadrata di 81	online
+chi canta questa canzone	online
+che tempo faceva ieri	meteo
+quando è nato Leonardo da Vinci	online
+quanti chilometri ci sono tra Roma e Milano	online
+sei intelligente?	online
+buongiorno	online
+apri la porta	online
+spegni la luce	online
+mi ami?	online
+quanto manca a Natale	online
+che squadra ha vinto lo scudetto	online

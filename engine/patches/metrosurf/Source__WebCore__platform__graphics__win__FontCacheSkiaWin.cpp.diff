@@ -1,0 +1,20 @@
+--- a/Source/WebCore/platform/graphics/win/FontCacheSkiaWin.cpp
++++ b/Source/WebCore/platform/graphics/win/FontCacheSkiaWin.cpp
+@@ -55,6 +55,9 @@
+     if (FAILED(hr))
+         return result;
+ 
++#if defined(WP81)
++    return result;
++#else
+     COMPtr<IDWriteFactory5> factory5(Query, result.factory);
+     if (!factory5)
+         return result;
+@@ -106,6 +109,7 @@
+         return result;
+     result.fontCollection.query(collection1);
+     return result;
++#endif
+ }
+ 
+ } // namespace WebCore

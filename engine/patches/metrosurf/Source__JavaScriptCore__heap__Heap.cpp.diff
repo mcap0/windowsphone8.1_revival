@@ -1,0 +1,26 @@
+--- a/Source/JavaScriptCore/heap/Heap.cpp
++++ b/Source/JavaScriptCore/heap/Heap.cpp
+@@ -194,7 +194,7 @@
+         return ratio * heapSize;
+     }
+ 
+-#if USE(MEMORY_FOOTPRINT_API)
++#if USE(MEMORY_FOOTPRINT_API) || defined(WP81)
+     size_t memoryFootprint = WTF::memoryFootprint();
+     if (memoryFootprint < ramSize * Options::smallHeapRAMFraction())
+         return Options::smallHeapGrowthFactor() * heapSize;
+@@ -720,6 +720,14 @@
+     }
+ 
+     return m_overCriticalMemoryThreshold;
++#elif defined(WP81)
++    static std::atomic<unsigned> cachedCallCount;
++    static std::atomic<bool> overThreshold;
++    if (memoryThresholdCallType == MemoryThresholdCallType::Direct || ++cachedCallCount >= 100) {
++        overThreshold = WTF::percentAvailableMemoryInUse() > Options::criticalGCMemoryThreshold();
++        cachedCallCount = 0;
++    }
++    return overThreshold;
+ #else
+     UNUSED_PARAM(memoryThresholdCallType);
+     return false;

@@ -1,0 +1,11 @@
+--- a/Source/bmalloc/bmalloc/BAssert.h
++++ b/Source/bmalloc/bmalloc/BAssert.h
+@@ -60,7 +60,7 @@
+ #define BCRASH() __builtin_trap()
+ #else
+ 
+-#if defined(__GNUC__) // GCC or Clang
++#if defined(__GNUC__) || defined(__clang__)
+ #define BCRASH() do { \
+     BIGNORE_CLANG_STATIC_ANALYZER_WARNINGS_ATTRIBUTE("core.FixedAddressDereference") *(int*)0xbbadbeef = 0; \
+     __builtin_trap(); \

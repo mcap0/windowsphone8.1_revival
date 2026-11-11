@@ -1,0 +1,18 @@
+#!/bin/bash
+# onenote — download the phone's OneNote section (via Esplora console, app open) and print its pages as outline trees.
+#   tools/onenote                 all pages
+#   tools/onenote "Phone development"   only that page (title match)
+# Phone file: C:\Data\Users\DefApps.Windows Phone\APPDATA\OFFICE\Local\OneNote\OneNote Notebooks\Personal\Unfiled Notes.one
+# Parser: pyOneNote in a venv under ~/.cache, patched by onenote.d/patch.py; tree by onenote.d/tree.py.
+here=$(dirname "$(realpath "$0")")
+venv=~/.cache/dumbphone-onenote-venv
+if [ ! -x $venv/bin/python ]; then
+  python3 -m venv $venv && $venv/bin/pip -q install pyOneNote || exit 1
+  python3 "$here/onenote.d/patch.py" "$(ls $venv/lib/python3*/site-packages/pyOneNote/FileNode.py)"
+fi
+out=$here/../share/onenote; mkdir -p $out
+"$here/esplora" get 'C:\Data\Users\DefApps.Windows Phone\APPDATA\OFFICE\Local\OneNote\OneNote Notebooks\Personal\Unfiled Notes.one' $out/unfiled.one >&2 || exit 1
+$venv/bin/python -I "$here/onenote.d/tree.py" $out/unfiled.one > $out/pages.txt
+if [ -n "$1" ]; then
+  awk -v t="$(echo "$1" | tr A-Z a-z)" '/^=== page/{on=0; buf=$0; next} buf!=""{ if (tolower($0) ~ t) on=1; if(on) print buf; buf=""} on' $out/pages.txt
+else cat $out/pages.txt; fi

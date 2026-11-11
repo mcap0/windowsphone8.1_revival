@@ -1,0 +1,20 @@
+--- a/Source/WTF/wtf/AutomaticThread.cpp
++++ b/Source/WTF/wtf/AutomaticThread.cpp
+@@ -117,10 +117,17 @@
+ AutomaticThread::AutomaticThread(const AbstractLocker& locker, Box<Lock> lock, Ref<AutomaticThreadCondition>&& condition, ThreadType type, ThreadQOS qos, Seconds timeout)
+     : m_lock(lock)
+     , m_condition(WTF::move(condition))
++#if defined(WP81)
++    , m_timeout(Seconds::infinity())
++#else
+     , m_timeout(timeout)
++#endif
+     , m_threadType(type)
+     , m_qos(qos)
+ {
++#if defined(WP81)
++    UNUSED_PARAM(timeout);
++#endif
+     if (verbose)
+         dataLog(RawPointer(this), ": Allocated AutomaticThread.\n");
+     m_condition->add(locker, this);

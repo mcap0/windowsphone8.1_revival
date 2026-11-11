@@ -1,0 +1,90 @@
+tramontana-001	Si bisticciavano un giorno il vento di tramontana e il sole,
+tramontana-002	l'uno pretendendo d'esser più forte dell'altro,
+tramontana-003	quando videro un viaggiatore, che veniva innanzi,
+tramontana-004	avvolto nel mantello.
+tramontana-005	I due litiganti convennero allora che si sarebbe ritenuto più forte chi fosse riuscito a far sì che il viaggiatore si
+tramontana-006	togliesse il mantello di dosso.
+tramontana-007	Il vento di tramontana cominciò a soffiare con violenza;
+tramontana-008	ma più soffiava, più il viaggiatore si stringeva nel mantello;
+tramontana-009	tanto che alla fine il povero vento dovette desistere dal suo proposito.
+tramontana-010	Il sole allora si mostrò nel cielo,
+tramontana-011	e poco dopo il viaggiatore, che sentiva caldo,
+tramontana-012	si tolse il mantello.
+tramontana-013	E la tramontana fu costretta così a riconoscere che il sole era più forte di lei.
+pinocchio1-001	C'era una volta...
+pinocchio1-002	Un re!
+pinocchio1-003	diranno subito i miei piccoli lettori.
+pinocchio1-004	No, ragazzi, avete sbagliato.
+pinocchio1-005	C'era una volta un pezzo di legno.
+pinocchio1-006	Non era un legno di lusso,
+pinocchio1-007	ma un semplice pezzo da catasta,
+pinocchio1-008	di quelli che d'inverno si mettono nelle stufe e nei caminetti per accendere il fuoco e per riscaldare le stanze.
+pinocchio1-009	Non so come andasse, ma il fatto gli è che un bel giorno questo pezzo di legno capitò nella bottega di
+pinocchio1-010	un vecchio falegname, il quale aveva nome mastr'Antonio,
+pinocchio1-011	se non che tutti lo chiamavano maestro Ciliegia,
+pinocchio1-012	per via della punta del suo naso,
+pinocchio1-013	che era sempre lustra e paonazza,
+pinocchio1-014	come una ciliegia matura.
+pinocchio1-015	Appena maestro Ciliegia ebbe visto quel pezzo di legno, si rallegrò tutto;
+pinocchio1-016	e dandosi una fregatina di mani per la contentezza,
+pinocchio1-017	borbottò a mezza voce: Questo legno è capitato a tempo:
+pinocchio1-018	voglio servirmene per fare una gamba di tavolino.
+pinocchio1-019	Detto fatto, prese subito l'ascia arrotata per cominciare a levargli la scorza e a digrossarlo;
+pinocchio1-020	ma quando fu lì per lasciar andare la prima asciata,
+pinocchio1-021	rimase col braccio sospeso in aria,
+pinocchio1-022	perché sentì una vocina sottile sottile,
+pinocchio1-023	che disse raccomandandosi: Non mi picchiar tanto forte!
+pinocchio1-024	Figuratevi come rimase quel buon vecchio di maestro Ciliegia!
+pinocchio1-025	Girò gli occhi smarriti intorno alla stanza per vedere di dove mai poteva essere uscita quella vocina, e non vide nessuno!
+pinocchio1-026	Guardò sotto il banco, e nessuno;
+pinocchio1-027	guardò dentro un armadio che stava sempre chiuso, e nessuno;
+pinocchio1-028	guardò nel corbello dei trucioli e della segatura, e nessuno;
+pinocchio1-029	aprì l'uscio di bottega per dare un'occhiata anche sulla strada, e nessuno.
+pinocchio1-030	O dunque?
+pinocchio1-031	Ho capito, disse allora ridendo e grattandosi la parrucca,
+pinocchio1-032	si vede che quella vocina me la son figurata io.
+pinocchio1-033	Rimettiamoci a lavorare.
+pinocchio1-034	E ripresa l'ascia in mano, tirò giù un solennissimo colpo sul pezzo di legno.
+pinocchio1-035	Ohi!
+pinocchio1-036	tu m'hai fatto male!
+pinocchio1-037	gridò rammaricandosi la solita vocina.
+pinocchio1-038	Questa volta maestro Ciliegia restò di stucco,
+pinocchio1-039	cogli occhi fuori del capo per la paura,
+pinocchio1-040	colla bocca spalancata e colla lingua giù ciondoloni fino al mento,
+pinocchio1-041	come un mascherone da fontana.
+pinocchio1-042	Appena riebbe l'uso della parola, cominciò a dire tremando e balbettando dallo spavento:
+pinocchio1-043	Ma di dove sarà uscita questa vocina che ha detto ohi?
+pinocchio1-044	Eppure qui non c'è anima viva.
+pinocchio1-045	Che sia per caso questo pezzo di legno che abbia imparato a piangere e a lamentarsi come un bambino?
+pinocchio1-046	Io non lo posso credere.
+pinocchio1-047	Questo legno eccolo qui;
+pinocchio1-048	è un pezzo di legno da caminetto,
+pinocchio1-049	come tutti gli altri, e a buttarlo sul fuoco,
+pinocchio1-050	c'è da far bollire una pentola di fagioli.
+pinocchio1-051	O dunque?
+pinocchio1-052	Che ci sia nascosto dentro qualcuno?
+pinocchio1-053	Se c'è nascosto qualcuno, tanto peggio per lui.
+pinocchio1-054	Ora l'accomodo io!
+pinocchio1-055	E così dicendo, agguantò con tutte e due le mani quel povero pezzo di legno,
+pinocchio1-056	e si pose a sbatacchiarlo senza carità contro le pareti della stanza.
+pinocchio1-057	Poi si messe in ascolto, per sentire se c'era qualche vocina che si lamentasse.
+pinocchio1-058	Aspettò due minuti, e nulla;
+pinocchio1-059	cinque minuti, e nulla;
+pinocchio1-060	dieci minuti, e nulla!
+pinocchio1-061	Ho capito, disse allora sforzandosi di ridere e arruffandosi la parrucca,
+pinocchio1-062	si vede che quella vocina che ha detto ohi,
+pinocchio1-063	me la son figurata io!
+pinocchio1-064	Rimettiamoci a lavorare.
+pinocchio1-065	E perché gli era entrata addosso una gran paura,
+pinocchio1-066	si provò a canterellare per farsi un po' di coraggio.
+pinocchio1-067	Intanto, posata da una parte l'ascia,
+pinocchio1-068	prese in mano la pialla, per piallare e tirare a pulimento il pezzo di legno;
+pinocchio1-069	ma nel mentre che lo piallava in su e in giù,
+pinocchio1-070	sentì la solita vocina che gli disse ridendo:
+pinocchio1-071	Smetti!
+pinocchio1-072	tu mi fai il pizzicorino sul corpo!
+pinocchio1-073	Questa volta il povero maestro Ciliegia cadde giù come fulminato.
+pinocchio1-074	Quando riaprì gli occhi, si trovò seduto per terra.
+pinocchio1-075	Il suo viso pareva trasfigurato, e perfino la punta del naso,
+pinocchio1-076	di paonazza come era quasi sempre,
+pinocchio1-077	gli era diventata turchina dalla gran paura.

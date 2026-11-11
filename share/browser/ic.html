@@ -1,0 +1,196 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inline cache JS</title><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+button{font-size:15px;padding:8px;margin:2px;background:#1976d2;color:#fff;border:0}
+#out{font:12px monospace;white-space:pre-wrap}
+.ko{color:#f66}.ok{color:#9c9}
+</style></head><body>
+<div>Ogni accesso che le inline cache di JSC devono saper fare, in cicli caldi (interprete, baseline, DFG): risultato
+controllato e tempo per giro. Un "ERRORE" &egrave; un bug del motore. Poi "Invia".</div>
+<button id="go">Avvia</button><button id="send">Invia</button>
+<div id="dom" style="display:none"><span id="kid"></span></div>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var N = 200000;
+  var div = T.$("dom");
+
+  function shapes(count) {
+    // Objects with the property x at different offsets: a different structure each.
+    var list = [];
+    for (var k = 0; k < count; k++) {
+      var o = {};
+      for (var j = 0; j < k % 6; j++) o["p" + j] = j;
+      o["q" + k] = k;
+      o.x = k + 1;
+      list.push(o);
+    }
+    return list;
+  }
+
+  var tests = [
+    ["getter monomorfico", function (n) {
+      var o = { _v: 3, get v() { return this._v; } };
+      var s = 0;
+      for (var i = 0; i < n; i++) s += o.v;
+      return s;
+    }, function (n) { return 3 * n; }],
+
+    ["getter su prototipo, 4 forme", function (n) {
+      function P() {}
+      Object.defineProperty(P.prototype, "v", { get: function () { return this.k; } });
+      var list = [];
+      for (var k = 0; k < 4; k++) { var o = new P(); if (k & 1) o.a = 0; if (k & 2) o.b = 0; o.k = k + 1; list.push(o); }
+      var s = 0;
+      for (var i = 0; i < n; i++) s += list[i & 3].v;
+      return s;
+    }, function (n) { return (n / 4) * (1 + 2 + 3 + 4); }],
+
+    ["setter", function (n) {
+      var o = { _v: 0, set v(x) { this._v += x; } };
+      for (var i = 0; i < n; i++) o.v = i & 7;
+      return o._v;
+    }, function (n) { return (n / 8) * 28; }],
+
+    ["getter che lancia", function (n) {
+      var o = { get v() { if (this.c++ === 777) throw 5; return 1; }, c: 0 };
+      var s = 0, caught = 0;
+      for (var i = 0; i < n; i++) { try { s += o.v; } catch (e) { caught += e; } }
+      return s + caught * 1000000;
+    }, function (n) { return (n - 1) + 5000000; }],
+
+    ["attributo DOM: nodeType, id, firstChild", function (n) {
+      var s = 0;
+      for (var i = 0; i < n; i++) s += div.nodeType + div.id.length + (div.firstChild ? 1 : 0);
+      return s;
+    }, function (n) { return n * (1 + 3 + 1); }],
+
+    ["setter DOM: title", function (n) {
+      for (var i = 0; i < n; i++) div.title = (i & 7) ? "a" : "bb";
+      return div.title.length;
+    }, function (n) { return 1; }],
+
+    ["array di interi, lettura", function (n) {
+      var a = [1, 2, 3, 4, 5, 6, 7, 8];
+      var s = 0;
+      for (var i = 0; i < n; i++) s += a[i & 7];
+      return s;
+    }, function (n) { return (n / 8) * 36; }],
+
+    ["array di double, lettura", function (n) {
+      var a = [0.5, 1.5, 2.5, 3.5];
+      var s = 0;
+      for (var i = 0; i < n; i++) s += a[i & 3];
+      return s;
+    }, function (n) { return (n / 4) * 8; }],
+
+    ["array di oggetti, lettura", function (n) {
+      var a = [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }];
+      var s = 0;
+      for (var i = 0; i < n; i++) s += a[i & 3].x;
+      return s;
+    }, function (n) { return (n / 4) * 10; }],
+
+    ["array, scrittura (interi, double, oggetti)", function (n) {
+      var ai = [0, 0, 0, 0], ad = [0.5, 0.5, 0.5, 0.5], ao = [null, null, null, null];
+      var cell = { y: 2 };
+      for (var i = 0; i < n; i++) { ai[i & 3] = i & 15; ad[i & 3] = (i & 3) + 0.25; ao[i & 3] = cell; }
+      return ai[0] + ai[1] + ai[2] + ai[3] + ad[0] + ad[1] + ad[2] + ad[3] + ao[3].y;
+    }, function (n) { var last = n - 4; return ((last & 15) + ((last + 1) & 15) + ((last + 2) & 15) + ((last + 3) & 15)) + (0.25 + 1.25 + 2.25 + 3.25) + 2; }],
+
+    ["fuori dai limiti e buchi", function (n) {
+      var a = [1, 2, 3];
+      a[5] = 6;
+      var u = 0, s = 0;
+      for (var i = 0; i < n; i++) { var v = a[i % 7]; if (v === undefined) u++; else s += v; }
+      return u * 1000 + s;
+    }, function (n) {
+      var u = 0, s = 0, a = [1, 2, 3, undefined, undefined, 6, undefined];
+      for (var i = 0; i < 7; i++) if (a[i] === undefined) u++; else s += a[i];
+      var full = Math.floor(n / 7), rest = n % 7, ur = 0, sr = 0;
+      for (var j = 0; j < rest; j++) if (a[j] === undefined) ur++; else sr += a[j];
+      return (u * full + ur) * 1000 + s * full + sr;
+    }],
+
+    ["typed array: Uint8Array e Float64Array", function (n) {
+      var b = new Uint8Array(16), f = new Float64Array(4);
+      for (var i = 0; i < n; i++) { b[i & 15] = i; f[i & 3] += b[(i + 1) & 15]; }
+      return f[0] + f[1] + f[2] + f[3];
+    }, null],
+
+    ["stringa, carattere per indice", function (n) {
+      var str = "abcdefgh", s = 0;
+      for (var i = 0; i < n; i++) s += str[i & 7].charCodeAt(0);
+      return s;
+    }, function (n) { return (n / 8) * (97 + 98 + 99 + 100 + 101 + 102 + 103 + 104); }],
+
+    ["oggetti con 12 proprietà (transizioni che riallocano)", function (n) {
+      var s = 0;
+      for (var i = 0; i < n / 20; i++) {
+        var o = {};
+        o.a = 1; o.b = 2; o.c = 3; o.d = 4; o.e = 5; o.f = 6; o.g = 7; o.h = 8; o.i = 9; o.j = 10; o.k = 11; o.l = 12;
+        s += o.l + o.a;
+      }
+      return s;
+    }, function (n) { return (n / 20) * 13; }],
+
+    ["arguments per indice", function (n) {
+      function f() { return arguments[0] + arguments[1]; }
+      var s = 0;
+      for (var i = 0; i < n; i++) s += f(i & 3, 1);
+      return s;
+    }, function (n) { return (n / 4) * (0 + 1 + 2 + 3) + n; }],
+
+    ["40 forme (megamorfico)", function (n) {
+      var list = shapes(40), s = 0;
+      for (var i = 0; i < n; i++) s += list[i % 40].x;
+      return s;
+    }, function (n) { var per = 0; for (var k = 0; k < 40; k++) per += k + 1; return (n / 40) * per; }]
+  ];
+
+  var lines = [], expectedTyped = null;
+
+  function referenceTyped(n) {
+    // The same as the typed array test, with plain arithmetic and no indexed access to typed arrays.
+    var b = [], f = [0, 0, 0, 0], i;
+    for (i = 0; i < 16; i++) b.push(0);
+    for (i = 0; i < n; i++) { b[i & 15] = i & 255; f[i & 3] += b[(i + 1) & 15]; }
+    return f[0] + f[1] + f[2] + f[3];
+  }
+
+  function show() {
+    var html = [];
+    for (var i = 0; i < lines.length; i++)
+      html.push("<span class='" + (lines[i].indexOf("ERRORE") >= 0 ? "ko" : "ok") + "'>" + lines[i] + "</span>");
+    T.$("out").innerHTML = html.join("\n");
+  }
+
+  function run() {
+    lines = [T.engine() + ", " + N + " iterazioni per giro, 3 giri"];
+    expectedTyped = referenceTyped(N);
+    var index = 0;
+    function next() {
+      if (index >= tests.length) {
+        lines.push("fine");
+        show();
+        return;
+      }
+      var test = tests[index++], times = [], wrong = null;
+      for (var round = 0; round < 3; round++) {
+        var start = T.now(), value;
+        try { value = test[1](N); } catch (e) { value = "eccezione " + e; }
+        times.push(Math.round(T.now() - start));
+        var expected = test[2] ? test[2](N) : expectedTyped;
+        if (value !== expected && wrong === null) wrong = "giro " + (round + 1) + ": " + value + " invece di " + expected;
+      }
+      lines.push((wrong ? "ERRORE " : "") + test[0] + ": " + times.join(" / ") + " ms" + (wrong ? " — " + wrong : ""));
+      show();
+      setTimeout(next, 30);
+    }
+    next();
+  }
+
+  T.$("go").onclick = run;
+  T.$("send").onclick = function () { T.send("ic", lines, function (ok) { T.$("send").textContent = ok ? "Inviato" : "Errore"; }); };
+})();
+</script></body></html>

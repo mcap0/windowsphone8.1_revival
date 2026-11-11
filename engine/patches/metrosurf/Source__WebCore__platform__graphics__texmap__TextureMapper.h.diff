@@ -1,0 +1,13 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapper.h
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapper.h
+@@ -119,6 +119,10 @@
+     void setDamage(const std::optional<Damage>& damage) { m_damage = damage; }
+     const std::optional<Damage>& damage() const LIFETIME_BOUND { return m_damage; }
+ #endif
++#if defined(WP81)
++    std::optional<FloatRect> windowCullRect() const;
++    static bool isOutside(const std::optional<FloatRect>& cullRect, const TransformationMatrix&, const FloatRect&);
++#endif
+ 
+ private:
+     bool isInMaskMode() const { return m_isMaskMode; }

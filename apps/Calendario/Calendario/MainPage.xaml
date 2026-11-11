@@ -1,0 +1,124 @@
+﻿<Page
+    x:Class="Calendario.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calendario.Models"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="RowTemplate">
+            <StackPanel Margin="0,2,0,2">
+                <TextBlock Text="{Binding HeaderText}" Visibility="{Binding HeaderVisibility}" FontSize="20" FontWeight="SemiBold" Foreground="#FF4DA6FF" Margin="0,12,0,4" />
+                <Grid Visibility="{Binding EventVisibility}" Margin="0,4,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{Binding BarBrush}" Margin="0,2,12,2" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding TimeText}" FontSize="15" Opacity="0.75" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Title}" FontSize="20" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Subtitle}" FontSize="14" Opacity="0.7" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add" Label="Aggiungi" Click="Add_Click" />
+            <AppBarButton x:Name="TodayButton" Icon="GoToToday" Label="Oggi" Click="Today_Click" />
+            <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Aggiorna" Click="Refresh_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Pivot x:Name="MainPivot" Title="CALENDARIO" SelectionChanged="MainPivot_SelectionChanged">
+        <PivotItem Header="agenda">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock x:Name="StatusText" FontSize="14" Opacity="0.7" TextWrapping="Wrap" />
+                    <TextBlock x:Name="ErrorText" FontSize="14" Foreground="#FFE81123" TextWrapping="Wrap" Tapped="ErrorText_Tapped" />
+                </StackPanel>
+                <ListView x:Name="AgendaList" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True"
+                          ItemTemplate="{StaticResource RowTemplate}" ItemClick="AgendaList_ItemClick" />
+                <Grid Grid.Row="2" Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Passati" HorizontalAlignment="Stretch" Click="Past_Click" />
+                    <Button Grid.Column="1" Content="Carica altri" HorizontalAlignment="Stretch" Click="LoadMore_Click" />
+                </Grid>
+            </Grid>
+        </PivotItem>
+
+        <PivotItem Header="mese">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="&#x2039;" FontSize="22" Click="PrevMonth_Click" />
+                    <TextBlock x:Name="MonthTitleText" Grid.Column="1" FontSize="22" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Button Grid.Column="2" Content="&#x203A;" FontSize="22" Click="NextMonth_Click" />
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,4,0,2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Lun" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="1" Text="Mar" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="2" Text="Mer" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="3" Text="Gio" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="4" Text="Ven" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="5" Text="Sab" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                    <TextBlock Grid.Column="6" Text="Dom" HorizontalAlignment="Center" FontSize="13" Opacity="0.7" />
+                </Grid>
+                <Grid x:Name="MonthHost" Grid.Row="2" ManipulationMode="TranslateX" ManipulationCompleted="MonthHost_ManipulationCompleted" />
+                <ListView x:Name="DayList" Grid.Row="3" SelectionMode="None" IsItemClickEnabled="True" Margin="0,8,0,0"
+                          ItemTemplate="{StaticResource RowTemplate}" ItemClick="DayList_ItemClick" />
+            </Grid>
+        </PivotItem>
+        <PivotItem Header="4 giorni">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="&#x2039;" FontSize="22" Click="PrevFour_Click" />
+                    <TextBlock x:Name="FourTitleText" Grid.Column="1" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Button Grid.Column="2" Content="&#x203A;" FontSize="22" Click="NextFour_Click" />
+                </Grid>
+                <Grid x:Name="FourHeader" Grid.Row="1" Margin="0,4,0,2" />
+                <Grid x:Name="FourAllDay" Grid.Row="2" />
+                <ScrollViewer x:Name="FourScroll" Grid.Row="3" VerticalScrollBarVisibility="Hidden">
+                    <Grid x:Name="FourHost" />
+                </ScrollViewer>
+            </Grid>
+        </PivotItem>
+    </Pivot>
+</Page>

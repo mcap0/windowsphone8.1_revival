@@ -1,0 +1,35 @@
+#!/bin/bash
+# esplora — run commands in the Esplora console on the phone (app open, console on) and print the answer.
+#   tools/esplora "regtree HKLM\SOFTWARE\Microsoft\Shell 1" ["ls C:\Data" ...]
+#   tools/esplora shot [out.png]      screenshot of the app
+[ "$1" = get ] && [ -n "$3" ] && set -- "$1" "$2" "$(realpath -m "$3")"
+cd "$(dirname "$(realpath "$0")")/../share" || exit 1
+# when done (answer or timeout) leave no command behind: Esplora would run it again at the next opening
+trap 'printf "#vuoto-%s\n" "$(date +%s%N)" > esplora-cmd.txt' EXIT
+if [ "$1" = shot ]; then
+  out=${2:-/tmp/esplora-shot.png}; f=inbox/esplora-shot.txt; before=$(wc -c < $f 2>/dev/null || echo 0)
+  printf '#%s\nshot\n' "$(date +%s%N)" > esplora-cmd.txt
+  for i in $(seq 1 40); do sleep 2; [ $(wc -c < $f 2>/dev/null || echo 0) -gt $before ] && break; done; sleep 2
+  tail -c +$((before+1)) $f | grep -v "^=====" | tr -d '\n' | base64 -d > "$out" 2>/dev/null && echo "$out" || tail -c 300 $f
+  exit
+fi
+if [ "$1" = get ]; then
+  # tools/esplora get 'C:\path\on\phone' out.file
+  f=inbox/esplora-file.txt; before=$(wc -c < $f 2>/dev/null || echo 0)
+  printf '#%s\nget %s\n' "$(date +%s%N)" "$2" > esplora-cmd.txt
+  for i in $(seq 1 90); do sleep 2; [ $(wc -c < $f 2>/dev/null || echo 0) -gt $before ] && break; done; sleep 3
+  tail -c +$((before+1)) $f | python3 -c "
+import base64,re,sys
+t=sys.stdin.read()
+for b in re.split(r'\n===== [^\n]* =====\n', t):
+    l=b.strip().split('\n',1)
+    if len(l)==2 and l[0].startswith('C:'):
+        open(sys.argv[1],'wb').write(base64.b64decode(l[1].replace('\n',''))); print(sys.argv[1], len(base64.b64decode(l[1].replace('\n',''))), 'byte'); break
+else: print('niente:', t[-300:])
+" "$3"
+  exit
+fi
+f=inbox/esplora-out.txt; before=$(wc -c < $f 2>/dev/null || echo 0)
+{ printf '#%s\n' "$(date +%s%N)"; for c in "$@"; do printf '%s\n' "$c"; done; } > esplora-cmd.txt
+for i in $(seq 1 60); do sleep 2; [ $(wc -c < $f 2>/dev/null || echo 0) -gt $before ] && break; done; sleep 2
+tail -c +$((before+1)) $f

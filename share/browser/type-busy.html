@@ -1,0 +1,125 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>type-busy</title><style>
+body{font:17px sans-serif;background:#000;color:#fff;margin:12px}
+input,textarea,.ed{font-size:20px;width:100%;padding:6px;box-sizing:border-box;background:#fff;color:#000;border:0;margin:2px 0 10px}
+.ed{min-height:40px}textarea{height:60px}
+button{font-size:16px;padding:10px;margin:3px 2px;background:#1976d2;color:#fff;border:0}
+label{font-size:14px;color:#ccc}#stat{font:12px monospace;color:#ccc;white-space:pre-wrap}
+</style></head><body>
+<div>Scrivi <b>ciao come stai oggi</b> in ogni casella, prima con la pagina libera e poi occupata. Poi Invia.</div>
+<button id="free">Pagina libera</button><button id="busy">Pagina occupata</button><button id="send">Invia</button>
+<div id="mode">modo: libera</div>
+<label>1. casella normale</label><input id="f1" autocomplete="off">
+<label>2. casella che la pagina corregge (maiuscole)</label><input id="f2" autocomplete="off">
+<label>3. area di testo</label><textarea id="f3"></textarea>
+<label>4. testo modificabile (contenteditable)</label><div id="f4" class="ed" contenteditable="true"></div>
+<label>5. editor stile Claude/WhatsApp (beforeinput)</label><div id="f5" class="ed" contenteditable="true"></div>
+<div id="stat"></div>
+<script src="common.js"></script><script>
+(function () {
+  var PHRASE = "ciao come stai oggi", busyMode = false, keys = [];
+  var fields = {};
+  ["f1", "f2", "f3", "f4", "f5"].forEach(function (id) {
+    fields[id] = { el: T.$(id), inputs: 0, ages: [], draws: [], keydowns: 0, modes: {} };
+  });
+
+  function text(id) {
+    var el = fields[id].el;
+    return (el.value !== undefined && el.tagName !== "DIV") ? el.value : (el.textContent || "");
+  }
+
+  Object.keys(fields).forEach(function (id) {
+    var f = fields[id];
+    f.el.addEventListener("keydown", function (e) {
+      f.keydowns++;
+      if (keys.length < 30) keys.push(id + ":" + (e.key || "?") + "/" + e.keyCode);
+    }, false);
+    f.el.addEventListener("input", function (e) {
+      var a = T.age(e), t = T.now();
+      f.inputs++;
+      f.ages.push(a);
+      f.modes[busyMode ? "occupata" : "libera"] = (f.modes[busyMode ? "occupata" : "libera"] || 0) + 1;
+      T.afterPaint(function () { f.draws.push(T.now() - t); });
+    }, false);
+  });
+
+  // Field 2: the page rewrites what the user typed (capital letter at the start of each word),
+  // like formatters and masked inputs do. The browser's text box must follow the page's version.
+  fields.f2.el.addEventListener("input", function () {
+    var el = fields.f2.el, v = el.value;
+    var w = v.replace(/(^|\s)([a-z])/g, function (m, s, c) { return s + c.toUpperCase(); });
+    if (w !== v) {
+      var pos = el.selectionStart;
+      el.value = w;
+      el.setSelectionRange(pos, pos);
+    }
+  }, false);
+
+  // Field 5: editor that owns its text model and applies every edit itself from beforeinput,
+  // the way ProseMirror (claude.ai) and Lexical (WhatsApp Web) work.
+  var model = "", ed = fields.f5.el, hasBeforeInput = false;
+  function caretOffset() {
+    var sel = window.getSelection();
+    if (!sel || !sel.rangeCount) return model.length;
+    var r = sel.getRangeAt(0);
+    if (r.startContainer.nodeType === 3) return Math.min(r.startOffset, model.length);
+    return r.startOffset === 0 && model.length && r.startContainer === ed ? 0 : model.length;
+  }
+  function render(caret) {
+    ed.textContent = model;
+    var node = ed.firstChild, sel = window.getSelection(), r = document.createRange();
+    if (node) r.setStart(node, Math.min(caret, model.length)); else r.setStart(ed, 0);
+    r.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(r);
+  }
+  ed.addEventListener("beforeinput", function (e) {
+    hasBeforeInput = true;
+    var at = caretOffset();
+    var t = e.inputType;
+    if (t === "insertText" || t === "insertReplacementText") {
+      var data = e.data || (e.dataTransfer && e.dataTransfer.getData("text/plain")) || "";
+      model = model.slice(0, at) + data + model.slice(at); at += data.length;
+    } else if (t === "deleteContentBackward") {
+      if (at > 0) { model = model.slice(0, at - 1) + model.slice(at); at--; }
+    } else if (t === "deleteContentForward") {
+      model = model.slice(0, at) + model.slice(at + 1);
+    } else if (t === "insertParagraph" || t === "insertLineBreak") {
+      model = model.slice(0, at) + "\n" + model.slice(at); at++;
+    } else {
+      if (keys.length < 30) keys.push("f5:inputType=" + t);
+      return;
+    }
+    e.preventDefault();
+    render(at);
+    fields.f5.inputs++;
+    fields.f5.ages.push(T.age(e));
+    var t0 = T.now();
+    T.afterPaint(function () { fields.f5.draws.push(T.now() - t0); });
+  }, false);
+
+  function busyLoop() {
+    if (!busyMode) return;
+    T.busy(300);
+    setTimeout(busyLoop, 500);
+  }
+  T.$("free").onclick = function () { busyMode = false; T.$("mode").textContent = "modo: libera"; };
+  T.$("busy").onclick = function () {
+    if (!busyMode) { busyMode = true; T.$("mode").textContent = "modo: occupata (300 ms ogni 500 ms)"; setTimeout(busyLoop, 500); }
+  };
+
+  T.$("send").onclick = function () {
+    busyMode = false;
+    var lines = [];
+    Object.keys(fields).forEach(function (id) {
+      var f = fields[id], v = text(id).replace(/ /g, " ").replace(/\s+$/, "");
+      lines.push(id + " testo='" + v + "' giusto=" + (v.toLowerCase() === PHRASE ? "si" : "no") +
+        " input=" + f.inputs + " keydown=" + f.keydowns + " modi=" + JSON.stringify(f.modes) +
+        " | eta' input " + T.stats(f.ages) + " | disegno " + T.stats(f.draws));
+    });
+    lines.push("beforeinput supportato: " + (hasBeforeInput ? "si" : "no (IE11: l'editor 5 usa la modifica nativa)"));
+    lines.push("primi tasti: " + keys.join(" "));
+    T.send("type-busy", lines, function (ok) { T.$("stat").textContent = ok ? "inviato\n" + lines.join("\n") : "invio fallito"; });
+  };
+})();
+</script></body></html>

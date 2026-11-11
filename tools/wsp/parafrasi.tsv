@@ -1,0 +1,176 @@
+# Parafrasi: modi di chiedere che le regole NON hanno visto mentre venivano scritte (scritte il 2026-11-03 prima di
+# toccare la rete). Stesso formato di golden.tsv; "now" = martedì 2026-11-03 10:00. Non si correggono le regole
+# guardando queste righe una per una: si misurano.
+# --- timer
+mi metti un timer da dieci minuti?	imposta_timer	secondi=600
+puoi impostare un timer di venti minuti	imposta_timer	secondi=1200
+fammi un timer di 3 minuti	imposta_timer	secondi=180
+timer da un quarto d'ora	imposta_timer	secondi=900
+fai partire il conto alla rovescia da cinque minuti	imposta_timer	secondi=300
+avvia un timer per 45 minuti	imposta_timer	secondi=2700
+mi serve un timer di due minuti per il tè	imposta_timer	secondi=120
+fra 20 minuti avvisami	imposta_timer	secondi=1200
+dammi un timer di un minuto	imposta_timer	secondi=60
+imposta 8 minuti	imposta_timer	secondi=480
+metti il timer a un'ora	imposta_timer	secondi=3600
+voglio un timer di 30 secondi	imposta_timer	secondi=30
+timer cinque minuti per favore	imposta_timer	secondi=300
+puoi farmi un countdown di 4 minuti	imposta_timer	secondi=240
+metti un timer di due ore e mezza	imposta_timer	secondi=9000
+quanto tempo resta sul timer?	stato_timer
+quanto manca?	stato_timer
+il timer quanto ha ancora?	stato_timer
+dimmi quanto manca al timer	stato_timer
+quanto tempo rimane	stato_timer
+togli il timer	annulla_timer
+basta timer	annulla_timer
+puoi annullare il timer?	annulla_timer
+ferma il conto alla rovescia	annulla_timer
+spegni il timer	annulla_timer
+# --- sveglie
+svegliami alle sei e mezza domani mattina	imposta_sveglia	ora=06:30;giorno=2026-11-04
+mi svegli alle 7?	imposta_sveglia	ora=07:00
+domani devo alzarmi alle sei, metti la sveglia	imposta_sveglia	ora=06:00;giorno=2026-11-04
+sveglia domani alle otto e quarantacinque	imposta_sveglia	ora=08:45;giorno=2026-11-04
+puoi mettermi una sveglia per le 5 e mezza?	imposta_sveglia	ora=05:30
+metti una sveglia alle 14	imposta_sveglia	ora=14:00
+voglio una sveglia alle sette tutti i giorni	imposta_sveglia	ora=07:00;ripeti=ogni giorno
+sveglia giovedì alle 6	imposta_sveglia	ora=06:00;giorno=2026-11-05
+imposta la sveglia per domani alle 7 meno un quarto	imposta_sveglia	ora=06:45;giorno=2026-11-04
+svegliami tra un'ora	imposta_timer	secondi=3600
+sveglia alle 11 di sera	imposta_sveglia	ora=23:00
+che sveglie ci sono?	elenca_sveglie
+ho delle sveglie impostate?	elenca_sveglie
+a che ora suona la sveglia domani	elenca_sveglie
+mostrami le sveglie	elenca_sveglie
+fammi sentire le sveglie che ho	elenca_sveglie
+togli la sveglia delle sette	cancella_sveglia	ora=07:00
+elimina la sveglia delle 6 e mezza	cancella_sveglia	ora=06:30
+non voglio più la sveglia delle otto	cancella_sveglia	ora=08:00
+disattiva la sveglia delle 5	cancella_sveglia	ora=05:00
+# --- chiamate
+chiamami la mamma	chiama	chi=la mamma
+fai una telefonata a Giulia	chiama	chi=giulia
+telefona alla nonna	chiama	chi=nonna
+puoi chiamare il dottor Bianchi?	chiama	chi=il dottor bianchi
+chiama papà sul cellulare	chiama	chi=papà sul cellulare
+fammi parlare con Francesca	chiama	chi=francesca
+vorrei chiamare Mario	chiama	chi=mario
+chiama Luca a casa	chiama	chi=luca a casa
+componi il numero di Anna	chiama	chi=anna
+fai uno squillo a Marco	chiama	chi=marco
+# --- musica
+voglio sentire un po' di Battiato	riproduci_musica	richiesta=battiato
+metti su qualcosa dei Beatles	riproduci_musica	richiesta=beatles
+fammi ascoltare De André	riproduci_musica	richiesta=de andré
+suona la playlist rilassante	riproduci_musica	tipo=playlist
+metti l'album Abbey Road	riproduci_musica	tipo=album
+riproduci Bohemian Rhapsody	riproduci_musica	richiesta=bohemian rhapsody
+metti un po' di musica	riproduci_musica	tipo=casuale
+fai partire la musica	riproduci_musica	tipo=casuale
+musica!	riproduci_musica	tipo=casuale
+mettimi una canzone a caso	riproduci_musica	tipo=casuale
+ascoltiamo Vasco	riproduci_musica	richiesta=vasco
+metti la radio	online
+ferma	controlla_musica	azione=pausa
+stoppa la musica	controlla_musica	azione=pausa
+metti pausa	controlla_musica	azione=pausa
+riprendi la canzone	controlla_musica	azione=riprendi
+vai avanti	controlla_musica	azione=avanti
+passa alla prossima	controlla_musica	azione=avanti
+canzone dopo	controlla_musica	azione=avanti
+salta questa canzone	controlla_musica	azione=avanti
+torna alla canzone di prima	controlla_musica	azione=indietro
+rimetti la canzone precedente	controlla_musica	azione=indietro
+fai ripartire	controlla_musica	azione=riprendi
+# --- aprire
+apri il wifi	apri	cosa=wi-fi
+vai nelle impostazioni del bluetooth	apri	cosa=bluetooth
+apri l'app telegram	apri	cosa=telegram
+fammi vedere il calendario	apri	cosa=calendario
+apri la posta	apri	cosa=posta
+apri il registratore	apri	cosa=registratore
+voglio aprire le impostazioni della batteria	apri	cosa=risparmio batteria
+attiva la modalità aereo	apri	cosa=modalità aereo
+accendi il bluetooth	apri	cosa=bluetooth
+spegni il wifi	apri	cosa=wi-fi
+apri le impostazioni della posizione	apri	cosa=posizione
+lancia esplora	apri	cosa=esplora
+apri l'orologio	apri	cosa=orologio
+apri perle	apri	cosa=perle tv
+# --- meteo
+com'è il tempo oggi?	meteo	giorno=
+che tempo farà sabato	meteo	giorno=2026-11-07
+pioverà domani?	meteo	giorno=2026-11-04
+devo prendere l'ombrello?	meteo
+fa freddo fuori?	meteo
+che temperatura c'è a Milano	meteo	luogo=milano
+meteo di domani a Catania	meteo	luogo=catania;giorno=2026-11-04
+che tempo fa a Roma questo weekend	meteo	luogo=roma
+nevica a Torino?	meteo	luogo=torino
+le previsioni per giovedì	meteo	giorno=2026-11-05
+c'è il sole domani?	meteo	giorno=2026-11-04
+quanti gradi ci sono	meteo
+# --- calendario
+cosa devo fare oggi	leggi_calendario	dal=2026-11-03
+che appuntamenti ho domani?	leggi_calendario	dal=2026-11-04
+ho qualcosa in agenda giovedì?	leggi_calendario	dal=2026-11-05
+cosa c'è in programma domani	leggi_calendario	dal=2026-11-04
+sono libero domani?	leggi_calendario	dal=2026-11-04
+quali impegni ho questa settimana	leggi_calendario	giorni=7
+il mio prossimo appuntamento	leggi_calendario
+dimmi gli impegni di oggi	leggi_calendario	dal=2026-11-03
+# --- ora e data
+mi dici l'ora?	ora
+che ore sono adesso	ora
+sai dirmi che ora è	ora
+che ora abbiamo	ora
+che giorno è	data
+quanti ne abbiamo oggi	data
+oggi che giorno è?	data
+che data è domani	data	giorno=2026-11-04
+# --- note, promemoria, ricerche (scritti: il testo c'è)
+appunta: chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+scrivi una nota: comprare le uova	prendi_nota	testo=comprare le uova
+annota che il codice del cancello è 1234	prendi_nota	testo=il codice del cancello è 1234
+segnati di portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+nota: pagare la bolletta	prendi_nota	testo=pagare la bolletta
+ricordami alle 18 di chiamare mamma	promemoria	testo=chiamare mamma;ora=18:00
+ricordami domani di pagare l'affitto alle 9	promemoria	testo=pagare l'affitto;ora=09:00;giorno=2026-11-04
+fra mezz'ora ricordami di girare la pasta	promemoria	testo=girare la pasta;ora=10:30
+ricordami di prendere le medicine alle 8 di sera	promemoria	testo=prendere le medicine;ora=20:00
+mettimi un promemoria per le 5: chiamare il commercialista	promemoria	testo=chiamare il commercialista;ora=17:00
+cerca su google la ricetta della carbonara	cerca_sul_web	domanda=la ricetta della carbonara
+cercami gli orari del cinema	cerca_sul_web	domanda=gli orari del cinema
+cerca notizie su Catania	cerca_sul_web	domanda=notizie su catania
+# --- devono andare a Gemini
+quanto fa 7 per 8	online
+traduci ciao in inglese	online
+chi è il presidente della repubblica	online
+raccontami una storia	online
+come si fa il tiramisù	online
+quanto è alto l'Everest	online
+mandami un messaggio a mamma	online
+scrivi a Giulia che arrivo tra dieci minuti	online
+aggiungi una cena con Marco venerdì alle 8	online
+crea un evento domani alle 3 dentista	aggiungi_evento	giorno=2026-11-04;ora=15:00;titolo=dentista
+che cos'è un buco nero	online
+spiegami la relatività	online
+quanti abitanti ha Roma	online
+come stai?	online
+grazie	online
+ciao	online
+cosa sai fare	online
+chi ha vinto la partita ieri	online
+dove si trova Lisbona	online
+perché il mare è salato	online
+quanto costa un biglietto per Milano	online
+mi consigli un film	online
+quale è la canzone più famosa dei Beatles	online
+a che ora chiude il supermercato	online
+quanto ci vuole da Catania a Palermo in macchina	online
+che giorno è Pasqua quest'anno	online
+che ore sono in Giappone	online
+dimmi una barzelletta	online
+qual è il numero di telefono dei carabinieri	online
+mi svegli quando arriviamo?	online

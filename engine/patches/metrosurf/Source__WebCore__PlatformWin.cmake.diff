@@ -1,0 +1,22 @@
+--- a/Source/WebCore/PlatformWin.cmake
++++ b/Source/WebCore/PlatformWin.cmake
+@@ -98,7 +98,6 @@
+     platform/win/KeyEventWin.cpp
+     platform/win/LoggingWin.cpp
+     platform/win/MIMETypeRegistryWin.cpp
+-    platform/win/MainThreadSharedTimerWin.cpp
+     platform/win/PasteboardWin.cpp
+     platform/win/PlatformMouseEventWin.cpp
+     platform/win/PlatformScreenWin.cpp
+@@ -239,3 +238,11 @@
+ if (USE_SKIA)
+     list(APPEND WebCore_PRIVATE_LIBRARIES ${SHARPYUV_LIBS})
+ endif ()
++
++if (NOT WP81)
++    list(APPEND WebCore_SOURCES platform/win/MainThreadSharedTimerWin.cpp)
++endif ()
++
++if (WP81)
++    list(APPEND WebCore_SOURCES dom/glib/PointerEventGLib.cpp)
++endif ()

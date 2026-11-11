@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Finestre popup</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+button{display:block;width:100%;box-sizing:border-box;text-align:left;color:#fff;background:#1976d2;border:0;padding:14px;
+  margin:10px 0;font:20px sans-serif}
+small{display:block;color:#cfe3f7;font-size:13px;margin-top:4px}
+#log{white-space:pre-wrap;font-size:15px;color:#8f8}
+</style></head><body>
+<h2>Finestre popup (login)</h2>
+<p>Come "Accedi con Google": la finestra nuova risponde a questa pagina e si chiude da sola.</p>
+<button id="open">Apri finestra di login<small>window.open con indirizzo: deve aprirsi una scheda, poi tornare qui con la risposta</small></button>
+<button id="blank">Apri finestra vuota, poi l'indirizzo<small>window.open('') e poi location: lo schema di molte librerie OAuth</small></button>
+<button id="timer">Popup senza tocco (deve essere bloccato)<small>window.open dopo 1 s, fuori dal tocco</small></button>
+<div id="log"></div>
+<script>
+var log = document.getElementById("log");
+function say(text) { log.textContent += text + "\n"; }
+var popup = null, watch = 0;
+function follow(p, how) {
+  popup = p;
+  say(how + ": window.open ha restituito " + (p ? "una finestra" : "null (bloccata)"));
+  if (!p) return;
+  clearInterval(watch);
+  watch = setInterval(function () {
+    if (popup.closed) { clearInterval(watch); say("la finestra risulta chiusa (popup.closed)"); }
+  }, 500);
+}
+window.addEventListener("message", function (e) {
+  say("messaggio dalla finestra: " + JSON.stringify(e.data) + " da " + e.origin);
+});
+document.getElementById("open").onclick = function () {
+  follow(window.open("popup-login.html?da=indirizzo", "login", "width=400,height=600"), "con indirizzo");
+};
+document.getElementById("blank").onclick = function () {
+  var p = window.open("", "login2", "width=400,height=600");
+  follow(p, "vuota");
+  if (p) p.location.href = "popup-login.html?da=vuota";
+};
+document.getElementById("timer").onclick = function () {
+  setTimeout(function () { follow(window.open("popup-login.html?da=timer"), "dopo 1 s"); }, 1000);
+};
+</script></body></html>

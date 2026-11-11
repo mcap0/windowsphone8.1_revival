@@ -1,0 +1,139 @@
+# sentence <TAB> intent <TAB> arguments (checked by Core/tests, "now" = Tuesday 2026-11-03 10:00)
+# intent "online" = must go to Gemini. Arguments: key=value;key=value (only the listed keys are checked).
+metti un timer di 5 minuti	imposta_timer	secondi=300
+metti un timer di cinque minuti	imposta_timer	secondi=300
+timer 10 minuti	imposta_timer	secondi=600
+imposta il timer a tre minuti e trenta secondi	imposta_timer	secondi=210
+fai partire un timer di venticinque minuti	imposta_timer	secondi=1500
+metti un timer di mezz'ora	imposta_timer	secondi=1800
+timer di un'ora e mezza	imposta_timer	secondi=5400
+metti un timer di un quarto d'ora	imposta_timer	secondi=900
+metti un timer di 12 minuti per la pasta	imposta_timer	secondi=720;etichetta=pasta
+conto alla rovescia di 2 minuti	imposta_timer	secondi=120
+avvisami tra 10 minuti	imposta_timer	secondi=600
+metti 5 minuti	imposta_timer	secondi=300
+metti un timer di 90 secondi	imposta_timer	secondi=90
+quanto manca al timer	stato_timer
+quanto tempo manca al timer?	stato_timer
+a che punto è il timer	stato_timer
+annulla il timer	annulla_timer
+ferma il timer	annulla_timer
+cancella timer	annulla_timer
+svegliami domani alle 7 e mezza	imposta_sveglia	ora=07:30;giorno=2026-11-04
+metti la sveglia alle 6	imposta_sveglia	ora=06:00;giorno=
+sveglia alle sette e un quarto	imposta_sveglia	ora=07:15
+svegliami alle 7:45	imposta_sveglia	ora=07:45
+punta la sveglia per le otto meno un quarto	imposta_sveglia	ora=07:45
+imposta una sveglia alle 6 e 20 ogni giorno	imposta_sveglia	ora=06:20;ripeti=ogni giorno
+metti la sveglia nei giorni feriali alle sette	imposta_sveglia	ora=07:00;ripeti=feriali
+svegliami venerdì alle nove	imposta_sveglia	ora=09:00;giorno=2026-11-06
+sveglia alle 9 di sera	imposta_sveglia	ora=21:00
+svegliami alle ore 5	imposta_sveglia	ora=05:00
+metti una sveglia all'una	imposta_sveglia	ora=01:00
+svegliami a mezzogiorno	imposta_sveglia	ora=12:00
+svegliami martedì alle 8	imposta_sveglia	ora=08:00;giorno=2026-11-10
+quali sveglie ho	elenca_sveglie
+che sveglie ho impostato?	elenca_sveglie
+a che ora è la sveglia	elenca_sveglie
+elenca le sveglie	elenca_sveglie
+cancella la sveglia delle 7	cancella_sveglia	ora=07:00
+elimina la sveglia delle sei e mezza	cancella_sveglia	ora=06:30
+chiama mamma	chiama	chi=mamma
+chiama Mario Rossi al cellulare	chiama	chi=mario rossi al cellulare
+telefona a Francesca	chiama	chi=francesca
+chiama casa	chiama	chi=casa
+metti un po' di Battiato	riproduci_musica	richiesta=battiato
+riproduci i Pink Floyd	riproduci_musica	richiesta=pink floyd
+metti l'album La voce del padrone	riproduci_musica	tipo=album
+fammi sentire Lucio Dalla	riproduci_musica	richiesta=lucio dalla
+metti della musica	riproduci_musica	tipo=casuale
+musica a caso	riproduci_musica	tipo=casuale
+metti musica a caso	riproduci_musica	tipo=casuale
+pausa	controlla_musica	azione=pausa
+metti in pausa	controlla_musica	azione=pausa
+ferma la musica	controlla_musica	azione=pausa
+riprendi	controlla_musica	azione=riprendi
+prossima canzone	controlla_musica	azione=avanti
+salta	controlla_musica	azione=avanti
+canzone precedente	controlla_musica	azione=indietro
+torna indietro	controlla_musica	azione=indietro
+apri le impostazioni wi-fi	apri	cosa=wi-fi
+apri il bluetooth	apri	cosa=bluetooth
+apri telegram	apri	cosa=telegram
+apri la musica	apri	cosa=musica
+apri il meteo	apri	cosa=meteo
+apri le sveglie	apri	cosa=sveglie
+apri il calendario	apri	cosa=calendario
+impostazioni bluetooth	apri	cosa=bluetooth
+attiva il wifi	apri	cosa=wi-fi
+apri la modalità aereo	apri	cosa=modalità aereo
+apri perle tv	apri	cosa=perle tv
+che tempo fa	meteo	luogo=;giorno=
+che tempo fa domani	meteo	giorno=2026-11-04
+che tempo fa a Palermo	meteo	luogo=palermo
+che tempo farà domani a Roma	meteo	luogo=roma;giorno=2026-11-04
+piove sabato?	meteo	giorno=2026-11-07
+meteo Milano	meteo	luogo=milano
+previsioni del tempo per Reggio Calabria	meteo	luogo=reggio calabria
+cosa ho domani	leggi_calendario	dal=2026-11-04;giorni=1
+che impegni ho oggi	leggi_calendario	dal=2026-11-03;giorni=1
+ho appuntamenti giovedì?	leggi_calendario	dal=2026-11-05
+leggi il calendario	leggi_calendario
+impegni della settimana	leggi_calendario	giorni=7
+che ore sono	ora
+che ora è?	ora
+dimmi l'ora	ora
+che giorno è oggi	data
+che giorno è domani	data	giorno=2026-11-04
+# typed: free text is there, so these stay on the phone
+prendi nota comprare il latte	prendi_nota	testo=comprare il latte
+prendi nota: chiamare il dentista lunedì	prendi_nota	testo=chiamare il dentista lunedì
+ricordami di comprare il latte alle 6	promemoria	testo=comprare il latte;ora=18:00
+ricordami domani alle 9 di portare i documenti	promemoria	testo=portare i documenti;ora=09:00;giorno=2026-11-04
+ricordami tra 10 minuti di spegnere il forno	promemoria	testo=spegnere il forno;ora=10:10;giorno=2026-11-03
+cerca ristoranti a Catania	cerca_sul_web	domanda=ristoranti a catania
+cerca orari treni Catania Palermo	cerca_sul_web	domanda=orari treni catania palermo
+# Gemini
+quanto fa 18 per 23	online
+come si dice buonanotte in inglese	online
+chi ha scritto i promessi sposi	online
+che ore sono a New York	online
+aggiungi un appuntamento domani alle 5	aggiungi_evento	giorno=2026-11-04;ora=17:00
+aggiungi dal dentista giovedì al calendario	aggiungi_evento	giorno=2026-11-05;titolo=dal dentista
+scrivi a mamma che arrivo	online
+raccontami una barzelletta	online
+quanto tempo ci vuole per andare a Roma	online
+perché il cielo è blu	online
+in che giorno cade Natale	online
+prendi nota	online
+ricordami alle 6	online
+metti un timer	online
+svegliami	online
+cancella la sveglia	online
+chi vincerà le elezioni	online
+quali sono le notizie di oggi	online
+che cosa è la fotosintesi	online
+dimmi una poesia	online
+qual è la capitale dell'Australia	online
+# OneNote 2026-11-09: "Sveglia 9 e 25 ha preso 25 come nome", calendario dal telefono (log 2026-11-03, 2026-11-09)
+metti la sveglia alle 9 e 25	imposta_sveglia	ora=09:25;etichetta=
+metti la sveglia alle nove e venticinque	imposta_sveglia	ora=09:25;etichetta=
+sveglia 9 e 25	imposta_sveglia	ora=09:25;etichetta=
+sveglia alle nove e venticinque	imposta_sveglia	ora=09:25;etichetta=
+svegliami alle nove venticinque	imposta_sveglia	ora=09:25;etichetta=
+metti una sveglia alle 9 e 25 domani	imposta_sveglia	ora=09:25;giorno=2026-11-04;etichetta=
+puoi aggiungere al calendario di domani alle nove quindici di iniziare finendo la parte tre e due	aggiungi_evento	giorno=2026-11-04;ora=09:15;titolo=iniziare finendo la parte tre e due
+assistente mio caro gentilmente potresti mettermi un evento nel calendario il giorno undici novembre alle nove zero zero intitolato il la laurea di marta	aggiungi_evento	giorno=2026-11-11;ora=09:00;titolo=laurea di marta
+nel calendario mi dovresti mettere per domani alle quattordici di studiare digital forensics gentilmente	aggiungi_evento	giorno=2026-11-04;ora=14:00;titolo=studiare digital forensics
+aggiungi al calendario il 20 dicembre cena di natale	aggiungi_evento	giorno=2026-12-20;titolo=cena di natale
+metti in calendario il 5 gennaio alle 10 e mezza dentista	aggiungi_evento	giorno=2027-01-05;ora=10:30;titolo=dentista
+sveglia nove e venti cinque	imposta_sveglia	ora=09:25;etichetta=
+metti una sveglia per le nove e venticinque	imposta_sveglia	ora=09:25;etichetta=
+sveglia alle 9 e 25 per favore	imposta_sveglia	ora=09:25;etichetta=
+imposta la sveglia nove e venticinque domani	imposta_sveglia	ora=09:25;giorno=2026-11-04;etichetta=
+sveglia alle nove e venticinque con scritto palestra	imposta_sveglia	ora=09:25;etichetta=palestra
+sveglia alle 7 e 5	imposta_sveglia	ora=07:05
+sveglia alle sette zero cinque	imposta_sveglia	ora=07:05
+aggiungi al calendario sabato 21 novembre alle 20 cena da luca	aggiungi_evento	giorno=2026-11-21;ora=20:00;titolo=cena da luca
+metti un evento il primo dicembre che si chiama scadenza tasse	aggiungi_evento	giorno=2026-12-01;titolo=scadenza tasse
+metti un evento nel calendario il primo dicembre che si chiama scadenza tasse	aggiungi_evento	giorno=2026-12-01;titolo=scadenza tasse

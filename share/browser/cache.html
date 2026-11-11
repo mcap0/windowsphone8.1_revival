@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Cache su disco</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+td{padding:6px 10px;border-bottom:1px solid #333}#esito{margin-top:14px;font-size:17px;color:#8f8;white-space:pre-wrap}
+</style>
+<script src="/cached?name=fresco&maxage=600"></script>
+<script src="/cached?name=etag&maxage=0&etag=1"></script>
+<script src="/cached?name=senza&maxage=0"></script>
+</head><body>
+<h2>Cache su disco</h2>
+<p>Ricarica la pagina, poi chiudi e riapri l'app e torna qui. Il server conta quante volte ha mandato ogni file per intero.</p>
+<table><tr><td></td><td>intero</td><td>304</td></tr>
+<tr><td>fresco (max-age 10 min)</td><td id="fresco-i"></td><td id="fresco-n"></td></tr>
+<tr><td>con ETag (sempre da ricontrollare)</td><td id="etag-i"></td><td id="etag-n"></td></tr>
+<tr><td>senza cache (max-age 0, niente ETag)</td><td id="senza-i"></td><td id="senza-n"></td></tr></table>
+<div id="esito"></div>
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "/cached-stats?" + Date.now());
+xhr.onload = function () {
+  var c = JSON.parse(xhr.responseText), lines = [];
+  ["fresco", "etag", "senza"].forEach(function (n) {
+    var v = c[n] || { interi: 0, "304": 0 };
+    document.getElementById(n + "-i").textContent = v.interi;
+    document.getElementById(n + "-n").textContent = v["304"];
+  });
+  var f = c.fresco || {}, e = c.etag || {}, s = c.senza || {};
+  lines.push(f.interi <= 1 ? "fresco: dalla cache (bene)" : "fresco: rimandato " + f.interi + " volte (la cache non lo tiene)");
+  lines.push(e.interi <= 1 && e["304"] >= 1 ? "etag: confermato con 304 (bene)" : e["304"] ? "etag: 304 ma anche riscaricato" : "etag: ancora nessun 304 (ricarica)");
+  lines.push("senza: riscaricato ogni volta (" + (s.interi || 0) + "), come deve");
+  document.getElementById("esito").textContent = lines.join("\n");
+};
+xhr.send();
+</script></body></html>

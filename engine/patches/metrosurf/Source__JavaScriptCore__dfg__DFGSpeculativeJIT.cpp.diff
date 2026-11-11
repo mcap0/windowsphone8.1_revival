@@ -1,0 +1,46 @@
+--- a/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.cpp
++++ b/Source/JavaScriptCore/dfg/DFGSpeculativeJIT.cpp
+@@ -1861,7 +1861,13 @@
+     if (lengthGPR != InvalidGPRReg) {
+         // size = max(0, min(length, tempGPR))
+         moveConditionally32(LessThan, lengthGPR, tempGPR, lengthGPR, tempGPR, tempGPR);
++#if CPU(ARM_THUMB2)
++        Jump notNegative = branch32(GreaterThanOrEqual, tempGPR, TrustedImm32(0));
++        move(TrustedImm32(0), tempGPR);
++        notNegative.link(this);
++#else
+         moveConditionally32(LessThan, tempGPR, TrustedImm32(0), TrustedImm32(0), tempGPR, tempGPR);
++#endif
+     }
+ 
+     JumpList doneCases;
+@@ -7939,9 +7945,13 @@
+         slowCase.link(this);
+         silentSpill(savePlans);
+         setupArguments<decltype(operationCompareStringEq)>(LinkableConstant::globalObject(*this, node), leftGPR, rightGPR);
++#if USE(JSVALUE64)
+         prepareForExternalCall();
+         emitStoreCodeOrigin(node->origin.semantic);
+         nearCallThunk(CodeLocationLabel<JITThunkPtrTag>(vm().getCTIStub(stringEqualThunkGenerator).code()));
++#else
++        appendCall(operationCompareStringEq);
++#endif
+         auto exceptionReg = tryHandleOrGetExceptionUnderSilentSpill<decltype(operationCompareStringEq)>(savePlans, leftTempGPR);
+         setupResults(leftTempGPR);
+         silentFill(savePlans);
+@@ -15772,6 +15782,7 @@
+     storageResult(storageGPR, node);
+ }
+ 
++#if USE(JSVALUE64)
+ void SpeculativeJIT::compileGetCellButterflySlot(Node* node)
+ {
+     SpeculateCellOperand scratch(this, node->child1());
+@@ -15877,6 +15888,7 @@
+     storePtr(storageGPR, &vm().m_cachedSortScratch);
+     noResult(node);
+ }
++#endif
+ 
+ void SpeculativeJIT::compileNewArrayWithButterfly(Node* node)
+ {

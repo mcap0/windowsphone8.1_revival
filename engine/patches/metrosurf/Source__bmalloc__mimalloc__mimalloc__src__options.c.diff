@@ -1,0 +1,31 @@
+--- a/Source/bmalloc/mimalloc/mimalloc/src/options.c
++++ b/Source/bmalloc/mimalloc/mimalloc/src/options.c
+@@ -141,7 +141,11 @@
+ #else
+   { 1, MI_OPTION_UNINIT, MI_OPTION(deprecated_eager_commit_delay) },  
+ #endif
++#if defined(WP81)
++  { 250, MI_OPTION_UNINIT, MI_OPTION_LEGACY(purge_delay,reset_delay) },
++#else
+   { 1000,MI_OPTION_UNINIT, MI_OPTION_LEGACY(purge_delay,reset_delay) },  // purge delay in milli-seconds
++#endif
+   { 0,   MI_OPTION_UNINIT, MI_OPTION(use_numa_nodes) },           // 0 = use available numa nodes, otherwise use at most N nodes.
+   { 0,   MI_OPTION_UNINIT, MI_OPTION_LEGACY(disallow_os_alloc,limit_os_alloc) },           // 1 = do not use OS memory for allocation (but only reserved arenas)
+   { 100, MI_OPTION_UNINIT, MI_OPTION(os_tag) },                   // only apple specific for now but might serve more or less related purpose
+@@ -166,8 +170,16 @@
+          MI_OPTION_UNINIT, MI_OPTION(guarded_sample_rate)},       // 1 out of N allocations in the min/max range will be guarded (=4000)
+   { 0,   MI_OPTION_UNINIT, MI_OPTION(guarded_sample_seed)},
+   { 10000, MI_OPTION_UNINIT, MI_OPTION(generic_collect) },        // collect theaps every N (=10000) generic allocation calls
++#if defined(WP81)
++  { 1,   MI_OPTION_UNINIT, MI_OPTION_LEGACY(page_reclaim_on_free, abandoned_reclaim_on_free) },
++#else
+   { 0,   MI_OPTION_UNINIT, MI_OPTION_LEGACY(page_reclaim_on_free, abandoned_reclaim_on_free) },// reclaim abandoned (small) pages on a free: -1 = disable completely, 0 = only reclaim into the originating theap, 1 = reclaim on free across theaps
++#endif
++#if defined(WP81)
++  { 0,   MI_OPTION_UNINIT, MI_OPTION(page_full_retain) },
++#else
+   { 2,   MI_OPTION_UNINIT, MI_OPTION(page_full_retain) },         // number of (small) pages to retain in the free page queues
++#endif
+   { 4,   MI_OPTION_UNINIT, MI_OPTION(page_max_candidates) },      // max search to find a best page candidate
+   { 0,   MI_OPTION_UNINIT, MI_OPTION(max_vabits) },               // max virtual address space bits
+   { MI_DEFAULT_PAGEMAP_COMMIT,

@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perle81.Core", "Perle81.Core\Perle81.Core.csproj", "{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perle81.App", "Perle81.App\Perle81.App.csproj", "{B3C8E1A4-5D2F-4A7B-9E60-3F1D8C2A7B95}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Perle81.Native", "Perle81.Native\Perle81.Native.vcxproj", "{5C2E9A71-3B4D-4F8A-9D10-7E6B2A1C4F33}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerleCast", "PerleCast\PerleCast.vcxproj", "{4F8A2C61-7D3E-4B95-A1C0-2E6F9D8B7A54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}.Debug|ARM.ActiveCfg = Debug|ARM
+		{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}.Debug|ARM.Build.0 = Debug|ARM
+		{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}.Release|ARM.ActiveCfg = Release|ARM
+		{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}.Release|ARM.Build.0 = Release|ARM
+		{B3C8E1A4-5D2F-4A7B-9E60-3F1D8C2A7B95}.Debug|ARM.ActiveCfg = Debug|ARM
+		{B3C8E1A4-5D2F-4A7B-9E60-3F1D8C2A7B95}.Debug|ARM.Build.0 = Debug|ARM
+		{B3C8E1A4-5D2F-4A7B-9E60-3F1D8C2A7B95}.Release|ARM.ActiveCfg = Release|ARM
+		{B3C8E1A4-5D2F-4A7B-9E60-3F1D8C2A7B95}.Release|ARM.Build.0 = Release|ARM
+		{5C2E9A71-3B4D-4F8A-9D10-7E6B2A1C4F33}.Release|ARM.ActiveCfg = Release|ARM
+		{5C2E9A71-3B4D-4F8A-9D10-7E6B2A1C4F33}.Release|ARM.Build.0 = Release|ARM
+		{4F8A2C61-7D3E-4B95-A1C0-2E6F9D8B7A54}.Release|ARM.ActiveCfg = Release|ARM
+		{4F8A2C61-7D3E-4B95-A1C0-2E6F9D8B7A54}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

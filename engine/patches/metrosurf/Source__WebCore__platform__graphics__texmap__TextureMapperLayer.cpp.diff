@@ -1,0 +1,22 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapperLayer.cpp
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapperLayer.cpp
+@@ -38,6 +38,7 @@
+ 
+ namespace WebCore {
+ 
++
+ WTF_MAKE_TZONE_ALLOCATED_IMPL(TextureMapperLayer);
+ 
+ static constexpr auto s_opacityVisibilityThreshold = 0.01;
+@@ -585,6 +586,11 @@
+     transform.multiply(options.transform);
+     transform.multiply(m_layerTransforms.combined);
+ 
++#if defined(WP81)
++    if (TextureMapper::isOutside(options.textureMapper.windowCullRect(), transform, targetRect))
++        return;
++#endif
++
+     if (isFlattened() && !m_flattenedLayer->needsUpdate()) {
+         m_flattenedLayer->paintToTextureMapper(options.textureMapper, m_flattenedLayer->layerRect(), transform, options.opacity);
+         return;

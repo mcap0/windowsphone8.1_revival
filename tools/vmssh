@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# vmssh ssh|scp ... — direct connection to the Windows VM, using FEDORAPASS when available.
+set -Eeuo pipefail
+
+if (( $# < 1 )) || [[ $1 != ssh && $1 != scp ]]; then
+    echo "usage: vmssh ssh|scp [OpenSSH arguments...]" >&2
+    exit 2
+fi
+
+program=$1
+shift
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+
+if [[ -z ${FEDORAPASS:-} && -r $repo_root/.env ]]; then
+    FEDORAPASS=$(python3 - "$repo_root/.env" <<'PY'
+from pathlib import Path
+import sys
+
+for line in Path(sys.argv[1]).read_text().splitlines():
+    if line.startswith("FEDORAPASS="):
+        value = line.split("=", 1)[1].strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "'\"":
+            value = value[1:-1]
+        sys.stdout.write(value)
+        break
+PY
+    )
+fi
+
+if [[ -n ${FEDORAPASS:-} ]] && command -v sshpass >/dev/null 2>&1; then
+    export SSHPASS=$FEDORAPASS
+    unset FEDORAPASS
+    exec sshpass -e "$program" -F /dev/null -o ConnectTimeout=10 "$@"
+fi
+
+exec "$program" -F /dev/null -o ConnectTimeout=10 "$@"

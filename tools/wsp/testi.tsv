@@ -1,0 +1,35 @@
+# Testi (giro 10, 2026-11-03): sveglie con un testo ed eventi nel calendario, il testo prima o dopo il comando.
+# Scritte prima di implementare. "now" = mar 2026-11-03 10:00.
+# --- sveglia con testo
+metti una sveglia alle sette con il testo fare questo questo e quest'altro	imposta_sveglia	ora=07:00;etichetta=fare questo questo e quest'altro
+metti una sveglia alle sette con scritto prendere le medicine	imposta_sveglia	ora=07:00;etichetta=prendere le medicine
+svegliami alle sei e mezza con il messaggio oggi c'è il dentista	imposta_sveglia	ora=06:30;etichetta=oggi c'è il dentista
+imposta la sveglia per domani alle otto con il titolo riunione con marco	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=riunione con marco
+metti una sveglia alle cinque che dice portare fuori il cane	imposta_sveglia	ora=05:00;etichetta=portare fuori il cane
+sveglia alle nove con nome palestra	imposta_sveglia	ora=09:00;etichetta=palestra
+prendere le medicine mettimelo come sveglia alle otto	imposta_sveglia	ora=08:00;etichetta=prendere le medicine
+fare la spesa e passare dalla posta mettilo come sveglia alle sei	imposta_sveglia	ora=06:00;etichetta=fare la spesa e passare dalla posta
+senti metti una sveglia per le sette e un quarto con il testo chiamare il meccanico per la macchina grazie	imposta_sveglia	ora=07:15;etichetta=chiamare il meccanico per la macchina
+mbare in pratica mettimi la sveglia domani alle sei con scritto treno per palermo	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=treno per palermo
+metti una sveglia alle sette per andare in palestra	imposta_sveglia	ora=07:00;etichetta=andare in palestra
+svegliami alle sei che domani lavoro	imposta_sveglia	ora=06:00;etichetta=
+metti una sveglia alle otto	imposta_sveglia	ora=08:00;etichetta=
+# --- eventi nel calendario
+metti sul calendario domani fare un giro a catania e chiedere a questa altra persona	aggiungi_evento	giorno=2026-11-04;titolo=fare un giro a catania e chiedere a questa altra persona
+aggiungi al calendario venerdì cena da giovanni	aggiungi_evento	giorno=2026-11-06;titolo=cena da giovanni
+segna in agenda giovedì alle quattro dentista	aggiungi_evento	giorno=2026-11-05;ora=16:00;titolo=dentista
+crea un evento domani alle tre riunione con il commercialista	aggiungi_evento	giorno=2026-11-04;ora=15:00;titolo=riunione con il commercialista
+scrivi nel calendario lunedì portare la macchina dal meccanico	aggiungi_evento	giorno=2026-11-09;titolo=portare la macchina dal meccanico
+fare un giro a catania mettilo sul calendario per domani	aggiungi_evento	giorno=2026-11-04;titolo=fare un giro a catania
+compleanno di sara mettilo in agenda per sabato	aggiungi_evento	giorno=2026-11-07;titolo=compleanno di sara
+metti in calendario un appuntamento dal dottore mercoledì alle dieci	aggiungi_evento	giorno=2026-11-04;ora=10:00;titolo=appuntamento dal dottore
+aggiungi un evento oggi alle sei di sera palestra	aggiungi_evento	giorno=2026-11-03;ora=18:00;titolo=palestra
+fissa un appuntamento con il notaio giovedì alle undici	aggiungi_evento	giorno=2026-11-05;ora=11:00;titolo=appuntamento con il notaio
+senti metti nel calendario per dopodomani alle cinque il calcetto con gli amici per favore	aggiungi_evento	giorno=2026-11-05;ora=17:00;titolo=calcetto con gli amici
+in pratica volevo dirti che domani ho la riunione però il punto è che devi mettere sul calendario domani alle nove riunione in ufficio	aggiungi_evento	giorno=2026-11-04;ora=09:00;titolo=riunione in ufficio
+metti sul calendario fare la spesa	aggiungi_evento	giorno=2026-11-03;titolo=fare la spesa
+# --- non devono aggiungere niente
+cosa ho sul calendario domani	leggi_calendario	dal=2026-11-04
+cancella l'evento di domani	online
+che sveglie ho	elenca_sveglie
+come si aggiunge un evento al calendario	online

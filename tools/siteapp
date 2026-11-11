@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# siteapp <site> [install] — build a thin site app (PLAN §64.1): the Internet shell (apps/Browser) and the engine staged
+# by tools/browser, with apps/Browser/sites/<site>/Site.h, its name, package identity and icon, generated into
+# apps/<APP> (not in git: rewritten at every build) and built with wp81build. An engine or shell change reaches every
+# site app at its next build. The package version lives in sites/<site>/version (+1 per build: /update needs it).
+# The first install of a site app: FIRST_INSTALL=1 tools/siteapp <site> install.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+site=${1:?usage: siteapp <site> [install]}
+dir=$root/apps/Browser/sites/$site
+[[ -f $dir/site.conf && -f $dir/Site.h ]] || { echo "sito sconosciuto: $site" >&2; exit 2; }
+# shellcheck source=/dev/null
+source "$dir/site.conf"
+"$root/tools/browser" stage
+out=$root/apps/$APP
+rm -rf -- "$out"
+mkdir -p "$out"
+tar -C "$root/apps/Browser" --exclude=bin --exclude=obj --exclude=ARM --exclude=AppPackages --exclude=sites --exclude=wip \
+    --exclude=Generated\ Files -cf - . | tar -C "$out" -xf -
+cp "$dir/Site.h" "$out/Browser/Site.h"
+rm -rf -- "$out/Browser/Assets/TileIcons"   # "aggiungi a Start" is not in site apps
+python3 -I - "$out/Browser/Package.appxmanifest" "$dir/version" "$IDENTITY" "$PRODUCT" "$NAME" "$DESCRIPTION" <<'PY'
+import re, sys
+manifest, version_file, identity, product, name, description = sys.argv[1:]
+parts = open(version_file).read().strip().split('.')
+parts[3] = str(int(parts[3]) + 1)
+version = '.'.join(parts)
+open(version_file, 'w').write(version + '\n')
+text = open(manifest, encoding='utf-8-sig').read()
+def sub(pattern, repl):
+    global text
+    text, n = re.subn(pattern, repl, text, count=1, flags=re.S)
+    assert n == 1, pattern
+sub(r'<Identity Name="[^"]*"', '<Identity Name="%s"' % identity)
+sub(r'(<Identity [^>]*Version=")[0-9.]+"', r'\g<1>%s"' % version)
+sub(r'PhoneProductId="[^"]*"', 'PhoneProductId="%s"' % product)
+sub(r'<DisplayName>[^<]*</DisplayName>', '<DisplayName>%s</DisplayName>' % name)
+sub(r'(<m3:VisualElements DisplayName=")[^"]*"', r'\g<1>%s"' % name)
+sub(r'Description="[^"]*"', 'Description="%s"' % description)
+# no internet: protocol (that is Internet's)
+sub(r'\s*<!--(?:(?!-->).)*-->\s*<Extensions>.*?</Extensions>', '')
+open(manifest, 'w', encoding='utf-8').write(text)
+print('versione', version)
+PY
+python3 -I "$root/tools/icons" apply "$APP"
+version=$(cat "$dir/version")
+mkdir -p "$root/releases/maps"
+cp "${ENGINE_OUT:-$root/engine/out/webkit}/bin/webkit.map" "$root/releases/maps/webkit-$APP-$version.map"
+exec "$root/tools/wp81build" "$APP" Browser.sln "${@:2}"

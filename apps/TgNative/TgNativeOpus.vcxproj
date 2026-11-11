@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5B1E7C2A-3D4F-4A6B-9C8D-0E1F2A3B4C5D}</ProjectGuid>
+    <RootNamespace>TgNativeOpus</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4996;4244;4267;4018;4146;4334</DisableSpecificWarnings>
+      <PreprocessorDefinitions>OPUS_BUILD;FIXED_POINT;USE_ALLOCA;HAVE_LRINTF;HAVE_LRINT;DISABLE_FLOAT_API;OP_FIXED_POINT;OPUS_EXPORT=;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>third_party\opus;third_party\opus\ogg;third_party\opus\silk;third_party\opus\silk\fixed;third_party\opus\celt;third_party\opus\include;third_party\opus\opusfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="third_party\opus\celt\bands.c" />
+    <ClCompile Include="third_party\opus\celt\celt.c" />
+    <ClCompile Include="third_party\opus\celt\celt_decoder.c" />
+    <ClCompile Include="third_party\opus\celt\celt_encoder.c" />
+    <ClCompile Include="third_party\opus\celt\celt_lpc.c" />
+    <ClCompile Include="third_party\opus\celt\cwrs.c" />
+    <ClCompile Include="third_party\opus\celt\entcode.c" />
+    <ClCompile Include="third_party\opus\celt\entdec.c" />
+    <ClCompile Include="third_party\opus\celt\entenc.c" />
+    <ClCompile Include="third_party\opus\celt\kiss_fft.c" />
+    <ClCompile Include="third_party\opus\celt\laplace.c" />
+    <ClCompile Include="third_party\opus\celt\mathops.c" />
+    <ClCompile Include="third_party\opus\celt\mdct.c" />
+    <ClCompile Include="third_party\opus\celt\modes.c" />
+    <ClCompile Include="third_party\opus\celt\pitch.c" />
+    <ClCompile Include="third_party\opus\celt\quant_bands.c" />
+    <ClCompile Include="third_party\opus\celt\rate.c" />
+    <ClCompile Include="third_party\opus\celt\vq.c" />
+    <ClCompile Include="third_party\opus\ogg\bitwise.c" />
+    <ClCompile Include="third_party\opus\ogg\framing.c" />
+    <ClCompile Include="third_party\opus\opusfile\info.c" />
+    <ClCompile Include="third_party\opus\opusfile\internal.c" />
+    <ClCompile Include="third_party\opus\opusfile\opusfile.c" />
+    <ClCompile Include="third_party\opus\opusfile\stream.c" />
+    <ClCompile Include="third_party\opus\silk\A2NLSF.c" />
+    <ClCompile Include="third_party\opus\silk\ana_filt_bank_1.c" />
+    <ClCompile Include="third_party\opus\silk\biquad_alt.c" />
+    <ClCompile Include="third_party\opus\silk\bwexpander.c" />
+    <ClCompile Include="third_party\opus\silk\bwexpander_32.c" />
+    <ClCompile Include="third_party\opus\silk\check_control_input.c" />
+    <ClCompile Include="third_party\opus\silk\CNG.c" />
+    <ClCompile Include="third_party\opus\silk\code_signs.c" />
+    <ClCompile Include="third_party\opus\silk\control_audio_bandwidth.c" />
+    <ClCompile Include="third_party\opus\silk\control_codec.c" />
+    <ClCompile Include="third_party\opus\silk\control_SNR.c" />
+    <ClCompile Include="third_party\opus\silk\debug.c" />
+    <ClCompile Include="third_party\opus\silk\decoder_set_fs.c" />
+    <ClCompile Include="third_party\opus\silk\decode_core.c" />
+    <ClCompile Include="third_party\opus\silk\decode_frame.c" />
+    <ClCompile Include="third_party\opus\silk\decode_indices.c" />
+    <ClCompile Include="third_party\opus\silk\decode_parameters.c" />
+    <ClCompile Include="third_party\opus\silk\decode_pitch.c" />
+    <ClCompile Include="third_party\opus\silk\decode_pulses.c" />
+    <ClCompile Include="third_party\opus\silk\dec_API.c" />
+    <ClCompile Include="third_party\opus\silk\encode_indices.c" />
+    <ClCompile Include="third_party\opus\silk\encode_pulses.c" />
+    <ClCompile Include="third_party\opus\silk\enc_API.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\apply_sine_window_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\autocorr_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\burg_modified_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\corrMatrix_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\encode_frame_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\find_LPC_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\find_LTP_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\find_pitch_lags_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\find_pred_coefs_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\k2a_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\k2a_Q16_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\LTP_analysis_filter_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\LTP_scale_ctrl_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\noise_shape_analysis_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\pitch_analysis_core_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\prefilter_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\process_gains_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\regularize_correlations_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\residual_energy16_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\residual_energy_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\schur64_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\schur_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\solve_LS_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\vector_ops_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\fixed\warped_autocorrelation_FIX.c" />
+    <ClCompile Include="third_party\opus\silk\gain_quant.c" />
+    <ClCompile Include="third_party\opus\silk\HP_variable_cutoff.c" />
+    <ClCompile Include="third_party\opus\silk\init_decoder.c" />
+    <ClCompile Include="third_party\opus\silk\init_encoder.c" />
+    <ClCompile Include="third_party\opus\silk\inner_prod_aligned.c" />
+    <ClCompile Include="third_party\opus\silk\interpolate.c" />
+    <ClCompile Include="third_party\opus\silk\lin2log.c" />
+    <ClCompile Include="third_party\opus\silk\log2lin.c" />
+    <ClCompile Include="third_party\opus\silk\LPC_analysis_filter.c" />
+    <ClCompile Include="third_party\opus\silk\LPC_inv_pred_gain.c" />
+    <ClCompile Include="third_party\opus\silk\LP_variable_cutoff.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF2A.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_decode.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_del_dec_quant.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_encode.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_stabilize.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_unpack.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_VQ.c" />
+    <ClCompile Include="third_party\opus\silk\NLSF_VQ_weights_laroia.c" />
+    <ClCompile Include="third_party\opus\silk\NSQ.c" />
+    <ClCompile Include="third_party\opus\silk\NSQ_del_dec.c" />
+    <ClCompile Include="third_party\opus\silk\pitch_est_tables.c" />
+    <ClCompile Include="third_party\opus\silk\PLC.c" />
+    <ClCompile Include="third_party\opus\silk\process_NLSFs.c" />
+    <ClCompile Include="third_party\opus\silk\quant_LTP_gains.c" />
+    <ClCompile Include="third_party\opus\silk\resampler.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_down2.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_down2_3.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_private_AR2.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_private_down_FIR.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_private_IIR_FIR.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_private_up2_HQ.c" />
+    <ClCompile Include="third_party\opus\silk\resampler_rom.c" />
+    <ClCompile Include="third_party\opus\silk\shell_coder.c" />
+    <ClCompile Include="third_party\opus\silk\sigm_Q15.c" />
+    <ClCompile Include="third_party\opus\silk\sort.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_decode_pred.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_encode_pred.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_find_predictor.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_LR_to_MS.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_MS_to_LR.c" />
+    <ClCompile Include="third_party\opus\silk\stereo_quant_pred.c" />
+    <ClCompile Include="third_party\opus\silk\sum_sqr_shift.c" />
+    <ClCompile Include="third_party\opus\silk\tables_gain.c" />
+    <ClCompile Include="third_party\opus\silk\tables_LTP.c" />
+    <ClCompile Include="third_party\opus\silk\tables_NLSF_CB_NB_MB.c" />
+    <ClCompile Include="third_party\opus\silk\tables_NLSF_CB_WB.c" />
+    <ClCompile Include="third_party\opus\silk\tables_other.c" />
+    <ClCompile Include="third_party\opus\silk\tables_pitch_lag.c" />
+    <ClCompile Include="third_party\opus\silk\tables_pulses_per_block.c" />
+    <ClCompile Include="third_party\opus\silk\table_LSF_cos.c" />
+    <ClCompile Include="third_party\opus\silk\VAD.c" />
+    <ClCompile Include="third_party\opus\silk\VQ_WMat_EC.c" />
+    <ClCompile Include="third_party\opus\src\analysis.c" />
+    <ClCompile Include="third_party\opus\src\mlp.c" />
+    <ClCompile Include="third_party\opus\src\mlp_data.c" />
+    <ClCompile Include="third_party\opus\src\opus.c" />
+    <ClCompile Include="third_party\opus\src\opus_decoder.c" />
+    <ClCompile Include="third_party\opus\src\opus_encoder.c" />
+    <ClCompile Include="third_party\opus\src\opus_multistream.c" />
+    <ClCompile Include="third_party\opus\src\opus_multistream_decoder.c" />
+    <ClCompile Include="third_party\opus\src\opus_multistream_encoder.c" />
+    <ClCompile Include="third_party\opus\src\repacketizer.c" />
+    <ClCompile Include="third_party\opus\src\repacketizer_demo.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

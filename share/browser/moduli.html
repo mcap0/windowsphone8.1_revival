@@ -1,0 +1,105 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>moduli</title><style>
+body{font:16px sans-serif;background:#000;color:#fff;margin:12px}
+.no{color:#ff8a80}.si{color:#b9f6ca}div.r{font:13px monospace;margin:2px 0}
+label{display:block;margin:12px 0 4px;color:#90caf9}select,input,button{font-size:18px;padding:8px;width:100%;box-sizing:border-box}
+button{margin:8px 0}#log{font:13px monospace;color:#ffe082;white-space:pre-wrap}
+</style></head><body>
+<h2>Moduli e dispositivo</h2><div id="sum">in corso...</div><div id="out"></div>
+<h3>A mano</h3>
+<p>Tocca ogni controllo: deve aprirsi il suo selettore, e la scelta deve comparire qui sotto.</p>
+<div id="log"></div>
+<label>select</label><select id="s1"><option>uno</option><option>due</option><option>tre</option><optgroup label="gruppo"><option>quattro</option><option disabled>cinque (spento)</option></optgroup></select>
+<label>select multiple</label><select id="s2" multiple size="3"><option>rosso</option><option>verde</option><option>blu</option><option>giallo</option></select>
+<label>date</label><input id="d1" type="date">
+<label>time</label><input id="d2" type="time">
+<label>datetime-local</label><input id="d3" type="datetime-local">
+<label>month</label><input id="d4" type="month">
+<label>color</label><input id="c1" type="color" value="#ff0000">
+<label>range</label><input id="r1" type="range" min="0" max="100">
+<label>datalist</label><input id="l1" list="frutti"><datalist id="frutti"><option value="mela"><option value="pera"><option value="uva"></datalist>
+<button id="geo">posizione (geolocation)</button>
+<button id="copy">copia "prova appunti" (clipboard)</button>
+<button id="paste">incolla (clipboard.readText)</button>
+<button id="share">condividi (navigator.share)</button>
+<button id="full">schermo intero (requestFullscreen)</button>
+<button id="notif">notifica (Notification)</button>
+<button id="auth">pagina con password HTTP (utente prova, password prova)</button>
+<button id="vib">vibrazione</button>
+<button id="send">invia il registro al PC</button>
+<script src="common.js"></script><script>
+(function () {
+  var out = T.$("out"), lines = [], ok = 0, total = 0, manual = [];
+  function line(good, text) {
+    total++; if (good) ok++;
+    var d = document.createElement("div"); d.className = "r " + (good ? "si" : "no"); d.textContent = (good ? "si  " : "NO  ") + text;
+    out.appendChild(d); lines.push((good ? "si " : "NO ") + text);
+  }
+  function note(text) { manual.push(text); T.$("log").textContent = manual.join("\n"); }
+  var types = ["date", "time", "datetime-local", "month", "week", "color", "range", "number", "email", "tel", "url", "search", "file"];
+  for (var i = 0; i < types.length; i++) {
+    var e = document.createElement("input"); e.setAttribute("type", types[i]);
+    line(e.type === types[i], "input type=" + types[i]);
+  }
+  function has(name, f) { var r = false; try { r = !!f(); } catch (e) {} line(r, name); }
+  has("geolocation", function () { return navigator.geolocation; });
+  has("clipboard.writeText", function () { return navigator.clipboard && navigator.clipboard.writeText; });
+  has("execCommand copy", function () { return document.queryCommandSupported("copy"); });
+  has("navigator.share", function () { return navigator.share; });
+  has("requestFullscreen", function () { var b = document.body; return b.requestFullscreen || b.webkitRequestFullscreen; });
+  has("Notification", function () { return window.Notification; });
+  has("permissions.query", function () { return navigator.permissions && navigator.permissions.query; });
+  has("vibrate", function () { return navigator.vibrate; });
+  has("getUserMedia", function () { return navigator.mediaDevices && navigator.mediaDevices.getUserMedia; });
+  has("screen.orientation", function () { return screen.orientation; });
+  has("deviceorientation", function () { return "ondeviceorientation" in window; });
+  has("online", function () { return navigator.onLine === true; });
+  has("connection", function () { return navigator.connection; });
+  has("speechSynthesis", function () { return window.speechSynthesis; });
+  has("isSecureContext", function () { return window.isSecureContext; });
+  has("cookieEnabled", function () { return navigator.cookieEnabled; });
+  has("print", function () { return window.print; });
+  T.$("sum").textContent = ok + " su " + total + " presenti";
+  function send(done) { T.send("moduli", ["totale " + ok + "/" + total].concat(lines, ["-- a mano"], manual), done); }
+  send(function (sent) { T.$("sum").textContent += sent ? " (inviato)" : " (invio fallito)"; });
+
+  var ids = ["s1", "s2", "d1", "d2", "d3", "d4", "c1", "r1", "l1"];
+  for (var j = 0; j < ids.length; j++) (function (id) {
+    T.$(id).addEventListener("change", function () {
+      var el = T.$(id), v = el.value;
+      if (el.multiple) { v = []; for (var k = 0; k < el.options.length; k++) if (el.options[k].selected) v.push(el.options[k].text); v = v.join("+"); }
+      note(id + " = " + v);
+    });
+  })(ids[j]);
+  T.$("geo").onclick = function () {
+    if (!navigator.geolocation) return note("geo: assente");
+    navigator.geolocation.getCurrentPosition(function (p) { note("geo: " + p.coords.latitude.toFixed(3) + "," + p.coords.longitude.toFixed(3) + " ±" + Math.round(p.coords.accuracy) + " m"); },
+      function (e) { note("geo: errore " + e.code + " " + e.message); }, { timeout: 20000 });
+  };
+  T.$("copy").onclick = function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText("prova appunti").then(function () { note("copia: ok"); }, function (e) { note("copia: rifiutata " + e.name); });
+    else note("copia: clipboard assente");
+  };
+  T.$("paste").onclick = function () {
+    if (navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(function (t) { note("incolla: \"" + t + "\""); }, function (e) { note("incolla: rifiutato " + e.name); });
+    else note("incolla: clipboard assente");
+  };
+  T.$("share").onclick = function () {
+    if (!navigator.share) return note("condividi: assente");
+    navigator.share({ title: "Prova", text: "testo condiviso", url: location.href }).then(function () { note("condividi: ok"); }, function (e) { note("condividi: " + e.name); });
+  };
+  T.$("full").onclick = function () {
+    var b = document.documentElement, f = b.requestFullscreen || b.webkitRequestFullscreen;
+    if (!f) return note("schermo intero: assente");
+    var p = f.call(b); note("schermo intero: chiesto");
+    setTimeout(function () { note("schermo intero: elemento " + (document.fullscreenElement || document.webkitFullscreenElement ? "si" : "no")); var x = document.exitFullscreen || document.webkitExitFullscreen; if (x) x.call(document); }, 2500);
+  };
+  T.$("notif").onclick = function () {
+    if (!window.Notification) return note("notifica: assente");
+    Notification.requestPermission(function (p) { note("notifica: permesso " + p); if (p === "granted") new Notification("Prova", { body: "notifica dal browser" }); });
+  };
+  T.$("auth").onclick = function () { location.href = "/auth"; };
+  T.$("vib").onclick = function () { note("vibrazione: " + (navigator.vibrate ? navigator.vibrate(200) : "assente")); };
+  T.$("send").onclick = function () { send(function (sent) { note(sent ? "inviato" : "invio fallito"); }); };
+})();
+</script></body></html>

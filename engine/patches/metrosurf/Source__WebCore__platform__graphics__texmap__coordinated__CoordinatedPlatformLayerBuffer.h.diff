@@ -1,0 +1,12 @@
+--- a/Source/WebCore/platform/graphics/texmap/coordinated/CoordinatedPlatformLayerBuffer.h
++++ b/Source/WebCore/platform/graphics/texmap/coordinated/CoordinatedPlatformLayerBuffer.h
+@@ -51,6 +51,9 @@
+         Video,
+         DMABuf,
+         NativeImage,
++#if defined(WP81)
++        D3DShared,
++#endif
+ #if USE(SKIA)
+         SkiaImage
+ #endif

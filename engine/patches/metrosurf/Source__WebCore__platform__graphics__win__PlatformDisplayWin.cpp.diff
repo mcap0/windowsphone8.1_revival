@@ -1,0 +1,30 @@
+--- a/Source/WebCore/platform/graphics/win/PlatformDisplayWin.cpp
++++ b/Source/WebCore/platform/graphics/win/PlatformDisplayWin.cpp
+@@ -34,6 +34,19 @@
+ 
+ std::unique_ptr<PlatformDisplayWin> PlatformDisplayWin::create()
+ {
++#if defined(WP81)
++    const EGLint attributeSets[][7] = {
++        { EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE,
++            EGL_PLATFORM_ANGLE_MAX_VERSION_MAJOR_ANGLE, 9, EGL_PLATFORM_ANGLE_MAX_VERSION_MINOR_ANGLE, 3, EGL_NONE },
++        { EGL_PLATFORM_ANGLE_TYPE_ANGLE, EGL_PLATFORM_ANGLE_TYPE_D3D11_ANGLE, EGL_NONE },
++    };
++    for (auto& attributes : attributeSets) {
++        if (auto glDisplay = GLDisplay::create(eglGetPlatformDisplayEXT(EGL_PLATFORM_ANGLE_ANGLE, EGL_DEFAULT_DISPLAY, attributes)))
++            return std::unique_ptr<PlatformDisplayWin>(new PlatformDisplayWin(glDisplay.releaseNonNull()));
++    }
++    WTFLogAlways("Could not create EGL display: %s. Aborting...", GLContext::lastErrorString());
++    CRASH();
++#else
+     EGLint attributes[] = {
+         // Disable debug layers that makes some tests fail because
+         // ANGLE fills uninitialized buffers with
+@@ -49,6 +62,7 @@
+     }
+ 
+     return std::unique_ptr<PlatformDisplayWin>(new PlatformDisplayWin(glDisplay.releaseNonNull()));
++#endif
+ }
+ 
+ PlatformDisplayWin::PlatformDisplayWin(Ref<GLDisplay>&& glDisplay)

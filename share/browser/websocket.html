@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>WebSocket</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}p{margin:6px 0}.ok{color:#8f8}.ko{color:#f88}
+</style></head><body>
+<h2>WebSocket</h2>
+<p>Un'eco sul PC (ws://) e una pubblica con TLS (wss://): 10 messaggi di testo, 64 KB binari, chiusura. I risultati vanno
+al PC da soli.</p>
+<div id="out"></div>
+<script src="common.js"></script><script>
+// ES5, like the other test pages. Each test: open, ten text round trips (each the echo of the one before, others are
+// ignored: some servers greet first), one 64 KB binary message checked byte by byte, then a clean close.
+var out = T.$("out"), lines = [];
+function line(text, good) {
+  lines.push(text);
+  var p = document.createElement("p");
+  p.textContent = text;
+  if (good !== undefined) p.className = good ? "ok" : "ko";
+  out.appendChild(p);
+}
+function test(name, url, done) {
+  var start = T.now(), sent = 0, expected = "", count = 0, rtts = [], finished = false;
+  var big = new Uint8Array(65536);
+  for (var i = 0; i < big.length; i++) big[i] = i & 255;
+  function finish() { if (finished) return; finished = true; clearTimeout(timer); done(); }
+  var ws;
+  try { ws = new WebSocket(url); } catch (e) { line(name + ": errore " + e, false); return done(); }
+  ws.binaryType = "arraybuffer";
+  var timer = setTimeout(function () {
+    line(name + ": nessuna risposta in 20 s (stato " + ws.readyState + ")", false);
+    try { ws.close(); } catch (e) {}
+    finish();
+  }, 20000);
+  function sendText() { expected = "ciao " + (count + 1); sent = T.now(); ws.send(expected); }
+  ws.onopen = function () {
+    line(name + ": aperta in " + Math.round(T.now() - start) + " ms, estensioni '" + ws.extensions + "'", true);
+    sendText();
+  };
+  ws.onmessage = function (e) {
+    if (typeof e.data === "string") {
+      if (e.data !== expected) return;
+      rtts.push(T.now() - sent);
+      if (++count < 10) return sendText();
+      line(name + ": 10 messaggi di testo, andata e ritorno " + T.stats(rtts) + " ms", true);
+      expected = "";
+      sent = T.now();
+      ws.send(big.buffer);
+      return;
+    }
+    var got = new Uint8Array(e.data), same = got.length === big.length;
+    for (var i = 0; same && i < got.length; i++) same = got[i] === (i & 255);
+    line(name + ": 64 KB binari " + (same ? "uguali" : "DIVERSI (" + got.length + " byte)") + " in " +
+      Math.round(T.now() - sent) + " ms", same);
+    ws.close(1000, "fine");
+  };
+  ws.onerror = function () { line(name + ": errore (dettagli nella console)", false); };
+  ws.onclose = function (e) {
+    line(name + ": chiusa, codice " + e.code + (e.wasClean ? ", pulita" : ", non pulita"), e.code === 1000);
+    finish();
+  };
+}
+test("PC ws://", "ws://" + location.host + "/ws", function () {
+  test("pubblica wss://", "wss://ws.postman-echo.com/raw", function () {
+    T.send("websocket", lines, function (ok) { line(ok ? "risultati inviati al PC" : "invio al PC fallito"); });
+  });
+});
+</script></body></html>

@@ -1,0 +1,121 @@
+<Page x:Class="Perle81.App.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid Margin="12,8,12,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Perle" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
+      <ComboBox x:Name="GroupBox" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="Cartella"
+                DisplayMemberPath="Name" SelectionChanged="OnGroupChanged" />
+    </Grid>
+    <StackPanel Grid.Row="1" Margin="12,6">
+      <ProgressBar x:Name="Progress" Visibility="Collapsed" />
+      <TextBlock x:Name="InfoText" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+    </StackPanel>
+    <Pivot x:Name="Tabs" Grid.Row="2">
+      <PivotItem Header="Perle">
+        <Grid>
+          <TextBlock x:Name="EmptyText" Margin="12" TextWrapping="Wrap" Visibility="Collapsed"
+                     Text="Nessun video trovato. Prova ad aggiornare, o controlla che la cartella contenga dei canali." />
+          <ListView x:Name="List" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnVideoClick"
+                    Holding="OnHolding" RightTapped="OnRightTapped">
+            <ListView.ItemContainerStyle>
+              <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="Padding" Value="12,6" />
+              </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Width="160" Height="90" Background="#222">
+                    <Image Source="{Binding Thumbnail}" Stretch="UniformToFill" />
+                    <Border Background="#CC000000" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4" Padding="4,1">
+                      <TextBlock Text="{Binding DurationText}" FontSize="12" />
+                    </Border>
+                  </Grid>
+                  <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="15" />
+                    <TextBlock Text="{Binding Uploader}" FontSize="12" Opacity="0.7" Margin="0,4,0,0" />
+                    <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Grid>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </Grid>
+      </PivotItem>
+      <PivotItem Header="Ultimi">
+        <Grid>
+          <StackPanel>
+            <TextBlock x:Name="LatestInfo" Margin="12,0,12,6" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+            <TextBlock x:Name="LatestEmpty" Margin="12" TextWrapping="Wrap" Visibility="Collapsed"
+                       Text="Nessun video recente. Usa Aggiorna per scaricare i feed dei canali." />
+          </StackPanel>
+          <ListView x:Name="Latest" Margin="0,40,0,0" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnVideoClick"
+                    Holding="OnHolding" RightTapped="OnRightTapped">
+            <ListView.ItemContainerStyle>
+              <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="Padding" Value="12,6" />
+              </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid Width="160" Height="90" Background="#222">
+                    <Image Source="{Binding Thumbnail}" Stretch="UniformToFill" />
+                  </Grid>
+                  <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="15" />
+                    <TextBlock Text="{Binding Uploader}" FontSize="12" Opacity="0.7" Margin="0,4,0,0" />
+                    <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Grid>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </Grid>
+      </PivotItem>
+    </Pivot>
+    <Grid x:Name="Snackbar" Grid.Row="3" Background="#333" Margin="12,8" Visibility="Collapsed">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Questo video non verrà più mostrato in Perle" TextWrapping="Wrap" VerticalAlignment="Center" />
+      <Button Grid.Column="1" Content="Annulla" Click="OnUndo" Margin="8,0,0,0" />
+    </Grid>
+  </Grid>
+  <Page.BottomAppBar>
+    <CommandBar>
+      <AppBarButton x:Name="ShuffleButton" Icon="Shuffle" Label="Mescola" Click="OnShuffle" />
+      <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Aggiorna" Click="OnRefresh" />
+      <AppBarButton Icon="Find" Label="Cerca" Click="OnSearch" />
+      <CommandBar.SecondaryCommands>
+        <AppBarButton Label="Cronologia" Click="OnHistory" />
+        <AppBarButton Label="Download" Click="OnDownloads" />
+        <AppBarButton Label="Mostra di nuovo i video nascosti" Click="OnShowHidden" />
+        <AppBarButton Label="Importa iscrizioni (JSON di NewPipe)" Click="OnImport" />
+      </CommandBar.SecondaryCommands>
+    </CommandBar>
+  </Page.BottomAppBar>
+</Page>

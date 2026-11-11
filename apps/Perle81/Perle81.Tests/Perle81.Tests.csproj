@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Runs the Perle 8.1 core (the same files as the UWP app, linked from apps/Perle/Perle.Core) on .NET 8. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Perle</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\*.cs" Link="Shared\Extractor\%(Filename)%(Extension)" />
+    <Compile Include="..\..\Perle\Perle.Core\Perle\*.cs" Link="Shared\Perle\%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

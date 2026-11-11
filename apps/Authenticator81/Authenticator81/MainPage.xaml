@@ -1,0 +1,51 @@
+<Page
+    x:Class="Authenticator.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add" Label="aggiungi" Click="OnAdd" />
+            <AppBarButton Icon="Camera" Label="scansiona QR" Click="OnScan" />
+            <AppBarButton Icon="Setting" Label="backup" Click="OnBackup" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Margin="16,12,16,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="AUTHENTICATOR" FontSize="15" FontWeight="SemiBold" />
+        <ProgressBar x:Name="Countdown" Grid.Row="1" Margin="0,8" Maximum="30" Height="4" />
+
+        <StackPanel x:Name="CrashPanel" Grid.Row="2" Visibility="Collapsed" Margin="0,0,0,8">
+            <TextBlock Text="Crash dell'ultima apertura:" Foreground="#FFFF6B6B" FontWeight="SemiBold" />
+            <ScrollViewer MaxHeight="200">
+                <TextBlock x:Name="CrashText" FontSize="11" TextWrapping="Wrap" Foreground="#FFFF6B6B" />
+            </ScrollViewer>
+            <Button Content="ok, cancella" HorizontalAlignment="Stretch" Click="OnClearCrash" />
+        </StackPanel>
+
+        <TextBlock x:Name="EmptyText" Grid.Row="3" Margin="0,8" TextWrapping="Wrap" Visibility="Collapsed"
+                   Text="Nessun account. Tocca + per aggiungerne uno con il codice segreto o un link otpauth://." />
+
+        <ListView x:Name="List" Grid.Row="4" SelectionMode="None" IsItemClickEnabled="True"
+                  ItemClick="OnItemClick" Holding="OnHolding">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,4,0,12">
+                        <TextBlock Text="{Binding Title}" FontSize="15" Opacity="0.8" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding Code}" FontSize="36" FontWeight="Light" Foreground="#FF4DB6AC" />
+                        <TextBlock Text="{Binding Hint}" FontSize="12" Opacity="0.6" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

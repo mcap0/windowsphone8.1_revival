@@ -1,0 +1,74 @@
+<Page
+    x:Class="Sincro.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sincro"
+    Background="Black"
+    Loaded="Page_Loaded">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24,18,24,24">
+            <TextBlock Text="Sincro"
+                       FontSize="36"
+                       Margin="0,0,0,18" />
+
+            <TextBlock x:Name="AccountText"
+                       Text="Caricamento account..."
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       Margin="0,0,0,16" />
+
+            <ToggleSwitch x:Name="ContactsSwitch"
+                          Header="Sincronizza contatti"
+                          Toggled="Toggle_Toggled" />
+
+            <ToggleSwitch x:Name="CalendarSwitch"
+                          Header="Sincronizza calendario"
+                          Toggled="Toggle_Toggled"
+                          Margin="0,8,0,16" />
+
+            <TextBlock x:Name="ContactsText"
+                       Text="Contatti: caricamento..."
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       Margin="0,0,0,8" />
+
+            <TextBlock x:Name="CalendarText"
+                       Text="Calendario: caricamento..."
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       Margin="0,0,0,16" />
+
+            <TextBlock x:Name="ErrorText"
+                       Text=""
+                       TextWrapping="Wrap"
+                       FontSize="16"
+                       Margin="0,0,0,12" />
+
+            <Button x:Name="SyncButton"
+                    Content="Sincronizza ora"
+                    HorizontalAlignment="Stretch"
+                    Click="Sync_Click" />
+
+            <Button x:Name="RegisterButton"
+                    Content="Attiva timer in background"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,8,0,16" />
+
+            <TextBlock Text="Stato del timer in background"
+                       FontSize="24"
+                       Margin="0,8,0,8" />
+
+            <TextBlock x:Name="BackgroundStatusText"
+                       Text="Stato e risultati delle esecuzioni in background."
+                       TextWrapping="Wrap"
+                       FontSize="18"
+                       Margin="0,0,0,8" />
+
+            <TextBlock x:Name="LogText"
+                       Text="Caricamento registro..."
+                       TextWrapping="Wrap"
+                       FontSize="16" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

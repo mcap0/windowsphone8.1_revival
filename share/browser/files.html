@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Download e file</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+a,button{display:block;width:100%;box-sizing:border-box;text-align:left;color:#fff;background:#1976d2;border:0;padding:14px;
+  margin:10px 0;text-decoration:none;font:20px sans-serif}
+small{display:block;color:#cfe3f7;font-size:13px;margin-top:4px}
+h3{margin:28px 0 6px}
+input[type=file]{display:block;margin:8px 0 14px;font-size:17px;color:#fff}
+label{display:block;color:#aaa;font-size:15px}
+#picked{color:#8f8;font-size:15px;white-space:pre-wrap}
+img{display:block;margin:10px 0}
+</style></head><body>
+<h2>Download e file</h2>
+<p>I file scaricati vanno in <b>Download\Internet</b> (app File); "..." &rarr; download mostra l'elenco.</p>
+
+<h3>Download</h3>
+<a href="/download?name=prova.pdf&amp;type=application/pdf&amp;attach=1">PDF come allegato<small>Content-Disposition: attachment &rarr; il PDF si apre col lettore del telefono</small></a>
+<a href="/download?name=archivio.zip&amp;type=application/zip&amp;kb=64">Tipo che il browser non mostra (zip)<small>senza "attachment": il motore non sa mostrarlo e lo salva</small></a>
+<a href="/download?name=grande.bin&amp;type=application/octet-stream&amp;kb=6144&amp;attach=1&amp;slow=1">File grande e lento (6 MB, ~25 s)<small>guarda l'avanzamento nell'elenco, prova "annulla download"</small></a>
+<form method="post" action="/download?attach=1"><input type="hidden" name="name" value="modulo.pdf">
+<input type="hidden" name="type" value="application/pdf"><button>Download da un modulo (POST)<small>la stessa richiesta continua nel file, niente seconda richiesta</small></button></form>
+<a href="/browser/common.js" download="script-di-prova.js">Link con attributo download<small>stesso sito, nome scelto dalla pagina</small></a>
+<a href="data:text/plain;charset=utf-8,Ciao%20dal%20Lumia%0A" download="ciao.txt">Indirizzo data: con download<small>il testo sta nell'indirizzo stesso</small></a>
+<button id="blob">Immagine blob: (come WhatsApp Web)<small>disegnata dalla pagina, salvata come disegno.png</small></button>
+
+<h3>Salva immagine (tocco lungo)</h3>
+<img src="/download?name=quadri.png&amp;type=image/png" width="96" height="96" alt="quadri">
+<label>Tieni premuto sull'immagine &rarr; "salva immagine": va in Immagini salvate.</label>
+
+<h3>Carica file</h3>
+<form method="post" action="/upload" enctype="multipart/form-data">
+<label>Un file qualsiasi (elenco del telefono)</label><input type="file" name="documento">
+<label>Solo immagini (selettore foto del telefono)</label><input type="file" name="foto" accept="image/*">
+<label>Pi&ugrave; file, solo PDF</label><input type="file" name="pdf" accept=".pdf,application/pdf" multiple>
+<input type="hidden" name="nota" value="modulo di prova">
+<button>Invia al PC<small>la pagina dopo dice cosa &egrave; arrivato: nome, dimensione, tipo</small></button>
+</form>
+<div id="picked"></div>
+
+<script>
+document.getElementById("blob").onclick = function () {
+  var c = document.createElement("canvas"); c.width = c.height = 128;
+  var g = c.getContext("2d");
+  for (var i = 0; i < 8; i++) { g.fillStyle = i % 2 ? "#1976d2" : "#ff9800"; g.fillRect(i * 16, 0, 16, 128); }
+  g.fillStyle = "#fff"; g.font = "bold 28px sans-serif"; g.fillText("Lumia", 20, 74);
+  c.toBlob(function (blob) {
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "disegno.png";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 100);
+  }, "image/png");
+};
+// What the page sees of the chosen files at once (File API), before sending.
+Array.prototype.forEach.call(document.querySelectorAll("input[type=file]"), function (input) {
+  input.onchange = function () {
+    var lines = [];
+    for (var i = 0; i < input.files.length; i++) {
+      var f = input.files[i];
+      lines.push(input.name + ": " + f.name + ", " + f.size + " byte, tipo " + (f.type || "(nessuno)"));
+    }
+    document.getElementById("picked").textContent = lines.join("\n") || input.name + ": nessun file";
+    if (input.files.length && input.files[0].type.indexOf("image/") == 0) {
+      var r = new FileReader();
+      r.onload = function () { var img = new Image(); img.src = r.result; img.width = 96; document.getElementById("picked").appendChild(img); };
+      r.readAsDataURL(input.files[0]);
+    }
+  };
+});
+</script>
+</body></html>

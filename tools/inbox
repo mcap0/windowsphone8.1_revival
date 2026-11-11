@@ -1,0 +1,533 @@
+#!/usr/bin/env python3
+# inbox — the share server for the phone (192.168.1.148:8765): GET serves share/ (clip.txt for Appunti),
+# POST /<name> with a text body appends it to share/inbox/<name>.txt, timestamped: the phone apps send their
+# diagnostics here instead of photos.
+import base64, datetime, hashlib, html, json, os, re, struct, sys, urllib.error, urllib.parse, urllib.request
+import functools
+from html.parser import HTMLParser
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer as HTTPServer
+
+SHARE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "share")
+ROOT = os.path.join(SHARE, "inbox")
+os.makedirs(ROOT, exist_ok=True)
+
+def fetch_bing_results(path, language):
+    # Bing sends the Windows Phone user agent to a tiny "Opening Bing…" page
+    # whose meta refresh is bing://search. Fetch as a normal browser so this
+    # embedded SearchCM browser gets an actual HTML results page instead.
+    url = "https://www.bing.com" + path
+    request = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/133.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": language or "en-US,en;q=0.5",
+    })
+    with urllib.request.urlopen(request, timeout=20) as response:
+        return response.status, response.headers.get("Content-Type", "text/html; charset=utf-8"), response.read()
+
+def fetch_bing_asset(path, language):
+    # SERP HTML references some Bing scripts through relative /rp/... URLs.
+    # Since SearchServer points at this host, pass those assets through too.
+    url = "https://www.bing.com" + path
+    request = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/133.0 Safari/537.36",
+        "Accept": "*/*",
+        "Accept-Language": language or "en-US,en;q=0.5",
+    })
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return response.status, response.headers.get("Content-Type", "application/octet-stream"), response.read()
+    except urllib.error.HTTPError as response:
+        return response.code, response.headers.get("Content-Type", "text/plain; charset=utf-8"), response.read()
+
+def fetch_bing_suggestions(query, language):
+    url = "https://api.bing.com/qsonhs.aspx?" + urllib.parse.urlencode({
+        "q": query, "form": "MO0014", "mkt": "it-IT",
+    })
+    request = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0) like Gecko",
+        "Accept": "application/json, text/javascript, */*; q=0.01",
+        "Accept-Language": language or "it-IT,it;q=0.9,en-US;q=0.7",
+    })
+    with urllib.request.urlopen(request, timeout=15) as response:
+        return response.status, response.headers.get("Content-Type", "application/json; charset=utf-8"), response.read()
+
+class BingResultParser(HTMLParser):
+    """Extract Bing's server-rendered Web results without running its modern page scripts."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.results = []
+        self.current = None
+        self.root_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "li" and self.current is None and "b_algo" in (attrs.get("class") or "").split():
+            self.current = {"title": "", "url": "", "snippet": ""}
+            self.root_depth = len(self.stack)
+        elif self.current is not None and tag == "a" and not self.current["url"]:
+            if any(parent == "h2" for parent, _ in self.stack):
+                self.current["url"] = attrs.get("href", "")
+        self.stack.append((tag, attrs))
+
+    def handle_endtag(self, tag):
+        if (self.current is not None and tag == "li" and len(self.stack) == self.root_depth + 1
+                and self.stack[-1][0] == "li"):
+            self.results.append(self.current)
+            self.current = None
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                del self.stack[index:]
+                break
+
+    def handle_data(self, data):
+        if self.current is None:
+            return
+        if any(tag == "h2" for tag, _ in self.stack):
+            self.current["title"] += data
+        elif (any(tag == "p" for tag, _ in self.stack)
+                and any("b_caption" in (attrs.get("class") or "").split() for _, attrs in self.stack)):
+            self.current["snippet"] += data
+
+def parse_bing_results(body):
+    parser = BingResultParser()
+    parser.feed(body.decode("utf-8", "replace"))
+    results = []
+    for item in parser.results:
+        title = re.sub(r"\s+", " ", item["title"]).strip()
+        snippet = re.sub(r"\s+", " ", item["snippet"]).strip()
+        url = item["url"].strip()
+        try:
+            parsed = urllib.parse.urlsplit(url)
+            if parsed.hostname and parsed.hostname.endswith("bing.com") and parsed.path == "/ck/a":
+                wrapped = urllib.parse.parse_qs(parsed.query).get("u", [""])[0]
+                if wrapped.startswith("a1"):
+                    decoded = base64.urlsafe_b64decode(wrapped[2:] + "===").decode("utf-8", "replace")
+                    if decoded.startswith(("http://", "https://")):
+                        url = decoded
+        except (ValueError, UnicodeError):
+            pass
+        if title and url.startswith(("http://", "https://")):
+            results.append((title, url, snippet))
+    return results
+
+class BingImageParser(HTMLParser):
+    """Read Bing's image-card metadata from its server-rendered result page."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.results = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag != "a":
+            return
+        attrs = dict(attrs)
+        if "iusc" not in (attrs.get("class") or "").split():
+            return
+        try:
+            meta = json.loads(attrs.get("m", "{}"))
+        except (TypeError, ValueError):
+            return
+        image = meta.get("murl", "")
+        thumb = meta.get("turl", "")
+        page = meta.get("purl", attrs.get("href", ""))
+        title = meta.get("t", "")
+        description = meta.get("desc", "")
+        if image.startswith(("http://", "https://")) and thumb.startswith(("http://", "https://")):
+            self.results.append({
+                "title": re.sub(r"\s+", " ", str(title)).strip(),
+                "url": page if str(page).startswith(("http://", "https://")) else image,
+                "image": image,
+                "thumbnail": thumb,
+                "snippet": re.sub(r"\s+", " ", str(description)).strip(),
+            })
+
+def parse_bing_images(body):
+    parser = BingImageParser()
+    parser.feed(body.decode("utf-8", "replace"))
+    unique = []
+    seen = set()
+    for item in parser.results:
+        if item["image"] in seen:
+            continue
+        seen.add(item["image"])
+        unique.append(item)
+        if len(unique) >= 40:
+            break
+    return unique
+
+def build_legacy_results_page(path, results):
+    query = urllib.parse.parse_qs(urllib.parse.urlsplit(path).query).get("q", [""])[0]
+    rows = []
+    for title, url, snippet in results:
+        rows.append("<li><h2><a href=\"%s\">%s</a></h2><p>%s</p></li>" % (
+            html.escape(url, quote=True), html.escape(title), html.escape(snippet)))
+    contents = "\n".join(rows) or "<li><p>Nessun risultato Web trovato.</p></li>"
+    return ("<!doctype html><html><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
+            "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>%s - Bing</title>"
+            "<style>body{font:18px/1.4 Segoe UI,Arial,sans-serif;margin:16px;color:#222;background:#fff}"
+            "h1{font-size:22px;font-weight:normal;margin:0 0 16px}ol{padding-left:24px}li{margin:0 0 20px}"
+            "h2{font-size:20px;font-weight:normal;margin:0 0 3px}a{color:#0067b8}p{font-size:16px;margin:0}"
+            ".count{font-size:13px;color:#666;margin-bottom:12px}</style></head><body>"
+            "<h1>Risultati Bing per: %s</h1><div class=\"count\">%d risultati Web</div><ol>%s</ol>"
+            "<script type=\"text/javascript\">(function(){function ping(url){var f=document.createElement('iframe');"
+            "f.style.display='none';f.src=url;document.body.appendChild(f);}function finish(){"
+            "ping('bing://evt/AjaxEnd');window.setTimeout(function(){ping('bing://evt/contentShown');},100);}"
+            "if(window.addEventListener){window.addEventListener('load',finish,false);}"
+            "else if(window.attachEvent){window.attachEvent('onload',finish);}})();</script>"
+            "</body></html>" % (html.escape(query), html.escape(query), len(results), contents)).encode("utf-8")
+
+def websocket_echo(handler):
+    # /ws for share/browser/websocket.html: RFC 6455 echo. Text and binary messages come back as sent (fragments
+    # joined), pings get pongs, a close is answered with its code. No extensions: permessage-deflate offers are declined.
+    key = handler.headers.get("Sec-WebSocket-Key", "")
+    accept = base64.b64encode(hashlib.sha1((key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").encode()).digest()).decode()
+    # The upgrade needs an HTTP/1.1 status line (WebKit refuses "HTTP/1.0 101"); the server's default is 1.0.
+    handler.protocol_version = "HTTP/1.1"
+    handler.send_response(101, "Switching Protocols")
+    handler.send_header("Upgrade", "websocket")
+    handler.send_header("Connection", "Upgrade")
+    handler.send_header("Sec-WebSocket-Accept", accept)
+    handler.end_headers()
+    handler.wfile.flush()
+    handler.close_connection = True
+
+    def read(n):
+        data = b""
+        while len(data) < n:
+            chunk = handler.rfile.read(n - len(data))
+            if not chunk:
+                raise EOFError
+            data += chunk
+        return data
+
+    def send(opcode, payload):
+        n = len(payload)
+        head = bytes([0x80 | opcode])
+        if n < 126:
+            head += bytes([n])
+        elif n < 65536:
+            head += bytes([126]) + struct.pack(">H", n)
+        else:
+            head += bytes([127]) + struct.pack(">Q", n)
+        handler.wfile.write(head + payload)
+        handler.wfile.flush()
+
+    message, message_opcode = b"", 1
+    try:
+        while True:
+            first, second = read(2)
+            opcode, length = first & 0x0F, second & 0x7F
+            if length == 126:
+                length = struct.unpack(">H", read(2))[0]
+            elif length == 127:
+                length = struct.unpack(">Q", read(8))[0]
+            mask = read(4) if second & 0x80 else b"\0\0\0\0"
+            payload = read(length)
+            if payload:
+                pad = (mask * (length // 4 + 1))[:length]
+                payload = (int.from_bytes(payload, "big") ^ int.from_bytes(pad, "big")).to_bytes(length, "big")
+            if opcode == 8:
+                send(8, payload[:2])
+                break
+            if opcode == 9:
+                send(10, payload)
+                continue
+            if opcode == 10:
+                continue
+            if opcode in (1, 2):
+                message, message_opcode = payload, opcode
+            else:
+                message += payload
+            if first & 0x80:
+                send(message_opcode, message)
+    except (EOFError, ConnectionError, OSError):
+        pass
+
+def test_png(size=96):
+    # A square with a blue and orange checkerboard, for "salva immagine" on share/browser/files.html.
+    import zlib
+    rows = b""
+    for y in range(size):
+        rows += b"\x00" + b"".join(
+            (b"\x19\x76\xd2" if ((x // 12) + (y // 12)) % 2 else b"\xff\x98\x00") for x in range(size))
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xffffffff)
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(rows)) + chunk(b"IEND", b""))
+
+TEST_PDF = (b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj "
+            b"3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 300 144]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj "
+            b"4 0 obj<</Length 44>>stream\nBT /F1 24 Tf 40 70 Td (Prova download) Tj ET\nendstream endobj "
+            b"5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n")
+
+def test_download(handler, query, body_fields=None):
+    # /download?name=&type=&kb=&attach=1&slow=1 for share/browser/files.html: a PDF, a picture, or `kb` KB of text;
+    # attach=1 sends Content-Disposition: attachment; slow=1 sends it in 64 KB steps a quarter of a second apart.
+    q = dict(urllib.parse.parse_qsl(query))
+    if body_fields:
+        q.update(body_fields)
+    name = q.get("name", "prova.txt")
+    kind = q.get("type", "text/plain")
+    if kind == "application/pdf":
+        data = TEST_PDF
+    elif kind == "image/png":
+        data = test_png()
+    else:
+        line = b"Prova di download dal browser del Lumia, riga di testo ripetuta.\n"
+        data = (line * (int(q.get("kb", "4")) * 1024 // len(line) + 1))[: int(q.get("kb", "4")) * 1024]
+    handler.send_response(200)
+    handler.send_header("Content-Type", kind)
+    handler.send_header("Content-Length", str(len(data)))
+    if q.get("attach"):
+        handler.send_header("Content-Disposition", "attachment; filename=\"%s\"" % name)
+    handler.end_headers()
+    if q.get("slow"):
+        import time
+        for i in range(0, len(data), 65536):
+            handler.wfile.write(data[i:i + 65536]); handler.wfile.flush(); time.sleep(0.25)
+    else:
+        handler.wfile.write(data)
+
+def test_upload(handler, body):
+    # /upload for share/browser/files.html: the multipart form as received, files saved in share/inbox/upload.
+    import email.parser, email.policy
+    message = email.parser.BytesParser(policy=email.policy.HTTP).parsebytes(
+        b"Content-Type: " + handler.headers.get("Content-Type", "").encode() + b"\r\n\r\n" + body)
+    rows = []
+    folder = os.path.join(ROOT, "upload"); os.makedirs(folder, exist_ok=True)
+    for part in message.iter_parts() if message.is_multipart() else []:
+        field = part.get_param("name", header="content-disposition") or "?"
+        filename = part.get_filename()
+        data = part.get_payload(decode=True) or b""
+        if filename:
+            safe = re.sub(r"[^A-Za-z0-9._ -]", "_", filename)[-80:] or "file"
+            with open(os.path.join(folder, safe), "wb") as f:
+                f.write(data)
+            rows.append("<li><b>%s</b>: file <b>%s</b>, %d byte, tipo <b>%s</b></li>" % (
+                html.escape(field), html.escape(filename), len(data), html.escape(part.get_content_type())))
+        elif filename == "":
+            rows.append("<li><b>%s</b>: nessun file</li>" % html.escape(field))
+        else:
+            rows.append("<li><b>%s</b> = %s</li>" % (html.escape(field), html.escape(data.decode("utf-8", "replace")[:200])))
+    page = ("<!doctype html><meta charset=utf-8><meta name=viewport content='width=device-width'>"
+            "<body style='font:18px sans-serif;background:#000;color:#fff'><h2>Arrivato al PC</h2><ul>%s</ul>"
+            "<p>%d byte in tutto. Torna indietro per riprovare.</p>" % ("".join(rows) or "<li>niente</li>", len(body)))
+    data = page.encode()
+    handler.send_response(200)
+    handler.send_header("Content-Type", "text/html; charset=utf-8")
+    handler.send_header("Content-Length", str(len(data)))
+    handler.end_headers(); handler.wfile.write(data)
+    print("upload", len(body), "bytes", flush=True)
+
+CACHE_COUNTS = {}
+
+def test_cached(handler, query):
+    # /cached?name=&maxage=&etag=1 for share/browser/cache.html: a script that says how many times the server sent it
+    # whole; max-age lets the browser keep it, etag=1 makes it answer If-None-Match with 304. /cached-stats: the counts.
+    q = dict(urllib.parse.parse_qsl(query))
+    name = re.sub(r"[^A-Za-z0-9_]", "", q.get("name", "x")) or "x"
+    counts = CACHE_COUNTS.setdefault(name, {"interi": 0, "304": 0})
+    etag = '"%s-v1"' % name
+    if q.get("etag") and handler.headers.get("If-None-Match") == etag:
+        counts["304"] += 1
+        handler.send_response(304)
+        handler.send_header("ETag", etag)
+        handler.send_header("Cache-Control", "max-age=%s" % q.get("maxage", "0"))
+        handler.end_headers()
+        return
+    counts["interi"] += 1
+    body = ("window.cacheTest = window.cacheTest || {}; window.cacheTest[%r] = %d;\n" % (name, counts["interi"])).encode()
+    body += b"// " + b"x" * 30000 + b"\n"  # above 16 KB: the cache keeps it as a blob file
+    handler.send_response(200)
+    handler.send_header("Content-Type", "text/javascript")
+    handler.send_header("Content-Length", str(len(body)))
+    handler.send_header("Cache-Control", "max-age=%s" % q.get("maxage", "600"))
+    if q.get("etag"):
+        handler.send_header("ETag", etag)
+    handler.end_headers(); handler.wfile.write(body)
+
+class Handler(SimpleHTTPRequestHandler):
+    extensions_map = dict(SimpleHTTPRequestHandler.extensions_map, **{
+        ".m3u8": "application/vnd.apple.mpegurl", ".ts": "video/mp2t", ".mp4": "video/mp4", ".m4a": "audio/mp4",
+        ".mp3": "audio/mpeg", ".ogg": "audio/ogg", ".webm": "video/webm", ".wasm": "application/wasm"})
+
+    def end_headers(self):
+        # Whole files say they can be asked in ranges too.
+        if not any(b"Accept-Ranges" in line for line in getattr(self, "_headers_buffer", [])):
+            self.send_header("Accept-Ranges", "bytes")
+        super().end_headers()
+
+    def do_GET(self):
+        if urllib.parse.urlsplit(self.path).path == "/ws" and self.headers.get("Upgrade", "").lower() == "websocket":
+            return websocket_echo(self)
+        # Bing field → (SearchServer = this server): bypass Bing's bing://search
+        # handoff for the legacy Windows Phone user agent and return actual SERP HTML.
+        request = urllib.parse.urlsplit(self.path)
+        # What the phone's browsers send, header by header in order (share/inbox/headers.txt), for the test index.
+        if request.path in ("/browser/", "/headers"):
+            with open(os.path.join(ROOT, "headers.txt"), "a") as f:
+                f.write("\n===== %s %s %s =====\n" % (datetime.datetime.now().isoformat(timespec="seconds"), self.request_version, self.path))
+                for key, value in self.headers.items():
+                    f.write("%s: %s\n" % (key, value))
+        if request.path == "/download":
+            return test_download(self, request.query)
+        if request.path == "/auth":
+            # HTTP basic authentication, for the browser's password prompt (share/browser/moduli.html): prova / prova.
+            given = self.headers.get("Authorization", "")
+            good = given == "Basic " + base64.b64encode(b"prova:prova").decode()
+            body = (b"<meta name=viewport content='width=device-width'><body style='background:#000;color:#b9f6ca;font:20px sans-serif'>"
+                    b"<p>Password HTTP accettata.</p><p><a style='color:#fff' href='/browser/moduli.html'>indietro</a></p>" if good
+                    else b"<body><p>Serve la password (prova / prova).</p>")
+            self.send_response(200 if good else 401)
+            if not good:
+                self.send_header("WWW-Authenticate", 'Basic realm="Prove browser"')
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers(); self.wfile.write(body)
+            return
+        # A byte range of a file under share/ (media elements ask for ranges, and seek with them): http.server alone
+        # always sends the whole file.
+        wanted = re.fullmatch(r"bytes=(\d*)-(\d*)", self.headers.get("Range", "").strip())
+        if wanted and (wanted.group(1) or wanted.group(2)):
+            path = self.translate_path(self.path)
+            if os.path.isfile(path):
+                size = os.path.getsize(path)
+                if wanted.group(1):
+                    first = int(wanted.group(1))
+                    last = min(int(wanted.group(2)), size - 1) if wanted.group(2) else size - 1
+                else:
+                    first, last = max(size - int(wanted.group(2)), 0), size - 1
+                if first > last or first >= size:
+                    self.send_response(416)
+                    self.send_header("Content-Range", "bytes */%d" % size)
+                    self.send_header("Content-Length", "0")
+                    self.end_headers()
+                    return
+                self.send_response(206)
+                self.send_header("Content-Type", self.guess_type(path))
+                self.send_header("Accept-Ranges", "bytes")
+                self.send_header("Content-Range", "bytes %d-%d/%d" % (first, last, size))
+                self.send_header("Content-Length", str(last - first + 1))
+                self.end_headers()
+                with open(path, "rb") as f:
+                    f.seek(first)
+                    left = last - first + 1
+                    while left > 0:
+                        chunk = f.read(min(left, 256 * 1024))
+                        if not chunk:
+                            break
+                        try:
+                            self.wfile.write(chunk)
+                        except OSError:
+                            return
+                        left -= len(chunk)
+                return
+        if request.path == "/cached":
+            return test_cached(self, request.query)
+        if request.path == "/cached-stats":
+            data = json.dumps(CACHE_COUNTS).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers(); self.wfile.write(data)
+            return
+        if request.path == "/beacon":
+            # image beacon from MetroSurf's custom script on https sites (XHR to http is blocked there)
+            with open(os.path.join(ROOT, "beacon.txt"), "a") as f:
+                f.write("%s %s\n" % (datetime.datetime.now().strftime("%H:%M:%S"),
+                                      urllib.parse.unquote(request.query)))
+            gif = base64.b64decode("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
+            self.send_response(200)
+            self.send_header("Content-Type", "image/gif")
+            self.send_header("Content-Length", str(len(gif)))
+            self.end_headers(); self.wfile.write(gif)
+            return
+        if request.path.startswith("/rp/"):
+            try:
+                status, content_type, body = fetch_bing_asset(self.path, self.headers.get("Accept-Language", ""))
+            except (urllib.error.URLError, TimeoutError, OSError) as exc:
+                status, content_type, body = 502, "text/plain; charset=utf-8", str(exc).encode("utf-8")
+            with open(os.path.join(ROOT, "search.txt"), "a") as f:
+                f.write("\n===== %s =====\nBing asset %s status=%d type=%s bytes=%d\n" %
+                        (datetime.datetime.now().isoformat(timespec="seconds"), self.path, status, content_type, len(body)))
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers(); self.wfile.write(body)
+            return
+        if request.path != "/search":
+            return super().do_GET()
+        status, content_type, body = 502, "text/html; charset=utf-8", b""
+        error = ""
+        try:
+            status, content_type, body = fetch_bing_results(self.path, self.headers.get("Accept-Language", ""))
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            error = str(exc)
+            body = ("<html><body><p>Impossibile caricare i risultati Bing.</p><p>%s</p></body></html>" %
+                    html.escape(error)).encode("utf-8")
+        title = re.search(rb"<title[^>]*>(.*?)</title", body, re.I | re.S)
+        title = re.sub(rb"\s+", b" ", title.group(1)).decode("utf-8", "replace") if title else ""
+        upstream_b_algo = body.count(b"b_algo")
+        parsed_results = parse_bing_results(body) if status == 200 else []
+        upstream_bytes = len(body)
+        if status == 200:
+            body = build_legacy_results_page(self.path, parsed_results)
+            content_type = "text/html; charset=utf-8"
+        with open(os.path.join(ROOT, "search.txt"), "a") as f:
+            f.write("\n===== %s =====\n%s\n%s\nUpstream: status=%d type=%s bytes=%d b_algo=%d parsed=%d title=%s error=%s\n" %
+                    (datetime.datetime.now().isoformat(timespec="seconds"), self.path, self.headers,
+                     status, content_type, upstream_bytes, upstream_b_algo, len(parsed_results), title, error))
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers(); self.wfile.write(body)
+
+    def do_POST(self):
+        request = urllib.parse.urlsplit(self.path)
+        if request.path in ("/download", "/upload"):
+            body = self.rfile.read(min(int(self.headers.get("Content-Length", 0)), 64 << 20))
+            if request.path == "/upload":
+                return test_upload(self, body)
+            return test_download(self, request.query, dict(urllib.parse.parse_qsl(body.decode("utf-8", "replace"))))
+        name = re.sub(r"[^A-Za-z0-9_-]", "", self.path.strip("/")) or "log"
+        if "chunked" in self.headers.get("Transfer-Encoding", "").lower():
+            # big uploads from the phone (HttpClient switches to chunked transfer)
+            body = b""
+            while True:
+                size = int(self.rfile.readline().split(b";")[0].strip() or b"0", 16)
+                if size == 0:
+                    self.rfile.readline()
+                    break
+                body += self.rfile.read(size)
+                self.rfile.readline()
+        else:
+            body = self.rfile.read(min(int(self.headers.get("Content-Length", 0)), 64 << 20))
+        if body:
+            with open(os.path.join(ROOT, name + ".txt"), "ab") as f:
+                f.write(("\n===== %s =====\n" % datetime.datetime.now().isoformat(timespec="seconds")).encode())
+                f.write(body)
+        # Commands for the app that owns this log (tools/phonecmd writes share/inbox/cmd/<name>.txt): they leave in the
+        # reply to its next post, once. The apps that don't know about them read "ok" as before.
+        reply = b"ok"
+        queue = os.path.join(ROOT, "cmd", name + ".txt")
+        taken = queue + ".%d" % os.getpid()
+        try:
+            os.rename(queue, taken)
+            with open(taken, "rb") as f:
+                reply = b"cmd\n" + f.read()
+            os.remove(taken)
+        except OSError:
+            pass
+        self.send_response(200); self.send_header("Content-Length", str(len(reply))); self.end_headers(); self.wfile.write(reply)
+        if body:
+            print("received", name, len(body), "bytes", flush=True)
+
+if __name__ == "__main__":
+    # inbox [bind-address] [port]: a second instance on another port can serve the same share/ (opencode uses 8766).
+    in_bind = sys.argv[1] if len(sys.argv) > 1 else "192.168.1.148"
+    in_port = int(sys.argv[2]) if len(sys.argv) > 2 else 8765
+    server = HTTPServer((in_bind, in_port), functools.partial(Handler, directory=SHARE))
+    server.daemon_threads = True
+    server.serve_forever()

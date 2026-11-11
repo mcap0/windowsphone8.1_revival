@@ -1,0 +1,30 @@
+--- a/Source/WebCore/page/EventHandler.cpp
++++ b/Source/WebCore/page/EventHandler.cpp
+@@ -5568,13 +5568,15 @@
+         if (!touchTargetNode)
+             continue;
+         Ref document = touchTargetNode->document();
++#if !defined(WP81)
+         if (!document->hasTouchEventHandlers())
+             continue;
++#endif
+         RefPtr targetFrame = document->frame();
+         if (!targetFrame)
+             continue;
+ 
+-#if PLATFORM(WPE) || PLATFORM(GTK)
++#if PLATFORM(WPE) || PLATFORM(GTK) || defined(WP81)
+         RefPtr<EventTarget> pointerTarget = touchTarget;
+ 
+         if (pointState != PlatformTouchPoint::TouchPressed) {
+@@ -5602,6 +5604,10 @@
+         if (page->pointerCaptureController().preventsCompatibilityMouseEventsForIdentifier(PointerEvent::pointerIdForTouchPoint(point)))
+             swallowedEvent = true;
+ #endif
++#if defined(WP81)
++        if (!document->hasTouchEventHandlers())
++            continue;
++#endif
+ 
+         // pagePoint should always be relative to the target elements containing frame.
+         pagePoint = LayoutPoint(targetFrame->view()->windowToContents(flooredIntPoint(point.pos())));

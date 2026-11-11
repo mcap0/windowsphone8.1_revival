@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
+  <DefaultLanguage xmlns="" code="it-IT" />
+  <App xmlns="" ProductID="{751052db-3f2f-43c6-9428-facae48dda48}" Title="Prova VoIP" RuntimeType="Silverlight" Version="1.5.2.0" Genre="apps.normal" Author="DumbPhone" Description="Prove VoIP per le chiamate VoIP dal ponte" Publisher="DumbPhone" PublisherID="{00000000-0000-0000-0000-000000000000}">
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_MICROPHONE" />
+      <Capability Name="ID_CAP_VOIP" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" NavigationPage="MainPage.xaml" ActivationPolicy="Resume" />
+      <ExtendedTask Name="BackgroundTask">
+        <BackgroundServiceAgent Specifier="ScheduledTaskAgent" Name="IncomingAndKeepAliveAgent" Source="ProvaVoip.Agents" Type="ProvaVoip.Agents.ScheduledAgentImpl" />
+        <BackgroundServiceAgent Specifier="VoIPCallInProgressAgent" Name="CallInProgressAgent" Source="ProvaVoip.Agents" Type="ProvaVoip.Agents.CallInProgressAgentImpl" />
+        <BackgroundServiceAgent Specifier="VoIPForegroundLifetimeAgent" Name="ForegroundLifetimeAgent" Source="ProvaVoip.Agents" Type="ProvaVoip.Agents.ForegroundLifetimeAgentImpl" />
+      </ExtendedTask>
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="ProvaVoipToken" TaskName="_default">
+        <TemplateFlip>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\Tile.png</SmallImageURI>
+          <Count>0</Count>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</BackgroundImageURI>
+          <Title>Prova VoIP</Title>
+          <HasLarge>false</HasLarge>
+        </TemplateFlip>
+      </PrimaryToken>
+    </Tokens>
+    <ScreenResolutions>
+      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
+      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+    </ScreenResolutions>
+  </App>
+</Deployment>

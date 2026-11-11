@@ -1,0 +1,37 @@
+# Parafrasi 6 (giro 6, 2026-11-03): giorni relativi, ore in lettere, richieste indirette, frasi lunghe con contesto.
+# Scritte prima di misurare. "now" = mar 2026-11-03 10:00.
+svegliami lunedì prossimo alle 7	imposta_sveglia	ora=07:00;giorno=2026-11-09
+metti la sveglia per questo venerdì alle sei e mezza	imposta_sveglia	ora=06:30;giorno=2026-11-06
+sveglia alle diciannove e trenta	imposta_sveglia	ora=19:30
+svegliami a mezzogiorno e mezza	imposta_sveglia	ora=12:30
+domani ho il treno presto, svegliami alle cinque	imposta_sveglia	ora=05:00;giorno=2026-11-04
+stasera alle 9 svegliami che devo uscire	imposta_sveglia	ora=21:00
+sto cucinando, mettimi un timer di 7 minuti	imposta_timer	secondi=420
+ho messo la pasta, timer 11 minuti	imposta_timer	secondi=660
+devo fare una lavatrice, avvisami tra un'ora e mezza	imposta_timer	secondi=5400
+che impegni ho tra due giorni	leggi_calendario	dal=2026-11-05
+cosa ho lunedì prossimo	leggi_calendario	dal=2026-11-09
+domani che tempo fa a Catania, devo uscire in moto	meteo	luogo=catania;giorno=2026-11-04
+mi serve sapere se piove stasera	meteo	giorno=
+voglio sapere che ore sono	ora
+dovrei chiamare mia sorella, chiamala tu	chiama
+fai una chiamata alla mamma per favore che non risponde su whatsapp	chiama
+ho voglia di sentire un po' di musica, metti Battiato	riproduci_musica	richiesta=battiato
+non mi piace questa canzone, cambia	controlla_musica	azione=avanti
+la musica è troppo alta, mettila in pausa	controlla_musica	azione=pausa
+devo ricordarmi di pagare il bollo domani alle 10	promemoria	testo=pagare il bollo;ora=10:00;giorno=2026-11-04
+segnati che ho parcheggiato al terzo piano	prendi_nota	testo=ho parcheggiato al terzo piano
+mi apri le impostazioni del bluetooth che non si collega	apri	cosa=bluetooth
+# indirette e trabocchetti
+ho fame	online
+sono stanco	online
+che noia	online
+non ho voglia di alzarmi domani	online
+la sveglia mi ha svegliato troppo presto	online
+il timer di prima era troppo corto	online
+mi piace questa canzone	online
+mio papà chiama sempre alle 8	online
+domani piove secondo te?	meteo	giorno=2026-11-04
+tra quanto tempo è natale	online
+quanti minuti ci sono in un'ora	online
+cosa vuol dire timer	online

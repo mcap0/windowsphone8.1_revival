@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--
+    Perle core for Windows Phone 8.1 (WinRT library, wpa81). The shared extractor and Perle logic are
+    linked from Perle.Core.
+  -->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">ARM</Platform>
+    <ProjectGuid>{7A1E3C52-9B4D-4E0F-8C61-2D5B9F7E4A10}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Perle</RootNamespace>
+    <AssemblyName>Perle81.Core</AssemblyName>
+    <DefaultLanguage>it-IT</DefaultLanguage>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <LangVersion>6</LangVersion>
+    <NoWarn>;2008</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP;WP81</DefineConstants>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP;WP81</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\Json.cs"><Link>Shared\Extractor\Json.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\Innertube.cs"><Link>Shared\Extractor\Innertube.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\YoutubeChannel.cs"><Link>Shared\Extractor\YoutubeChannel.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\StreamInfoItem.cs"><Link>Shared\Extractor\StreamInfoItem.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\YoutubeStream.cs"><Link>Shared\Extractor\YoutubeStream.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Extractor\HlsFilter.cs"><Link>Shared\Extractor\HlsFilter.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Perle\PerleSelection.cs"><Link>Shared\Perle\PerleSelection.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Perle\Subscriptions.cs"><Link>Shared\Perle\Subscriptions.cs</Link></Compile>
+    <Compile Include="..\..\Perle\Perle.Core\Perle\PerleRepository.cs"><Link>Shared\Perle\PerleRepository.cs</Link></Compile>
+    <Compile Include="WinRtStorage.cs" />
+    <Compile Include="YoutubeSearch.cs" />
+    <Compile Include="ProgressivePlayer.cs" />
+    <Compile Include="YoutubeFeeds.cs" />
+    <Compile Include="VideoDate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+</Project>

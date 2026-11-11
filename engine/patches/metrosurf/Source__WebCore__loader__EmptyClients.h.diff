@@ -1,0 +1,284 @@
+--- a/Source/WebCore/loader/EmptyClients.h
++++ b/Source/WebCore/loader/EmptyClients.h
+@@ -28,6 +28,14 @@
+ 
+ #pragma once
+ 
++#ifndef WEBCORE_EMPTY_CLIENT_FINAL
++#if defined(WP81)
++#define WEBCORE_EMPTY_CLIENT_FINAL override
++#else
++#define WEBCORE_EMPTY_CLIENT_FINAL final
++#endif
++#endif
++
+ #include <WebCore/ChromeClient.h>
+ #include <WebCore/CryptoClient.h>
+ #include <WebCore/ExceptionOr.h>
+@@ -62,168 +70,168 @@
+ 
+     void chromeDestroyed() override { }
+ 
+-    void setWindowRect(const FloatRect&) final { }
+-    FloatRect windowRect() const final { return FloatRect(); }
++    void setWindowRect(const FloatRect&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    FloatRect windowRect() const WEBCORE_EMPTY_CLIENT_FINAL { return FloatRect(); }
+ 
+-    FloatRect pageRect() const final { return FloatRect(); }
++    FloatRect pageRect() const WEBCORE_EMPTY_CLIENT_FINAL { return FloatRect(); }
+ 
+-    void focus() final { }
+-    void unfocus() final { }
++    void focus() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void unfocus() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    bool canTakeFocus(FocusDirection) const final { return false; }
+-    void takeFocus(FocusDirection) final { }
++    bool canTakeFocus(FocusDirection) const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    void takeFocus(FocusDirection) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void focusedElementChanged(Element*, LocalFrame*, FocusOptions, BroadcastFocusedElement) final { }
+-    void focusedFrameChanged(Frame*) final { }
++    void focusedElementChanged(Element*, LocalFrame*, FocusOptions, BroadcastFocusedElement) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void focusedFrameChanged(Frame*) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    RefPtr<Page> createWindow(LocalFrame&, const String&, const WindowFeatures&, const NavigationAction&) final;
+-    void show() final { }
++    RefPtr<Page> createWindow(LocalFrame&, const String&, const WindowFeatures&, const NavigationAction&) WEBCORE_EMPTY_CLIENT_FINAL;
++    void show() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    bool canRunModal() const final { return false; }
+-    void runModal() final { }
++    bool canRunModal() const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    void runModal() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    bool isPopup() const final { return false; }
++    bool isPopup() const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ 
+-    void setResizable(bool) final { }
++    void setResizable(bool) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void addMessageToConsole(JSC::MessageSource, JSC::MessageLevel, const String&, unsigned, unsigned, const String&) final { }
++    void addMessageToConsole(JSC::MessageSource, JSC::MessageLevel, const String&, unsigned, unsigned, const String&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    bool canRunBeforeUnloadConfirmPanel() final { return false; }
+-    bool runBeforeUnloadConfirmPanel(String&&, LocalFrame&) final { return true; }
++    bool canRunBeforeUnloadConfirmPanel() WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    bool runBeforeUnloadConfirmPanel(String&&, LocalFrame&) WEBCORE_EMPTY_CLIENT_FINAL { return true; }
+ 
+-    void closeWindow() final { }
++    void closeWindow() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void rootFrameAdded(const LocalFrame&) final { }
+-    void rootFrameRemoved(const LocalFrame&) final { }
++    void rootFrameAdded(const LocalFrame&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void rootFrameRemoved(const LocalFrame&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void runJavaScriptAlert(LocalFrame&, const String&) final { }
+-    bool runJavaScriptConfirm(LocalFrame&, const String&) final { return false; }
+-    bool runJavaScriptPrompt(LocalFrame&, const String&, const String&, String&) final { return false; }
++    void runJavaScriptAlert(LocalFrame&, const String&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    bool runJavaScriptConfirm(LocalFrame&, const String&) WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    bool runJavaScriptPrompt(LocalFrame&, const String&, const String&, String&) WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ 
+-    RefPtr<PopupMenu> createPopupMenu(PopupMenuClient&) const final;
+-    RefPtr<SearchPopupMenu> createSearchPopupMenu(PopupMenuClient&) const final;
++    RefPtr<PopupMenu> createPopupMenu(PopupMenuClient&) const WEBCORE_EMPTY_CLIENT_FINAL;
++    RefPtr<SearchPopupMenu> createSearchPopupMenu(PopupMenuClient&) const WEBCORE_EMPTY_CLIENT_FINAL;
+ 
+-    KeyboardUIMode keyboardUIMode() final { return KeyboardAccessDefault; }
++    KeyboardUIMode keyboardUIMode() WEBCORE_EMPTY_CLIENT_FINAL { return KeyboardAccessDefault; }
+ 
+-    bool hasAccessoryMousePointingDevice() const final { return false; }
+-    bool hoverSupportedByPrimaryPointingDevice() const final { return false; };
+-    bool hoverSupportedByAnyAvailablePointingDevice() const final { return false; }
+-    std::optional<PointerCharacteristics> pointerCharacteristicsOfPrimaryPointingDevice() const final { return std::nullopt; };
+-    OptionSet<PointerCharacteristics> pointerCharacteristicsOfAllAvailablePointingDevices() const final { return { }; }
++    bool hasAccessoryMousePointingDevice() const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    bool hoverSupportedByPrimaryPointingDevice() const WEBCORE_EMPTY_CLIENT_FINAL { return false; };
++    bool hoverSupportedByAnyAvailablePointingDevice() const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
++    std::optional<PointerCharacteristics> pointerCharacteristicsOfPrimaryPointingDevice() const WEBCORE_EMPTY_CLIENT_FINAL { return std::nullopt; };
++    OptionSet<PointerCharacteristics> pointerCharacteristicsOfAllAvailablePointingDevices() const WEBCORE_EMPTY_CLIENT_FINAL { return { }; }
+ 
+-    void invalidateRootView(const IntRect&) final { }
++    void invalidateRootView(const IntRect&) WEBCORE_EMPTY_CLIENT_FINAL { }
+     void invalidateContentsAndRootView(const IntRect&) override { }
+-    void invalidateContentsForSlowScroll(const IntRect&) final { }
+-    void scroll(const IntSize&, const IntRect&, const IntRect&) final { }
++    void invalidateContentsForSlowScroll(const IntRect&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void scroll(const IntSize&, const IntRect&, const IntRect&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    IntPoint screenToRootView(const IntPoint& p) const final { return p; }
+-    IntPoint rootViewToScreen(const IntPoint& p) const final { return p; }
+-    IntRect rootViewToScreen(const IntRect& r) const final { return r; }
+-    IntPoint accessibilityScreenToRootView(const IntPoint& p) const final { return p; };
+-    IntRect rootViewToAccessibilityScreen(const IntRect& r) const final { return r; };
++    IntPoint screenToRootView(const IntPoint& p) const WEBCORE_EMPTY_CLIENT_FINAL { return p; }
++    IntPoint rootViewToScreen(const IntPoint& p) const WEBCORE_EMPTY_CLIENT_FINAL { return p; }
++    IntRect rootViewToScreen(const IntRect& r) const WEBCORE_EMPTY_CLIENT_FINAL { return r; }
++    IntPoint accessibilityScreenToRootView(const IntPoint& p) const WEBCORE_EMPTY_CLIENT_FINAL { return p; };
++    IntRect rootViewToAccessibilityScreen(const IntRect& r) const WEBCORE_EMPTY_CLIENT_FINAL { return r; };
+ #if PLATFORM(IOS_FAMILY)
+-    void relayAccessibilityNotification(String&&, RetainPtr<NSData>&&) const final { };
+-    void relayAriaNotifyNotification(AriaNotifyData&&) const final { };
+-    void relayLiveRegionNotification(LiveRegionAnnouncementData&&) const final { };
++    void relayAccessibilityNotification(String&&, RetainPtr<NSData>&&) const WEBCORE_EMPTY_CLIENT_FINAL { };
++    void relayAriaNotifyNotification(AriaNotifyData&&) const WEBCORE_EMPTY_CLIENT_FINAL { };
++    void relayLiveRegionNotification(LiveRegionAnnouncementData&&) const WEBCORE_EMPTY_CLIENT_FINAL { };
+ #endif
+ 
+-    void didFinishLoadingImageForElement(HTMLImageElement&) final { }
++    void didFinishLoadingImageForElement(HTMLImageElement&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    PlatformPageClient platformPageClient() const final { return 0; }
+-    void contentsSizeChanged(LocalFrame&, const IntSize&) const final { }
+-    void intrinsicContentsSizeChanged(const IntSize&) const final { }
++    PlatformPageClient platformPageClient() const WEBCORE_EMPTY_CLIENT_FINAL { return 0; }
++    void contentsSizeChanged(LocalFrame&, const IntSize&) const WEBCORE_EMPTY_CLIENT_FINAL { }
++    void intrinsicContentsSizeChanged(const IntSize&) const WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void mouseDidMoveOverElement(const HitTestResult&, OptionSet<PlatformEventModifier>, const String&, TextDirection) final { }
++    void mouseDidMoveOverElement(const HitTestResult&, OptionSet<PlatformEventModifier>, const String&, TextDirection) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void print(LocalFrame&, const StringWithDirection&) final { }
++    void print(LocalFrame&, const StringWithDirection&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void exceededDatabaseQuota(LocalFrame&, const String&, DatabaseDetails) final { }
++    void exceededDatabaseQuota(LocalFrame&, const String&, DatabaseDetails) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    RefPtr<ColorChooser> createColorChooser(ColorChooserClient&, const Color&) final;
++    RefPtr<ColorChooser> createColorChooser(ColorChooserClient&, const Color&) WEBCORE_EMPTY_CLIENT_FINAL;
+ 
+-    RefPtr<DataListSuggestionPicker> createDataListSuggestionPicker(DataListSuggestionsClient&) final;
+-    bool canShowDataListSuggestionLabels() const final { return false; }
++    RefPtr<DataListSuggestionPicker> createDataListSuggestionPicker(DataListSuggestionsClient&) WEBCORE_EMPTY_CLIENT_FINAL;
++    bool canShowDataListSuggestionLabels() const WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ 
+-    RefPtr<DateTimeChooser> createDateTimeChooser(DateTimeChooserClient&) final;
++    RefPtr<DateTimeChooser> createDateTimeChooser(DateTimeChooserClient&) WEBCORE_EMPTY_CLIENT_FINAL;
+ 
+-    void NODELETE setTextIndicator(RefPtr<TextIndicator>&&) const final;
+-    void NODELETE updateTextIndicator(RefPtr<TextIndicator>&&) const final;
++    void NODELETE setTextIndicator(RefPtr<TextIndicator>&&) const WEBCORE_EMPTY_CLIENT_FINAL;
++    void NODELETE updateTextIndicator(RefPtr<TextIndicator>&&) const WEBCORE_EMPTY_CLIENT_FINAL;
+ 
+-    DisplayRefreshMonitorFactory* NODELETE displayRefreshMonitorFactory() const final;
++    DisplayRefreshMonitorFactory* NODELETE displayRefreshMonitorFactory() const WEBCORE_EMPTY_CLIENT_FINAL;
+ 
+-    void NODELETE runOpenPanel(LocalFrame&, FileChooser&) final;
+-    void NODELETE showShareSheet(ShareDataWithParsedURL&&, CompletionHandler<void(bool)>&&) final;
+-    void loadIconForFiles(const Vector<String>&, FileIconLoader&) final { }
++    void NODELETE runOpenPanel(LocalFrame&, FileChooser&) WEBCORE_EMPTY_CLIENT_FINAL;
++    void NODELETE showShareSheet(ShareDataWithParsedURL&&, CompletionHandler<void(bool)>&&) WEBCORE_EMPTY_CLIENT_FINAL;
++    void loadIconForFiles(const Vector<String>&, FileIconLoader&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void elementDidFocus(Element&, const FocusOptions&) final { }
+-    void elementDidBlur(Element&) final { }
++    void elementDidFocus(Element&, const FocusOptions&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void elementDidBlur(Element&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void setCursor(const Cursor&) final { }
+-    void setCursorHiddenUntilMouseMoves(bool) final { }
++    void setCursor(const Cursor&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void setCursorHiddenUntilMouseMoves(bool) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void scrollContainingScrollViewsToRevealRect(const IntRect&) const final { }
+-    void scrollMainFrameToRevealRect(const IntRect&) const final { }
++    void scrollContainingScrollViewsToRevealRect(const IntRect&) const WEBCORE_EMPTY_CLIENT_FINAL { }
++    void scrollMainFrameToRevealRect(const IntRect&) const WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void attachRootGraphicsLayer(LocalFrame&, GraphicsLayer*) final { }
+-    void attachViewOverlayGraphicsLayer(GraphicsLayer*) final { }
+-    void setNeedsOneShotDrawingSynchronization() final { }
+-    void triggerRenderingUpdate() final { }
++    void attachRootGraphicsLayer(LocalFrame&, GraphicsLayer*) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void attachViewOverlayGraphicsLayer(GraphicsLayer*) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void setNeedsOneShotDrawingSynchronization() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void triggerRenderingUpdate() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+ #if PLATFORM(WIN)
+-    void AXStartFrameLoad() final { }
+-    void AXFinishFrameLoad() final { }
++    void AXStartFrameLoad() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void AXFinishFrameLoad() WEBCORE_EMPTY_CLIENT_FINAL { }
+ #endif
+ 
+ #if PLATFORM(PLAYSTATION) || PLATFORM(HAIKU)
+-    void postAccessibilityNotification(AccessibilityObject&, AXNotification) final { }
+-    void postAccessibilityNodeTextChangeNotification(AccessibilityObject*, AXTextChange, unsigned, const String&) final { }
+-    void postAccessibilityFrameLoadingEventNotification(AccessibilityObject*, AXLoadingEvent) final { }
++    void postAccessibilityNotification(AccessibilityObject&, AXNotification) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void postAccessibilityNodeTextChangeNotification(AccessibilityObject*, AXTextChange, unsigned, const String&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void postAccessibilityFrameLoadingEventNotification(AccessibilityObject*, AXLoadingEvent) WEBCORE_EMPTY_CLIENT_FINAL { }
+ #endif
+ 
+ #if ENABLE(IOS_TOUCH_EVENTS)
+-    void didPreventDefaultForEvent() final { }
++    void didPreventDefaultForEvent() WEBCORE_EMPTY_CLIENT_FINAL { }
+ #endif
+ 
+ #if PLATFORM(IOS_FAMILY)
+-    void didReceiveMobileDocType(bool) final { }
+-    void setNeedsScrollNotifications(LocalFrame&, bool) final { }
+-    void notifyRevealedSelectionByScrollingFrame(LocalFrame&) final { }
+-    void didLayout(LayoutType) final { }
+-    void didStartOverflowScroll() final { }
+-    void didEndOverflowScroll() final { }
+-
+-    void suppressFormNotifications() final { }
+-    void restoreFormNotifications() final { }
++    void didReceiveMobileDocType(bool) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void setNeedsScrollNotifications(LocalFrame&, bool) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void notifyRevealedSelectionByScrollingFrame(LocalFrame&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void didLayout(LayoutType) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void didStartOverflowScroll() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void didEndOverflowScroll() WEBCORE_EMPTY_CLIENT_FINAL { }
++
++    void suppressFormNotifications() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void restoreFormNotifications() WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void addOrUpdateScrollingLayer(Node*, PlatformLayer*, PlatformLayer*, const IntSize&, bool, bool) final { }
+-    void removeScrollingLayer(Node*, PlatformLayer*, PlatformLayer*) final { }
++    void addOrUpdateScrollingLayer(Node*, PlatformLayer*, PlatformLayer*, const IntSize&, bool, bool) WEBCORE_EMPTY_CLIENT_FINAL { }
++    void removeScrollingLayer(Node*, PlatformLayer*, PlatformLayer*) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    void webAppOrientationsUpdated() final { }
+-    void showPlaybackTargetPicker(bool, RouteSharingPolicy, const String&) final { }
++    void webAppOrientationsUpdated() WEBCORE_EMPTY_CLIENT_FINAL { }
++    void showPlaybackTargetPicker(bool, RouteSharingPolicy, const String&) WEBCORE_EMPTY_CLIENT_FINAL { }
+ 
+-    bool showDataDetectorsUIForElement(const Element&, const Event&) final { return false; }
++    bool showDataDetectorsUIForElement(const Element&, const Event&) WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ #endif // PLATFORM(IOS_FAMILY)
+ 
+ #if ENABLE(CONTENT_CHANGE_OBSERVER)
+-    void didFinishContentChangeObserving(LocalFrame&, ContentChange) final { }
++    void didFinishContentChangeObserving(LocalFrame&, ContentChange) WEBCORE_EMPTY_CLIENT_FINAL { }
+ #endif
+ 
+ #if ENABLE(ORIENTATION_EVENTS)
+-    IntDegrees deviceOrientation() const final { return 0; }
++    IntDegrees deviceOrientation() const WEBCORE_EMPTY_CLIENT_FINAL { return 0; }
+ #endif
+ 
+ #if PLATFORM(IOS_FAMILY)
+-    bool isStopping() final { return false; }
++    bool isStopping() WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ #endif
+ 
+-    void wheelEventHandlersChanged(bool) final { }
++    void wheelEventHandlersChanged(bool) WEBCORE_EMPTY_CLIENT_FINAL { }
+     
+-    bool isEmptyChromeClient() const final { return true; }
++    bool isEmptyChromeClient() const WEBCORE_EMPTY_CLIENT_FINAL { return true; }
+ 
+-    void didAssociateFormControls(const Vector<Ref<Element>>&, LocalFrame&) final { }
+-    bool shouldNotifyOnFormChanges() final { return false; }
++    void didAssociateFormControls(const Vector<Ref<Element>>&, LocalFrame&) WEBCORE_EMPTY_CLIENT_FINAL { }
++    bool shouldNotifyOnFormChanges() WEBCORE_EMPTY_CLIENT_FINAL { return false; }
+ 
+-    RefPtr<Icon> createIconForFiles(const Vector<String>& /* filenames */) final;
++    RefPtr<Icon> createIconForFiles(const Vector<String>& ) WEBCORE_EMPTY_CLIENT_FINAL;
+ };
+ 
+ DiagnosticLoggingClient& NODELETE emptyDiagnosticLoggingClient();

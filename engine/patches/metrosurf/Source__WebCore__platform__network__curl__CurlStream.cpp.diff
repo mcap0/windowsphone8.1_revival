@@ -1,0 +1,57 @@
+--- a/Source/WebCore/platform/network/curl/CurlStream.cpp
++++ b/Source/WebCore/platform/network/curl/CurlStream.cpp
+@@ -30,6 +30,9 @@
+ #include "SharedBuffer.h"
+ #include "SocketStreamError.h"
+ #include <wtf/TZoneMallocInlines.h>
++#if defined(WP81)
++#include <array>
++#endif
+ 
+ #if USE(CURL)
+ 
+@@ -136,10 +139,17 @@
+     if (!m_curlHandle)
+         return;
+ 
++#if defined(WP81)
++    std::array<uint8_t, kReceiveBufferSize> stackBuffer;
++    size_t bytesReceived = 0;
++
++    auto errorCode = m_curlHandle->receive(stackBuffer.data(), kReceiveBufferSize, bytesReceived);
++#else
+     Vector<uint8_t> receiveBuffer(kReceiveBufferSize);
+     size_t bytesReceived = 0;
+ 
+     auto errorCode = m_curlHandle->receive(receiveBuffer.mutableSpan().data(), kReceiveBufferSize, bytesReceived);
++#endif
+     if (errorCode != CURLE_OK) {
+         if (errorCode != CURLE_AGAIN)
+             notifyFailure(errorCode);
+@@ -150,7 +160,11 @@
+     if (!bytesReceived)
+         destroyHandle();
+ 
++#if defined(WP81)
++    Vector<uint8_t> receiveBuffer(std::span<const uint8_t>(stackBuffer.data(), bytesReceived));
++#else
+     receiveBuffer.resize(bytesReceived);
++#endif
+     m_scheduler.callClientOnMainThread(m_streamID, [streamID = m_streamID, buffer = SharedBuffer::create(WTF::move(receiveBuffer))](Client& client) {
+         client.didReceiveData(streamID, buffer);
+     });
+@@ -188,9 +202,14 @@
+     CertificateInfo certificateInfo;
+     if (auto info = m_curlHandle->certificateInfo())
+         certificateInfo = WTF::move(*info);
++    auto errorMessage = m_curlHandle->errorMessage().isolatedCopy();
+ 
+     destroyHandle();
+ 
++    m_scheduler.callClientOnMainThread(m_streamID, [streamID = m_streamID, errorMessage = WTF::move(errorMessage)](Client& client) mutable {
++        client.didReceiveErrorMessage(streamID, WTF::move(errorMessage));
++    });
++
+     m_scheduler.callClientOnMainThread(m_streamID, [streamID = m_streamID, errorCode, certificateInfo = WTF::move(certificateInfo)](Client& client) mutable {
+         client.didFail(streamID, errorCode, WTF::move(certificateInfo));
+     });

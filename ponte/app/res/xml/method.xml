@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RemotoIme: no settings, no subtypes; Remoto switches to it for a session and back after. -->
+<input-method xmlns:android="http://schemas.android.com/apk/res/android" android:isDefault="false" />

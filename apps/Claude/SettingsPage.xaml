@@ -1,0 +1,22 @@
+<Page x:Class="Claude.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#262624">
+  <ScrollViewer>
+    <StackPanel Margin="12,8">
+      <TextBlock Text="Impostazioni" FontSize="20" FontWeight="SemiBold" />
+      <PasswordBox x:Name="KeyBox" Header="Chiave API di Anthropic" PlaceholderText="sk-ant-…" Margin="0,16,0,0" />
+      <TextBlock FontSize="12" Opacity="0.6" TextWrapping="Wrap" Margin="0,4,0,0"
+                 Text="Si crea su console.anthropic.com. Resta solo nel telefono, nell'archivio protetto delle credenziali." />
+      <ComboBox x:Name="ModelBox" Header="Modello" HorizontalAlignment="Stretch" Margin="0,16,0,0" />
+      <ToggleSwitch x:Name="SearchSwitch" Header="Ricerca sul web" Margin="0,16,0,0" />
+      <TextBlock FontSize="12" Opacity="0.6" TextWrapping="Wrap"
+                 Text="Claude può cercare sul web per le domande su fatti recenti (costa qualcosa in più per ricerca)." />
+      <TextBox x:Name="SystemBox" Header="Istruzioni per Claude" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="100" Margin="0,16,0,0" />
+      <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+        <Button Content="Salva" Click="OnSave" Background="#D97757" Margin="0,0,8,0" />
+        <Button Content="Istruzioni predefinite" Click="OnDefaultSystem" />
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</Page>

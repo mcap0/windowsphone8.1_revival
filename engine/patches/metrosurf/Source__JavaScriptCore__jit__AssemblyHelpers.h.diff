@@ -1,0 +1,18 @@
+--- a/Source/JavaScriptCore/jit/AssemblyHelpers.h
++++ b/Source/JavaScriptCore/jit/AssemblyHelpers.h
+@@ -2109,6 +2109,7 @@
+         storePtr(TrustedImmPtr(nullptr), Address(resultGPR, JSObject::butterflyOffset()));
+     }
+ 
++#if USE(JSVALUE64)
+     template<typename StructureType>
+     void emitAllocateJSBigInt64(VM& vm, GPRReg resultGPR, GPRReg valueGPR, GPRReg scratchGPR1, GPRReg scratchGPR2, StructureType structure, bool isSigned, JumpList& slowCases)
+     {
+@@ -2141,6 +2142,7 @@
+ 
+         done.link(this);
+     }
++#endif
+ 
+     enum LazyGlobalObjectLoadTag { LazyBaselineGlobalObject };
+     JumpList branchIfValue(VM&, JSValueRegs, GPRReg scratch, GPRReg scratchIfShouldCheckMasqueradesAsUndefined, FPRReg, FPRReg, bool shouldCheckMasqueradesAsUndefined, Variant<JSGlobalObject*, GPRReg, LazyGlobalObjectLoadTag>, bool negateResult);

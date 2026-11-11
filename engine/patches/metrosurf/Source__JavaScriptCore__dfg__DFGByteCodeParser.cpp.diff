@@ -1,0 +1,54 @@
+--- a/Source/JavaScriptCore/dfg/DFGByteCodeParser.cpp
++++ b/Source/JavaScriptCore/dfg/DFGByteCodeParser.cpp
+@@ -11059,6 +11059,19 @@
+                 NEXT_OPCODE(op_enumerator_put_by_val);
+             }
+ 
++            if (!is64Bit()) {
++                addVarArgChild(base);
++                addVarArgChild(propertyName);
++                addVarArgChild(value);
++                addVarArgChild(nullptr);
++                addVarArgChild(nullptr);
++                addToGraph(Node::VarArg, PutByVal, OpInfo(ArrayMode(Array::Generic, Array::Write).asWord()), OpInfo(bytecode.m_ecmaMode));
++                addToGraph(Phantom, index);
++                addToGraph(Phantom, mode);
++                addToGraph(Phantom, enumerator);
++                NEXT_OPCODE(op_enumerator_put_by_val);
++            }
++
+             // FIXME: Checking for a BadConstantValue causes us to always use the Generic variant if we switched from IndexedMode -> IndexedMode + OwnStructureMode even though that might be fine.
+             PutByStatus putByStatus = PutByStatus::computeFor(m_inlineStackTop->m_profiledBlock, m_inlineStackTop->m_baselineMap, m_icContextStack, currentCodeOrigin());
+             if (putByStatus.isMegamorphic()) {
+@@ -11610,13 +11623,13 @@
+     }
+     if (!globalObject->stringIteratorProtocolWatchpointSet().isStillValid())
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastString);
+-    if (!globalObject->mapIteratorProtocolWatchpointSet().isStillValid()) {
++    if (!is64Bit() || !globalObject->mapIteratorProtocolWatchpointSet().isStillValid()) {
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMap);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapKeys);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapValues);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapEntries);
+     }
+-    if (!globalObject->setIteratorProtocolWatchpointSet().isStillValid()) {
++    if (!is64Bit() || !globalObject->setIteratorProtocolWatchpointSet().isStillValid()) {
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSet);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSetValues);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSetEntries);
+@@ -12244,13 +12257,13 @@
+     }
+     if (!globalObject->stringIteratorProtocolWatchpointSet().isStillValid())
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastString);
+-    if (!globalObject->mapIteratorProtocolWatchpointSet().isStillValid()) {
++    if (!is64Bit() || !globalObject->mapIteratorProtocolWatchpointSet().isStillValid()) {
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMap);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapKeys);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapValues);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastMapEntries);
+     }
+-    if (!globalObject->setIteratorProtocolWatchpointSet().isStillValid()) {
++    if (!is64Bit() || !globalObject->setIteratorProtocolWatchpointSet().isStillValid()) {
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSet);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSetValues);
+         seenModes &= ~static_cast<uint32_t>(IterationMode::FastSetEntries);

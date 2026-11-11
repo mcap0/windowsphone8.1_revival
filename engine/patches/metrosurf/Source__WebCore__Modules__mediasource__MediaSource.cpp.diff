@@ -1,0 +1,13 @@
+--- a/Source/WebCore/Modules/mediasource/MediaSource.cpp
++++ b/Source/WebCore/Modules/mediasource/MediaSource.cpp
+@@ -76,6 +76,10 @@
+ #include <wtf/TZoneMallocInlines.h>
+ #include <wtf/text/MakeString.h>
+ 
++#if OS(WINDOWS)
++using ssize_t = std::make_signed_t<size_t>;
++#endif
++
+ namespace WebCore {
+ 
+ WTF_MAKE_TZONE_ALLOCATED_IMPL(MediaSource);

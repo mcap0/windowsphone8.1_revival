@@ -1,0 +1,23 @@
+<Page
+    x:Class="Telegram.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer>
+        <StackPanel Margin="24,24,24,16">
+            <TextBlock Text="Telegram" FontSize="34" FontWeight="SemiBold" Margin="0,0,0,12" />
+            <TextBlock x:Name="StepText" Text="Inserisci il tuo numero di telefono"
+                       FontSize="18" TextWrapping="Wrap" />
+            <TextBox x:Name="PhoneBox" Header="Numero di telefono" Text="+39"
+                     InputScope="TelephoneNumber" />
+            <TextBox x:Name="CodeBox" Header="Codice" InputScope="Number"
+                     Visibility="Collapsed" />
+            <PasswordBox x:Name="PasswordBox" Header="Password" Visibility="Collapsed" />
+            <TextBlock x:Name="PasswordHintText" Opacity="0.7" TextWrapping="Wrap"
+                       Visibility="Collapsed" />
+            <TextBlock x:Name="ErrorText" Foreground="Red" TextWrapping="Wrap" />
+            <Button x:Name="ContinueButton" Content="Avanti" HorizontalAlignment="Stretch"
+                    Click="Continue_Click" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

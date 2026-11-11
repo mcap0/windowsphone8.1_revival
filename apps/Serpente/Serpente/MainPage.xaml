@@ -1,0 +1,25 @@
+<Page
+    x:Class="Serpente.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Black">
+    <Grid x:Name="Root" Background="Black" ManipulationMode="TranslateX,TranslateY" Margin="12,8,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Margin="0,0,0,8">
+            <TextBlock x:Name="ScoreText" FontSize="28" Foreground="White" Text="0" />
+            <TextBlock x:Name="BestText" FontSize="20" Foreground="#9E9E9E" HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom" />
+        </Grid>
+        <Grid x:Name="Area" Grid.Row="1">
+            <Border x:Name="BoardFrame" BorderBrush="#424242" BorderThickness="1" HorizontalAlignment="Center"
+                    VerticalAlignment="Top">
+                <Canvas x:Name="Board" />
+            </Border>
+            <TextBlock x:Name="Message" FontSize="26" Foreground="White" TextAlignment="Center" TextWrapping="Wrap"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24,0" IsHitTestVisible="False" />
+        </Grid>
+    </Grid>
+</Page>

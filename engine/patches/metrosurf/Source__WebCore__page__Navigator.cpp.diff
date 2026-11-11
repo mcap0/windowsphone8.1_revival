@@ -1,0 +1,12 @@
+--- a/Source/WebCore/page/Navigator.cpp
++++ b/Source/WebCore/page/Navigator.cpp
+@@ -455,6 +455,9 @@
+ 
+ int Navigator::maxTouchPoints() const
+ {
++#if defined(WP81)
++    return 5;
++#endif
+ #if ENABLE(IOS_TOUCH_EVENTS) && !PLATFORM(MACCATALYST)
+     RefPtr document = this->document();
+     if (!document || !document->quirks().needsZeroMaxTouchPointsQuirk())

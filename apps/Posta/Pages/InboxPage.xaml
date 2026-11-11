@@ -1,0 +1,78 @@
+<Page
+    x:Class="Posta.Pages.InboxPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="MailItemTemplate">
+            <Border Background="Transparent" HorizontalAlignment="Stretch" Padding="8,8,8,12">
+                <StackPanel>
+                    <TextBlock Text="{Binding From}" FontWeight="{Binding Weight}"
+                               TextTrimming="CharacterEllipsis" FontSize="18" />
+                    <TextBlock Text="{Binding Subject}" FontWeight="{Binding Weight}"
+                               TextTrimming="CharacterEllipsis" FontSize="16" Opacity="0.9" />
+                    <TextBlock Text="{Binding DateText}" FontSize="13" Opacity="0.6" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Aggiorna" Click="RefreshButton_Click" />
+            <AppBarButton Icon="Edit" Label="Scrivi" Click="ComposeButton_Click" />
+            <AppBarButton Icon="Contact" Label="Account" Click="AccountButton_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="16,8,16,0">
+            <ProgressBar x:Name="Busy" IsIndeterminate="False" Visibility="Collapsed" />
+            <TextBlock x:Name="StatusText" TextWrapping="Wrap" Opacity="0.8" FontSize="16" />
+        </StackPanel>
+
+        <Pivot x:Name="FolderPivot" Grid.Row="1" SelectionChanged="FolderPivot_SelectionChanged">
+            <PivotItem Header="Posta in arrivo">
+                <ListView x:Name="InboxList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+            <PivotItem Header="Inviati">
+                <ListView x:Name="SentList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+            <PivotItem Header="Bozze">
+                <ListView x:Name="DraftsList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+            <PivotItem Header="Cestino">
+                <ListView x:Name="TrashList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+            <PivotItem Header="Spam">
+                <ListView x:Name="SpamList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+            <PivotItem Header="Tutti">
+                <ListView x:Name="AllList" Margin="8,0" SelectionMode="None"
+                          IsItemClickEnabled="True" ItemClick="MailList_ItemClick"
+                          ItemTemplate="{StaticResource MailItemTemplate}" />
+            </PivotItem>
+        </Pivot>
+
+        <Button x:Name="LoadMoreButton" Grid.Row="2" Content="Carica altri 50"
+                HorizontalAlignment="Stretch" Margin="8,4,8,4"
+                Click="LoadMoreButton_Click" Visibility="Collapsed" />
+    </Grid>
+</Page>

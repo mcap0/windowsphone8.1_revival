@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Prove browser</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+a{display:block;color:#fff;background:#1976d2;padding:14px;margin:10px 0;text-decoration:none;font-size:20px}
+small{display:block;color:#aaa;font-size:13px;margin-top:4px}#ua{font-size:12px;color:#888;word-wrap:break-word}
+</style></head><body>
+<h2>Prove browser</h2>
+<p id="eng"></p>
+<a href="scroll-plain.html">Scorrimento semplice<small>come sopra, senza script n&eacute; requestAnimationFrame</small></a>
+<a href="scroll-busy.html">Scorrimento con pagina occupata<small>scorri mentre il JS blocca la pagina</small></a>
+<a href="type-busy.html">Scrittura con pagina occupata<small>scrivi in 5 tipi di casella, libera e occupata</small></a>
+<a href="lag.html">Ritardo tocchi e tasti<small>la prova del 21 ottobre</small></a>
+<a href="alloc.html">Motore: JS, memoria, DOM<small>oggetti, GC, JSON, layout</small></a>
+<a href="bench.html">Benchmark JS<small>la prova del 21 ottobre</small></a>
+<a href="canvas.html">Canvas e storage<small>canvas animato (captcha), localStorage e IndexedDB dopo il riavvio</small></a>
+<a href="websocket.html">WebSocket<small>eco sul PC (ws://) e pubblica con TLS (wss://): chat, WhatsApp Web, Telegram Web</small></a>
+<a href="dialogs.html">Dialoghi, schede, Indietro<small>alert, confirm, prompt, &ldquo;lasciare la pagina?&rdquo;, link in nuova scheda, trova nella pagina</small></a>
+<a href="files.html">Download e file<small>allegati, file grandi, POST, blob:, salva immagine, carica file al PC</small></a>
+<a href="popup.html">Finestre popup<small>window.open con opener, come i login "Accedi con Google"</small></a>
+<a href="cache.html">Cache su disco<small>ricarica e riapri l'app: i file devono arrivare dal telefono, non dal server</small></a>
+<a href="anim.html">Animazione su pagina lunga<small>il caso di poste.it: quanto costa al motore un elemento piccolo che si muove</small></a>
+<a href="campi.html">Campi di testo<small>editor come Gmail, password con etichetta come poste.it, bersagli piccoli</small></a>
+<a href="viewport.html">Zoom e larghezza delle pagine<small>meta viewport come Safari: pagine desktop adattate allo schermo, zoom indietro fino al contenuto intero</small></a>
+<a href="moduli.html">Moduli e dispositivo<small>select, date, colore, posizione, appunti, condividi, schermo intero, password HTTP</small></a>
+<a href="media.html">Audio e video<small>mp4, mp3, HLS, MSE: cosa parte e fin dove arriva</small></a>
+<a href="features.html">Funzioni dei siti moderni<small>cosa manca per Google, Claude, WhatsApp, Telegram, YouTube</small></a>
+<p id="ua"></p>
+<script src="common.js"></script><script>
+T.$("eng").textContent = "Motore: " + T.engine();
+T.$("ua").textContent = navigator.userAgent;
+</script></body></html>

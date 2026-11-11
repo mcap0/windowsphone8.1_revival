@@ -1,0 +1,14 @@
+--- a/Source/WTF/wtf/simde/arm/neon.h
++++ b/Source/WTF/wtf/simde/arm/neon.h
+@@ -105336,8 +105336,10 @@
+       __asm__ __volatile__("pause");
+     #endif
+   #elif defined(SIMDE_ARCH_ARM_NEON)
+-    #if defined(_MSC_VER)
++    #if defined(_MSC_VER) && defined(SIMDE_ARCH_AARCH64)
+       __isb(SIMDE_ARM64_BARRIER_SY);
++    #elif defined(_MSC_VER)
++      __isb(SIMDE_ARM_BARRIER_SY);
+     #else
+       __asm__ __volatile__("isb\n");
+     #endif

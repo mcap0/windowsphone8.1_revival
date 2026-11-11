@@ -1,0 +1,88 @@
+--- a/Source/WebCore/platform/graphics/ImageFrameWorkQueue.cpp
++++ b/Source/WebCore/platform/graphics/ImageFrameWorkQueue.cpp
+@@ -28,6 +28,10 @@
+ 
+ #include "BitmapImageSource.h"
+ #include "ImageDecoder.h"
++#if defined(WP81)
++#include <array>
++#include <wtf/NeverDestroyed.h>
++#endif
+ #include "Logging.h"
+ #include <wtf/SystemTracing.h>
+ #include <wtf/text/TextStream.h>
+@@ -117,6 +121,55 @@
+     });
+ }
+ 
++#if defined(WP81)
++static WorkQueue& wp81SharedDecodingQueue(const void* image)
++{
++    static NeverDestroyed<std::array<Ref<WorkQueue>, 2>> queues(std::array<Ref<WorkQueue>, 2> {
++        WorkQueue::create("org.webkit.ImageDecoder"_s, WorkQueue::QOS::Default),
++        WorkQueue::create("org.webkit.ImageDecoder"_s, WorkQueue::QOS::Default)
++    });
++    return queues.get()[(reinterpret_cast<uintptr_t>(image) >> 6) & 1].get();
++}
++
++void ImageFrameWorkQueue::dispatch(const Request& request)
++{
++    ASSERT(isMainThread());
++
++    decodeQueue().append(request);
++
++    RefPtr decoder = m_source.get()->decoder();
++    if (!decoder)
++        return;
++    if (!m_workQueue)
++        m_workQueue = Ref { wp81SharedDecodingQueue(this) };
++
++    unsigned generation = m_wp81Generation.load();
++    protect(m_workQueue)->dispatch([protectedThis = Ref { *this }, protectedSource = m_source.get(), protectedDecoder = decoder.releaseNonNull(), request = Request { request }, generation] () mutable {
++        RefPtr<NativeImage> nativeImage;
++        bool stale = protectedThis->m_wp81Generation.load() != generation;
++        if (!stale) {
++            TraceScope tracingScope(AsyncImageDecodeStart, AsyncImageDecodeEnd);
++            DecodingDestination decodingDestination = request.options.decodingDestination();
++            if (auto result = protectedDecoder->createNativeImageAtIndex(request.index, request.subsamplingLevel, request.options)) {
++                nativeImage = WTF::move(std::get<Ref<NativeImage>>(*result));
++                decodingDestination = std::get<DecodingDestination>(*result);
++            }
++            request.options = { request.options.decodingMode(), decodingDestination, request.options.sizeForDrawing() };
++        }
++
++        callOnMainThread([protectedThis = WTF::move(protectedThis), protectedSource = WTF::move(protectedSource), request, generation, stale, nativeImage = WTF::move(nativeImage)] () mutable {
++            if (stale || generation != protectedThis->m_wp81Generation.load() || protectedSource.ptr() != protectedThis->m_source.get().ptr())
++                return;
++
++            if (protectedThis->decodeQueue().isEmpty() || !request.isCompatibleWith(protectedThis->decodeQueue().first()))
++                return;
++
++            protectedThis->decodeQueue().removeFirst();
++            protectedSource->imageFrameDecodeAtIndexHasFinished(request.index, request.subsamplingLevel, request.animatingState, request.options, WTF::move(nativeImage));
++        });
++    });
++}
++#else
+ void ImageFrameWorkQueue::dispatch(const Request& request)
+ {
+     ASSERT(isMainThread());
+@@ -126,6 +179,7 @@
+ 
+     start();
+ }
++#endif
+ 
+ void ImageFrameWorkQueue::stop()
+ {
+@@ -138,6 +192,10 @@
+         source->destroyNativeImageAtIndex(request.index);
+     }
+ 
++#if defined(WP81)
++    m_wp81Generation++;
++#endif
++
+     if (m_requestQueue) {
+         protect(m_requestQueue)->close();
+         m_requestQueue = nullptr;

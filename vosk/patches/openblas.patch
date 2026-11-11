@@ -1,0 +1,205 @@
+diff --git a/cmake/prebuild.cmake b/cmake/prebuild.cmake
+index 4c100a7..acceddc 100644
+--- a/cmake/prebuild.cmake
++++ b/cmake/prebuild.cmake
+@@ -832,8 +832,8 @@ if (DEFINED CORE AND CMAKE_CROSSCOMPILING AND NOT (${HOST_OS} STREQUAL "WINDOWSS
+       "#define DTB_DEFAULT_ENTRIES\t64\n"
+       "#define DTB_SIZE\t4096\n"
+       "#define L2_ASSOCIATIVE\t4\n")
+-    set(SGEMM_UNROLL_M 2)
+-    set(SGEMM_UNROLL_N 2)
++    set(SGEMM_UNROLL_M 8)
++    set(SGEMM_UNROLL_N 4)
+     set(DGEMM_UNROLL_M 2)
+     set(DGEMM_UNROLL_N 2)
+     set(CGEMM_UNROLL_M 2)
+diff --git a/common.h b/common.h
+index 8d002c4..8883bc3 100644
+--- a/common.h
++++ b/common.h
+@@ -531,6 +531,25 @@ static __inline void blas_lock(volatile BLASULONG *address){
+ #define BLAS_LOCK_DEFINED
+ #endif
+ 
++/* WP8.1 (clang-cl, ARM32): not __GNUC__, so the generic fallbacks above are skipped */
++#if !defined(RPCC_DEFINED) && defined(OS_WINDOWS)
++static __inline unsigned long long rpcc(void){
++  LARGE_INTEGER c;
++  QueryPerformanceCounter(&c);
++  return (unsigned long long)c.QuadPart;
++}
++#define RPCC_DEFINED
++#define RPCC64BIT
++#endif
++#if !defined(BLAS_LOCK_DEFINED) && defined(__clang__)
++static __inline void blas_lock(volatile BLASULONG *address){
++  do {
++    while (*address) {YIELDING;};
++  } while (!__sync_bool_compare_and_swap(address, 0, 1));
++}
++#define BLAS_LOCK_DEFINED
++#endif
++
+ #ifndef RPCC_DEFINED
+ #error "rpcc() implementation is missing for your platform"
+ #endif
+diff --git a/kernel/arm/KERNEL.ARMV5 b/kernel/arm/KERNEL.ARMV5
+index e977dda..35caf0d 100644
+--- a/kernel/arm/KERNEL.ARMV5
++++ b/kernel/arm/KERNEL.ARMV5
+@@ -86,14 +86,19 @@ DGEMVTKERNEL = ../arm/gemv_t.c
+ CGEMVTKERNEL = ../arm/zgemv_t.c
+ ZGEMVTKERNEL = ../arm/zgemv_t.c
+ 
+-STRMMKERNEL	= ../generic/trmmkernel_2x2.c
++STRMMKERNEL	= ../generic/trmmkernel_8x4.c
+ DTRMMKERNEL	= ../generic/trmmkernel_2x2.c
+ CTRMMKERNEL	= ../generic/ztrmmkernel_2x2.c
+ ZTRMMKERNEL	= ../generic/ztrmmkernel_2x2.c
+ 
+-SGEMMKERNEL    =  ../generic/gemmkernel_2x2.c
+-SGEMMONCOPY    =  ../generic/gemm_ncopy_2.c
+-SGEMMOTCOPY    =  ../generic/gemm_tcopy_2.c
++# dumbphone (WP8.1, Krait): 8x4 kernel in clang vector extensions = NEON (PLAN.md §59.5)
++SGEMMKERNEL    =  sgemm_kernel_8x4_wp.c
++SGEMMINCOPY    =  ../generic/gemm_ncopy_8.c
++SGEMMITCOPY    =  ../generic/gemm_tcopy_8.c
++SGEMMINCOPYOBJ =  sgemm_incopy.o
++SGEMMITCOPYOBJ =  sgemm_itcopy.o
++SGEMMONCOPY    =  ../generic/gemm_ncopy_4.c
++SGEMMOTCOPY    =  ../generic/gemm_tcopy_4.c
+ SGEMMONCOPYOBJ =  sgemm_oncopy.o
+ SGEMMOTCOPYOBJ =  sgemm_otcopy.o
+ 
+diff --git a/kernel/arm/sgemm_kernel_8x4_wp.c b/kernel/arm/sgemm_kernel_8x4_wp.c
+new file mode 100644
+index 0000000..435c03f
+--- /dev/null
++++ b/kernel/arm/sgemm_kernel_8x4_wp.c
+@@ -0,0 +1,98 @@
++/* sgemm kernel 8x4 for Windows Phone 8.1 ARM (Krait, NEON), dumbphone vosk/ (PLAN.md §59.5).
++ * Written with clang vector extensions (4 x float = one NEON q register): the same source builds NEON code on the
++ * phone and SSE code on the PC, where it is checked against a plain loop (vosk/blastest.c). The ARM assembly kernels
++ * of OpenBLAS are ARM-mode GNU assembly with the Linux ABI, not usable on Windows (Thumb-2 only).
++ * Packed operands as the generic kernels: ba = blocks of 8 rows (then 4, 2, 1 for the tail), k-major; bb = blocks
++ * of 4 columns (then 2, 1), k-major. C (column-major, ldc) += alpha * A * B. */
++#include "common.h"
++
++typedef float v4 __attribute__((vector_size(16)));
++
++static inline v4 ld(const float *p) { v4 v; __builtin_memcpy(&v, p, 16); return v; }
++static inline void st(float *p, v4 v) { __builtin_memcpy(p, &v, 16); }
++
++/* MR in {8, 4} rows (vectors), NR in {4, 2, 1} columns: inlined with constant sizes, loops unrolled */
++static inline __attribute__((always_inline)) void block_v(int mr, int nr, BLASLONG bk, FLOAT alpha,
++                                                          const float *a, const float *b, float *c, BLASLONG ldc) {
++  v4 acc[2][4] = {{{0}}};
++  const int mv = mr / 4;
++  BLASLONG k = 0;
++  for (; k + 1 < bk; k += 2) {  /* two steps of k per turn: more independent multiply-adds in flight */
++    v4 a0 = ld(a), a1 = mv > 1 ? ld(a + 4) : a0;
++    v4 a2 = ld(a + mr), a3 = mv > 1 ? ld(a + mr + 4) : a2;
++    for (int j = 0; j < nr; j++) {
++      acc[0][j] += a0 * b[j];
++      if (mv > 1) acc[1][j] += a1 * b[j];
++    }
++    for (int j = 0; j < nr; j++) {
++      acc[0][j] += a2 * b[nr + j];
++      if (mv > 1) acc[1][j] += a3 * b[nr + j];
++    }
++    a += 2 * mr;
++    b += 2 * nr;
++  }
++  for (; k < bk; k++) {
++    v4 a0 = ld(a), a1 = mv > 1 ? ld(a + 4) : a0;
++    for (int j = 0; j < nr; j++) {
++      acc[0][j] += a0 * b[j];
++      if (mv > 1) acc[1][j] += a1 * b[j];
++    }
++    a += mr;
++    b += nr;
++  }
++  for (int j = 0; j < nr; j++) {
++    float *cj = c + j * ldc;
++    st(cj, ld(cj) + acc[0][j] * alpha);
++    if (mv > 1) st(cj + 4, ld(cj + 4) + acc[1][j] * alpha);
++  }
++}
++
++/* tails of 2 or 1 rows: scalar */
++static inline __attribute__((always_inline)) void block_s(int mr, int nr, BLASLONG bk, FLOAT alpha,
++                                                          const float *a, const float *b, float *c, BLASLONG ldc) {
++  float acc[2][4] = {{0}};
++  for (BLASLONG k = 0; k < bk; k++) {
++    for (int j = 0; j < nr; j++)
++      for (int i = 0; i < mr; i++) acc[i][j] += a[i] * b[j];
++    a += mr;
++    b += nr;
++  }
++  for (int j = 0; j < nr; j++)
++    for (int i = 0; i < mr; i++) c[i + j * ldc] += alpha * acc[i][j];
++}
++
++static inline __attribute__((always_inline)) void columns(int nr, BLASLONG bm, BLASLONG bk, FLOAT alpha,
++                                                          const float *ba, const float *bb, float *c, BLASLONG ldc) {
++  const float *a = ba;
++  BLASLONG i = 0;
++  for (; i + 8 <= bm; i += 8) {
++    block_v(8, nr, bk, alpha, a, bb, c + i, ldc);
++    a += 8 * bk;
++  }
++  if (bm & 4) {
++    block_v(4, nr, bk, alpha, a, bb, c + i, ldc);
++    a += 4 * bk;
++    i += 4;
++  }
++  if (bm & 2) {
++    block_s(2, nr, bk, alpha, a, bb, c + i, ldc);
++    a += 2 * bk;
++    i += 2;
++  }
++  if (bm & 1) block_s(1, nr, bk, alpha, a, bb, c + i, ldc);
++}
++
++int CNAME(BLASLONG bm, BLASLONG bn, BLASLONG bk, FLOAT alpha, IFLOAT *ba, IFLOAT *bb, FLOAT *C, BLASLONG ldc) {
++  BLASLONG j = 0;
++  for (; j + 4 <= bn; j += 4) {
++    columns(4, bm, bk, alpha, ba, bb, C + j * ldc, ldc);
++    bb += 4 * bk;
++  }
++  if (bn & 2) {
++    columns(2, bm, bk, alpha, ba, bb, C + j * ldc, ldc);
++    bb += 2 * bk;
++    j += 2;
++  }
++  if (bn & 1) columns(1, bm, bk, alpha, ba, bb, C + j * ldc, ldc);
++  return 0;
++}
+diff --git a/lapack-netlib/LAPACKE/include/lapack.h b/lapack-netlib/LAPACKE/include/lapack.h
+index 0ed9ad0..51d0686 100644
+--- a/lapack-netlib/LAPACKE/include/lapack.h
++++ b/lapack-netlib/LAPACKE/include/lapack.h
+@@ -17,7 +17,7 @@
+ /* It seems all current Fortran compilers put strlen at end.
+ *  Some historical compilers put strlen after the str argument
+ *  or make the str argument into a struct. */
+-#ifndef __EMSCRIPTEN__
++#if !defined(__EMSCRIPTEN__) && !defined(WP81_NO_FORTRAN_STRLEN)  /* Kaldi calls LAPACK without the hidden string lengths */
+ #define LAPACK_FORTRAN_STRLEN_END
+ #endif
+ 
+diff --git a/param.h b/param.h
+index 48b64fd..a4fd5ef 100644
+--- a/param.h
++++ b/param.h
+@@ -3759,8 +3759,8 @@ Until then, just keep it different than DGEMM_DEFAULT_UNROLL_N to keep copy rout
+ #define GEMM_DEFAULT_OFFSET_B 0
+ #define GEMM_DEFAULT_ALIGN (BLASLONG)0x03fffUL
+ 
+-#define SGEMM_DEFAULT_UNROLL_M  2
+-#define SGEMM_DEFAULT_UNROLL_N  2
++#define SGEMM_DEFAULT_UNROLL_M  8
++#define SGEMM_DEFAULT_UNROLL_N  4
+ 
+ #define DGEMM_DEFAULT_UNROLL_M  2
+ #define DGEMM_DEFAULT_UNROLL_N  2

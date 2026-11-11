@@ -1,0 +1,92 @@
+<Page x:Class="Perle.App.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid Margin="12,8,12,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Perle" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" />
+      <ComboBox x:Name="GroupBox" Grid.Column="1" HorizontalAlignment="Stretch" PlaceholderText="Cartella"
+                DisplayMemberPath="Name" SelectionChanged="OnGroupChanged" />
+    </Grid>
+    <StackPanel Grid.Row="1" Margin="12,6">
+      <ProgressBar x:Name="Progress" Visibility="Collapsed" />
+      <TextBlock x:Name="InfoText" FontSize="12" Opacity="0.7" TextWrapping="Wrap" />
+    </StackPanel>
+    <TextBlock x:Name="EmptyText" Grid.Row="2" Margin="12" TextWrapping="Wrap" Visibility="Collapsed"
+               Text="Nessun video trovato. Prova ad aggiornare, o controlla che il gruppo contenga dei canali." />
+    <ListView x:Name="List" Grid.Row="2" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnVideoClick"
+              Holding="OnHolding" RightTapped="OnRightTapped">
+      <ListView.ItemContainerStyle>
+        <Style TargetType="ListViewItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="Padding" Value="12,6" />
+        </Style>
+      </ListView.ItemContainerStyle>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="160" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Width="160" Height="90" Background="#222">
+              <Image Source="{Binding Thumbnail}" Stretch="UniformToFill" />
+              <Border Background="#CC000000" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4" Padding="4,1">
+                <TextBlock Text="{Binding DurationText}" FontSize="12" />
+              </Border>
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+              <TextBlock Text="{Binding Title}" TextWrapping="Wrap" MaxLines="3" TextTrimming="CharacterEllipsis" FontSize="15" />
+              <TextBlock Text="{Binding Uploader}" FontSize="12" Opacity="0.7" Margin="0,4,0,0" />
+              <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.7" />
+            </StackPanel>
+          </Grid>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+    <Grid x:Name="Snackbar" Grid.Row="3" Background="#333" Padding="12,8" Visibility="Collapsed">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Questo video non verrà più mostrato in Perle" TextWrapping="Wrap" VerticalAlignment="Center" />
+      <Button Grid.Column="1" Content="Annulla" Click="OnUndo" Margin="8,0,0,0" />
+    </Grid>
+    <!-- CastBar: shown while a video is cast, opens the remote control again -->
+    <Grid x:Name="CastBar" Grid.Row="4" Background="#CD201F" Padding="12,6" Visibility="Collapsed" Tapped="OnCastBarTapped">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <StackPanel VerticalAlignment="Center">
+        <TextBlock x:Name="CastBarTitle" TextTrimming="CharacterEllipsis" Foreground="White" />
+        <TextBlock x:Name="CastBarDevice" FontSize="12" Foreground="White" Opacity="0.8" TextTrimming="CharacterEllipsis" />
+      </StackPanel>
+      <Button Grid.Column="1" Click="OnCastBarPlayPause" Foreground="White" Background="Transparent" Margin="8,0,0,0">
+        <SymbolIcon x:Name="CastBarIcon" Symbol="Pause" />
+      </Button>
+    </Grid>
+  </Grid>
+  <Page.BottomAppBar>
+    <CommandBar>
+      <AppBarButton x:Name="ShuffleButton" Icon="Shuffle" Label="Mescola" Click="OnShuffle" />
+      <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Aggiorna" Click="OnRefresh" />
+      <CommandBar.SecondaryCommands>
+        <AppBarButton Label="Mostra di nuovo i video nascosti" Click="OnShowHidden" />
+        <AppBarButton Label="Importa iscrizioni (JSON di NewPipe)" Click="OnImport" />
+        <AppBarButton Label="Impostazioni Trasmetti a TV" Click="OnSettings" />
+      </CommandBar.SecondaryCommands>
+    </CommandBar>
+  </Page.BottomAppBar>
+</Page>

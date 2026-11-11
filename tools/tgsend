@@ -1,0 +1,8 @@
+#!/bin/bash
+# tgsend "text" — the test bot (@lumiatestbot) sends a message to the owner's Telegram account, to test the phone's
+# background notifications. Token and chat id in secrets/telegram-bot.token and secrets/telegram-bot.chat (mode 600).
+cd "$(dirname "$0")/.." || exit 1
+token=$(cat secrets/telegram-bot.token) && chat=$(cat secrets/telegram-bot.chat) || exit 1
+text=${1:-"test $(date +%H:%M:%S)"}
+curl -s --max-time 20 "https://api.telegram.org/bot$token/sendMessage" --data-urlencode "chat_id=$chat" \
+    --data-urlencode "text=$text" | python3 -c "import json,sys; d=json.load(sys.stdin); print('sent' if d.get('ok') else 'error: %s' % d.get('description'))"

@@ -1,0 +1,68 @@
+# Parafrasi 3 (giro 3, 2026-11-03): scritte prima di correggere, misurate così come sono. Stili: brevissime,
+# molto cortesi, errori di battitura e accenti mancanti, ordine delle parole strano. "now" = mar 2026-11-03 10:00.
+timer 3 min	imposta_timer	secondi=180
+5 minuti di timer	imposta_timer	secondi=300
+per cortesia potresti impostarmi un timer di quindici minuti	imposta_timer	secondi=900
+metti un tmer di 10 minuti	imposta_timer	secondi=600
+timer x 20 minuti	imposta_timer	secondi=1200
+quanto manca alla fine	stato_timer
+annulla tutto il timer	annulla_timer
+stop timer	annulla_timer
+sveglia 7:30	imposta_sveglia	ora=07:30
+sveglia domani 6	imposta_sveglia	ora=06:00;giorno=2026-11-04
+mi metteresti la sveglia alle sette e mezzo per piacere	imposta_sveglia	ora=07:30
+svegliami alle 8 per favore	imposta_sveglia	ora=08:00
+svegliami domani alle sei per andare in palestra	imposta_sveglia	ora=06:00;giorno=2026-11-04
+alle sei e mezza di domani mattina mettimi la sveglia	imposta_sveglia	ora=06:30;giorno=2026-11-04
+sveglie?	elenca_sveglie
+che sveglie ho messo	elenca_sveglie
+togli tutte le sveglie	online
+cancella sveglia 6:30	cancella_sveglia	ora=06:30
+chiama mamma per favore	chiama	chi=mamma
+chiama mamm	chiama	chi=mamm
+telefono a francesca	chiama	chi=francesca
+mi faresti chiamare Lorenzo	chiama	chi=lorenzo
+potresti telefonare a casa	chiama	chi=casa
+musica rock	riproduci_musica	richiesta=rock
+metti qualcosa	riproduci_musica	tipo=casuale
+musica per favore	riproduci_musica	tipo=casuale
+metti battiato per piacere	riproduci_musica	richiesta=battiato
+riproduci l'ultimo album dei Coldplay	riproduci_musica	tipo=album
+pausa per favore	controlla_musica	azione=pausa
+avanti una canzone	controlla_musica	azione=avanti
+indietro di una canzone	controlla_musica	azione=indietro
+continua la musica	controlla_musica	azione=riprendi
+apri telegram per favore	apri	cosa=telegram
+wifi	apri	cosa=wi-fi
+bluetooth	apri	cosa=bluetooth
+apri impostazioni	online
+apri orologio	apri	cosa=orologio
+apri perletv	apri	cosa=perle tv
+meteo	meteo
+meteo domani	meteo	giorno=2026-11-04
+che tempo fa domani a reggio calabria	meteo	luogo=reggio calabria;giorno=2026-11-04
+previsioni del tempo per il fine settimana	meteo
+piove?	meteo
+calendario oggi	leggi_calendario	dal=2026-11-03
+impegni domani	leggi_calendario	dal=2026-11-04
+cosa ho in programma per giovedi	leggi_calendario	dal=2026-11-05
+ore?	ora
+che ore sn	ora
+che ora e	ora
+data di oggi	data
+che giorno e oggi	data
+nota comprare latte	prendi_nota	testo=comprare latte
+scrivi nelle note: chiamare zia	prendi_nota	testo=chiamare zia
+ricordami tra 5 minuti di spegnere il gas	promemoria	testo=spegnere il gas;ora=10:05
+ricorda di comprare il pane alle 19	promemoria	testo=comprare il pane;ora=19:00
+cerca meteo roma	cerca_sul_web	domanda=meteo roma
+cerca ricetta lasagne	cerca_sul_web	domanda=ricetta lasagne
+quanto fa 2+2	online
+chi sei	online
+che ne pensi della pizza all'ananas	online
+traducimi questa frase in inglese	online
+cosa vuol dire ossimoro	online
+manda una mail a Marco	online
+leggimi le notizie	online
+come si chiama il presidente della francia	online
+aiuto	online

@@ -1,0 +1,11 @@
+#pragma once
+
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
+#include <collection.h>
+#include <ppltasks.h>
+#include <string>
+#include <vector>
+#include <windows.h>

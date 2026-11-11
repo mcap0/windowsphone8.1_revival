@@ -1,0 +1,69 @@
+--- a/Source/WebCore/dom/MessagePort.cpp
++++ b/Source/WebCore/dom/MessagePort.cpp
+@@ -131,7 +131,7 @@
+     , m_identifier(local)
+     , m_remoteIdentifier(remote)
+ {
+-    LOG(MessagePorts, "Created MessagePort %s (%p) in process %" PRIu64, m_identifier.logString().utf8().data(), this, Process::identifier().toUInt64());
++    LOG(MessagePorts, "Created MessagePort %s (%p) in process %" PRIu64, m_identifier.portIdentifier.toUInt64().utf8().data(), this, Process::identifier().toUInt64());
+ 
+     Locker locker { allMessagePortsLock };
+     // We disable threading assertions since the allMessagePorts() is used from multiple threads in a safe way, using a lock.
+@@ -148,7 +148,7 @@
+ 
+ MessagePort::~MessagePort()
+ {
+-    LOG(MessagePorts, "Destroyed MessagePort %s (%p) in process %" PRIu64, m_identifier.logString().utf8().data(), this, Process::identifier().toUInt64());
++    LOG(MessagePorts, "Destroyed MessagePort %s (%p) in process %" PRIu64, m_identifier.portIdentifier.toUInt64().utf8().data(), this, Process::identifier().toUInt64());
+ 
+     Locker locker { allMessagePortsLock };
+ 
+@@ -173,9 +173,10 @@
+     protect(MessagePortChannelProvider::fromContext(*protect(scriptExecutionContext())))->entangleLocalPortInThisProcessToRemote(m_identifier, m_remoteIdentifier);
+ }
+ 
++
+ ExceptionOr<void> MessagePort::postMessage(JSC::JSGlobalObject& globalObject, JSC::JSValue messageValue, StructuredSerializeOptions&& options)
+ {
+-    LOG(MessagePorts, "Attempting to post message to port %s (to be received by port %s)", m_identifier.logString().utf8().data(), m_remoteIdentifier.logString().utf8().data());
++    LOG(MessagePorts, "Attempting to post message to port %s (to be received by port %s)", m_identifier.portIdentifier.toUInt64().utf8().data(), m_remoteIdentifier.logString().utf8().data());
+ 
+     Vector<Ref<MessagePort>> ports;
+     auto messageData = SerializedScriptValue::create(globalObject, messageValue, WTF::move(options.transfer), ports, SerializationForStorage::No);
+@@ -202,7 +203,7 @@
+ 
+     MessageWithMessagePorts message { messageData.releaseReturnValue(), WTF::move(transferredPorts) };
+ 
+-    LOG(MessagePorts, "Actually posting message to port %s (to be received by port %s)", m_identifier.logString().utf8().data(), m_remoteIdentifier.logString().utf8().data());
++    LOG(MessagePorts, "Actually posting message to port %s (to be received by port %s)", m_identifier.portIdentifier.toUInt64().utf8().data(), m_remoteIdentifier.logString().utf8().data());
+ 
+     if (RefPtr partner = m_localPartner) {
+         partner->m_localQueue.append(WTF::move(message));
+@@ -320,14 +321,15 @@
+     // Messages for contexts that are not fully active get dispatched too, but JSAbstractEventListener::handleEvent() doesn't call handlers for these.
+     // The HTML5 spec specifies that any messages sent to a document that is not fully active should be dropped, so this behavior is OK.
+     RefPtr context = scriptExecutionContext();
+-    if (!context || context->activeDOMObjectsAreSuspended() || isDetached())
++    if (!context || context->activeDOMObjectsAreSuspended() || isDetached()) {
+         return;
++    }
+ 
+-    LOG(MessagePorts, "Dispatching messages on MessagePort %s (%p)", m_identifier.logString().utf8().data(), this);
++    LOG(MessagePorts, "Dispatching messages on MessagePort %s (%p)", m_identifier.portIdentifier.toUInt64().utf8().data(), this);
+     while (m_newLocalMessages) {
+         --m_newLocalMessages;
+         queueTaskKeepingObjectAlive(*this, TaskSource::PostedMessageQueue, [](auto& port) {
+-            LOG(MessagePorts, "Draining one local message on MessagePort %s (%p)", port.m_identifier.logString().utf8().data(), &port);
++            LOG(MessagePorts, "Draining one local message on MessagePort %s (%p)", port.m_identifier.portIdentifier.toUInt64().utf8().data(), &port);
+             port.drainOneLocalMessage();
+         });
+     }
+@@ -340,7 +342,7 @@
+     auto messagesTakenHandler = [pendingActivity = makePendingActivity(*this)](Vector<MessageWithMessagePorts>&& messages, CompletionHandler<void()>&& completionCallback) mutable {
+         auto scopeExit = makeScopeExit(WTF::move(completionCallback));
+ 
+-        LOG(MessagePorts, "MessagePort %s (%p) dispatching %zu messages", pendingActivity->object().m_identifier.logString().utf8().data(), &pendingActivity->object(), messages.size());
++        LOG(MessagePorts, "MessagePort %s (%p) dispatching %zu messages", pendingActivity->object().m_identifier.portIdentifier.toUInt64().utf8().data(), &pendingActivity->object(), messages.size());
+ 
+         RefPtr context = pendingActivity->object().scriptExecutionContext();
+         if (!context || !context->globalObject())

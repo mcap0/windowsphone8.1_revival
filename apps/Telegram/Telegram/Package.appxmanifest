@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="DumbPhone.TelegramWeb" Publisher="CN=DumbPhone" Version="3.6.2.0" />
+  <mp:PhoneIdentity PhoneProductId="c5e1671e-09b6-4b94-98db-0bc5d1a47637" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Telegram</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Telegram.App">
+      <m3:VisualElements DisplayName="Telegram"
+                         Square150x150Logo="Assets\Square150x150Logo.png"
+                         Square44x44Logo="Assets\Square44x44Logo.png"
+                         Description="Telegram nativo"
+                         ForegroundText="light"
+                         BackgroundColor="transparent"
+                         ToastCapable="true">
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#229ED9" />
+      </m3:VisualElements>
+      <Extensions>
+        <!-- TelegramTask.Watch: new-message check every 15 min (the system minimum) and when the internet comes back,
+             also with the phone locked; toasts come from this app -->
+        <Extension Category="windows.backgroundTasks" EntryPoint="TelegramTask.Watch">
+          <BackgroundTasks>
+            <Task Type="timer" />
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClientServer" />
+    <Capability Name="privateNetworkClientServer" />
+    <Capability Name="picturesLibrary" />
+    <DeviceCapability Name="microphone" />
+    <DeviceCapability Name="webcam" />
+  </Capabilities>
+</Package>

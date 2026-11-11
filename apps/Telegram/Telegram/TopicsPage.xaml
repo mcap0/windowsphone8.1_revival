@@ -1,0 +1,49 @@
+<Page
+    x:Class="Telegram.TopicsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="19,10,19,8">
+            <TextBlock Text="TELEGRAM" Style="{ThemeResource TitleTextBlockStyle}" Foreground="{StaticResource TgBlue}" />
+            <TextBlock x:Name="PageTitle" Text="topic" FontSize="30" FontWeight="Light" TextTrimming="CharacterEllipsis" />
+            <TextBlock x:Name="StatusText" FontSize="14" Foreground="{StaticResource Dim}" Margin="0,4,0,0" TextWrapping="Wrap" />
+        </StackPanel>
+        <ListView x:Name="Topics" Grid.Row="1" IsItemClickEnabled="True" ItemClick="Topics_ItemClick" SelectionMode="None">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="19,7,19,7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Title}" FontSize="21" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding Preview}" FontSize="16" Foreground="{StaticResource Dim}"
+                                       TextTrimming="CharacterEllipsis" MaxLines="1" />
+                        </StackPanel>
+                        <Border Grid.Column="1" Background="{StaticResource TgBlue}" MinWidth="24" Height="24" Margin="10,0,0,0"
+                                VerticalAlignment="Center" Visibility="{Binding UnreadVisibility}">
+                            <TextBlock Text="{Binding Unread}" FontSize="13" Foreground="White" FontWeight="SemiBold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="7,0" />
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact">
+            <AppBarButton Icon="Refresh" Label="aggiorna" Click="Refresh_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

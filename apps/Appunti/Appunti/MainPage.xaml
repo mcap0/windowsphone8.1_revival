@@ -1,0 +1,42 @@
+<Page
+    x:Class="Appunti.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="RefreshButton" Icon="Refresh" Label="Aggiorna" Click="Refresh_Click" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Margin="16,12,16,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Appunti" FontSize="32" />
+        <TextBlock Grid.Row="1" Text="Sorgente" FontSize="14" Opacity="0.7" Margin="0,8,0,0" />
+        <TextBox x:Name="SourceBox" Grid.Row="2" InputScope="Url" LostFocus="SourceBox_LostFocus" />
+        <TextBlock x:Name="StatusText" Grid.Row="3" FontSize="14" TextWrapping="Wrap" Margin="0,6,0,0" />
+        <TextBlock x:Name="ErrorText" Grid.Row="4" FontSize="14" TextWrapping="Wrap" Foreground="#FFE81123" />
+        <Button Grid.Row="5" Content="Nuovo testo" HorizontalAlignment="Stretch" Click="NewText_Click" Margin="0,6,0,6" />
+
+        <ListView x:Name="History" Grid.Row="6" IsItemClickEnabled="True" SelectionMode="None" ItemClick="History_ItemClick">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="6,10" BorderBrush="#40808080" BorderThickness="0,0,0,1">
+                        <TextBlock Text="{Binding Text}" FontSize="18" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" />
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

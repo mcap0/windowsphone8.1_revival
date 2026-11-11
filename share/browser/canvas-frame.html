@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>body{margin:0;background:#eee}canvas{display:block;width:100%}</style>
+<canvas id="c" width="400" height="400"></canvas>
+<script>
+// Like a captcha challenge: an image grid redrawn on a canvas at every animation frame.
+var c = document.getElementById('c'), g = c.getContext('2d'), t = 0;
+var tile = document.createElement('canvas'); tile.width = tile.height = 100;
+var tg = tile.getContext('2d');
+for (var i = 0; i < 100; i += 10) { tg.fillStyle = i % 20 ? '#7a4' : '#a47'; tg.fillRect(0, i, 100, 10); }
+function frame() {
+  t++;
+  g.fillStyle = '#ddd'; g.fillRect(0, 0, 400, 400);
+  for (var y = 0; y < 3; y++) for (var x = 0; x < 3; x++) {
+    g.save(); g.translate(30 + x * 120 + 50, 30 + y * 120 + 50); g.rotate((t + x * 7 + y * 13) / 40);
+    g.drawImage(tile, -50, -50); g.restore();
+  }
+  g.fillStyle = '#000'; g.font = '20px sans-serif'; g.fillText('fotogramma ' + t, 10, 390);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>

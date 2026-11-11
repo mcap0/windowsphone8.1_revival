@@ -1,0 +1,28 @@
+#!/bin/bash
+# ghidradump <dll> [out.c] — decompile every function of a PE (WP8.1 ARM or any) with Ghidra headless, using the
+# public PDB from Microsoft's symbol server when there is one (PLAN §69.8). Writes out.c (default <dll>.c) and
+# out.c.funcs (address + name). Ghidra lives in tools/.cache/ghidra_*; print one function with
+#   awk -v n='CWnpConnector::ConnectDirect' '/^\/\/==== /{p=(index($0," " n)>0)} p' out.c
+set -euo pipefail
+root=$(cd "$(dirname "$(realpath "$0")")/.." && pwd)
+dll=$(realpath "$1"); out=$(realpath -m "${2:-$1.c}")
+ghidra=$(ls -d "$root"/tools/.cache/ghidra_*_PUBLIC 2>/dev/null | tail -1)
+[ -n "$ghidra" ] || { echo "Ghidra non trovato in tools/.cache (github.com/NationalSecurityAgency/ghidra/releases)"; exit 1; }
+work=$(mktemp -d); trap 'rm -rf "$work"' EXIT
+read -r pdbname pdbid < <(python3 - "$dll" <<'PY'
+import struct, sys, uuid
+d = open(sys.argv[1], 'rb').read(); i = d.find(b'RSDS')
+if i < 0: print('- -'); sys.exit()
+print(d[i+24:d.index(b'\0', i+24)].decode().split('\\')[-1], uuid.UUID(bytes_le=d[i+4:i+20]).hex.upper() + '%X' % struct.unpack_from('<I', d, i+20)[0])
+PY
+)
+pre=()
+if [ "$pdbname" != - ] && curl -sf -A 'Microsoft-Symbol-Server/10.0.0.0' -L -o "$work/$pdbname" \
+     "https://msdl.microsoft.com/download/symbols/$pdbname/$pdbid/$pdbname"; then
+  pre=(-preScript SetPdb.java "$work/$pdbname"); echo "PDB: $pdbname $pdbid"
+else
+  echo "PDB pubblico non disponibile: solo nomi generati"
+fi
+"$ghidra/support/analyzeHeadless" "$work" p -import "$dll" -scriptPath "$root/tools/re/ghidra" "${pre[@]}" \
+  -postScript DumpAll.java "$out" > "$work/ghidra.log" 2>&1 || { tail -20 "$work/ghidra.log"; exit 1; }
+echo "$out ($(grep -c '' "$out.funcs") funzioni)"

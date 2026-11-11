@@ -1,0 +1,10 @@
+--- a/Source/WebCore/platform/graphics/texmap/BitmapTexturePool.cpp
++++ b/Source/WebCore/platform/graphics/texmap/BitmapTexturePool.cpp
+@@ -114,6 +114,7 @@
+ }
+ #endif
+ 
++
+ void BitmapTexturePool::scheduleReleaseUnusedTextures()
+ {
+     assertIsHeld(m_lock);

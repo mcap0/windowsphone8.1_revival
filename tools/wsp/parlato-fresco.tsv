@@ -1,0 +1,76 @@
+# Parlato fresco (giro 8, 2026-11-03): scritto a mano prima di correggere le regole su parlato.tsv e misurato solo
+# alla fine, mai guardato riga per riga mentre si correggeva. Le prime righe sono le frasi vere del log del telefono.
+# "now" = mar 2026-11-03 10:00.
+in pratica vorrei che praticamente adesso in pratica vorrei che tu mi mette una sveglia per le cinque per favore lo puoi fare internazionale	imposta_sveglia	ora=05:00
+vorresti un per favore una sveglia per le cinque	imposta_sveglia	ora=05:00
+mi potresti dire come il tempo a catania per favore la specifica	meteo	luogo=catania
+come in questo momento in tempo a palermo porca miseria	meteo	luogo=palermo
+mi piacerebbe molto sapere in questo momento che tempo fa a catania	meteo	luogo=catania
+come funziona e chiamare mia madre potresti farlo per favore	chiama	chi=mia madre
+che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+# --- nuove
+allora domattina mi devo alzare presto mettimi la sveglia alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04
+eh sì vorrei una sveglia alle sette e mezza grazie	imposta_sveglia	ora=07:30
+senti io domani devo svegliarmi alle cinque e mezza me la metti la sveglia	imposta_sveglia	ora=05:30;giorno=2026-11-04
+ok allora praticamente mettimi la sveglia per domani alle otto e un quarto va bene	imposta_sveglia	ora=08:15;giorno=2026-11-04
+ascolta mi serve la sveglia alle sei e quaranta	imposta_sveglia	ora=06:40
+vorrei che mi svegliassi alle sette	imposta_sveglia	ora=07:00
+ma la sveglia per le sei me la metti o no	imposta_sveglia	ora=06:00
+metti un timer per la pizza di quindici minuti dai	imposta_timer	secondi=900
+allora la pasta ci mette undici minuti fammi un timer di undici minuti	imposta_timer	secondi=660
+eh in pratica mi serve un timer di venti minuti che devo stendere i panni	imposta_timer	secondi=1200
+vorrei un timer di sei minuti grazie mille	imposta_timer	secondi=360
+fammi partire un conto alla rovescia di tre minuti per favore	imposta_timer	secondi=180
+avvisami fra cinque minuti mi raccomando	imposta_timer	secondi=300
+senti quanto manca al timer che ho messo	stato_timer
+il timer toglilo che non mi serve più	annulla_timer
+basta col timer fermalo	annulla_timer
+in pratica che tempo fa oggi a catania mi devo vestire pesante	meteo	luogo=catania
+vorrei sapere il meteo di domani a messina per favore	meteo	luogo=messina;giorno=2026-11-04
+dimmi un po' come sarà il tempo domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+ma oggi piove a catania o no	meteo	luogo=catania
+mi dici le previsioni per sabato a siracusa grazie	meteo	luogo=siracusa;giorno=2026-11-07
+che tempo fa a roma mannaggia	meteo	luogo=roma
+com'è il tempo fuori adesso	meteo	luogo=
+ehi devo prendere l'ombrello oggi o no	meteo	luogo=
+eh niente chiama mamma per favore	chiama	chi=mamma
+senti mi chiami giuseppe che gli devo dire una cosa	chiama	chi=giuseppe
+vorrei chiamare mia sorella potresti farlo	chiama	chi=mia sorella
+in pratica devo telefonare a papà lo puoi chiamare tu	chiama	chi=papà
+per favore fai una telefonata a marco subito	chiama	chi=marco
+ehm chiamare la nonna per favore	chiama	chi=la nonna
+mettimi un po' di musica che mi annoio	riproduci_musica	tipo=casuale
+vorrei ascoltare i pink floyd per favore	riproduci_musica	richiesta=pink floyd
+dai metti vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+in pratica fammi sentire un po' di battiato	riproduci_musica	richiesta=battiato
+metti in pausa che mi stanno chiamando	controlla_musica	azione=pausa
+questa canzone non mi piace passa alla prossima	controlla_musica	azione=avanti
+vai avanti per favore	controlla_musica	azione=avanti
+fai ripartire la musica grazie	controlla_musica	azione=riprendi
+cosa ho in agenda domani per favore	leggi_calendario	dal=2026-11-04;giorni=1
+senti che impegni ho oggi pomeriggio	leggi_calendario	dal=2026-11-03;giorni=1
+domani sono libero o ho qualcosa	leggi_calendario	dal=2026-11-04;giorni=1
+in pratica mi dici che ore sono per favore	ora
+scusa sai che ore sono	ora
+ehi che giorno è oggi	data
+allora ricordami alle cinque di chiamare il commercialista	promemoria	ora=17:00;testo=chiamare il commercialista
+mi ricordi tra un'ora di togliere la torta dal forno per favore	promemoria	ora=11:00;testo=togliere la torta dal forno
+scrivi nelle note che devo comprare il latte	prendi_nota	testo=devo comprare il latte
+senti segnati di chiamare l'avvocato giovedì	prendi_nota	testo=chiamare l'avvocato giovedì
+apri le impostazioni del bluetooth per favore	apri	cosa=bluetooth
+mi apri telegram grazie	apri	cosa=telegram
+vorrei aprire la posta	apri	cosa=posta
+cerca su internet come si fanno gli arancini	cerca_sul_web	domanda=come si fanno gli arancini
+# --- per Gemini anche se parlano di sveglie, meteo, musica, chiamate
+in pratica volevo sapere chi ha scritto i promessi sposi	online
+senti ma secondo te domani conviene andare al mare	online
+come si chiama quella canzone che fa la la la	online
+la sveglia di stamattina era troppo presto porca miseria	online
+mia madre mi ha chiamato tre volte oggi	online
+il tempo passa troppo veloce	online
+mi spieghi come si imposta un timer sul forno	online
+raccontami qualcosa sui pink floyd	online
+che ne pensi di vasco rossi	online
+quanto dista catania da palermo	online
+come si fa a chiamare un taxi a catania	online

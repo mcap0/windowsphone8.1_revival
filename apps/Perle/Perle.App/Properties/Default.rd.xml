@@ -1,0 +1,8 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <Assembly Name="*Application*" Dynamic="Required All" />
+    <!-- Json.NET (de)serializes the Perle cache and settings with reflection -->
+    <Assembly Name="Perle.Core" Dynamic="Required All" Serialize="Required All" />
+    <Assembly Name="Newtonsoft.Json" Dynamic="Required All" />
+  </Application>
+</Directives>

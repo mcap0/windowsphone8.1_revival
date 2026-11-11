@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="adbguard">Accetta da solo la richiesta di debug USB del PC (lo schermo del Pixel è rotto).</string>
+</resources>

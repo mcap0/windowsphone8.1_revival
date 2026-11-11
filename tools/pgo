@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# pgo [scrivi|prendi|unisci|tutto] — the profile of the instrumented engine, from the phone to engine/pgo/webkit.profdata
+# (PLAN.md §74). The instrumented engine is the variant ENGINE_OUT=engine/out/webkit-pgo (cmake -DWP81_PGO=gen),
+# installed with tools/browser; it counts every function and branch that runs while the phone is used (tools/banco, the
+# live pages, typing, scrolling).
+#   allena   the training run: the fixed bench pages twice, live sites, the test pages of share/browser (about 12 min,
+#            nothing touched on the phone); use the phone by hand as well before "scrivi" for typing and scrolling
+#   scrivi   the app (open, home Wi-Fi) writes the counts so far to LocalFolder\webkit.profraw ("motore pgo")
+#   prendi   that file comes to engine/pgo/raw/<time>.profraw over USB (ISETool through the VM)
+#   unisci   llvm-profdata merges every raw file into engine/pgo/webkit.profdata, what -DWP81_PGO=use compiles with
+#   tutto    the three in order (default)
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+product=afcc45ef-005b-42f6-b2bd-18695a1f8826
+log=$root/share/inbox/internet.txt
+raw=$root/engine/pgo/raw
+step=${1:-tutto}
+
+if [[ $step == allena ]]; then
+    "$root/tools/banco" --giri 2 --nota "strumentato" | tail -6
+    host=192.168.1.148:8765
+    "$root/tools/phonecmd" "motore sicuro 192.168.1.148"
+    while read -r seconds address; do
+        echo "$address"
+        "$root/tools/phonecmd" "$address"
+        sleep "$seconds"
+    done <<PAGES
+30 https://en.wikipedia.org/wiki/Italy
+20 https://it.wikipedia.org/wiki/Speciale:Ricerca?search=lumia+1020
+40 https://www.poste.it/
+45 https://www.repubblica.it/
+30 https://m.youtube.com/
+40 https://mail.google.com/mail/mu/
+25 https://www.google.com/search?q=meteo+roma
+30 https://github.com/WebKit/WebKit
+25 https://news.ycombinator.com/
+30 https://www.amazon.it/
+30 https://www.ansa.it/
+20 http://$host/browser/features.html
+25 http://$host/browser/moduli.html
+15 http://$host/browser/font.html
+15 http://$host/browser/blocco.html
+20 http://$host/browser/anim.html
+25 http://$host/browser/bench.html
+15 http://$host/browser/canvas.html
+15 http://$host/browser/scope.html
+15 http://$host/browser/ic.html
+15 http://$host/browser/scroll-busy.html
+10 http://$host/browser/campi.html
+PAGES
+    exit 0
+fi
+if [[ $step == scrivi || $step == tutto ]]; then
+    start=$(stat -c %s "$log")
+    "$root/tools/phonecmd" "motore pgo"
+    for _ in $(seq 60); do
+        sleep 2
+        line=$(tail -c +"$((start + 1))" "$log" | grep -a -m1 'pgo: profilo' || true)
+        [[ -n $line ]] && break
+    done
+    [[ -n ${line:-} ]] || { echo "pgo: nessuna risposta dall'app (aperta? motore strumentato?)" >&2; exit 1; }
+    echo "$line"
+    [[ $line == *"NON scritto"* ]] && exit 1
+fi
+if [[ $step == prendi || $step == tutto ]]; then
+    script=$(mktemp "${TMPDIR:-/tmp}/pgo.XXXXXX.ps1")
+    trap 'rm -f "$script"' EXIT
+    cat > "$script" <<PS
+\$isetool = 'C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\IsolatedStorageExplorerTool\ISETool.exe'
+\$out = 'C:\lumia\pgo-store'
+if (Test-Path \$out) { Remove-Item -Recurse -Force \$out }
+& \$isetool ts de $product \$out 2>&1 | Select-Object -Last 2
+\$path = Join-Path \$out 'IsolatedStore\webkit.profraw'
+if (Test-Path \$path) { Copy-Item \$path 'C:\lumia\webkit.profraw' -Force; Write-Output ("profraw {0} byte" -f (Get-Item \$path).Length) }
+else { Write-Output 'webkit.profraw non trovato' }
+Remove-Item -Recurse -Force \$out
+PS
+    "$root/tools/vps" "$script" | tee /dev/stderr | grep -q '^profraw ' || exit 1
+    mkdir -p "$raw"
+    name=$raw/$(date +%Y%m%d-%H%M%S).profraw
+    "$root/tools/vmssh" scp -q "user@192.168.122.21:C:/lumia/webkit.profraw" "$name"
+    echo "$name"
+fi
+if [[ $step == unisci || $step == tutto ]]; then
+    llvm-profdata merge -o "$root/engine/pgo/webkit.profdata" "$raw"/*.profraw
+    llvm-profdata show --detailed-summary "$root/engine/pgo/webkit.profdata" | grep -E 'Total functions|Maximum|Total count|functions with|^ *(9[059]|80|50)\b' | head -20
+    ls -la "$root/engine/pgo/webkit.profdata"
+fi

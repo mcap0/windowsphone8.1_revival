@@ -1,0 +1,38 @@
+--- a/Source/JavaScriptCore/heap/MarkedBlock.cpp
++++ b/Source/JavaScriptCore/heap/MarkedBlock.cpp
+@@ -49,6 +49,11 @@
+ static constexpr bool computeBalance = false;
+ static size_t balance;
+ 
++#if defined(WP81)
++void* (*g_wp81AllocateMarkedBlock)(size_t blockSize);
++bool (*g_wp81ReleaseMarkedBlock)(void* block);
++#endif
++
+ DEFINE_ALLOCATOR_WITH_HEAP_IDENTIFIER(MarkedBlock);
+ DEFINE_ALLOCATOR_WITH_HEAP_IDENTIFIER(MarkedBlockHandle);
+ 
+@@ -59,7 +64,13 @@
+         if (!(balance % 10))
+             dataLog("MarkedBlock Balance: ", balance, "\n");
+     }
++#if defined(WP81)
++    void* blockSpace = g_wp81AllocateMarkedBlock ? g_wp81AllocateMarkedBlock(blockSize) : nullptr;
++    if (!blockSpace)
++        blockSpace = alignedMemoryAllocator->tryAllocateAlignedMemory(blockSize, blockSize);
++#else
+     void* blockSpace = alignedMemoryAllocator->tryAllocateAlignedMemory(blockSize, blockSize);
++#endif
+     if (!blockSpace)
+         return nullptr;
+     if (scribbleFreeCells())
+@@ -85,6 +96,9 @@
+     }
+     m_directory->removeBlock(this, BlockDirectory::WillDeleteBlock::Yes);
+     m_block->~MarkedBlock();
++#if defined(WP81)
++    if (!g_wp81ReleaseMarkedBlock || !g_wp81ReleaseMarkedBlock(m_block))
++#endif
+     m_alignedMemoryAllocator->freeAlignedMemory(m_block);
+     heap.didFreeBlock(blockSize);
+ }

@@ -1,0 +1,57 @@
+--- a/Source/WebCore/platform/win/PlatformScreenWin.cpp
++++ b/Source/WebCore/platform/win/PlatformScreenWin.cpp
+@@ -38,6 +38,45 @@
+ 
+ namespace WebCore {
+ 
++#if defined(WP81)
++static FloatSize s_screenSize { 320, 480 };
++
++void setScreenSizeForWP81(FloatSize size)
++{
++    s_screenSize = size;
++}
++
++int screenDepth(Widget*)
++{
++    return 24;
++}
++
++int screenDepthPerComponent(Widget*)
++{
++    return 8;
++}
++
++bool screenIsMonochrome(Widget*)
++{
++    return false;
++}
++
++bool screenHasInvertedColors()
++{
++    return false;
++}
++
++FloatRect screenRect(Widget*)
++{
++    return FloatRect(FloatPoint(), s_screenSize);
++}
++
++FloatRect screenAvailableRect(Widget*)
++{
++    return FloatRect(FloatPoint(), s_screenSize);
++}
++
++#else
+ // Returns info for the default monitor if widget is NULL
+ static MONITORINFOEX monitorInfoForWidget(Widget* widget)
+ {
+@@ -101,6 +140,8 @@
+     return monitorInfo.rcWork;
+ }
+ 
++#endif
++
+ DestinationColorSpace screenColorSpace(Widget*)
+ {
+     return DestinationColorSpace::SRGB();

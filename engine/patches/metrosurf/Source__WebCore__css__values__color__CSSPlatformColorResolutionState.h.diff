@@ -1,0 +1,53 @@
+--- a/Source/WebCore/css/values/color/CSSPlatformColorResolutionState.h
++++ b/Source/WebCore/css/values/color/CSSPlatformColorResolutionState.h
+@@ -87,42 +87,42 @@
+ 
+     WebCore::Color currentColor() const
+     {
+-        return resolveColor(resolvedCurrentColor, &PlatformColorResolutionDelegate::currentColor);
++        return resolveColor(resolvedCurrentColor, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.currentColor(); });
+     }
+ 
+     WebCore::Color internalDocumentTextColor() const
+     {
+-        return resolveColor(resolvedInternalDocumentTextColor, &PlatformColorResolutionDelegate::internalDocumentTextColor);
++        return resolveColor(resolvedInternalDocumentTextColor, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.internalDocumentTextColor(); });
+     }
+ 
+     WebCore::Color webkitLink() const
+     {
+-        return resolveColor(resolvedWebkitLink, &PlatformColorResolutionDelegate::webkitLink);
++        return resolveColor(resolvedWebkitLink, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.webkitLink(); });
+     }
+ 
+     WebCore::Color webkitLinkVisited() const
+     {
+-        return resolveColor(resolvedWebkitLinkVisited, &PlatformColorResolutionDelegate::webkitLinkVisited);
++        return resolveColor(resolvedWebkitLinkVisited, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.webkitLinkVisited(); });
+     }
+ 
+     WebCore::Color webkitActiveLink() const
+     {
+-        return resolveColor(resolvedWebkitActiveLink, &PlatformColorResolutionDelegate::webkitActiveLink);
++        return resolveColor(resolvedWebkitActiveLink, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.webkitActiveLink(); });
+     }
+ 
+     WebCore::Color webkitFocusRingColor() const
+     {
+-        return resolveColor(resolvedWebkitFocusRingColor, &PlatformColorResolutionDelegate::webkitFocusRingColor);
++        return resolveColor(resolvedWebkitFocusRingColor, [](const PlatformColorResolutionDelegate& colorDelegate) { return colorDelegate.webkitFocusRingColor(); });
+     }
+ 
+ private:
+-    WebCore::Color resolveColor(std::optional<WebCore::Color>& existing, WebCore::Color (PlatformColorResolutionDelegate::*resolver)() const) const
++    WebCore::Color resolveColor(std::optional<WebCore::Color>& existing, WebCore::Color (*resolver)(const PlatformColorResolutionDelegate&)) const
+     {
+         if (existing)
+             return *existing;
+ 
+         if (delegate) {
+-            auto resolved = ((*delegate).*resolver)();
++            auto resolved = resolver(*delegate);
+             existing = resolved;
+             return resolved;
+         }

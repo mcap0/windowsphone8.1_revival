@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Runs the platform independent OTP code against the RFC 4226/6238 test vectors. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Authenticator\Core\Otp.cs" Link="Otp.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,266 @@
+diff --git a/src/extensions/python/pywrapfst.cpp b/src/extensions/python/pywrapfst.cpp
+index 219dbff..90c2442 100644
+--- a/src/extensions/python/pywrapfst.cpp
++++ b/src/extensions/python/pywrapfst.cpp
+@@ -2687,35 +2687,35 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int32_t(int32_t value);
+ #include <stdexcept>
+ #include <ios>
+ static void __Pyx_CppExn2PyErr() {
+-  try {
++  {
+     if (PyErr_Occurred())
+       ; // let the latest Python exn pass through and ignore the current one
+     else
+-      throw;
+-  } catch (const std::bad_alloc& exn) {
++      ::wp81::fatal();
++  } if (false) for (const std::bad_alloc& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_MemoryError, exn.what());
+-  } catch (const std::bad_cast& exn) {
++  } if (false) for (const std::bad_cast& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_TypeError, exn.what());
+-  } catch (const std::bad_typeid& exn) {
++  } if (false) for (const std::bad_typeid& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_TypeError, exn.what());
+-  } catch (const std::domain_error& exn) {
++  } if (false) for (const std::domain_error& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_ValueError, exn.what());
+-  } catch (const std::invalid_argument& exn) {
++  } if (false) for (const std::invalid_argument& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_ValueError, exn.what());
+-  } catch (const std::ios_base::failure& exn) {
++  } if (false) for (const std::ios_base::failure& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_IOError, exn.what());
+-  } catch (const std::out_of_range& exn) {
++  } if (false) for (const std::out_of_range& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_IndexError, exn.what());
+-  } catch (const std::overflow_error& exn) {
++  } if (false) for (const std::overflow_error& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_OverflowError, exn.what());
+-  } catch (const std::range_error& exn) {
++  } if (false) for (const std::range_error& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_ArithmeticError, exn.what());
+-  } catch (const std::underflow_error& exn) {
++  } if (false) for (const std::underflow_error& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_ArithmeticError, exn.what());
+-  } catch (const std::exception& exn) {
++  } if (false) for (const std::exception& exn = ::wp81::never(); false;) {
+     PyErr_SetString(PyExc_RuntimeError, exn.what());
+   }
+-  catch (...)
++  if (false)
+   {
+     PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
+   }
+@@ -26753,15 +26753,15 @@ static void __pyx_f_9pywrapfst_10MutableFst__relabel_pairs(struct __pyx_obj_9pyw
+  */
+       __pyx_t_10 = __Pyx_PyInt_As_int64_t(__pyx_v_before); if (unlikely((__pyx_t_10 == ((int64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 2490, __pyx_L1_error)
+       __pyx_t_11 = __Pyx_PyInt_As_int64_t(__pyx_v_after); if (unlikely((__pyx_t_11 == ((int64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 2490, __pyx_L1_error)
+-      try {
++      {
+         __pyx_t_12 = __pyx_t_10cpywrapfst_LabelPair(__pyx_t_10, __pyx_t_11);
+-      } catch(...) {
++      } if (false) {
+         __Pyx_CppExn2PyErr();
+         __PYX_ERR(0, 2490, __pyx_L1_error)
+       }
+-      try {
++      {
+         __pyx_v__ipairs.push_back(__pyx_t_12);
+-      } catch(...) {
++      } if (false) {
+         __Pyx_CppExn2PyErr();
+         __PYX_ERR(0, 2490, __pyx_L1_error)
+       }
+@@ -26901,15 +26901,15 @@ static void __pyx_f_9pywrapfst_10MutableFst__relabel_pairs(struct __pyx_obj_9pyw
+  */
+       __pyx_t_11 = __Pyx_PyInt_As_int64_t(__pyx_v_before); if (unlikely((__pyx_t_11 == ((int64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 2493, __pyx_L1_error)
+       __pyx_t_10 = __Pyx_PyInt_As_int64_t(__pyx_v_after); if (unlikely((__pyx_t_10 == ((int64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 2493, __pyx_L1_error)
+-      try {
++      {
+         __pyx_t_12 = __pyx_t_10cpywrapfst_LabelPair(__pyx_t_11, __pyx_t_10);
+-      } catch(...) {
++      } if (false) {
+         __Pyx_CppExn2PyErr();
+         __PYX_ERR(0, 2493, __pyx_L1_error)
+       }
+-      try {
++      {
+         __pyx_v__opairs.push_back(__pyx_t_12);
+-      } catch(...) {
++      } if (false) {
+         __Pyx_CppExn2PyErr();
+         __PYX_ERR(0, 2493, __pyx_L1_error)
+       }
+@@ -28344,9 +28344,9 @@ static void __pyx_f_9pywrapfst_10MutableFst__reweight(struct __pyx_obj_9pywrapfs
+  *     self._check_mutating_imethod()
+  */
+     __pyx_t_5 = __pyx_f_9pywrapfst__get_WeightClass_or_one(__pyx_v__weight_type, __pyx_v_weight); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 2654, __pyx_L1_error)
+-    try {
++    {
+       __pyx_v__potentials.push_back(__pyx_t_5);
+-    } catch(...) {
++    } if (false) {
+       __Pyx_CppExn2PyErr();
+       __PYX_ERR(0, 2654, __pyx_L1_error)
+     }
+@@ -30101,9 +30101,9 @@ static PyObject *__pyx_pf_9pywrapfst_10MutableFst_64union(struct __pyx_obj_9pywr
+       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "_fst");
+       __PYX_ERR(0, 2886, __pyx_L1_error)
+     }
+-    try {
++    {
+       __pyx_v__fsts2.push_back(__pyx_v__fst2->_fst.get());
+-    } catch(...) {
++    } if (false) {
+       __Pyx_CppExn2PyErr();
+       __PYX_ERR(0, 2886, __pyx_L1_error)
+     }
+@@ -41847,15 +41847,15 @@ static struct __pyx_obj_9pywrapfst_MutableFst *__pyx_f_9pywrapfst_replace(PyObje
+       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "_fst");
+       __PYX_ERR(0, 4086, __pyx_L1_error)
+     }
+-    try {
++    {
+       __pyx_t_10 = __pyx_t_10cpywrapfst_LabelFstClassPair(__pyx_v__label, __pyx_v__pfst->_fst.get());
+-    } catch(...) {
++    } if (false) {
+       __Pyx_CppExn2PyErr();
+       __PYX_ERR(0, 4086, __pyx_L1_error)
+     }
+-    try {
++    {
+       __pyx_v__pairs.push_back(__pyx_t_10);
+-    } catch(...) {
++    } if (false) {
+       __Pyx_CppExn2PyErr();
+       __PYX_ERR(0, 4086, __pyx_L1_error)
+     }
+diff --git a/src/include/fst/extensions/ngram/ngram-fst.h b/src/include/fst/extensions/ngram/ngram-fst.h
+index 83041d7..69c4650 100644
+--- a/src/include/fst/extensions/ngram/ngram-fst.h
++++ b/src/include/fst/extensions/ngram/ngram-fst.h
+@@ -114,6 +114,9 @@ class NGramFstImpl : public FstImpl<A> {
+     auto impl = fst::make_unique<NGramFstImpl<A>>();
+     FstHeader hdr;
+     if (!impl->ReadHeader(strm, opts, kMinFileVersion, &hdr)) return nullptr;
++    // aligned files (written with opts.align): the data can be memory-mapped (fst_read_mode=map)
++    if ((hdr.GetFlags() & FstHeader::IS_ALIGNED) && !AlignInput(strm)) return nullptr;
++    const auto data_pos = strm.tellg();
+     uint64 num_states, num_futures, num_final;
+     const size_t offset =
+         sizeof(num_states) + sizeof(num_futures) + sizeof(num_final);
+@@ -122,6 +125,13 @@ class NGramFstImpl : public FstImpl<A> {
+     strm.read(reinterpret_cast<char *>(&num_futures), sizeof(num_futures));
+     strm.read(reinterpret_cast<char *>(&num_final), sizeof(num_final));
+     size_t size = Storage(num_states, num_futures, num_final);
++    if (opts.mode == FstReadOptions::MAP && (hdr.GetFlags() & FstHeader::IS_ALIGNED)) {
++      strm.seekg(data_pos);
++      MappedFile *region = MappedFile::Map(&strm, true, opts.source, size);
++      if (!region || strm.fail()) return nullptr;
++      impl->Init(static_cast<const char *>(region->data()), false, region);
++      return impl.release();
++    }
+     MappedFile *data_region = MappedFile::Allocate(size);
+     char *data = static_cast<char *>(data_region->mutable_data());
+     // Copy num_states, num_futures and num_final back into data.
+@@ -141,6 +151,7 @@ class NGramFstImpl : public FstImpl<A> {
+     hdr.SetStart(Start());
+     hdr.SetNumStates(num_states_);
+     WriteHeader(strm, opts, kFileVersion, &hdr);
++    if (opts.align && !AlignOutput(strm)) return false;
+     strm.write(data_, StorageSize());
+     return !strm.fail();
+   }
+diff --git a/src/lib/mapped-file.cc b/src/lib/mapped-file.cc
+index 3f692d2..2664c58 100644
+--- a/src/lib/mapped-file.cc
++++ b/src/lib/mapped-file.cc
+@@ -36,6 +36,7 @@
+ #include <ios>
+ #include <limits>
+ #include <memory>
++#include <string>
+ 
+ #include <fst/log.h>
+ 
+@@ -122,11 +123,26 @@ MappedFile *MappedFile::Map(std::istream *istrm, bool memorymap,
+   return mf.release();
+ }
+ 
++#ifdef _WIN32
++// Windows Phone 8.1: CreateFileMappingW failed with error 8 on the 347 MB HCLG and the graph was read
++// instead (PLAN.md §59.6). Map the whole file once (maximum size 0: no size the section must grow to),
++// align views to the allocation granularity (64 KB, not the page size), and fall back to the
++// *FromApp variants that store apps are meant to use. Every failure is logged with its error code.
++namespace {
++using CreateFromAppFn = HANDLE(WINAPI *)(HANDLE, PSECURITY_ATTRIBUTES, ULONG, ULONG64, PCWSTR);
++using MapFromAppFn = PVOID(WINAPI *)(HANDLE, ULONG, ULONG64, SIZE_T);
++FARPROC KernelBaseProc(const char *name) {
++  HMODULE kb = GetModuleHandleW(L"kernelbase.dll");
++  return kb ? GetProcAddress(kb, name) : nullptr;
++}
++}  // namespace
++#endif  // _WIN32
++
+ MappedFile *MappedFile::MapFromFileDescriptor(int fd, size_t pos, size_t size) {
+ #ifdef _WIN32
+   SYSTEM_INFO sysInfo;
+   GetSystemInfo(&sysInfo);
+-  const DWORD pagesize = sysInfo.dwPageSize;
++  const DWORD pagesize = sysInfo.dwAllocationGranularity;
+ #else
+   const int pagesize = sysconf(_SC_PAGESIZE);
+ #endif  // _WIN32
+@@ -145,23 +161,38 @@ MappedFile *MappedFile::MapFromFileDescriptor(int fd, size_t pos, size_t size) {
+     LOG(ERROR) << "Invalid file descriptor fd=" << fd;
+     return nullptr;
+   }
+-  HANDLE file_mapping = CreateFileMappingA(file, nullptr, PAGE_READONLY,
+-                                           upsize >> (8 * sizeof(DWORD)),
+-                                           upsize & DWORD_MAX, nullptr);
+-  if (file_mapping == INVALID_HANDLE_VALUE) {
+-    LOG(ERROR) << "Can't create mapping for fd=" << fd << " size=" << upsize
+-               << ": " << GetLastError();
+-    return nullptr;
++  HANDLE file_mapping = CreateFileMappingW(file, nullptr, PAGE_READONLY, 0, 0, nullptr);
++  if (file_mapping == nullptr) {
++    const DWORD err = GetLastError();
++    auto from_app = reinterpret_cast<CreateFromAppFn>(KernelBaseProc("CreateFileMappingFromApp"));
++    file_mapping = from_app ? from_app(file, nullptr, PAGE_READONLY, 0, nullptr) : nullptr;
++    LOG(ERROR) << "CreateFileMappingW failed: " << err << "; CreateFileMappingFromApp "
++               << (from_app ? (file_mapping ? "ok" : "failed: " + std::to_string(GetLastError()))
++                            : std::string("missing"));
++    if (file_mapping == nullptr) {
++      // probe: does a small section work? (tells a size/quota limit from a blocked API)
++      HANDLE small = CreateFileMappingW(file, nullptr, PAGE_READONLY, 0, 1 << 20, nullptr);
++      LOG(ERROR) << "1 MB section: " << (small ? "ok" : "failed: " + std::to_string(GetLastError()));
++      if (small) CloseHandle(small);
++      return nullptr;
++    }
+   }
+ 
+   void *map = MapViewOfFile(file_mapping, FILE_MAP_READ,
+-                            offset_pos >> (8 * sizeof(DWORD)),
+-                            offset_pos & DWORD_MAX, upsize);
++                            static_cast<DWORD>(static_cast<uint64_t>(offset_pos) >> 32),
++                            static_cast<DWORD>(offset_pos & 0xffffffffu), upsize);
+   if (!map) {
+-    LOG(ERROR) << "mmap failed for fd=" << fd << " size=" << upsize
+-               << " offset=" << offset_pos << ": " << GetLastError();
+-    CloseHandle(file_mapping);
+-    return nullptr;
++    const DWORD err = GetLastError();
++    auto from_app = reinterpret_cast<MapFromAppFn>(KernelBaseProc("MapViewOfFileFromApp"));
++    map = from_app ? from_app(file_mapping, FILE_MAP_READ, offset_pos, upsize) : nullptr;
++    LOG(ERROR) << "MapViewOfFile size=" << upsize << " offset=" << offset_pos << " failed: " << err
++               << "; MapViewOfFileFromApp "
++               << (from_app ? (map ? "ok" : "failed: " + std::to_string(GetLastError()))
++                            : std::string("missing"));
++    if (!map) {
++      CloseHandle(file_mapping);
++      return nullptr;
++    }
+   }
+ #else
+   void *map = mmap(nullptr, upsize, PROT_READ, MAP_SHARED, fd, offset_pos);

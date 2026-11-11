@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+# Needs keystone-engine and capstone (pip install keystone-engine capstone, e.g. in a venv).
+# searchpatch.py <in SearchCM.dll> <out SearchCM.dll>
+# Bing's results page (ReactivePlatformCM::RequestPageLoad(url)) -> opened outside, like a result link:
+# NavigationLaunchSessionWithObjects(taskId, L"metrosurf:u/" + UrlEscapeW(url, 0x3000), 0, 0, 0, 2, 0).
+# The stub lives in the zero padding at the end of .text; only PC-relative addressing (no new relocations).
+import struct, sys, hashlib
+from keystone import Ks, KS_ARCH_ARM, KS_MODE_THUMB
+from capstone import Cs, CS_ARCH_ARM, CS_MODE_THUMB
+
+REQUEST_PAGE_LOAD = 0x42bc4      # push.w {r2, r3, r4, r5, fp, lr}
+NAV_LAUNCH_THUNK = 0x33e74       # UIXMobile!NavigationLaunchSessionWithObjects (delay-load thunk)
+URLESCAPE_SLOT = 0x5ea14         # delay-load IAT slot of api-ms-win-core-url!UrlEscapeW
+STUB = 0x5d6e0
+TEXT_HDR_VSIZE_OLD = 0x5c6d9
+
+src, dst = sys.argv[1], sys.argv[2]
+d = bytearray(open(src, 'rb').read())
+e = struct.unpack_from('<I', d, 0x3c)[0]
+opt = e + 24
+optsz = struct.unpack_from('<H', d, e + 20)[0]
+sec0 = opt + optsz
+name = d[sec0:sec0 + 8].rstrip(b'\0')
+vsize, va, rsz, rp = struct.unpack_from('<IIII', d, sec0 + 8)
+assert name == b'.text' and va == 0x1000 and rp == 0x1000 and vsize == TEXT_HDR_VSIZE_OLD, (name, hex(vsize))
+assert bytes(d[REQUEST_PAGE_LOAD:REQUEST_PAGE_LOAD + 4]) == bytes.fromhex('2de93c48'), d[REQUEST_PAGE_LOAD:REQUEST_PAGE_LOAD + 4].hex()
+
+ks = Ks(KS_ARCH_ARM, KS_MODE_THUMB)
+
+
+def asm(text, addr):
+    enc, _ = ks.asm(text, addr)
+    return bytes(enc)
+
+
+# two passes: the movw/movt delta depends on the address of the "add ip, pc"
+def build(delta):
+    lo, hi = delta & 0xFFFF, (delta >> 16) & 0xFFFF
+    code = f"""
+        ldr.w   ip, [r0, #0x78]
+        cmp.w   ip, #0
+        beq     orig
+        push.w  {{r4, r5, r6, r7, r8, lr}}
+        mov     r4, r0
+        mov     r5, r1
+        mov     r6, ip
+        sub.w   sp, sp, #0xf10
+        adr     r1, prefix
+        add     r0, sp, #16
+        movs    r2, #12
+    copy:
+        ldrh    r3, [r1], #2
+        strh    r3, [r0], #2
+        subs    r2, #1
+        bne     copy
+        movw    r3, #1900
+        str     r3, [sp, #12]
+        mov     r0, r5
+        add     r1, sp, #40
+        add     r2, sp, #12
+        mov.w   r3, #0x3000
+        movw    ip, #{lo}
+        movt    ip, #{hi}
+    pcadd:
+        add     ip, pc
+        ldr.w   ip, [ip]
+        blx     ip
+        cmp     r0, #0
+        blt     fail
+        movs    r3, #0
+        str     r3, [sp]
+        str     r3, [sp, #8]
+        movs    r3, #2
+        str     r3, [sp, #4]
+        mov     r0, r6
+        add     r1, sp, #16
+        movs    r2, #0
+        movs    r3, #0
+        bl      #{NAV_LAUNCH_THUNK}
+        add.w   sp, sp, #0xf10
+        pop.w   {{r4, r5, r6, r7, r8, pc}}
+    fail:
+        add.w   sp, sp, #0xf10
+        mov     r0, r4
+        mov     r1, r5
+        pop.w   {{r4, r5, r6, r7, r8, lr}}
+    orig:
+        push.w  {{r2, r3, r4, r5, fp, lr}}
+        b.w     #{REQUEST_PAGE_LOAD + 4}
+        nop
+        nop
+    prefix:
+    """
+    return code
+
+
+# find the offset of pcadd by assembling once with delta 0, then the label address via a marker
+# movw/movt always take 4 bytes, so the layout does not depend on delta: find "add ip, pc" in a first pass
+md0 = Cs(CS_ARCH_ARM, CS_MODE_THUMB)
+first = asm(build(0), STUB)
+pcadd_addr = [i.address for i in md0.disasm(first, STUB) if i.mnemonic == 'add' and i.op_str == 'ip, pc'][0]
+delta = (URLESCAPE_SLOT - (pcadd_addr + 4)) & 0xFFFFFFFF
+code = asm(build(delta), STUB)
+# prefix must be 4-aligned for adr: pad with nops is in the source; check and append the UTF-16 text
+prefix_addr = STUB + len(code)
+assert prefix_addr % 4 == 0, hex(prefix_addr)
+blob = code + 'metrosurf:u/'.encode('utf-16-le') + b'\0\0'
+end = STUB + len(blob)
+assert end < 0x5e000 and not any(d[STUB:end]), 'cave not free'
+d[STUB:end] = blob
+
+hook = asm(f'b.w #{STUB}', REQUEST_PAGE_LOAD)
+assert len(hook) == 4
+d[REQUEST_PAGE_LOAD:REQUEST_PAGE_LOAD + 4] = hook
+
+new_vsize = ((end - 0x1000) + 15) & ~15
+struct.pack_into('<I', d, sec0 + 8, new_vsize)
+# SizeOfCode follows the .text size
+size_of_code = struct.unpack_from('<I', d, opt + 4)[0]
+if size_of_code < new_vsize:
+    struct.pack_into('<I', d, opt + 4, (new_vsize + 0xFFF) & ~0xFFF)
+
+open(dst, 'wb').write(d)
+
+md = Cs(CS_ARCH_ARM, CS_MODE_THUMB)
+print('hook:')
+for i in md.disasm(bytes(d[REQUEST_PAGE_LOAD:REQUEST_PAGE_LOAD + 4]), REQUEST_PAGE_LOAD):
+    print('  %6x  %-8s %s' % (i.address, i.mnemonic, i.op_str))
+print('stub (%d bytes, vsize %#x -> %#x):' % (len(blob), TEXT_HDR_VSIZE_OLD, new_vsize))
+for i in md.disasm(bytes(d[STUB:prefix_addr]), STUB):
+    print('  %6x  %-8s %s' % (i.address, i.mnemonic, i.op_str))
+print('  prefix at %#x: %r' % (prefix_addr, bytes(d[prefix_addr:end]).decode('utf-16-le')))
+print('UrlEscapeW slot = pcadd+4 + delta = %#x' % ((pcadd_addr + 4 + delta) & 0xFFFFFFFF))
+print('sha256', hashlib.sha256(d).hexdigest())

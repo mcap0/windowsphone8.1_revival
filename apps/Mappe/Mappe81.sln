@@ -1,0 +1,24 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mappe81", "Mappe81\Mappe81.vcxproj", "{5E6D1C3A-7B2F-4C8E-9D41-3A6F0B2C8E15}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Navit81", "Navit81\Navit81.vcxproj", "{4CF4D325-3BC4-5D9D-94E6-6CC50CE48BAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E6D1C3A-7B2F-4C8E-9D41-3A6F0B2C8E15}.Release|ARM.ActiveCfg = Release|ARM
+		{5E6D1C3A-7B2F-4C8E-9D41-3A6F0B2C8E15}.Release|ARM.Build.0 = Release|ARM
+		{5E6D1C3A-7B2F-4C8E-9D41-3A6F0B2C8E15}.Release|ARM.Deploy.0 = Release|ARM
+		{4CF4D325-3BC4-5D9D-94E6-6CC50CE48BAC}.Release|ARM.ActiveCfg = Release|ARM
+		{4CF4D325-3BC4-5D9D-94E6-6CC50CE48BAC}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

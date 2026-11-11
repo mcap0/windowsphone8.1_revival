@@ -1,0 +1,10 @@
+--- a/Source/WebCore/platform/network/curl/CurlContext.h
++++ b/Source/WebCore/platform/network/curl/CurlContext.h
+@@ -250,6 +250,7 @@
+     CURLcode pause(int);
+ 
+     static const String errorDescription(CURLcode);
++    String errorMessage() const { return String::fromLatin1(m_errorBuffer); }
+ 
+     void enableShareHandle();
+ 

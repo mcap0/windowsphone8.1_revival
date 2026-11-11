@@ -1,0 +1,39 @@
+<Page x:Class="Authenticator.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="AUTHENTICATOR" Margin="16,12,16,0" FontSize="15" FontWeight="SemiBold" />
+    <ProgressBar x:Name="Countdown" Grid.Row="1" Margin="16,8" Maximum="30" Height="4" />
+    <TextBlock x:Name="EmptyText" Grid.Row="2" Margin="16" TextWrapping="Wrap" Visibility="Collapsed"
+               Text="Nessun account. Tocca + per aggiungerne uno con il QR code o il codice segreto." />
+    <ListView x:Name="List" Grid.Row="2" SelectionMode="None" IsItemClickEnabled="True"
+              ItemClick="OnItemClick" RightTapped="OnRightTapped" Holding="OnHolding">
+      <ListView.ItemContainerStyle>
+        <Style TargetType="ListViewItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="Padding" Value="16,6" />
+        </Style>
+      </ListView.ItemContainerStyle>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <StackPanel>
+            <TextBlock Text="{Binding Title}" FontSize="15" Opacity="0.8" TextTrimming="CharacterEllipsis" />
+            <TextBlock Text="{Binding Code}" FontSize="36" FontWeight="Light" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" />
+            <TextBlock Text="{Binding Hint}" FontSize="12" Opacity="0.6" />
+          </StackPanel>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
+  <Page.BottomAppBar>
+    <CommandBar>
+      <AppBarButton Icon="Add" Label="aggiungi" Click="OnAdd" />
+    </CommandBar>
+  </Page.BottomAppBar>
+</Page>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+         >
+  <Identity Name="DumbPhone.Sincro" Publisher="CN=DumbPhone" Version="1.0.4.0" />
+  <mp:PhoneIdentity PhoneProductId="70bed2c7-cd4e-49a4-be91-3c5a69ddc6af" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Sincro</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Sincro.App">
+      <m3:VisualElements DisplayName="Sincro"
+                         Square150x150Logo="Assets\Square150x150Logo.png"
+                         Square44x44Logo="Assets\Square44x44Logo.png"
+                         Description="Contatti e calendario Google, sola lettura, verso il telefono"
+                         ForegroundText="light"
+                         BackgroundColor="transparent"
+                         ToastCapable="false">
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png" ShortName="Sincro" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#0097A7" />
+      </m3:VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="Sincro.Background.SincroTask">
+          <BackgroundTasks>
+            <Task Type="timer" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <!-- Needed for "Importa dal PC" from the home LAN (192.168.1.148). -->
+    <Capability Name="privateNetworkClientServer" />
+    <m3:Capability Name="contacts" />
+    <m3:Capability Name="appointments" />
+  </Capabilities>
+</Package>

@@ -1,0 +1,53 @@
+--- a/Source/JavaScriptCore/interpreter/Interpreter.cpp
++++ b/Source/JavaScriptCore/interpreter/Interpreter.cpp
+@@ -103,6 +103,17 @@
+ 
+ namespace JSC {
+ 
++#if defined(WP81)
++std::atomic<bool> g_wp81ScriptsBlocked;
++
++static ALWAYS_INLINE bool wp81EntryBlocked(VM& vm)
++{
++    if (!g_wp81ScriptsBlocked.load(std::memory_order_relaxed)) [[likely]]
++        return false;
++    return !vm.entryScope;
++}
++#endif
++
+ JSValue eval(CallFrame* callFrame, JSValue thisValue, JSScope* callerScopeChain, CodeBlock* callerBaselineCodeBlock, BytecodeIndex bytecodeIndex, LexicallyScopedFeatures lexicallyScopedFeatures)
+ {
+     JSGlobalObject* globalObject = callerBaselineCodeBlock->globalObject();
+@@ -1024,6 +1035,10 @@
+ {
+     VM& vm = this->vm();
+     auto throwScope = DECLARE_THROW_SCOPE(vm);
++#if defined(WP81)
++    if (wp81EntryBlocked(vm)) [[unlikely]]
++        return jsUndefined();
++#endif
+     JSScope* scope = thisObj->realm()->globalScope();
+     JSGlobalObject* globalObject = scope->realm();
+     JSCallee* globalCallee = globalObject->globalCallee();
+@@ -1269,6 +1284,10 @@
+     auto scope = DECLARE_THROW_SCOPE(vm);
+ 
+     scope.assertNoException();
++#if defined(WP81)
++    if (wp81EntryBlocked(vm)) [[unlikely]]
++        return jsUndefined();
++#endif
+ 
+     ASSERT(!vm.isCollectorBusyOnCurrentThread());
+ 
+@@ -1685,6 +1704,10 @@
+ 
+     ASSERT_UNUSED(lexicalGlobalObject, &vm == &lexicalGlobalObject->vm());
+     throwScope.assertNoException();
++#if defined(WP81)
++    if (wp81EntryBlocked(vm)) [[unlikely]]
++        return jsUndefined();
++#endif
+     ASSERT(!vm.isCollectorBusyOnCurrentThread());
+     RELEASE_ASSERT(vm.currentThreadIsHoldingAPILock());
+ 

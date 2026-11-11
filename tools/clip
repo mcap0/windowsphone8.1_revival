@@ -1,0 +1,17 @@
+#!/bin/bash
+# clip "some text"   or   echo text | clip
+# Writes the text (no trailing newline added) atomically to share/clip.txt,
+# which the Appunti app on the phone reads from http://192.168.1.148:8765/clip.txt.
+set -euo pipefail
+dir="$HOME/dumbphone/share"
+target="$dir/clip.txt"
+tmp=$(mktemp "$dir/.clip.XXXXXX")
+trap 'rm -f "$tmp"' EXIT
+if [ $# -gt 0 ]; then
+    printf '%s' "$*" > "$tmp"
+else
+    cat > "$tmp"
+fi
+chmod 644 "$tmp"
+mv -f "$tmp" "$target"
+trap - EXIT

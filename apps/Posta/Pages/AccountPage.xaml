@@ -1,0 +1,37 @@
+<Page
+    x:Class="Posta.Pages.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer>
+        <StackPanel Margin="16,8,16,16">
+            <TextBlock Text="Account" Style="{StaticResource HeaderTextBlockStyle}" Margin="0,0,0,12" />
+
+            <TextBlock Text="Indirizzo e-mail" />
+            <TextBox x:Name="EmailBox" InputScope="EmailSmtpAddress" TextChanged="EmailBox_TextChanged" />
+
+            <TextBlock Text="Server IMAP (host)" Margin="0,12,0,0" />
+            <TextBox x:Name="ImapHostBox" InputScope="Url" />
+            <TextBlock Text="Porta IMAP (SSL)" />
+            <TextBox x:Name="ImapPortBox" InputScope="Number" />
+
+            <TextBlock Text="Server SMTP (host)" Margin="0,12,0,0" />
+            <TextBox x:Name="SmtpHostBox" InputScope="Url" />
+            <TextBlock Text="Porta SMTP (SSL)" />
+            <TextBox x:Name="SmtpPortBox" InputScope="Number" />
+
+            <TextBlock Text="Nome utente (vuoto = indirizzo e-mail)" Margin="0,12,0,0" />
+            <TextBox x:Name="UsernameBox" />
+
+            <TextBlock Text="Password per le app" Margin="0,12,0,0" />
+            <PasswordBox x:Name="PasswordBox" />
+            <TextBlock x:Name="PasswordHint" Text="Su Gmail crea una password per le app dal tuo account Google." TextWrapping="Wrap" Opacity="0.7" Margin="0,4,0,0" />
+
+            <Button x:Name="TestButton" Content="Verifica connessione" Click="TestButton_Click" HorizontalAlignment="Stretch" Margin="0,16,0,0" />
+            <Button x:Name="SaveButton" Content="Salva" Click="SaveButton_Click" HorizontalAlignment="Stretch" Margin="0,8,0,0" />
+
+            <ProgressBar x:Name="Busy" IsIndeterminate="False" Visibility="Collapsed" Margin="0,12,0,0" />
+            <TextBlock x:Name="StatusText" TextWrapping="Wrap" Margin="0,12,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

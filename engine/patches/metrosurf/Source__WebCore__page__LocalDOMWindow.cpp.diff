@@ -1,0 +1,32 @@
+--- a/Source/WebCore/page/LocalDOMWindow.cpp
++++ b/Source/WebCore/page/LocalDOMWindow.cpp
+@@ -971,6 +971,7 @@
+     return m_localStorage.get();
+ }
+ 
++
+ void LocalDOMWindow::processPostMessage(JSC::JSGlobalObject& lexicalGlobalObject, Ref<SecurityOrigin>&& sourceOrigin, const MessageWithMessagePorts& message, RefPtr<WindowProxy>&& incumbentWindowProxy, RefPtr<SecurityOrigin>&& targetOrigin)
+ {
+     // Capture stack trace only when inspector front-end is loaded as it may be time consuming.
+@@ -984,8 +985,9 @@
+     auto userGestureToForward = UserGestureIndicator::currentUserGesture();
+ 
+     protect(document->eventLoop())->queueTask(TaskSource::PostedMessageQueue, [this, protectedThis = Ref { *this }, message = message, incumbentWindowProxy = WTF::move(incumbentWindowProxy), sourceOrigin = WTF::move(sourceOrigin), userGestureToForward = WTF::move(userGestureToForward), postMessageIdentifier, stackTrace = WTF::move(stackTrace), targetOrigin = WTF::move(targetOrigin)]() mutable {
+-        if (!isCurrentlyDisplayedInFrame())
++        if (!isCurrentlyDisplayedInFrame()) {
+             return;
++        }
+ 
+         RefPtr document = this->document();
+         Ref frame = *this->frame();
+@@ -1036,8 +1038,9 @@
+ 
+ ExceptionOr<void> LocalDOMWindow::postMessage(JSC::JSGlobalObject& lexicalGlobalObject, LocalDOMWindow& incumbentWindow, JSC::JSValue messageValue, WindowPostMessageOptions&& options)
+ {
+-    if (!isCurrentlyDisplayedInFrame())
++    if (!isCurrentlyDisplayedInFrame()) {
+         return { };
++    }
+ 
+     RefPtr sourceDocument = incumbentWindow.document();
+     if (!sourceDocument)

@@ -1,0 +1,13 @@
+--- a/Source/WebCore/platform/graphics/egl/GLFence.cpp
++++ b/Source/WebCore/platform/graphics/egl/GLFence.cpp
+@@ -54,6 +54,10 @@
+ 
+ bool GLFence::isSupported(const GLDisplay& display)
+ {
++#if !HAVE(GL_FENCE)
++    UNUSED_PARAM(display);
++    return false;
++#endif
+     auto* context = GLContextWrapper::currentContext();
+     if (!context)
+         return false;

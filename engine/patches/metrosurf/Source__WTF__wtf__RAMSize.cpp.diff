@@ -1,0 +1,15 @@
+--- a/Source/WTF/wtf/RAMSize.cpp
++++ b/Source/WTF/wtf/RAMSize.cpp
+@@ -43,8 +43,12 @@
+ 
+ size_t ramSize()
+ {
++#if defined(WP81)
++    return availableMemory();
++#else
+     static size_t ramSize = availableMemory();
+     return ramSize;
++#endif
+ }
+ 
+ #if OS(DARWIN)

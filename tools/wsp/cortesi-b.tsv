@@ -1,0 +1,1002 @@
+# Cortesi set B (giro 10, 2026-11-03 notte): richieste gentili e indirette come nelle prove sul telefono
+# delle 22:00-22:25, da cortesi.py (pezzi scritti a mano prima di misurare). "now" = mar 2026-11-03 10:00.
+non è che mi diresti l'ora molto gentile	ora
+ehi assistente caro sarei contento se tu segnassi nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+assistente carissimo saresti così gentile da mettere una sveglia per domani alle otto molto gentile	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ehi assistente caro mi faresti la cortesia di dirmi che tempo ci sarà dopodomani a napoli grazie davvero	meteo	luogo=napoli;giorno=2026-11-05
+carissimo avrei bisogno che tu riuscissi a chiamare papà grazie davvero	chiama	chi=papà
+buonasera assistente sarei contento se tu mettessi un po' di battiato molto gentile	riproduci_musica	richiesta=battiato
+ehi assistente caro vorrei tanto che tu mi facessi una ricerca su internet sulla ricetta della caponata grazie davvero	cerca_sul_web	domanda=la ricetta della caponata
+ciao assistente mio ti chiederei di mettere un timer di sette minuti per la pasta	imposta_timer	secondi=420
+senti caro se non ti dispiace potresti svegliarmi alle cinque molto gentile	imposta_sveglia	ora=05:00;etichetta=
+assistente carissimo per caso chiameresti marco grazie davvero	chiama	chi=marco
+assistente carissimo per caso metteresti un timer di sette minuti per la pasta per cortesia	imposta_timer	secondi=420
+sarebbe be possibile scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+buonasera assistente sarebbe possibile cercare su internet quando gioca il napoli per cortesia	cerca_sul_web	domanda=quando gioca il napoli
+ciao tesoro vorrei tanto che tu quando puoi mi spiegassi perché il cielo è blu per cortesia	online
+mio agente caro se non ti dispiace potresti dirmi che impegni ho questa settimana ti ringrazio tanto	leggi_calendario	dal=2026-11-03;giorni=7
+senti caro sarebbe possibile segnare nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+assistente carissimo sarei contento se tu mi ricordassi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+mio agente caro vorrei tanto che tu un secondo mettessi un timer di quaranta minuti molto gentile	imposta_timer	secondi=2400
+ehi assistente caro non è che riprodurresti l'album the wall per cortesia	riproduci_musica	richiesta=the wall;tipo=album
+ti di chiederei di chiamare marco	chiama	chi=marco
+mio agente caro non è che faresti partire un conto alla rovescia di trenta secondi per cortesia	imposta_timer	secondi=30
+non è che riprodurresti l'album the wall grazie davvero	riproduci_musica	richiesta=the wall;tipo=album
+senti caro mi faresti la cortesia di ricordarmi tra un'ora di ritirare il bucato grazie davvero	promemoria	ora=11:00;testo=ritirare il bucato
+mio agente caro puoi mettere una sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;etichetta=
+carissimo non è che cercheresti su internet quando gioca il napoli per cortesia	cerca_sul_web	domanda=quando gioca il napoli
+assistente carissimo sarebbe possibile mettere qualcosa di lucio dalla ti ringrazio tanto	riproduci_musica	richiesta=lucio dalla
+assistente carissimo se non ti di dispiace potresti ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+senti caro sarei contento se tu impostassi una sveglia alle dieci meno un quarto grazie davvero	imposta_sveglia	ora=09:45;etichetta=
+buonasera assistente per caso controlleresti quanto manca alla fine del timer molto gentile	stato_timer
+senti caro sarei contento se tu mi dicessi quanti gradi ci sono a milano molto gentile	meteo	luogo=milano;giorno=
+ciao assistente mio sarebbe possibile dirmi che impegni ho questa settimana sei gentilissimo	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro mi faresti la cortesia di dirmi quanti gradi ci sono a milano molto gentile	meteo	luogo=milano;giorno=
+ciao tesoro ti chiederei di un secondo svegliarmi alle cinque se ci riesci	imposta_sveglia	ora=05:00;etichetta=
+ehi assistente caro vorrei tanto che tu mi ricordassi alle sei di comprare il pane ti ringrazio	promemoria	ora=18:00;testo=comprare il pane
+avrei bisogno che tu riuscissi a dirmi che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+vorrei tanto che tu mi dicessi l'ora sei gentilissimo	ora
+carissimo avrei bisogno che tu riuscissi a mettere un po' di battiato	riproduci_musica	richiesta=battiato
+ehi assistente caro non è che mi consiglieresti un film da vedere stasera per cortesia	online
+assistente carissimo saresti così gentile da cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+carissimo mi faresti la cortesia di scrivere nelle note pane latte e uova per cortesia	prendi_nota	testo=pane latte e uova
+ciao assistente mio puoi dirmi quanto è alto l'etna ti ringrazio	online
+senti caro saresti così gentile da cercare su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+dimmi che ora è per cortesia	ora
+ciao assistente mio puoi salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+carissimo puoi poi impostare una sveglia per le nove di sera sei gentilissimo	imposta_sveglia	ora=21:00;etichetta=
+assistente bello avrei bisogno che tu riuscissi a telefonare a mamma per cortesia	chiama	chi=mamma
+senti caro ti dispiacerebbe dirmi che ora è molto gentile	ora
+carissimo saresti così gentile da mettere una sveglia alle sei e un quarto per cortesia	imposta_sveglia	ora=06:15;etichetta=
+per caso mi sveglieresti alle cinque ti ringrazio tanto	imposta_sveglia	ora=05:00;etichetta=
+senti caro avrei bisogno che tu riuscissi a far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+assistente carissimo puoi cortesemente segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+assistente carissimo per caso mi faresti una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+mio agente caro ti andrebbe di velocemente dirmi quando è nato garibaldi ti ringrazio	online
+ti andrebbe di per piacere cercare su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+ehi assistente caro mi faresti la cortesia di mettere un timer di sette minuti per la pasta per cortesia	imposta_timer	secondi=420
+buonasera assistente dimmi che tempo fa oggi a ragusa un secondo per cortesia	meteo	luogo=ragusa;giorno=
+puoi cortesemente scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+mio agente caro se non ti dispiace potresti mettere una sveglia per domani alle otto grazie davvero	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+sarei contento se tu cercassi su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+puoi controllare quanto manca alla fine del timer ti ringrazio tanto	stato_timer
+ciao tesoro sarei contento se tu mi dicessi quanto resta sul timer ti ringrazio tanto	stato_timer
+mio agente caro saresti esti così gentile da telefonare a mamma molto gentile	chiama	chi=mamma
+buonasera assistente non è che mi diresti che tempo fa oggi a ragusa molto gentile	meteo	luogo=ragusa;giorno=
+assistente bello se non ti dispiace potresti mettere vasco rossi se ci riesci	riproduci_musica	richiesta=vasco rossi
+ehi assistente caro puoi velocemente telefonare a mamma molto gentile	chiama	chi=mamma
+ciao tesoro per caso mi diresti che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+assistente carissimo chiama marco cortesemente grazie davvero	chiama	chi=marco
+carissimo sarebbe possibile dirmi chi è il presidente della repubblica	online
+ciao tesoro ti chiederei di dirmi quanto è alto l'etna grazie davvero	online
+ehi assistente caro ti dispiacerebbe per piacere mettere vasco rossi per cortesia	riproduci_musica	richiesta=vasco rossi
+carissimo non è che mi consiglieresti un film da vedere stasera ti ringrazio	online
+assistente bello ti dispiacerebbe velocemente spiegarmi perché il cielo è blu	online
+assistente bello sarei contento se tu mi dicessi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+se non ti dispiace potresti salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+ciao assistente mio ti dispiacerebbe quando puoi dirmi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+carissimo mi faresti la cortesia di cercare su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+senti caro mi faresti la cortesia di farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+se non ti dispiace potresti mettere qualcosa di lucio dalla sei gentilissimo	riproduci_musica	richiesta=lucio dalla
+non è che mi diresti chi è il presidente della repubblica per cortesia	online
+saresti così gentile da spiegarmi perché il cielo è blu per cortesia	online
+mio agente caro per caso imposteresti un timer di un'ora grazie davvero	imposta_timer	secondi=3600
+ehi assistente caro ti andrebbe di impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+ciao assistente mio puoi poi dirmi che tempo ci sarà dopodomani a napoli grazie davvero	meteo	luogo=napoli;giorno=2026-11-05
+ehi assistente caro ti chiederei di impostare una sveglia per le nove di sera molto gentile	imposta_sveglia	ora=21:00;etichetta=
+ciao tesoro ti dispiacerebbe dirmi che tempo fa oggi a ragusa ti ringrazio tanto	meteo	luogo=ragusa;giorno=
+ehi assistente caro ti dispiacerebbe quando puoi impostare un timer di un'ora	imposta_timer	secondi=3600
+ciao tesoro ti chiederei di mettere vasco rossi grazie davvero	riproduci_musica	richiesta=vasco rossi
+ciao assistente mio avrei bisogno che tu riuscissi a dirmi quanto resta sul timer	stato_timer
+assistente bello per caso mi diresti chi è il presidente della repubblica	online
+assistente bello sarei contento se tu mi consigliassi un film da vedere stasera grazie davvero	online
+ciao assistente mio vorrei tanto che tu facessi partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+mio agente caro ti andrebbe di cortesemente ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+senti caro ti andrebbe di quando puoi dirmi quando è nato garibaldi grazie davvero	online
+ehi assistente caro avrei bisogno che tu riuscissi a impostare una sveglia per le nove di sera se ci riesci	imposta_sveglia	ora=21:00;etichetta=
+ehi assistente caro vorrei tanto che tu per piacere mettessi un timer di quaranta minuti	imposta_timer	secondi=2400
+carissimo mi faresti la cortesia di dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+ti andrebbe di un secondo dirmi che ora è grazie davvero	ora
+ciao assistente mio ti dispiacerebbe velocemente controllare quanto manca alla fine del timer sei gentilissimo	stato_timer
+mio agente caro puoi velocemente impostare un timer di un'ora	imposta_timer	secondi=3600
+senti caro per caso chiameresti papà sei gentilissimo	chiama	chi=papà
+carissimo sarebbe be possibile dirmi l'ora molto gentile	ora
+buonasera assistente non è che mi diresti la data di oggi grazie davvero	data
+ehi assistente caro puoi dirmi la data di oggi	data
+carissimo non è che metteresti qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+ciao assistente mio se non ti dispiace potresti dirmi quanto è alto l'etna	online
+ehi assistente caro ti andrebbe di per piacere mettere un timer di quaranta minuti per cortesia	imposta_timer	secondi=2400
+buonasera assistente non è che mi ricorderesti tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+carissimo sarei contento se tu mettessi un po' di battiato	riproduci_musica	richiesta=battiato
+ehi assistente caro non è che metteresti una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+buonasera assistente per caso mi diresti quanti gradi ci sono a milano sei gentilissimo	meteo	luogo=milano;giorno=
+ehi assistente caro sarei contento se tu impostassi una sveglia alle dieci meno un quarto sei gentilissimo	imposta_sveglia	ora=09:45;etichetta=
+sarei contento se tu mi dicessi la data di oggi sei gentilissimo	data
+sarei contento se tu mi dicessi quando è nato garibaldi	online
+carissimo saresti esti così gentile da mettere una sveglia alle sei e un quarto grazie davvero	imposta_sveglia	ora=06:15;etichetta=
+carissimo ti di chiederei di cortesemente salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ciao tesoro sarebbe possibile chiamare papà se ci riesci	chiama	chi=papà
+ehi assistente caro vorrei tanto che tu quando puoi poi mi dicessi quanto resta sul timer ti ringrazio tanto	stato_timer
+ciao tesoro ti chiederei di un secondo cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ciao assistente mio ti di dispiacerebbe riprodurre l'album the wall grazie davvero	riproduci_musica	richiesta=the wall;tipo=album
+carissimo sarei contento se tu cercassi su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+buonasera assistente sarebbe be possibile mettere un timer di sette minuti per la pasta grazie davvero	imposta_timer	secondi=420
+sarei contento se tu impostassi una sveglia alle dieci meno un quarto grazie davvero	imposta_sveglia	ora=09:45;etichetta=
+carissimo ti andrebbe di cortesemente dirmi che tempo fa oggi a ragusa grazie davvero	meteo	luogo=ragusa;giorno=
+ehi assistente caro metti una sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;etichetta=
+sarei contento se tu cercassi su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+buonasera assistente sarebbe possibile cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+ehi assistente caro mi faresti la cortesia di chiamare marco	chiama	chi=marco
+puoi ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+senti caro avrei bisogno che tu riuscissi a mettere un timer di sette minuti per la pasta ti ringrazio tanto	imposta_timer	secondi=420
+mio agente caro avrei bisogno che tu riuscissi a mettere un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+carissimo puoi poi scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+assistente carissimo puoi poi un secondo dirmi l'ora ti ringrazio tanto	ora
+ciao tesoro ti andrebbe di un secondo chiamare papà grazie davvero	chiama	chi=papà
+mio agente caro mi faresti la cortesia di impostare un timer di un'ora grazie davvero	imposta_timer	secondi=3600
+ciao tesoro saresti esti così gentile da ricordarmi alle sei di comprare il pane grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+non è che mi diresti che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+avrei bisogno che tu riuscissi a impostare un timer di un'ora per cortesia	imposta_timer	secondi=3600
+saresti così gentile da impostare una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+buonasera assistente saresti così gentile da mettere un timer di quaranta minuti sei gentilissimo	imposta_timer	secondi=2400
+ti andrebbe di salvare una nota con scritto portare la macchina dal meccanico ti ringrazio	prendi_nota	testo=portare la macchina dal meccanico
+ciao assistente mio saresti esti così gentile da consigliarmi un film da vedere stasera per cortesia	online
+buonasera assistente non è che mi diresti l'ora	ora
+assistente carissimo vorrei rei tanto che tu mi dicessi che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+mi faresti la cortesia di ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+ciao tesoro mi faresti la cortesia di svegliarmi alle cinque	imposta_sveglia	ora=05:00;etichetta=
+assistente carissimo sarebbe possibile dirmi che ora è sei gentilissimo	ora
+ciao assistente mio non è che mi ricorderesti alle sei di comprare il pane ti ringrazio	promemoria	ora=18:00;testo=comprare il pane
+mio agente caro saresti così gentile da dirmi che tempo ci sarà dopodomani a napoli ti ringrazio tanto	meteo	luogo=napoli;giorno=2026-11-05
+buonasera assistente ti di dispiacerebbe salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+avrei bisogno che tu riuscissi a cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ti chiederei di velocemente mettere un timer di quaranta minuti per cortesia	imposta_timer	secondi=2400
+vorrei tanto che tu un secondo mi svegliassi alle cinque	imposta_sveglia	ora=05:00;etichetta=
+ti andrebbe di cortesemente mettere una sveglia alle sei e un quarto grazie davvero	imposta_sveglia	ora=06:15;etichetta=
+senti caro saresti esti così gentile da dirmi quanto resta sul timer	stato_timer
+mio agente caro ti chiederei di dirmi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+mio agente caro per caso mi diresti quando è nato garibaldi	online
+carissimo saresti così gentile da impostare un timer di un'ora molto gentile	imposta_timer	secondi=3600
+carissimo vorrei tanto che tu per piacere cercassi su internet come si pulisce il forno grazie davvero	cerca_sul_web	domanda=come si pulisce il forno
+ciao tesoro ti dispiacerebbe per piacere controllare quanto manca alla fine del timer	stato_timer
+mio agente caro ti andrebbe di velocemente impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+buonasera assistente sarebbe be possibile riprodurre l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+sarei contento se tu mi dicessi quanto resta sul timer se ci riesci	stato_timer
+mio agente caro vorrei tanto che tu mi ricordassi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello puoi velocemente scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+ehi assistente caro dimmi quanti gradi ci sono a milano un secondo sei gentilissimo	meteo	luogo=milano;giorno=
+non è che scriveresti nelle note pane latte e uova ti ringrazio	prendi_nota	testo=pane latte e uova
+senti caro per caso chiameresti marco ti ringrazio tanto	chiama	chi=marco
+ciao assistente mio vorrei rei tanto che tu mi consigliassi un film da vedere stasera ti ringrazio	online
+assistente bello sarei contento se tu mettessi un timer di sette minuti per la pasta se ci riesci	imposta_timer	secondi=420
+senti caro puoi poi un secondo chiamare marco	chiama	chi=marco
+assistente bello ti andrebbe di dirmi quanto è alto l'etna	online
+carissimo se non ti dispiace potresti dirmi quanto è alto l'etna	online
+ciao tesoro controlla quanto manca alla fine del timer quando puoi se ci riesci	stato_timer
+carissimo avrei bisogno che tu riuscissi a mettere un po' di battiato se ci riesci	riproduci_musica	richiesta=battiato
+mio agente caro puoi velocemente dirmi quanto è alto l'etna	online
+mio agente caro puoi poi quando puoi spiegarmi perché il cielo è blu per cortesia	online
+ehi assistente caro mi faresti la cortesia di cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+buonasera assistente ti chiederei di per piacere dirmi che tempo fa oggi a ragusa sei gentilissimo	meteo	luogo=ragusa;giorno=
+buonasera assistente puoi ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+senti caro saresti così gentile da salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+mio agente caro saresti così gentile da dirmi chi è il presidente della repubblica	online
+ehi assistente caro scrivi nelle note pane latte e uova per cortesia	prendi_nota	testo=pane latte e uova
+ciao assistente mio mi faresti la cortesia di impostare un timer di un'ora	imposta_timer	secondi=3600
+mio agente caro se non ti di dispiace potresti mettere un po' di battiato se ci riesci	riproduci_musica	richiesta=battiato
+ehi assistente caro ti di dispiacerebbe un secondo mettere un po' di battiato	riproduci_musica	richiesta=battiato
+mio agente caro puoi dirmi quanto resta sul timer ti ringrazio tanto	stato_timer
+carissimo saresti così gentile da mettere un po' di battiato sei gentilissimo	riproduci_musica	richiesta=battiato
+ciao tesoro ti di dispiacerebbe cercare su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+assistente bello puoi cortesemente ricordarmi alle sei di comprare il pane per cortesia	promemoria	ora=18:00;testo=comprare il pane
+mio agente caro dimmi la data di oggi per cortesia	data
+assistente carissimo se non ti dispiace potresti dirmi la data di oggi per cortesia	data
+ciao assistente mio vorrei tanto che tu mi dicessi che tempo ci sarà dopodomani a napoli per cortesia	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro vorrei tanto che tu quando puoi riproducessi l'album the wall ti ringrazio tanto	riproduci_musica	richiesta=the wall;tipo=album
+carissimo non è che mi faresti una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+ciao assistente mio per caso cercheresti su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+carissimo ti di andrebbe di per piacere farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+senti caro ti dispiacerebbe per piacere ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+senti caro ti chiederei di quando puoi impostare un timer di un'ora se ci riesci	imposta_timer	secondi=3600
+senti caro puoi per piacere ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello se non ti dispiace potresti farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ciao tesoro puoi un secondo dirmi che tempo ci sarà dopodomani a napoli molto gentile	meteo	luogo=napoli;giorno=2026-11-05
+ciao assistente mio non è che metteresti un timer di sette minuti per la pasta molto gentile	imposta_timer	secondi=420
+buonasera assistente ti andrebbe di un secondo mettere un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+carissimo non è che scriveresti nelle note pane latte e uova ti ringrazio	prendi_nota	testo=pane latte e uova
+carissimo ti andrebbe di quando puoi dirmi che tempo fa oggi a ragusa per cortesia	meteo	luogo=ragusa;giorno=
+buonasera assistente mi faresti la cortesia di impostare una sveglia alle dieci meno un quarto sei gentilissimo	imposta_sveglia	ora=09:45;etichetta=
+carissimo avrei bisogno che tu riuscissi a chiamare marco	chiama	chi=marco
+ti di andrebbe di impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+ciao tesoro sarebbe possibile mettere qualcosa di lucio dalla sei gentilissimo	riproduci_musica	richiesta=lucio dalla
+carissimo se non ti dispiace potresti cercare su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+ciao assistente mio avrei bisogno che tu riuscissi a impostare una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+ehi assistente caro puoi poi velocemente cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+buonasera assistente avrei bisogno che tu riuscissi a dirmi l'ora	ora
+ti di andrebbe di un secondo mettere un timer di sette minuti per la pasta grazie davvero	imposta_timer	secondi=420
+sarebbe be possibile cercare su internet come si pulisce il forno grazie davvero	cerca_sul_web	domanda=come si pulisce il forno
+ciao assistente mio non è che chiameresti marco	chiama	chi=marco
+sarebbe be possibile mettere un timer di quaranta minuti ti ringrazio tanto	imposta_timer	secondi=2400
+ciao assistente mio mi faresti la cortesia di dirmi che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+ti chiederei di cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+carissimo saresti così gentile da segnare nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+carissimo avrei bisogno che tu riuscissi a mettere una sveglia per domani alle otto grazie davvero	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ciao tesoro per caso salveresti una nota con scritto portare la macchina dal meccanico ti ringrazio	prendi_nota	testo=portare la macchina dal meccanico
+ciao tesoro non è che controlleresti quanto manca alla fine del timer	stato_timer
+carissimo puoi velocemente mettere un timer di quaranta minuti per cortesia	imposta_timer	secondi=2400
+assistente carissimo sarebbe possibile mettere qualcosa di lucio dalla grazie davvero	riproduci_musica	richiesta=lucio dalla
+ciao assistente mio mi faresti la cortesia di riprodurre l'album the wall molto gentile	riproduci_musica	richiesta=the wall;tipo=album
+mi faresti la cortesia di dirmi l'ora se ci riesci	ora
+buonasera assistente sarei contento se tu facessi partire un conto alla rovescia di trenta secondi ti ringrazio tanto	imposta_timer	secondi=30
+assistente carissimo per caso mi diresti quanto resta sul timer per cortesia	stato_timer
+non è che metteresti qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+ciao assistente mio sarei contento se tu facessi partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+ciao tesoro per caso salveresti una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ti chiederei di cortesemente impostare un timer di un'ora ti ringrazio tanto	imposta_timer	secondi=3600
+ciao tesoro saresti così gentile da spiegarmi perché il cielo è blu	online
+ciao assistente mio ti chiederei di velocemente consigliarmi un film da vedere stasera grazie davvero	online
+assistente bello saresti così gentile da dirmi la data di oggi molto gentile	data
+buonasera assistente ti andrebbe di mettere un po' di battiato molto gentile	riproduci_musica	richiesta=battiato
+carissimo avrei bisogno che tu riuscissi a impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+buonasera assistente vorrei rei tanto che tu cercassi su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+ti chiederei di cercare su internet come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+sarei contento se tu mi dicessi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+assistente bello avrei bisogno che tu riuscissi a mettere qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+assistente carissimo puoi velocemente mettere una sveglia alle sei e un quarto ti ringrazio tanto	imposta_sveglia	ora=06:15;etichetta=
+assistente carissimo per caso telefoneresti a mamma grazie davvero	chiama	chi=mamma
+ehi assistente caro sarebbe possibile dirmi quanto è alto l'etna ti ringrazio	online
+assistente bello mi faresti la cortesia di impostare una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+carissimo sarei contento se tu mi spiegassi perché il cielo è blu ti ringrazio	online
+senti caro se non ti dispiace potresti dirmi l'ora ti ringrazio tanto	ora
+senti caro sarei contento se tu controllassi quanto manca alla fine del timer grazie davvero	stato_timer
+ehi assistente caro puoi quando puoi impostare un timer di un'ora se ci riesci	imposta_timer	secondi=3600
+avrei bisogno che tu riuscissi a riprodurre l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+mio agente caro per caso mi diresti quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+senti caro mi faresti la cortesia di mettere qualcosa di lucio dalla ti ringrazio tanto	riproduci_musica	richiesta=lucio dalla
+carissimo sarei contento se tu mi dicessi quanti gradi ci sono a milano grazie davvero	meteo	luogo=milano;giorno=
+ehi assistente caro ti dispiacerebbe velocemente dirmi che ora è grazie davvero	ora
+ciao assistente mio non è che cercheresti su internet quando gioca il napoli per cortesia	cerca_sul_web	domanda=quando gioca il napoli
+carissimo ti andrebbe di un secondo mettere qualcosa di lucio dalla sei gentilissimo	riproduci_musica	richiesta=lucio dalla
+ehi assistente caro dimmi quando è nato garibaldi per cortesia	online
+ciao assistente mio scrivi nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+mio agente caro sarei contento se tu mi ricordassi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ciao tesoro ti dispiacerebbe cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+buonasera assistente saresti così gentile da dirmi che tempo fa oggi a ragusa molto gentile	meteo	luogo=ragusa;giorno=
+saresti così gentile da controllare quanto manca alla fine del timer	stato_timer
+assistente carissimo metti una sveglia per domani alle otto quando puoi ti ringrazio tanto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+buonasera assistente per caso mi sveglieresti alle cinque	imposta_sveglia	ora=05:00;etichetta=
+assistente carissimo se non ti di dispiace potresti dirmi la data di oggi	data
+ehi assistente caro puoi poi cortesemente mettere un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+ehi assistente caro per caso riprodurresti l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+ciao tesoro per caso metteresti un timer di sette minuti per la pasta	imposta_timer	secondi=420
+mio agente caro saresti così gentile da mettere una sveglia alle sei e un quarto per cortesia	imposta_sveglia	ora=06:15;etichetta=
+sarebbe possibile chiamare papà grazie davvero	chiama	chi=papà
+ciao assistente mio dimmi chi è il presidente della repubblica per cortesia	online
+puoi per piacere chiamare marco ti ringrazio tanto	chiama	chi=marco
+buonasera assistente vorrei tanto che tu mi consigliassi un film da vedere stasera ti ringrazio	online
+ti andrebbe di dirmi quanto è alto l'etna	online
+ehi assistente caro saresti così gentile da dirmi l'ora se ci riesci	ora
+mio agente caro ti chiederei di un secondo controllare quanto manca alla fine del timer grazie davvero	stato_timer
+ehi assistente caro ti di andrebbe di velocemente mettere una sveglia alle sei e un quarto sei gentilissimo	imposta_sveglia	ora=06:15;etichetta=
+ti chiederei di cercare su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+mio agente caro mi faresti la cortesia di scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+senti caro vorrei tanto che tu mi ricordassi alle sei di comprare il pane ti ringrazio	promemoria	ora=18:00;testo=comprare il pane
+sarei contento se tu mi dicessi l'ora molto gentile	ora
+buonasera assistente sarei contento se tu mettessi vasco rossi	riproduci_musica	richiesta=vasco rossi
+sarei contento se tu mettessi una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+per caso mi diresti quanti gradi ci sono a milano molto gentile	meteo	luogo=milano;giorno=
+assistente bello se non ti dispiace potresti consigliarmi un film da vedere stasera	online
+assistente carissimo non è che imposteresti una sveglia per le nove di sera grazie davvero	imposta_sveglia	ora=21:00;etichetta=
+senti caro non è che chiameresti papà se ci riesci	chiama	chi=papà
+ti chiederei di per piacere chiamare marco se ci riesci	chiama	chi=marco
+buonasera assistente non è che cercheresti su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+ehi assistente caro mi faresti la cortesia di dirmi che ora è	ora
+mio agente caro non è che controlleresti quanto manca alla fine del timer se ci riesci	stato_timer
+buonasera assistente ti andrebbe di un secondo chiamare marco	chiama	chi=marco
+ciao tesoro per caso mi sveglieresti alle cinque	imposta_sveglia	ora=05:00;etichetta=
+assistente bello saresti così gentile da farmi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+ciao tesoro ti di chiederei di far partire un conto alla rovescia di trenta secondi se ci riesci	imposta_timer	secondi=30
+ehi assistente caro puoi segnare nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+mio agente caro mi faresti la cortesia di dirmi quanto è alto l'etna	online
+sarei contento se tu mettessi un timer di quaranta minuti	imposta_timer	secondi=2400
+senti caro avrei bisogno che tu riuscissi a mettere vasco rossi grazie davvero	riproduci_musica	richiesta=vasco rossi
+buonasera assistente vorrei rei tanto che tu cercassi su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+ti andrebbe di segnare nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+mio agente caro sarebbe possibile dirmi l'ora	ora
+ricordami tra un'ora di ritirare il bucato grazie davvero	promemoria	ora=11:00;testo=ritirare il bucato
+ciao tesoro ti andrebbe di un secondo farmi una ricerca su internet sulla ricetta della caponata grazie davvero	cerca_sul_web	domanda=la ricetta della caponata
+buonasera assistente mi faresti la cortesia di mettere un po' di battiato	riproduci_musica	richiesta=battiato
+assistente bello sarebbe possibile dirmi che tempo ci sarà dopodomani a napoli per cortesia	meteo	luogo=napoli;giorno=2026-11-05
+buonasera assistente ti chiederei di spiegarmi perché il cielo è blu per cortesia	online
+buonasera assistente saresti così gentile da ricordarmi alle sei di comprare il pane grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+ciao tesoro se non ti dispiace potresti dirmi l'ora per cortesia	ora
+per caso cercheresti su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+mio agente caro non è che mi spiegheresti perché il cielo è blu	online
+per caso salveresti una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+mio agente caro per caso chiameresti marco sei gentilissimo	chiama	chi=marco
+assistente carissimo vorrei tanto che tu un secondo cercassi su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+senti caro per caso mi ricorderesti tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello ti dispiacerebbe cortesemente cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+ciao assistente mio ti andrebbe di mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+mio agente caro per caso mi diresti chi è il presidente della repubblica per cortesia	online
+ti chiederei di quando puoi impostare un timer di un'ora	imposta_timer	secondi=3600
+se non ti dispiace potresti cercare su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+carissimo sarei contento se tu mi svegliassi alle cinque molto gentile	imposta_sveglia	ora=05:00;etichetta=
+senti caro avrei bisogno che tu riuscissi a riprodurre l'album the wall sei gentilissimo	riproduci_musica	richiesta=the wall;tipo=album
+mio agente caro saresti così gentile da dirmi la data di oggi grazie davvero	data
+ciao assistente mio sarebbe be possibile far partire un conto alla rovescia di trenta secondi sei gentilissimo	imposta_timer	secondi=30
+assistente bello vorrei tanto che tu mi consigliassi un film da vedere stasera	online
+ciao tesoro mi faresti la cortesia di dirmi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+ciao tesoro ti di dispiacerebbe quando puoi ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+buonasera assistente vorrei rei tanto che tu mettessi qualcosa di lucio dalla grazie davvero	riproduci_musica	richiesta=lucio dalla
+ehi assistente caro ti andrebbe di quando puoi mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+ehi assistente caro per caso mi faresti una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+carissimo se non ti dispiace potresti far partire un conto alla rovescia di trenta secondi ti ringrazio tanto	imposta_timer	secondi=30
+ti andrebbe di dirmi quanti gradi ci sono a milano ti ringrazio tanto	meteo	luogo=milano;giorno=
+senti caro metti una sveglia per domani alle otto cortesemente	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+senti caro se non ti dispiace potresti dirmi quanto è alto l'etna	online
+mio agente caro ti di andrebbe di mettere un timer di quaranta minuti sei gentilissimo	imposta_timer	secondi=2400
+ehi assistente caro non è che metteresti un po' di battiato sei gentilissimo	riproduci_musica	richiesta=battiato
+ehi assistente caro sarei contento se tu mettessi un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+ciao tesoro sarebbe be possibile svegliarmi alle cinque ti ringrazio tanto	imposta_sveglia	ora=05:00;etichetta=
+per caso mi diresti l'ora	ora
+assistente bello sarebbe be possibile cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+assistente carissimo se non ti di dispiace potresti dirmi la data di oggi sei gentilissimo	data
+ciao assistente mio non è che metteresti qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+vorrei tanto che tu mi ricordassi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+ciao tesoro sarei contento se tu mi spiegassi perché il cielo è blu	online
+ti dispiacerebbe per piacere salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+ciao assistente mio sarebbe possibile far partire un conto alla rovescia di trenta secondi se ci riesci	imposta_timer	secondi=30
+mi faresti la cortesia di dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro ti chiederei di cortesemente mettere vasco rossi se ci riesci	riproduci_musica	richiesta=vasco rossi
+non è che imposteresti una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+ti di andrebbe di quando puoi dirmi chi è il presidente della repubblica	online
+saresti esti così gentile da dirmi che tempo ci sarà dopodomani a napoli per cortesia	meteo	luogo=napoli;giorno=2026-11-05
+assistente bello sarei contento se tu cercassi su internet come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+ciao assistente mio ti di chiederei di per piacere impostare un timer di un'ora sei gentilissimo	imposta_timer	secondi=3600
+buonasera assistente sarebbe be possibile dirmi che tempo ci sarà dopodomani a napoli ti ringrazio tanto	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro mi faresti la cortesia di dirmi la data di oggi	data
+se non ti di dispiace potresti dirmi l'ora molto gentile	ora
+assistente bello sarei contento se tu mi dicessi che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro per caso metteresti qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+assistente bello ti andrebbe di cortesemente svegliarmi alle cinque grazie davvero	imposta_sveglia	ora=05:00;etichetta=
+avrei bisogno che tu riuscissi a mettere vasco rossi grazie davvero	riproduci_musica	richiesta=vasco rossi
+ciao assistente mio mi faresti la cortesia di cercare su google la farmacia di turno per cortesia	cerca_sul_web	domanda=la farmacia di turno
+senti caro ti di andrebbe di un secondo mettere un timer di sette minuti per la pasta	imposta_timer	secondi=420
+buonasera assistente non è che faresti partire un conto alla rovescia di trenta secondi se ci riesci	imposta_timer	secondi=30
+ciao assistente mio saresti così gentile da mettere una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ehi assistente caro sarebbe be possibile consigliarmi un film da vedere stasera	online
+senti caro avrei bisogno che tu riuscissi a cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+ehi assistente caro puoi per piacere dirmi quanto resta sul timer	stato_timer
+mi faresti la cortesia di segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ciao tesoro dimmi quanto è alto l'etna	online
+carissimo saresti così gentile da mettere qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+sarebbe possibile cercare su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+ciao tesoro saresti così gentile da cercare su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+carissimo sarei contento se tu chiamassi marco	chiama	chi=marco
+per caso mi diresti quanti gradi ci sono a milano ti ringrazio tanto	meteo	luogo=milano;giorno=
+assistente carissimo ti di chiederei di cortesemente mettere una sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;etichetta=
+assistente carissimo vorrei tanto che tu quando puoi segnassi nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+ciao assistente mio ti dispiacerebbe dirmi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+carissimo saresti così gentile da farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ciao assistente mio ti chiederei di velocemente dirmi la data di oggi	data
+ciao tesoro sarebbe possibile mettere una sveglia per domani alle otto sei gentilissimo	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+buonasera assistente ti chiederei di un secondo salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+senti caro se non ti dispiace potresti cercare su internet quando gioca il napoli per cortesia	cerca_sul_web	domanda=quando gioca il napoli
+carissimo metti un timer di sette minuti per la pasta ti ringrazio tanto	imposta_timer	secondi=420
+ciao assistente mio vorrei tanto che tu per piacere impostassi una sveglia alle dieci meno un quarto ti ringrazio tanto	imposta_sveglia	ora=09:45;etichetta=
+assistente carissimo saresti così gentile da scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+senti caro puoi poi controllare quanto manca alla fine del timer molto gentile	stato_timer
+buonasera assistente spiegami perché il cielo è blu quando puoi per cortesia	online
+ehi assistente caro non è che mi diresti chi è il presidente della repubblica ti ringrazio	online
+non è che imposteresti una sveglia alle dieci meno un quarto molto gentile	imposta_sveglia	ora=09:45;etichetta=
+non è che imposteresti una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+assistente carissimo ti di chiederei di scrivere nelle note pane latte e uova grazie davvero	prendi_nota	testo=pane latte e uova
+avrei bisogno che tu riuscissi a dirmi che ora è molto gentile	ora
+carissimo sarei contento se tu mettessi una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ciao assistente mio puoi per piacere dirmi quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+per caso mi diresti quanto è alto l'etna	online
+senti caro ti chiederei di velocemente controllare quanto manca alla fine del timer	stato_timer
+sarei contento se tu impostassi una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+carissimo non è che metteresti una sveglia alle sei e un quarto ti ringrazio tanto	imposta_sveglia	ora=06:15;etichetta=
+ehi assistente caro riproduci l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+saresti esti così gentile da spiegarmi perché il cielo è blu	online
+per caso metteresti un po' di battiato	riproduci_musica	richiesta=battiato
+assistente carissimo puoi velocemente segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ciao assistente mio sarebbe possibile cercare su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+buonasera assistente per caso mi ricorderesti alle sei di comprare il pane grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+se non ti dispiace potresti impostare un timer di un'ora	imposta_timer	secondi=3600
+carissimo saresti così gentile da segnare nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+ciao assistente mio per caso chiameresti papà sei gentilissimo	chiama	chi=papà
+ehi assistente caro saresti così gentile da chiamare marco sei gentilissimo	chiama	chi=marco
+ciao tesoro sarei contento se tu mettessi una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ehi assistente caro se non ti di dispiace potresti mettere una sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;etichetta=
+assistente carissimo mi faresti la cortesia di cercare su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+carissimo ricordami tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+mio agente caro saresti esti così gentile da dirmi la data di oggi	data
+mio agente caro avrei bisogno che tu riuscissi a consigliarmi un film da vedere stasera	online
+saresti così gentile da dirmi quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+sarebbe be possibile salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+assistente bello ti andrebbe di cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ciao assistente mio sarebbe possibile chiamare marco ti ringrazio tanto	chiama	chi=marco
+sarebbe be possibile chiamare marco	chiama	chi=marco
+ehi assistente caro mi faresti la cortesia di chiamare marco ti ringrazio tanto	chiama	chi=marco
+assistente bello mi faresti la cortesia di dirmi che tempo fa oggi a ragusa grazie davvero	meteo	luogo=ragusa;giorno=
+mio agente caro sarebbe be possibile mettere una sveglia per domani alle otto per cortesia	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+senti caro avrei bisogno che tu riuscissi a svegliarmi alle cinque se ci riesci	imposta_sveglia	ora=05:00;etichetta=
+mio agente caro sarei contento se tu chiamassi marco grazie davvero	chiama	chi=marco
+mio agente caro sarebbe be possibile cercare su google la farmacia di turno ti ringrazio	cerca_sul_web	domanda=la farmacia di turno
+ciao assistente mio saresti esti così gentile da cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ciao tesoro ti chiederei di per piacere far partire un conto alla rovescia di trenta secondi se ci riesci	imposta_timer	secondi=30
+assistente carissimo mi faresti la cortesia di cercare su internet come si pulisce il forno grazie davvero	cerca_sul_web	domanda=come si pulisce il forno
+vorrei tanto che tu per piacere mi facessi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+ehi assistente caro ti di chiederei di dirmi chi è il presidente della repubblica grazie davvero	online
+assistente carissimo avrei bisogno che tu riuscissi a dirmi l'ora ti ringrazio tanto	ora
+ehi assistente caro non è che mi faresti una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+senti caro saresti così gentile da dirmi quando è nato garibaldi grazie davvero	online
+senti caro per caso mi faresti una ricerca su internet sulla ricetta della caponata grazie davvero	cerca_sul_web	domanda=la ricetta della caponata
+assistente carissimo vorrei tanto che tu mi svegliassi alle cinque per cortesia	imposta_sveglia	ora=05:00;etichetta=
+se non ti dispiace potresti cercare su internet come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+assistente carissimo ti di chiederei di velocemente mettere una sveglia alle sei e un quarto sei gentilissimo	imposta_sveglia	ora=06:15;etichetta=
+carissimo sarebbe possibile impostare un timer di un'ora grazie davvero	imposta_timer	secondi=3600
+carissimo ti dispiacerebbe cortesemente dirmi quando è nato garibaldi	online
+ciao assistente mio se non ti dispiace potresti mettere vasco rossi ti ringrazio tanto	riproduci_musica	richiesta=vasco rossi
+per caso mi ricorderesti tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+carissimo ti dispiacerebbe per piacere dirmi che tempo ci sarà dopodomani a napoli per cortesia	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro sarebbe be possibile dirmi chi è il presidente della repubblica	online
+carissimo puoi poi segnare nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+carissimo saresti esti così gentile da spiegarmi perché il cielo è blu	online
+buonasera assistente puoi per piacere dirmi l'ora	ora
+ti andrebbe di ricordarmi tra un'ora di ritirare il bucato per cortesia	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello se non ti dispiace potresti dirmi che impegni ho questa settimana per cortesia	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro non è che mi diresti quanto resta sul timer	stato_timer
+ciao tesoro puoi poi svegliarmi alle cinque	imposta_sveglia	ora=05:00;etichetta=
+buonasera assistente se non ti di dispiace potresti cercare su internet quando gioca il napoli per cortesia	cerca_sul_web	domanda=quando gioca il napoli
+ehi assistente caro ti chiederei di cortesemente mettere vasco rossi per cortesia	riproduci_musica	richiesta=vasco rossi
+ciao assistente mio ti dispiacerebbe velocemente dirmi che tempo fa a siracusa ti ringrazio tanto	meteo	luogo=siracusa;giorno=
+assistente carissimo se non ti dispiace potresti dirmi quanti gradi ci sono a milano se ci riesci	meteo	luogo=milano;giorno=
+assistente bello se non ti dispiace potresti dirmi che tempo ci sarà dopodomani a napoli ti ringrazio tanto	meteo	luogo=napoli;giorno=2026-11-05
+buonasera assistente mi faresti la cortesia di mettere vasco rossi sei gentilissimo	riproduci_musica	richiesta=vasco rossi
+ciao tesoro puoi dirmi la data di oggi sei gentilissimo	data
+ciao assistente mio dimmi che tempo ci sarà dopodomani a napoli un secondo molto gentile	meteo	luogo=napoli;giorno=2026-11-05
+assistente bello puoi poi mettere un timer di quaranta minuti sei gentilissimo	imposta_timer	secondi=2400
+mio agente caro sarei contento se tu mi dicessi che impegni ho questa settimana per cortesia	leggi_calendario	dal=2026-11-03;giorni=7
+ciao assistente mio avrei bisogno che tu riuscissi a chiamare papà molto gentile	chiama	chi=papà
+ti dispiacerebbe cortesemente dirmi l'ora grazie davvero	ora
+se non ti di dispiace potresti impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+mio agente caro ti di dispiacerebbe farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+carissimo saresti così gentile da dirmi quanti gradi ci sono a milano sei gentilissimo	meteo	luogo=milano;giorno=
+ehi assistente caro puoi farmi una ricerca su internet sulla ricetta della caponata grazie davvero	cerca_sul_web	domanda=la ricetta della caponata
+buonasera assistente ti andrebbe di mettere un timer di quaranta minuti grazie davvero	imposta_timer	secondi=2400
+sarebbe be possibile impostare una sveglia alle dieci meno un quarto sei gentilissimo	imposta_sveglia	ora=09:45;etichetta=
+ciao assistente mio ti chiederei di far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+assistente bello vorrei tanto che tu mettessi qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+ti chiederei di un secondo dirmi l'ora se ci riesci	ora
+buonasera assistente vorrei rei tanto che tu mi consigliassi un film da vedere stasera	online
+senti caro ti chiederei di dirmi l'ora sei gentilissimo	ora
+senti caro avrei bisogno che tu riuscissi a telefonare a mamma	chiama	chi=mamma
+assistente bello ti andrebbe di un secondo mettere una sveglia alle sei e un quarto sei gentilissimo	imposta_sveglia	ora=06:15;etichetta=
+ehi assistente caro sarebbe possibile mettere vasco rossi sei gentilissimo	riproduci_musica	richiesta=vasco rossi
+ciao tesoro saresti così gentile da scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+per caso controlleresti quanto manca alla fine del timer	stato_timer
+ehi assistente caro mi faresti la cortesia di ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+ciao assistente mio vorrei tanto che tu cercassi su internet come si pulisce il forno grazie davvero	cerca_sul_web	domanda=come si pulisce il forno
+non è che mi diresti che tempo ci sarà dopodomani a napoli grazie davvero	meteo	luogo=napoli;giorno=2026-11-05
+saresti così gentile da dirmi che tempo fa a siracusa sei gentilissimo	meteo	luogo=siracusa;giorno=
+buonasera assistente saresti così gentile da dirmi quanto resta sul timer se ci riesci	stato_timer
+assistente carissimo ti chiederei di farmi una ricerca su internet sulla ricetta della caponata ti ringrazio	cerca_sul_web	domanda=la ricetta della caponata
+senti caro sarei contento se tu mi facessi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ciao tesoro puoi mettere una sveglia per domani alle otto molto gentile	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+mio agente caro se non ti di dispiace potresti dirmi chi è il presidente della repubblica ti ringrazio	online
+assistente bello metti una sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;etichetta=
+senti caro non è che imposteresti una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+assistente carissimo non è che mi diresti la data di oggi sei gentilissimo	data
+buonasera assistente puoi poi un secondo dirmi quanti gradi ci sono a milano per cortesia	meteo	luogo=milano;giorno=
+vorrei tanto che tu un secondo telefonassi a mamma	chiama	chi=mamma
+ciao assistente mio avrei bisogno che tu riuscissi a dirmi chi è il presidente della repubblica	online
+assistente carissimo ti chiederei di cercare su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+buonasera assistente non è che metteresti qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+ehi assistente caro mi faresti la cortesia di farmi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+ciao tesoro mi faresti la cortesia di scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+ti andrebbe di velocemente svegliarmi alle cinque ti ringrazio tanto	imposta_sveglia	ora=05:00;etichetta=
+carissimo per caso chiameresti papà grazie davvero	chiama	chi=papà
+ehi assistente caro vorrei rei tanto che tu segnassi nelle note che giovedì c'è la riunione ti ringrazio	prendi_nota	testo=giovedì c'è la riunione
+assistente carissimo sarebbe possibile impostare una sveglia alle dieci meno un quarto ti ringrazio tanto	imposta_sveglia	ora=09:45;etichetta=
+assistente carissimo vorrei tanto che tu quando puoi mettessi qualcosa di lucio dalla sei gentilissimo	riproduci_musica	richiesta=lucio dalla
+assistente bello puoi poi velocemente chiamare marco	chiama	chi=marco
+buonasera assistente vorrei tanto che tu quando puoi poi mi dicessi la data di oggi per cortesia	data
+carissimo ti di andrebbe di velocemente dirmi che tempo fa a siracusa ti ringrazio tanto	meteo	luogo=siracusa;giorno=
+senti caro saresti così gentile da mettere qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+ti chiederei di impostare un timer di un'ora per cortesia	imposta_timer	secondi=3600
+assistente carissimo ti di dispiacerebbe per piacere riprodurre l'album the wall sei gentilissimo	riproduci_musica	richiesta=the wall;tipo=album
+assistente carissimo saresti esti così gentile da cercare su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+mio agente caro se non ti dispiace potresti mettere qualcosa di lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+cerca su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+dimmi che tempo ci sarà dopodomani a napoli quando puoi se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro saresti così gentile da mettere un po' di battiato se ci riesci	riproduci_musica	richiesta=battiato
+buonasera assistente sarei contento se tu mi dicessi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+mio agente caro sarei contento se tu mettessi un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+saresti esti così gentile da chiamare marco	chiama	chi=marco
+senti caro sarebbe possibile dirmi che tempo fa oggi a ragusa grazie davvero	meteo	luogo=ragusa;giorno=
+carissimo ricordami alle sei di comprare il pane cortesemente grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+buonasera assistente saresti così gentile da dirmi quando è nato garibaldi	online
+buonasera assistente saresti così gentile da impostare un timer di un'ora se ci riesci	imposta_timer	secondi=3600
+ciao assistente mio avrei bisogno che tu riuscissi a impostare una sveglia alle dieci meno un quarto ti ringrazio tanto	imposta_sveglia	ora=09:45;etichetta=
+ehi assistente caro ti dispiacerebbe quando puoi mettere una sveglia alle sei e un quarto sei gentilissimo	imposta_sveglia	ora=06:15;etichetta=
+buonasera assistente saresti così gentile da mettere qualcosa di lucio dalla sei gentilissimo	riproduci_musica	richiesta=lucio dalla
+assistente carissimo sarei contento se tu mettessi una sveglia alle sei e un quarto grazie davvero	imposta_sveglia	ora=06:15;etichetta=
+carissimo puoi far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+avrei bisogno che tu riuscissi a farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+controlla quanto manca alla fine del timer se ci riesci	stato_timer
+buonasera assistente saresti così gentile da far partire un conto alla rovescia di trenta secondi ti ringrazio tanto	imposta_timer	secondi=30
+carissimo se non ti di dispiace potresti telefonare a mamma per cortesia	chiama	chi=mamma
+assistente carissimo saresti esti così gentile da dirmi l'ora sei gentilissimo	ora
+buonasera assistente non è che mi diresti che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+ehi assistente caro avrei bisogno che tu riuscissi a dirmi chi è il presidente della repubblica ti ringrazio	online
+assistente carissimo per caso mi diresti che tempo fa a siracusa grazie davvero	meteo	luogo=siracusa;giorno=
+senti caro mi faresti la cortesia di mettere un timer di quaranta minuti ti ringrazio tanto	imposta_timer	secondi=2400
+assistente carissimo imposta una sveglia alle dieci meno un quarto se ci riesci	imposta_sveglia	ora=09:45;etichetta=
+senti caro puoi poi quando puoi impostare un timer di un'ora	imposta_timer	secondi=3600
+senti caro non è che metteresti un timer di sette minuti per la pasta molto gentile	imposta_timer	secondi=420
+non è che segneresti nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+ti dispiacerebbe impostare un timer di un'ora sei gentilissimo	imposta_timer	secondi=3600
+ehi assistente caro sarebbe be possibile spiegarmi perché il cielo è blu ti ringrazio	online
+senti caro sarei contento se tu mi dicessi quando è nato garibaldi	online
+senti caro sarei contento se tu mi consigliassi un film da vedere stasera ti ringrazio	online
+ciao assistente mio ti dispiacerebbe cortesemente dirmi la data di oggi se ci riesci	data
+assistente carissimo ti di andrebbe di dirmi l'ora per cortesia	ora
+senti caro mi faresti la cortesia di dirmi chi è il presidente della repubblica ti ringrazio	online
+ti chiederei di velocemente cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+buonasera assistente ti chiederei di quando puoi mettere un timer di sette minuti per la pasta sei gentilissimo	imposta_timer	secondi=420
+ciao tesoro non è che mi diresti che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+ciao tesoro mi faresti la cortesia di mettere una sveglia alle sei e un quarto grazie davvero	imposta_sveglia	ora=06:15;etichetta=
+ciao assistente mio per caso imposteresti una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+mio agente caro sarebbe possibile dirmi che tempo ci sarà dopodomani a napoli grazie davvero	meteo	luogo=napoli;giorno=2026-11-05
+vorrei rei tanto che tu cercassi su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+ehi assistente caro ti di dispiacerebbe cortesemente mettere una sveglia per domani alle otto ti ringrazio tanto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+mi faresti la cortesia di dirmi chi è il presidente della repubblica grazie davvero	online
+assistente carissimo mi faresti la cortesia di chiamare papà	chiama	chi=papà
+vorrei tanto che tu velocemente mi svegliassi alle cinque per cortesia	imposta_sveglia	ora=05:00;etichetta=
+mio agente caro mi faresti la cortesia di mettere una sveglia alle sei e un quarto per cortesia	imposta_sveglia	ora=06:15;etichetta=
+ti chiederei di per piacere dirmi che tempo fa oggi a ragusa sei gentilissimo	meteo	luogo=ragusa;giorno=
+senti caro sarei contento se tu mettessi una sveglia per domani alle otto sei gentilissimo	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ti andrebbe di cortesemente controllare quanto manca alla fine del timer ti ringrazio tanto	stato_timer
+ti andrebbe di salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+saresti così gentile da ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+carissimo avrei bisogno che tu riuscissi a segnare nelle note che giovedì c'è la riunione ti ringrazio	prendi_nota	testo=giovedì c'è la riunione
+mio agente caro dimmi che impegni ho questa settimana molto gentile	leggi_calendario	dal=2026-11-03;giorni=7
+assistente bello ti di chiederei di quando puoi ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+buonasera assistente se non ti di dispiace potresti chiamare marco	chiama	chi=marco
+ehi assistente caro ti andrebbe di cortesemente far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+assistente bello vorrei tanto che tu velocemente mi ricordassi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ti andrebbe di quando puoi ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ciao assistente mio dimmi che impegni ho questa settimana se ci riesci	leggi_calendario	dal=2026-11-03;giorni=7
+assistente bello ti andrebbe di velocemente dirmi quanto è alto l'etna	online
+ciao assistente mio vorrei tanto che tu mi facessi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+mio agente caro saresti esti così gentile da ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+ti dispiacerebbe per piacere ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello avrei bisogno che tu riuscissi a dirmi quanto resta sul timer sei gentilissimo	stato_timer
+assistente bello ti dispiacerebbe per piacere ricordarmi alle sei di comprare il pane grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+assistente bello puoi cortesemente svegliarmi alle cinque ti ringrazio tanto	imposta_sveglia	ora=05:00;etichetta=
+assistente carissimo vorrei rei tanto che tu mi facessi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+assistente carissimo sarebbe possibile cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+assistente bello puoi far partire un conto alla rovescia di trenta secondi molto gentile	imposta_timer	secondi=30
+ciao assistente mio vorrei tanto che tu mi dicessi quando è nato garibaldi ti ringrazio	online
+assistente bello non è che metteresti qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+saresti così gentile da impostare un timer di un'ora ti ringrazio tanto	imposta_timer	secondi=3600
+saresti esti così gentile da impostare una sveglia alle dieci meno un quarto molto gentile	imposta_sveglia	ora=09:45;etichetta=
+ciao assistente mio se non ti dispiace potresti cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+assistente carissimo avrei bisogno che tu riuscissi a dirmi la data di oggi se ci riesci	data
+ehi assistente caro per caso mi diresti quanto resta sul timer molto gentile	stato_timer
+carissimo metti un timer di sette minuti per la pasta	imposta_timer	secondi=420
+puoi farmi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+assistente bello saresti così gentile da impostare un timer di un'ora ti ringrazio tanto	imposta_timer	secondi=3600
+carissimo saresti così gentile da mettere un po' di battiato per cortesia	riproduci_musica	richiesta=battiato
+saresti esti così gentile da dirmi quando è nato garibaldi ti ringrazio	online
+ehi assistente caro ti chiederei di quando puoi mettere una sveglia per domani alle otto ti ringrazio tanto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+assistente carissimo ti andrebbe di quando puoi dirmi l'ora	ora
+carissimo fammi una ricerca su internet sulla ricetta della caponata velocemente	cerca_sul_web	domanda=la ricetta della caponata
+assistente carissimo mi faresti la cortesia di mettere vasco rossi grazie davvero	riproduci_musica	richiesta=vasco rossi
+mio agente caro mi faresti la cortesia di dirmi che ora è per cortesia	ora
+ciao assistente mio ti di dispiacerebbe un secondo impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+avrei bisogno che tu riuscissi a segnare nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+non è che salveresti una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ciao tesoro non è che mi sveglieresti alle cinque per cortesia	imposta_sveglia	ora=05:00;etichetta=
+buonasera assistente avrei bisogno che tu riuscissi a dirmi che impegni ho questa settimana se ci riesci	leggi_calendario	dal=2026-11-03;giorni=7
+carissimo puoi chiamare marco se ci riesci	chiama	chi=marco
+mio agente caro non è che mi consiglieresti un film da vedere stasera	online
+vorrei tanto che tu cortesemente salvassi una nota con scritto portare la macchina dal meccanico ti ringrazio	prendi_nota	testo=portare la macchina dal meccanico
+carissimo per caso riprodurresti l'album the wall per cortesia	riproduci_musica	richiesta=the wall;tipo=album
+assistente bello avrei bisogno che tu riuscissi a ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ehi assistente caro vorrei rei tanto che tu impostassi un timer di un'ora se ci riesci	imposta_timer	secondi=3600
+ciao tesoro puoi impostare una sveglia alle dieci meno un quarto molto gentile	imposta_sveglia	ora=09:45;etichetta=
+assistente carissimo avrei bisogno che tu riuscissi a dirmi la data di oggi sei gentilissimo	data
+mi faresti la cortesia di telefonare a mamma	chiama	chi=mamma
+assistente bello sarei contento se tu mettessi una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+assistente carissimo saresti così gentile da controllare quanto manca alla fine del timer	stato_timer
+ciao tesoro ti dispiacerebbe quando puoi impostare una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+assistente bello saresti così gentile da mettere qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+mio agente caro puoi dirmi che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+sarei contento se tu mi dicessi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+ciao assistente mio vorrei tanto che tu cortesemente mi svegliassi alle cinque grazie davvero	imposta_sveglia	ora=05:00;etichetta=
+carissimo se non ti dispiace potresti dirmi che ora è	ora
+senti caro dimmi che ora è grazie davvero	ora
+assistente bello sarei contento se tu mettessi un timer di quaranta minuti	imposta_timer	secondi=2400
+assistente carissimo se non ti dispiace potresti svegliarmi alle cinque se ci riesci	imposta_sveglia	ora=05:00;etichetta=
+assistente bello saresti così gentile da chiamare papà	chiama	chi=papà
+non è che mi diresti quanto resta sul timer sei gentilissimo	stato_timer
+saresti così gentile da dirmi quanto resta sul timer ti ringrazio tanto	stato_timer
+buonasera assistente puoi quando puoi cercare su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+ciao tesoro avrei bisogno che tu riuscissi a mettere una sveglia per domani alle otto molto gentile	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ehi assistente caro saresti esti così gentile da salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+mio agente caro per caso mi diresti quanto resta sul timer se ci riesci	stato_timer
+ciao assistente mio sarebbe possibile salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+assistente bello puoi un secondo telefonare a mamma sei gentilissimo	chiama	chi=mamma
+buonasera assistente vorrei tanto che tu mi dicessi che tempo fa a siracusa sei gentilissimo	meteo	luogo=siracusa;giorno=
+senti caro saresti così gentile da impostare un timer di un'ora ti ringrazio tanto	imposta_timer	secondi=3600
+assistente carissimo saresti così gentile da mettere una sveglia per domani alle otto grazie davvero	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+sarebbe be possibile consigliarmi un film da vedere stasera per cortesia	online
+carissimo puoi quando puoi mettere un timer di sette minuti per la pasta se ci riesci	imposta_timer	secondi=420
+ciao assistente mio per caso mi diresti l'ora	ora
+ehi assistente caro vorrei tanto che tu impostassi una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+senti caro ti di chiederei di farmi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+senti caro ti andrebbe di cortesemente spiegarmi perché il cielo è blu	online
+ehi assistente caro metti un po' di battiato ti ringrazio tanto	riproduci_musica	richiesta=battiato
+carissimo ti di dispiacerebbe velocemente dirmi quanto è alto l'etna ti ringrazio	online
+senti caro ti chiederei di dirmi quanto è alto l'etna	online
+assistente bello ti dispiacerebbe un secondo dirmi quanto resta sul timer	stato_timer
+buonasera assistente mi faresti la cortesia di far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+assistente carissimo non è che imposteresti una sveglia alle dieci meno un quarto grazie davvero	imposta_sveglia	ora=09:45;etichetta=
+senti caro avrei bisogno che tu riuscissi a dirmi quando è nato garibaldi	online
+assistente carissimo vorrei rei tanto che tu cortesemente facessi partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+senti caro saresti così gentile da impostare un timer di un'ora	imposta_timer	secondi=3600
+ehi assistente caro ti chiederei di mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+ciao assistente mio mi faresti la cortesia di impostare un timer di un'ora per cortesia	imposta_timer	secondi=3600
+carissimo mi faresti la cortesia di cercare su google la farmacia di turno per cortesia	cerca_sul_web	domanda=la farmacia di turno
+mio agente caro puoi dirmi quanto è alto l'etna per cortesia	online
+ciao assistente mio avrei bisogno che tu riuscissi a ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente carissimo non è che salveresti una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ciao assistente mio ti dispiacerebbe farmi una ricerca su internet sulla ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+mi faresti la cortesia di impostare una sveglia alle dieci meno un quarto molto gentile	imposta_sveglia	ora=09:45;etichetta=
+mio agente caro vorrei rei tanto che tu cercassi su internet quando gioca il napoli grazie davvero	cerca_sul_web	domanda=quando gioca il napoli
+buonasera assistente mi faresti la cortesia di mettere vasco rossi ti ringrazio tanto	riproduci_musica	richiesta=vasco rossi
+sarebbe possibile cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+assistente carissimo mi faresti la cortesia di mettere una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ciao assistente mio ti dispiacerebbe cortesemente dirmi che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+assistente carissimo ti andrebbe di quando puoi dirmi la data di oggi se ci riesci	data
+ti di chiederei di per piacere cercare su google la farmacia di turno per cortesia	cerca_sul_web	domanda=la farmacia di turno
+mi faresti la cortesia di dirmi che impegni ho questa settimana ti ringrazio tanto	leggi_calendario	dal=2026-11-03;giorni=7
+assistente carissimo mi faresti la cortesia di mettere una sveglia alle sei e un quarto sei gentilissimo	imposta_sveglia	ora=06:15;etichetta=
+ciao tesoro sarebbe possibile dirmi che ora è ti ringrazio tanto	ora
+assistente carissimo ti chiederei di cortesemente riprodurre l'album the wall molto gentile	riproduci_musica	richiesta=the wall;tipo=album
+assistente carissimo sarei contento se tu mi dicessi quanto è alto l'etna	online
+ehi assistente caro saresti così gentile da dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+carissimo ti dispiacerebbe cortesemente chiamare marco	chiama	chi=marco
+assistente carissimo vorrei tanto che tu un secondo facessi partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+carissimo non è che mi diresti quanto è alto l'etna grazie davvero	online
+mio agente caro ti di chiederei di un secondo dirmi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+buonasera assistente non è che riprodurresti l'album the wall ti ringrazio tanto	riproduci_musica	richiesta=the wall;tipo=album
+carissimo non è che segneresti nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+avrei bisogno che tu riuscissi a dirmi quanto è alto l'etna per cortesia	online
+ciao tesoro ti andrebbe di quando puoi farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+mio agente caro non è che mi diresti quanto è alto l'etna per cortesia	online
+ciao tesoro saresti così gentile da chiamare papà	chiama	chi=papà
+mio agente caro mi faresti la cortesia di dirmi la data di oggi	data
+mio agente caro saresti così gentile da mettere un timer di quaranta minuti ti ringrazio tanto	imposta_timer	secondi=2400
+sarei contento se tu mi ricordassi alle sei di comprare il pane ti ringrazio	promemoria	ora=18:00;testo=comprare il pane
+assistente carissimo saresti così gentile da dirmi la data di oggi	data
+assistente bello non è che cercheresti su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+senti caro ti di chiederei di cortesemente ricordarmi alle sei di comprare il pane ti ringrazio	promemoria	ora=18:00;testo=comprare il pane
+ciao tesoro puoi poi ricordarmi alle sei di comprare il pane per cortesia	promemoria	ora=18:00;testo=comprare il pane
+assistente carissimo ti dispiacerebbe scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+assistente bello saresti così gentile da cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+assistente bello puoi chiamare marco	chiama	chi=marco
+non è che metteresti qualcosa di lucio dalla	riproduci_musica	richiesta=lucio dalla
+assistente bello mi faresti la cortesia di mettere qualcosa di lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+assistente carissimo vorrei tanto che tu quando puoi mi dicessi che tempo fa a siracusa se ci riesci	meteo	luogo=siracusa;giorno=
+mio agente caro mi faresti la cortesia di chiamare papà se ci riesci	chiama	chi=papà
+buonasera assistente ti dispiacerebbe per piacere chiamare marco ti ringrazio tanto	chiama	chi=marco
+mio agente caro puoi spiegarmi perché il cielo è blu per cortesia	online
+mi faresti la cortesia di riprodurre l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+ciao tesoro non è che imposteresti una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+carissimo sarei contento se tu mi svegliassi alle cinque ti ringrazio tanto	imposta_sveglia	ora=05:00;etichetta=
+ehi assistente caro sarei contento se tu mi dicessi quanto è alto l'etna per cortesia	online
+senti caro sarebbe possibile salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ciao tesoro mi faresti la cortesia di consigliarmi un film da vedere stasera grazie davvero	online
+mio agente caro se non ti dispiace potresti ricordarmi tra un'ora di ritirare il bucato grazie davvero	promemoria	ora=11:00;testo=ritirare il bucato
+ciao tesoro dimmi che tempo ci sarà dopodomani a napoli sei gentilissimo	meteo	luogo=napoli;giorno=2026-11-05
+senti caro saresti esti così gentile da dirmi chi è il presidente della repubblica	online
+senti caro puoi svegliarmi alle cinque se ci riesci	imposta_sveglia	ora=05:00;etichetta=
+mi faresti la cortesia di dirmi quanto resta sul timer se ci riesci	stato_timer
+assistente carissimo vorrei tanto che tu cercassi su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+assistente carissimo ti di dispiacerebbe cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+senti caro vorrei tanto che tu cortesemente telefonassi a mamma se ci riesci	chiama	chi=mamma
+ciao tesoro non è che controlleresti quanto manca alla fine del timer molto gentile	stato_timer
+ciao tesoro ti di dispiacerebbe un secondo cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+buonasera assistente vorrei tanto che tu impostassi una sveglia alle dieci meno un quarto molto gentile	imposta_sveglia	ora=09:45;etichetta=
+ciao assistente mio sarei contento se tu mi dicessi chi è il presidente della repubblica per cortesia	online
+mio agente caro vorrei tanto che tu cortesemente mi dicessi quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+mio agente caro avrei bisogno che tu riuscissi a mettere una sveglia per domani alle otto ti ringrazio tanto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ehi assistente caro sarebbe be possibile scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+buonasera assistente ti chiederei di dirmi la data di oggi molto gentile	data
+buonasera assistente per caso mi diresti la data di oggi	data
+assistente bello puoi far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+ciao assistente mio se non ti di dispiace potresti svegliarmi alle cinque	imposta_sveglia	ora=05:00;etichetta=
+mi faresti la cortesia di dirmi quanto resta sul timer	stato_timer
+carissimo vorrei rei tanto che tu quando puoi mi dicessi quanti gradi ci sono a milano grazie davvero	meteo	luogo=milano;giorno=
+sarei contento se tu impostassi una sveglia per le nove di sera grazie davvero	imposta_sveglia	ora=21:00;etichetta=
+ciao assistente mio per caso imposteresti un timer di un'ora	imposta_timer	secondi=3600
+assistente bello ti dispiacerebbe cortesemente impostare una sveglia alle dieci meno un quarto ti ringrazio tanto	imposta_sveglia	ora=09:45;etichetta=
+ciao assistente mio avrei bisogno che tu riuscissi a salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+senti caro per caso mi diresti che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+assistente carissimo metti vasco rossi ti ringrazio tanto	riproduci_musica	richiesta=vasco rossi
+senti caro avrei bisogno che tu riuscissi a dirmi quanto resta sul timer	stato_timer
+senti caro avrei bisogno che tu riuscissi a segnare nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+carissimo vorrei tanto che tu mettessi una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ti chiederei di un secondo dirmi che tempo fa a siracusa se ci riesci	meteo	luogo=siracusa;giorno=
+ehi assistente caro per caso controlleresti quanto manca alla fine del timer molto gentile	stato_timer
+ehi assistente caro puoi un secondo segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ciao assistente mio se non ti dispiace potresti dirmi quanti gradi ci sono a milano grazie davvero	meteo	luogo=milano;giorno=
+senti caro sarei contento se tu segnassi nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+senti caro se non ti dispiace potresti dirmi che ora è	ora
+assistente bello ti dispiacerebbe per piacere impostare una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+mio agente caro non è che scriveresti nelle note pane latte e uova grazie davvero	prendi_nota	testo=pane latte e uova
+mio agente caro mi faresti la cortesia di dirmi l'ora	ora
+senti caro ti dispiacerebbe salvare una nota con scritto portare la macchina dal meccanico per cortesia	prendi_nota	testo=portare la macchina dal meccanico
+mio agente caro avrei bisogno che tu riuscissi a dirmi che impegni ho questa settimana ti ringrazio tanto	leggi_calendario	dal=2026-11-03;giorni=7
+puoi poi dirmi quanto resta sul timer	stato_timer
+assistente bello ti di chiederei di cortesemente mettere un po' di battiato se ci riesci	riproduci_musica	richiesta=battiato
+vorrei rei tanto che tu mettessi qualcosa di lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+ehi assistente caro per caso salveresti una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+buonasera assistente sarei contento se tu mi dicessi quando è nato garibaldi	online
+mi faresti la cortesia di dirmi chi è il presidente della repubblica	online
+senti caro avrei bisogno che tu riuscissi a far partire un conto alla rovescia di trenta secondi per cortesia	imposta_timer	secondi=30
+ciao assistente mio avrei bisogno che tu riuscissi a mettere vasco rossi se ci riesci	riproduci_musica	richiesta=vasco rossi
+buonasera assistente saresti così gentile da chiamare papà	chiama	chi=papà
+carissimo metti una sveglia per domani alle otto sei gentilissimo	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+buonasera assistente ti dispiacerebbe scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+mio agente caro per caso mi diresti la data di oggi	data
+carissimo puoi poi un secondo far partire un conto alla rovescia di trenta secondi grazie davvero	imposta_timer	secondi=30
+assistente bello sarei contento se tu cercassi su internet come si pulisce il forno ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+carissimo mi faresti la cortesia di dirmi che ora è molto gentile	ora
+buonasera assistente ti chiederei di dirmi che tempo fa oggi a ragusa se ci riesci	meteo	luogo=ragusa;giorno=
+ciao tesoro per caso scriveresti nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+carissimo metti un po' di battiato cortesemente	riproduci_musica	richiesta=battiato
+buonasera assistente ti andrebbe di dirmi che ora è ti ringrazio tanto	ora
+senti caro puoi quando puoi segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ciao tesoro se non ti dispiace potresti ricordarmi alle sei di comprare il pane per cortesia	promemoria	ora=18:00;testo=comprare il pane
+buonasera assistente se non ti di dispiace potresti dirmi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+mio agente caro se non ti di dispiace potresti dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+ti di chiederei di per piacere dirmi che tempo fa a siracusa sei gentilissimo	meteo	luogo=siracusa;giorno=
+mio agente caro sarei contento se tu cercassi su internet come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+mio agente caro puoi cercare su google la farmacia di turno grazie davvero	cerca_sul_web	domanda=la farmacia di turno
+saresti esti così gentile da spiegarmi perché il cielo è blu ti ringrazio	online
+ehi assistente caro se non ti dispiace potresti dirmi la data di oggi grazie davvero	data
+ciao assistente mio vorrei tanto che tu mi dicessi la data di oggi	data
+buonasera assistente ti andrebbe di cercare su internet quando gioca il napoli grazie davvero	cerca_sul_web	domanda=quando gioca il napoli
+ciao tesoro saresti così gentile da mettere un timer di quaranta minuti per cortesia	imposta_timer	secondi=2400
+buonasera assistente sarei contento se tu mi dicessi che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+ciao assistente mio ti chiederei di cortesemente dirmi che impegni ho questa settimana ti ringrazio tanto	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro dimmi che impegni ho questa settimana sei gentilissimo	leggi_calendario	dal=2026-11-03;giorni=7
+buonasera assistente sarei contento se tu mi dicessi che tempo fa a siracusa sei gentilissimo	meteo	luogo=siracusa;giorno=
+mi faresti la cortesia di salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+assistente bello saresti così gentile da mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+ciao tesoro se non ti dispiace potresti dirmi quando è nato garibaldi per cortesia	online
+assistente bello avrei bisogno che tu riuscissi a controllare quanto manca alla fine del timer	stato_timer
+puoi velocemente impostare una sveglia per le nove di sera ti ringrazio tanto	imposta_sveglia	ora=21:00;etichetta=
+puoi quando puoi dirmi che impegni ho questa settimana molto gentile	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro puoi chiamare papà ti ringrazio tanto	chiama	chi=papà
+mi faresti la cortesia di mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+senti caro riproduci l'album the wall velocemente per cortesia	riproduci_musica	richiesta=the wall;tipo=album
+buonasera assistente per caso metteresti una sveglia alle sei e un quarto ti ringrazio tanto	imposta_sveglia	ora=06:15;etichetta=
+mio agente caro per caso telefoneresti a mamma	chiama	chi=mamma
+assistente bello avrei bisogno che tu riuscissi a impostare una sveglia per le nove di sera grazie davvero	imposta_sveglia	ora=21:00;etichetta=
+senti caro ti di chiederei di cortesemente dirmi la data di oggi ti ringrazio tanto	data
+assistente carissimo sarei contento se tu salvassi una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+buonasera assistente avrei bisogno che tu riuscissi a telefonare a mamma grazie davvero	chiama	chi=mamma
+senti caro metti un po' di battiato per cortesia	riproduci_musica	richiesta=battiato
+assistente carissimo puoi poi per piacere chiamare papà sei gentilissimo	chiama	chi=papà
+carissimo avrei bisogno che tu riuscissi a salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+buonasera assistente non è che metteresti un po' di battiato ti ringrazio tanto	riproduci_musica	richiesta=battiato
+ehi assistente caro avrei bisogno che tu riuscissi a dirmi che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+mio agente caro vorrei tanto che tu mettessi un timer di quaranta minuti	imposta_timer	secondi=2400
+ciao assistente mio vorrei tanto che tu mi dicessi quanto è alto l'etna ti ringrazio	online
+puoi velocemente cercare su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+ehi assistente caro se non ti dispiace potresti riprodurre l'album the wall ti ringrazio tanto	riproduci_musica	richiesta=the wall;tipo=album
+sarei contento se tu cercassi su internet quando gioca il napoli grazie davvero	cerca_sul_web	domanda=quando gioca il napoli
+senti caro avrei bisogno che tu riuscissi a dirmi la data di oggi	data
+carissimo avrei bisogno che tu riuscissi a impostare una sveglia per le nove di sera molto gentile	imposta_sveglia	ora=21:00;etichetta=
+ciao assistente mio saresti esti così gentile da dirmi la data di oggi per cortesia	data
+ehi assistente caro saresti così gentile da dirmi chi è il presidente della repubblica	online
+carissimo vorrei tanto che tu mi facessi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+assistente carissimo ti chiederei di per piacere dirmi che tempo fa oggi a ragusa grazie davvero	meteo	luogo=ragusa;giorno=
+assistente bello se non ti dispiace potresti dirmi l'ora	ora
+buonasera assistente avrei bisogno che tu riuscissi a ricordarmi tra un'ora di ritirare il bucato grazie davvero	promemoria	ora=11:00;testo=ritirare il bucato
+senti caro mi faresti la cortesia di segnare nelle note che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+se non ti dispiace potresti cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+assistente bello metti un po' di battiato cortesemente	riproduci_musica	richiesta=battiato
+saresti esti così gentile da dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+assistente carissimo saresti così gentile da dirmi quanto resta sul timer molto gentile	stato_timer
+carissimo non è che mi diresti quanto è alto l'etna	online
+ciao assistente mio ti dispiacerebbe ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+assistente bello saresti così gentile da dirmi chi è il presidente della repubblica grazie davvero	online
+senti caro per caso mi diresti che ora è ti ringrazio tanto	ora
+senti caro sarebbe possibile dirmi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+buonasera assistente ti dispiacerebbe ricordarmi tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+sarei contento se tu riproducessi l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+ti dispiacerebbe svegliarmi alle cinque grazie davvero	imposta_sveglia	ora=05:00;etichetta=
+ti chiederei di dirmi che tempo fa a siracusa se ci riesci	meteo	luogo=siracusa;giorno=
+assistente carissimo ti dispiacerebbe un secondo impostare una sveglia alle dieci meno un quarto per cortesia	imposta_sveglia	ora=09:45;etichetta=
+assistente bello sarebbe be possibile ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+ciao tesoro ti dispiacerebbe velocemente mettere un timer di quaranta minuti ti ringrazio tanto	imposta_timer	secondi=2400
+assistente carissimo ti andrebbe di un secondo farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ciao assistente mio sarebbe possibile dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+ciao tesoro ti chiederei di mettere una sveglia per domani alle otto grazie davvero	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+per caso chiameresti marco	chiama	chi=marco
+ciao tesoro non è che imposteresti un timer di un'ora sei gentilissimo	imposta_timer	secondi=3600
+ti dispiacerebbe dirmi la data di oggi ti ringrazio tanto	data
+ciao tesoro ti chiederei di quando puoi chiamare papà molto gentile	chiama	chi=papà
+carissimo per caso mi diresti la data di oggi grazie davvero	data
+ciao assistente mio ti dispiacerebbe farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ciao assistente mio ti andrebbe di un secondo chiamare marco sei gentilissimo	chiama	chi=marco
+avrei bisogno che tu riuscissi a dirmi che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+avrei bisogno che tu riuscissi a impostare una sveglia alle dieci meno un quarto	imposta_sveglia	ora=09:45;etichetta=
+senti caro se non ti dispiace potresti far partire un conto alla rovescia di trenta secondi molto gentile	imposta_timer	secondi=30
+assistente carissimo mi faresti la cortesia di dirmi quanto resta sul timer	stato_timer
+mio agente caro mi faresti la cortesia di mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+mio agente caro ti dispiacerebbe quando puoi dirmi quanto resta sul timer	stato_timer
+ehi assistente caro saresti esti così gentile da dirmi la data di oggi	data
+ciao assistente mio non è che mi consiglieresti un film da vedere stasera per cortesia	online
+puoi poi dirmi quanto è alto l'etna	online
+assistente carissimo ti dispiacerebbe per piacere mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+senti caro mi faresti la cortesia di dirmi che impegni ho questa settimana per cortesia	leggi_calendario	dal=2026-11-03;giorni=7
+puoi dirmi che ora è ti ringrazio tanto	ora
+ciao tesoro se non ti dispiace potresti controllare quanto manca alla fine del timer ti ringrazio tanto	stato_timer
+assistente bello puoi poi per piacere dirmi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+senti caro mi faresti la cortesia di cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ciao tesoro se non ti dispiace potresti dirmi che tempo fa a siracusa	meteo	luogo=siracusa;giorno=
+puoi poi velocemente ricordarmi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ciao assistente mio ti andrebbe di velocemente dirmi chi è il presidente della repubblica	online
+ehi assistente caro sarei contento se tu impostassi un timer di un'ora	imposta_timer	secondi=3600
+mio agente caro ti andrebbe di cortesemente controllare quanto manca alla fine del timer	stato_timer
+ciao assistente mio metti una sveglia alle sei e un quarto un secondo	imposta_sveglia	ora=06:15;etichetta=
+ehi assistente caro saresti così gentile da segnare nelle note che giovedì c'è la riunione ti ringrazio	prendi_nota	testo=giovedì c'è la riunione
+assistente carissimo ti di chiederei di cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+mio agente caro sarebbe possibile scrivere nelle note pane latte e uova ti ringrazio	prendi_nota	testo=pane latte e uova
+assistente carissimo ti andrebbe di quando puoi mettere una sveglia per domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+assistente bello per caso mi ricorderesti tra un'ora di ritirare il bucato ti ringrazio	promemoria	ora=11:00;testo=ritirare il bucato
+mio agente caro chiama papà per cortesia	chiama	chi=papà
+assistente carissimo vorrei tanto che tu cercassi su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+ti chiederei di quando puoi mettere un timer di sette minuti per la pasta se ci riesci	imposta_timer	secondi=420
+assistente carissimo se non ti dispiace potresti cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+ciao tesoro mi faresti la cortesia di impostare una sveglia per le nove di sera sei gentilissimo	imposta_sveglia	ora=21:00;etichetta=
+assistente bello imposta una sveglia alle dieci meno un quarto per piacere per cortesia	imposta_sveglia	ora=09:45;etichetta=
+ciao tesoro ti dispiacerebbe dirmi quanto è alto l'etna ti ringrazio	online
+assistente carissimo mi faresti la cortesia di segnare nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ehi assistente caro non è che mi diresti che tempo fa oggi a ragusa ti ringrazio tanto	meteo	luogo=ragusa;giorno=
+ciao assistente mio sarebbe possibile dirmi chi è il presidente della repubblica per cortesia	online
+carissimo non è che mi diresti che ora è molto gentile	ora
+ehi assistente caro puoi dirmi che tempo fa oggi a ragusa se ci riesci	meteo	luogo=ragusa;giorno=
+se non ti di dispiace potresti cercare su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+assistente bello ti di chiederei di cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+non è che mi diresti che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+assistente carissimo ti di andrebbe di cercare su internet quando gioca il napoli	cerca_sul_web	domanda=quando gioca il napoli
+senti caro mi faresti la cortesia di scrivere nelle note pane latte e uova ti ringrazio	prendi_nota	testo=pane latte e uova
+carissimo vorrei tanto che tu un secondo mi svegliassi alle cinque sei gentilissimo	imposta_sveglia	ora=05:00;etichetta=
+ciao assistente mio mi faresti la cortesia di controllare quanto manca alla fine del timer se ci riesci	stato_timer
+carissimo puoi poi un secondo salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+assistente carissimo ti dispiacerebbe quando puoi dirmi che tempo fa a siracusa sei gentilissimo	meteo	luogo=siracusa;giorno=
+sarei contento se tu salvassi una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+senti caro puoi segnare nelle note che giovedì c'è la riunione ti ringrazio	prendi_nota	testo=giovedì c'è la riunione
+mio agente caro ti di andrebbe di per piacere impostare una sveglia per le nove di sera grazie davvero	imposta_sveglia	ora=21:00;etichetta=
+ciao assistente mio saresti così gentile da cercare su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+buonasera assistente per caso mi spiegheresti perché il cielo è blu	online
+ehi assistente caro ti chiederei di cortesemente salvare una nota con scritto portare la macchina dal meccanico ti ringrazio	prendi_nota	testo=portare la macchina dal meccanico
+assistente carissimo saresti esti così gentile da svegliarmi alle cinque sei gentilissimo	imposta_sveglia	ora=05:00;etichetta=
+buonasera assistente metti un timer di quaranta minuti molto gentile	imposta_timer	secondi=2400
+mio agente caro cerca su internet come si pulisce il forno velocemente ti ringrazio	cerca_sul_web	domanda=come si pulisce il forno
+ehi assistente caro ricordami alle sei di comprare il pane un secondo grazie davvero	promemoria	ora=18:00;testo=comprare il pane
+ciao tesoro saresti esti così gentile da telefonare a mamma	chiama	chi=mamma
+ti di chiederei di quando puoi impostare un timer di un'ora molto gentile	imposta_timer	secondi=3600
+carissimo vorrei tanto che tu cortesemente cercassi su internet quando gioca il napoli ti ringrazio	cerca_sul_web	domanda=quando gioca il napoli
+ciao tesoro saresti così gentile da impostare un timer di un'ora	imposta_timer	secondi=3600
+carissimo ti chiederei di per piacere dirmi quando è nato garibaldi per cortesia	online
+carissimo se non ti dispiace potresti controllare quanto manca alla fine del timer	stato_timer
+sarebbe be possibile telefonare a mamma se ci riesci	chiama	chi=mamma
+ehi assistente caro saresti così gentile da mettere qualcosa di lucio dalla se ci riesci	riproduci_musica	richiesta=lucio dalla
+mio agente caro avrei bisogno che tu riuscissi a ricordarmi alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+ciao assistente mio ti chiederei di dirmi che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+per caso cercheresti su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+se non ti dispiace potresti riprodurre l'album the wall sei gentilissimo	riproduci_musica	richiesta=the wall;tipo=album
+buonasera assistente ti andrebbe di cortesemente salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ciao assistente mio avrei bisogno che tu riuscissi a dirmi la data di oggi ti ringrazio tanto	data
+carissimo avrei bisogno che tu riuscissi a svegliarmi alle cinque	imposta_sveglia	ora=05:00;etichetta=
+assistente carissimo ti dispiacerebbe per piacere controllare quanto manca alla fine del timer ti ringrazio tanto	stato_timer
+vorrei rei tanto che tu mettessi un timer di sette minuti per la pasta	imposta_timer	secondi=420
+buonasera assistente sarebbe possibile mettere vasco rossi molto gentile	riproduci_musica	richiesta=vasco rossi
+carissimo non è che mi diresti che ora è sei gentilissimo	ora
+assistente bello vorrei rei tanto che tu cortesemente mi spiegassi perché il cielo è blu grazie davvero	online
+buonasera assistente ti di dispiacerebbe cortesemente dirmi quanto è alto l'etna	online
+ehi assistente caro ti di andrebbe di farmi una ricerca su internet sulla ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+sarei contento se tu mettessi una sveglia alle sei e un quarto se ci riesci	imposta_sveglia	ora=06:15;etichetta=
+assistente bello per caso mi diresti quanto resta sul timer	stato_timer
+ehi assistente caro segna nelle note che giovedì c'è la riunione grazie davvero	prendi_nota	testo=giovedì c'è la riunione
+ehi assistente caro mi faresti la cortesia di impostare una sveglia per le nove di sera per cortesia	imposta_sveglia	ora=21:00;etichetta=
+ciao tesoro ti dispiacerebbe far partire un conto alla rovescia di trenta secondi molto gentile	imposta_timer	secondi=30
+carissimo sarebbe possibile impostare una sveglia per le nove di sera molto gentile	imposta_sveglia	ora=21:00;etichetta=
+assistente bello avrei bisogno che tu riuscissi a mettere un po' di battiato se ci riesci	riproduci_musica	richiesta=battiato
+senti caro ti di andrebbe di velocemente mettere un timer di sette minuti per la pasta ti ringrazio tanto	imposta_timer	secondi=420
+senti caro non è che mi diresti quanto è alto l'etna grazie davvero	online
+ehi assistente caro ti andrebbe di cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ciao tesoro ti di andrebbe di chiamare marco	chiama	chi=marco
+senti caro saresti esti così gentile da mettere vasco rossi molto gentile	riproduci_musica	richiesta=vasco rossi
+assistente bello per caso metteresti un timer di sette minuti per la pasta grazie davvero	imposta_timer	secondi=420
+mi faresti la cortesia di dirmi che tempo fa a siracusa ti ringrazio tanto	meteo	luogo=siracusa;giorno=
+senti caro sarei contento se tu mi dicessi la data di oggi	data
+ciao assistente mio metti vasco rossi cortesemente ti ringrazio tanto	riproduci_musica	richiesta=vasco rossi
+senti caro ti andrebbe di quando puoi far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+ciao assistente mio mi faresti la cortesia di mettere un timer di quaranta minuti	imposta_timer	secondi=2400
+ti dispiacerebbe quando puoi chiamare marco sei gentilissimo	chiama	chi=marco
+assistente bello se non ti di dispiace potresti mettere qualcosa di lucio dalla se ci riesci	riproduci_musica	richiesta=lucio dalla
+assistente carissimo consigliami un film da vedere stasera quando puoi	online
+ciao assistente mio per caso chiameresti papà per cortesia	chiama	chi=papà
+carissimo ti andrebbe di un secondo mettere una sveglia alle sei e un quarto per cortesia	imposta_sveglia	ora=06:15;etichetta=
+assistente carissimo avrei bisogno che tu riuscissi a dirmi quando è nato garibaldi ti ringrazio	online
+ti dispiacerebbe velocemente dirmi che ora è	ora
+senti caro non è che mi faresti una ricerca su internet sulla ricetta della caponata grazie davvero	cerca_sul_web	domanda=la ricetta della caponata
+senti caro avrei bisogno che tu riuscissi a segnare nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+senti caro se non ti dispiace potresti impostare una sveglia per le nove di sera se ci riesci	imposta_sveglia	ora=21:00;etichetta=
+senti caro non è che imposteresti una sveglia per le nove di sera	imposta_sveglia	ora=21:00;etichetta=
+mio agente caro ti andrebbe di salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+per caso salveresti una nota con scritto portare la macchina dal meccanico ti ringrazio	prendi_nota	testo=portare la macchina dal meccanico
+assistente carissimo avrei bisogno che tu riuscissi a mettere qualcosa di lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+mio agente caro vorrei tanto che tu cortesemente impostassi un timer di un'ora grazie davvero	imposta_timer	secondi=3600
+mio agente caro sarei contento se tu mi dicessi che tempo fa oggi a ragusa per cortesia	meteo	luogo=ragusa;giorno=
+assistente bello per caso mi diresti quanto resta sul timer se ci riesci	stato_timer
+assistente bello ti chiederei di cercare su internet come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ti di chiederei di per piacere impostare una sveglia per le nove di sera molto gentile	imposta_sveglia	ora=21:00;etichetta=
+ehi assistente caro vorrei tanto che tu mi dicessi quando è nato garibaldi	online
+assistente carissimo metti una sveglia alle sei e un quarto ti ringrazio tanto	imposta_sveglia	ora=06:15;etichetta=
+senti caro mi faresti la cortesia di mettere un po' di battiato ti ringrazio tanto	riproduci_musica	richiesta=battiato
+mio agente caro ti chiederei di ricordarmi alle sei di comprare il pane per cortesia	promemoria	ora=18:00;testo=comprare il pane
+mio agente caro se non ti dispiace potresti dirmi che ora è per cortesia	ora
+ciao tesoro avrei bisogno che tu riuscissi a dirmi quando è nato garibaldi	online
+buonasera assistente se non ti dispiace potresti dirmi quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+ciao assistente mio se non ti dispiace potresti mettere una sveglia per domani alle otto sei gentilissimo	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+buonasera assistente avrei bisogno che tu riuscissi a mettere una sveglia per domani alle otto ti ringrazio tanto	imposta_sveglia	ora=08:00;giorno=2026-11-04;etichetta=
+ciao assistente mio ti dispiacerebbe cortesemente spiegarmi perché il cielo è blu	online
+ciao tesoro vorrei tanto che tu un secondo chiamassi marco se ci riesci	chiama	chi=marco
+ciao assistente mio vorrei tanto che tu chiamassi marco se ci riesci	chiama	chi=marco
+ciao tesoro se non ti di dispiace potresti mettere qualcosa di lucio dalla grazie davvero	riproduci_musica	richiesta=lucio dalla
+ciao tesoro ti andrebbe di un secondo mettere un po' di battiato per cortesia	riproduci_musica	richiesta=battiato
+saresti così gentile da impostare una sveglia alle dieci meno un quarto se ci riesci	imposta_sveglia	ora=09:45;etichetta=
+ehi assistente caro sarebbe possibile dirmi che tempo fa oggi a ragusa se ci riesci	meteo	luogo=ragusa;giorno=
+mio agente caro per caso segneresti nelle note che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+carissimo non è che chiameresti papà grazie davvero	chiama	chi=papà
+assistente carissimo avrei bisogno che tu riuscissi a dirmi quando è nato garibaldi grazie davvero	online
+assistente carissimo vorrei tanto che tu mi ricordassi tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+carissimo per caso mi diresti che tempo fa a siracusa per cortesia	meteo	luogo=siracusa;giorno=
+ciao assistente mio non è che cercheresti su internet quando gioca il napoli grazie davvero	cerca_sul_web	domanda=quando gioca il napoli
+ciao tesoro avrei bisogno che tu riuscissi a mettere un timer di quaranta minuti se ci riesci	imposta_timer	secondi=2400
+mio agente caro per caso mi diresti la data di oggi grazie davvero	data
+non è che mi sveglieresti alle cinque	imposta_sveglia	ora=05:00;etichetta=
+buonasera assistente non è che mi diresti che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+sarebbe possibile chiamare papà se ci riesci	chiama	chi=papà
+carissimo ti di dispiacerebbe per piacere mettere un po' di battiato ti ringrazio tanto	riproduci_musica	richiesta=battiato
+ciao assistente mio ti chiederei di un secondo far partire un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+assistente bello mi faresti la cortesia di dirmi la data di oggi	data
+ehi assistente caro avrei bisogno che tu riuscissi a mettere qualcosa di lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+sarebbe be possibile salvare una nota con scritto portare la macchina dal meccanico	prendi_nota	testo=portare la macchina dal meccanico
+ehi assistente caro puoi salvare una nota con scritto portare la macchina dal meccanico grazie davvero	prendi_nota	testo=portare la macchina dal meccanico
+ti chiederei di quando puoi impostare un timer di un'ora grazie davvero	imposta_timer	secondi=3600
+carissimo sarebbe possibile mettere qualcosa di lucio dalla ti ringrazio tanto	riproduci_musica	richiesta=lucio dalla
+buonasera assistente per caso faresti partire un conto alla rovescia di trenta secondi molto gentile	imposta_timer	secondi=30
+sarebbe be possibile impostare un timer di un'ora	imposta_timer	secondi=3600
+ehi assistente caro mi faresti la cortesia di chiamare marco per cortesia	chiama	chi=marco
+sarei contento se tu mettessi qualcosa di lucio dalla molto gentile	riproduci_musica	richiesta=lucio dalla
+ciao tesoro se non ti dispiace potresti cercare su google la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+ciao assistente mio ti chiederei di dirmi quanti gradi ci sono a milano	meteo	luogo=milano;giorno=
+mio agente caro se non ti dispiace potresti mettere una sveglia alle sei e un quarto per cortesia	imposta_sveglia	ora=06:15;etichetta=
+carissimo vorrei tanto che tu mi dicessi l'ora	ora
+carissimo ti chiederei di scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+ciao assistente mio ti chiederei di cortesemente scrivere nelle note pane latte e uova	prendi_nota	testo=pane latte e uova

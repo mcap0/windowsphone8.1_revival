@@ -1,0 +1,4 @@
+openblas 993fad6 205 lines
+kaldi bc5baf1 13423 lines
+openfst 18e94e6 188 lines
+vosk-api 4ab9821 163 lines

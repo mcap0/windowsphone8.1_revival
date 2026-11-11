@@ -1,0 +1,212 @@
+#!/usr/bin/env python3
+"""report — summary of the battery probe log (share/inbox/batteria.txt).
+
+  batteria/report                 last 24 hours
+  batteria/report 11-01 19:00     from that moment (MM-DD HH:MM) to the end
+  batteria/report 11-01 19:00 11-01 21:00
+
+The probe (1.1) logs once a minute the battery driver's voltage, current and remaining charge. The current is a
+snapshot of that instant; the remaining charge is the gauge's coulomb counter, which integrates everything between
+samples. So consumption comes from the counter, and the snapshots are used only for what they are good at: the idle
+floor, spotting wake-ups (with the processes busy in that minute, as hints) and the voltage sag under load, which
+gives the battery's internal resistance.
+
+Lines of the probe 1.0 (power manager cache, no counter, no voltage) are listed but not measured.
+"""
+import collections, datetime, os, re, statistics, sys
+
+LOG = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "share", "inbox", "batteria.txt")
+# 1.0: "bat 100% 1900/1900 mWh -137 mW batteria"  (power manager cache, not fresh)
+# 1.1: "bat 97% 4012 mV -180 mA 1845/1900 mAh batteria 31.2 C"  (battery driver)
+LINE_OLD = re.compile(r"^(\d\d-\d\d \d\d:\d\d:\d\d) bat (\d+)% (\d+)/(\d+) m[AW]h (-?\d+) m[AW] (\w+)(.*)$")
+LINE = re.compile(r"^(\d\d-\d\d \d\d:\d\d:\d\d) bat (\d+)% (\d+|\?) mV (-?\d+|\?) mA (\d+|\?)/(\d+|\?) mAh (\w+)(.*)$")
+FULL = 1900          # mAh, the driver's full-charge capacity (design 2000)
+WAKE_MA = 60         # a snapshot above this = the phone was awake doing something
+SAG_DELTA_MA = 250   # consecutive samples whose current differs at least this much give a resistance reading
+HEALTHY_MOHM = 150   # a sound phone cell of this size, connector included
+
+
+def when(stamp, year):
+    return datetime.datetime.strptime("%d-%s" % (year, stamp), "%Y-%m-%d %H:%M:%S")
+
+
+def parse(year):
+    samples, seen = [], set()
+    for raw in open(LOG, encoding="utf-8", errors="replace"):
+        raw = raw.strip()
+        m = LINE.match(raw)
+        if m:
+            num = lambda g: None if m.group(g) == "?" else int(m.group(g))
+            stamp, pct, mv, ma, cap, src, rest = m.group(1), int(m.group(2)), num(3), num(4), num(5), m.group(7), m.group(8)
+        else:
+            m = LINE_OLD.match(raw)
+            if not m:
+                continue
+            stamp, pct, mv, ma, cap, src, rest = m.group(1), int(m.group(2)), None, None, None, m.group(6), m.group(7)
+        if src in ("rete", "carica"):  # on the charger the two alternate every few minutes at 100%: one state
+            src = "alimentato"
+        if stamp in seen:  # the probe may resend a line if the inbox did not answer in time
+            continue
+        seen.add(stamp)
+        cpu = re.search(r"cpu (\d+)%", rest)
+        temp = re.match(r" (-?[\d.]+) C", rest)
+        procs = re.findall(r"([\w.-]+) ([\d.]+)s", rest.split("cpu", 1)[-1])
+        samples.append(dict(t=when(stamp, year), pct=pct, mv=mv, draw=-ma if ma is not None else None, cap=cap, src=src,
+                            cpu=int(cpu.group(1)) if cpu else None, temp=float(temp.group(1)) if temp else None,
+                            procs=procs))
+    samples.sort(key=lambda s: s["t"])
+    return samples
+
+
+def split(samples):
+    periods, cur = [], [samples[0]]
+    for s in samples[1:]:
+        gap = (s["t"] - cur[-1]["t"]).total_seconds() > 300  # a hole (phone off/restarted) also starts a new period
+        if s["src"] != cur[-1]["src"] or gap:
+            periods.append(cur)
+            cur = []
+        cur.append(s)
+    periods.append(cur)
+    return periods
+
+
+def hours(t):
+    return t.total_seconds() / 3600
+
+
+def battery_period(p):
+    measured = [s for s in p if s["cap"] is not None and s["draw"] is not None]
+    if len(measured) < 2:
+        print("    non misurabile: sonda 1.0 (stato in cache, niente contatore)")
+        return
+
+    # After a charge the gauge shows 100% and a full counter for a while, then catches up all at once:
+    # the minutes while it holds say nothing about consumption.
+    held = 0
+    while held < len(measured) - 1 and measured[held]["pct"] == 100 and measured[held]["cap"] >= FULL:
+        held += 1
+    if held:
+        print("    primi %d min fermi al 100%% dopo la carica: esclusi" % held)
+        measured = measured[held:]
+    if len(measured) < 2:
+        return
+    a, b = measured[0], measured[-1]
+    span = hours(b["t"] - a["t"])
+    if span <= 0:
+        return
+
+    # Charge used between consecutive samples. The gauge also corrects itself in steps: tens of mAh gone in a minute
+    # or two while the current read before and after is a few mA (11-02 00:10: 46 mAh in 2 min at 16 mA). Those steps
+    # are recalibration, not consumption: listed apart and left out.
+    steps, recal = [], []
+    for x, y in zip(measured, measured[1:]):
+        dt = hours(y["t"] - x["t"])
+        c = x["cap"] - y["cap"]
+        expect = max(x["draw"], y["draw"], 0) * dt
+        if c > 15 and c > 3 * expect + 6:
+            recal.append((y["t"], c, expect))
+            c = 0
+        steps.append((x, y, c))
+    used = sum(c for _, _, c in steps)
+    avg = used / span
+    print("    consumo dal contatore: %d mAh in %.1f h = %.0f mA medi (%.1f%%/h)" % (used, span, avg, avg * 100 / FULL))
+    for t, c, e in recal:
+        print("      ricalibrazione dell'indicatore alle %s: -%d mAh in un colpo (la corrente ne spiega ~%d), esclusa" %
+              (t.strftime("%H:%M"), c, e))
+
+    # hour by hour; the median hour is the idle consumption (the costly hours stand out next to it)
+    byhour = collections.OrderedDict()
+    for x, y, c in steps:
+        h = byhour.setdefault(y["t"].replace(minute=0, second=0), [0, 0.0])
+        h[0] += c
+        h[1] += hours(y["t"] - x["t"])
+    rates = [(c / dt, h) for h, (c, dt) in byhour.items() if dt >= 0.75]
+    if rates:
+        print("    ora per ora (mAh/h): " + "  ".join("%s %.0f" % (h.strftime("%H"), r) for r, h in rates))
+        q = statistics.median(r for r, _ in rates)
+        print("    ora tipica (mediana): %.0f mA, %.1f%%/h, durata %.0f h" % (q, q * 100 / FULL, FULL / max(q, 1)))
+
+    snaps = sorted(s["draw"] for s in measured)
+    floor = snaps[len(snaps) // 10]
+    print("    fondo (10° percentile degli istantanei): %d mA, durata teorica %.0f h; mediana %d mA" %
+          (floor, FULL / max(floor, 1), snaps[len(snaps) // 2]))
+
+    # wake-ups: runs of awake snapshots; the cost comes from the counter around the run, the processes are hints
+    events, cur = [], []
+    for i, s in enumerate(measured):
+        if s["draw"] < WAKE_MA:
+            continue
+        if cur and i - cur[-1] <= 2:
+            cur.append(i)
+        else:
+            cur = [i]
+            events.append(cur)
+    costs = []
+    for e in events:
+        lo, hi = max(e[0] - 1, 0), min(e[-1] + 1, len(measured) - 1)
+        costs.append((sum(steps[i][2] for i in range(lo, hi)), e))
+    if costs:
+        total = sum(c for c, _ in costs)
+        print("    %d risvegli: %d mAh dal contatore, %.0f%% del consumo" % (len(costs), total, 100 * total / max(used, 1)))
+        for c, e in sorted(costs, key=lambda x: -x[0])[:5]:
+            names = collections.Counter()
+            for i in e:
+                for n, sec in measured[i]["procs"]:
+                    names[n] += float(sec)
+            print("      %s %d min, picco %d mA, ~%d mAh (indizi: %s)" %
+                  (measured[e[0]]["t"].strftime("%H:%M"), len(e), max(measured[i]["draw"] for i in e), c,
+                   ", ".join(n for n, _ in names.most_common(3)) or "nessun processo"))
+
+    resistance(measured)
+
+
+# Internal resistance: between two consecutive samples the open-circuit voltage barely moves, so the voltage
+# difference over the current difference is the battery's resistance (plus contacts). Voltage and current are not
+# read at the same instant, so single values are noisy: the median says it, with the spread.
+def resistance(measured):
+    rs = []
+    for x, y in zip(measured, measured[1:]):
+        if x["mv"] and y["mv"] and abs(y["draw"] - x["draw"]) >= SAG_DELTA_MA and (y["t"] - x["t"]).total_seconds() <= 90:
+            r = (x["mv"] - y["mv"]) / ((y["draw"] - x["draw"]) / 1000.0)
+            if r > 0:
+                rs.append((r, y))
+    if not rs:
+        print("    resistenza interna: nessun salto di corrente abbastanza grande per stimarla")
+        return
+    vals = sorted(r for r, _ in rs)
+    med = statistics.median(vals)
+    temps = [y["temp"] for _, y in rs if y["temp"] is not None]
+    print("    resistenza interna: %.0f mΩ (da %d salti, %.0f-%.0f%s); sana ~%d mΩ" %
+          (med, len(vals), vals[0], vals[-1], ", %.0f-%.0f C" % (min(temps), max(temps)) if temps else "", HEALTHY_MOHM))
+    at_rest = [s["mv"] for s in measured if s["draw"] < WAKE_MA]
+    now = at_rest[-1] if at_rest else measured[-1]["mv"]
+    for amps in (1.0, 2.0):
+        print("      a %.0f A cala di %.2f V: da %.2f V (riposo, ultima lettura) a %.2f V; da 3.70 V (carica bassa) a %.2f V" %
+              (amps, med * amps / 1000, now / 1000, (now - med * amps) / 1000, (3700 - med * amps) / 1000))
+    print("      il telefono si spegne intorno a 3.3-3.4 V; il freddo alza la resistenza")
+
+
+def main(argv):
+    year = datetime.date.today().year
+    samples = parse(year)
+    if len(argv) >= 2:
+        start = when(argv[0] + " " + argv[1] + ":00", year)
+        end = when(argv[2] + " " + argv[3] + ":00", year) if len(argv) >= 4 else datetime.datetime.max
+    else:
+        start = (samples[-1]["t"] if samples else datetime.datetime.now()) - datetime.timedelta(hours=24)
+        end = datetime.datetime.max
+    samples = [s for s in samples if start <= s["t"] <= end]
+    if not samples:
+        print("nessun campione nel periodo")
+        return
+    for p in split(samples):
+        a, b = p[0], p[-1]
+        mins = (b["t"] - a["t"]).total_seconds() / 60 + 1
+        print("%s → %s  %-8s %4.0f min  %3d%% → %3d%%" % (a["t"].strftime("%m-%d %H:%M"), b["t"].strftime("%H:%M"),
+                                                       a["src"], mins, a["pct"], b["pct"]))
+        if a["src"] == "batteria":
+            battery_period(p)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

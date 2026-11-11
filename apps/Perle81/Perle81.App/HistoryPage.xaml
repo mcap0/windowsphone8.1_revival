@@ -1,0 +1,40 @@
+<Page x:Class="Perle81.App.HistoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="Cronologia" FontSize="24" FontWeight="SemiBold" Margin="12,8,12,4" />
+    <TextBlock x:Name="EmptyText" Grid.Row="1" Margin="12" TextWrapping="Wrap" Visibility="Collapsed"
+               Text="Nessun video guardato finora." />
+    <ListView x:Name="List" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnVideoClick">
+      <ListView.ItemContainerStyle>
+        <Style TargetType="ListViewItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="Padding" Value="12,6" />
+        </Style>
+      </ListView.ItemContainerStyle>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="160" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Width="160" Height="90" Background="#222">
+              <Image Source="{Binding Thumbnail}" Stretch="UniformToFill" />
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+              <TextBlock Text="{Binding Title}" TextWrapping="Wrap" FontSize="15" />
+              <TextBlock Text="{Binding Uploader}" FontSize="12" Opacity="0.7" Margin="0,4,0,0" />
+              <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.7" />
+            </StackPanel>
+          </Grid>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
+</Page>

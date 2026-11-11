@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# phonecmd [-a app] "text" ... — runs each text in the phone's "Internet" app (apps/Browser) as if typed in its address
+# box: an address, or a command (banco, profilo 10, memoria, traccia, ua mac, bytecode, ic, gpu). The app takes them
+# from the reply to its next log post to tools/inbox (every 2 s while it is open on the home Wi-Fi), so nothing is
+# touched on the phone. -a <log name> addresses a site app (poste, gmail). The lines wait in
+# share/inbox/cmd/<app>.txt until the app asks.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+app=internet
+[[ ${1:-} == -a ]] && { app=$2; shift 2; }
+[[ $# -gt 0 ]] || { echo 'uso: phonecmd [-a app] "testo" ...' >&2; exit 1; }
+mkdir -p "$root/share/inbox/cmd"
+printf '%s\n' "$@" >> "$root/share/inbox/cmd/$app.txt"

@@ -1,0 +1,16 @@
+<phone:PhoneApplicationPage x:Class="ProvaVoip.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    Background="Black" Foreground="White" SupportedOrientations="Portrait" Orientation="Portrait">
+    <Grid Margin="12,24,12,8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="Buttons" />
+        <ScrollViewer Grid.Row="1" Margin="0,8,0,0">
+            <TextBlock x:Name="LogText" FontSize="18" TextWrapping="Wrap" />
+        </ScrollViewer>
+    </Grid>
+</phone:PhoneApplicationPage>

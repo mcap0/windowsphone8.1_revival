@@ -1,0 +1,64 @@
+<Page
+    x:Class="Assistente.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000">
+
+    <!-- The WP8.1 Bing voice screen, measured on its screenshot (768x1280, 1.6 px per unit):
+         title 49.5 white, hint 22.667 #999999, "altri esempi" accent, box #1F1F1F 81 high at the bottom. -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="Root" Margin="22,0,19,0" Background="Transparent" Tapped="Root_Tapped">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="StateText" Margin="-2,60,0,0" FontSize="49.5" FontWeight="SemiLight"
+                       Foreground="#FFFFFFFF" TextWrapping="Wrap" Text="Ti ascolto..." />
+            <StackPanel x:Name="HintPanel" Grid.Row="1" Margin="0,7,0,0">
+                <TextBlock x:Name="HintText" FontSize="22.667" Foreground="#FF999999" TextWrapping="Wrap"
+                           Text="prova &quot;metti un timer di 5 minuti&quot;" />
+                <TextBlock Text="altri esempi" FontSize="22.667"
+                           Foreground="{ThemeResource PhoneAccentBrush}" Tapped="Examples_Tapped" />
+            </StackPanel>
+            <ScrollViewer Grid.Row="2" Margin="0,24,0,12" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock x:Name="AnswerText" FontSize="26" Foreground="#FFFFFFFF" TextWrapping="Wrap" />
+                    <TextBlock x:Name="DetailText" Margin="0,16,0,0" FontSize="15" Foreground="#FF9E9E9E" TextWrapping="Wrap" />
+                    <StackPanel x:Name="ChoicesPanel" Margin="0,8,0,0" />
+                    <StackPanel x:Name="ExtrasPanel" Margin="0,8,0,0" Visibility="Collapsed">
+                        <TextBlock Text="richieste di oggi" FontSize="20" Margin="0,12,0,0"
+                                   Foreground="{ThemeResource PhoneAccentBrush}" Tapped="Info_Tapped" />
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+            <MediaElement x:Name="Player" AutoPlay="True" Width="0" Height="0" />
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="2.5,0,2.5,3" Height="80.6" Background="#FF1F1F1F">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Rectangle x:Name="Meter" Grid.ColumnSpan="2" Height="3" VerticalAlignment="Top" HorizontalAlignment="Left"
+                       Width="0" Fill="{ThemeResource PhoneAccentBrush}" />
+            <TextBox x:Name="Box" Margin="6,0,0,0" VerticalAlignment="Center" FontSize="25.333" Opacity="0"
+                     BorderThickness="0" InputScope="Search"
+                     GotFocus="Box_GotFocus" LostFocus="Box_LostFocus" TextChanged="Box_TextChanged" KeyDown="Box_KeyDown" />
+            <TextBlock x:Name="BoxHint" Margin="18,0,0,0" VerticalAlignment="Center" FontSize="25.333" IsHitTestVisible="False"
+                       Foreground="{ThemeResource PhoneAccentBrush}" Text="Ti ascolto..." TextTrimming="CharacterEllipsis" />
+            <Grid x:Name="SendArea" Grid.Column="1" Width="78" Background="Transparent" Tapped="Send_Tapped"
+                  PointerPressed="Send_PointerPressed" PointerReleased="Send_PointerReleased" PointerCaptureLost="Send_PointerReleased"
+                  PointerExited="Send_PointerReleased">
+                <Viewbox x:Name="Arrow" Width="24" Margin="24,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <SymbolIcon Symbol="Forward" Foreground="{ThemeResource PhoneAccentBrush}" />
+                </Viewbox>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

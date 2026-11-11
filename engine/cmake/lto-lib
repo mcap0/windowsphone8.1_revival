@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# lto-lib — CMAKE_AR for the LTO variant (WP81_LTO): takes llvm-lib's command line and builds the archive with llvm-ar.
+# llvm-lib 21 cannot index ARM32 bitcode ("unknown arch in target triple: thumbv7-pc-windows-msvc"); llvm-ar's COFF
+# archives carry the same symbol table and lld-link reads them.
+set -Eeuo pipefail
+out=
+objects=()
+for arg; do
+    case $arg in
+        /out:*|-out:*) out=${arg#?out:} ;;
+        /nologo|-nologo|/machine:*|-machine:*|/MACHINE:*|/ignore:*|/WX*|/llvmlibthin) ;;
+        *) objects+=("$arg") ;;
+    esac
+done
+[[ -n $out ]] || { echo "lto-lib: no /out:" >&2; exit 1; }
+rm -f "$out"
+exec llvm-ar rcs --format=coff "$out" "${objects[@]}"

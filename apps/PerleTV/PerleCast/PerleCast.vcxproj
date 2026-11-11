@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4F8A2C61-7D3E-4B95-A1C0-2E6F9D8B7A54}</ProjectGuid>
+    <RootNamespace>PerleCast</RootNamespace>
+    <DefaultLanguage>it-IT</DefaultLanguage>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_WINRT_DLL;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <AdditionalIncludeDirectories>$(ProjectDir)core;$(ProjectDir)..\Perle81.Native\Media;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CastUi.h" />
+    <ClInclude Include="CastSession.h" />
+    <ClInclude Include="CastTask.h" />
+    <ClInclude Include="TaskLink.h" />
+    <ClInclude Include="TaskMessages.h" />
+    <ClInclude Include="Discovery.h" />
+    <ClInclude Include="Net.h" />
+    <ClInclude Include="StreamServer.h" />
+    <ClInclude Include="WinRtText.h" />
+    <ClInclude Include="core\CastController.h" />
+    <ClInclude Include="core\Didl.h" />
+    <ClInclude Include="core\DlnaDevice.h" />
+    <ClInclude Include="core\ProxyHttp.h" />
+    <ClInclude Include="core\Soap.h" />
+    <ClInclude Include="core\Srt.h" />
+    <ClInclude Include="core\Ssdp.h" />
+    <ClInclude Include="core\TsMuxer.h" />
+    <ClInclude Include="core\TsWriter.h" />
+    <ClInclude Include="core\Util.h" />
+    <ClInclude Include="core\Xml.h" />
+    <ClInclude Include="..\Perle81.Native\Media\TsDemux.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CastLog.cpp" />
+    <ClCompile Include="CastUi.cpp" />
+    <ClCompile Include="CastSession.cpp" />
+    <ClCompile Include="CastTask.cpp" />
+    <ClCompile Include="TaskLink.cpp" />
+    <ClCompile Include="Discovery.cpp" />
+    <ClCompile Include="Net.cpp" />
+    <ClCompile Include="StreamServer.cpp" />
+    <ClCompile Include="core\CastController.cpp" />
+    <ClCompile Include="core\CastQueue.cpp" />
+    <ClCompile Include="core\Didl.cpp" />
+    <ClCompile Include="core\DlnaDevice.cpp" />
+    <ClCompile Include="core\ProxyHttp.cpp" />
+    <ClCompile Include="core\Soap.cpp" />
+    <ClCompile Include="core\Srt.cpp" />
+    <ClCompile Include="core\Ssdp.cpp" />
+    <ClCompile Include="core\TsMuxer.cpp" />
+    <ClCompile Include="core\TsWriter.cpp" />
+    <ClCompile Include="core\Util.cpp" />
+    <ClCompile Include="core\Xml.cpp" />
+    <ClCompile Include="..\Perle81.Native\Media\TsDemux.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

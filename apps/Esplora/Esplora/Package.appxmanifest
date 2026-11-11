@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="DumbPhone.Esplora" Publisher="CN=DumbPhone" Version="0.2.25.0" />
+  <mp:PhoneIdentity PhoneProductId="1c07cf82-2c63-4406-8a41-f14d6e9221fd" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Esplora</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Esplora.App">
+      <m3:VisualElements DisplayName="Esplora"
+                         Square150x150Logo="Assets\Square150x150Logo.png"
+                         Square44x44Logo="Assets\Square44x44Logo.png"
+                         Description="File e registro del telefono"
+                         ForegroundText="light"
+                         BackgroundColor="transparent"
+                         ToastCapable="false">
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#455A64" />
+      </m3:VisualElements>
+      <Extensions>
+        <Extension Category="windows.protocol">
+          <Protocol Name="esplora" />
+        </Extension>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="testo">
+            <DisplayName>Testo</DisplayName>
+            <SupportedFileTypes>
+              <FileType>.txt</FileType>
+              <FileType>.log</FileType>
+              <FileType>.md</FileType>
+              <FileType>.csv</FileType>
+              <FileType>.json</FileType>
+              <FileType>.ini</FileType>
+              <FileType>.cfg</FileType>
+              <FileType>.conf</FileType>
+              <FileType>.srt</FileType>
+              <FileType>.vtt</FileType>
+              <FileType>.py</FileType>
+              <FileType>.sh</FileType>
+              <FileType>.c</FileType>
+              <FileType>.cpp</FileType>
+              <FileType>.h</FileType>
+              <FileType>.js</FileType>
+              <FileType>.css</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer" />
+  </Capabilities>
+</Package>

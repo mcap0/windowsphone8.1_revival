@@ -1,0 +1,22 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramWeb", "TelegramWeb\TelegramWeb.csproj", "{3B36A89A-8069-4989-BBC4-564AABE29A45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B36A89A-8069-4989-BBC4-564AABE29A45}.Debug|ARM.ActiveCfg = Debug|ARM
+		{3B36A89A-8069-4989-BBC4-564AABE29A45}.Debug|ARM.Build.0 = Debug|ARM
+		{3B36A89A-8069-4989-BBC4-564AABE29A45}.Release|ARM.ActiveCfg = Release|ARM
+		{3B36A89A-8069-4989-BBC4-564AABE29A45}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

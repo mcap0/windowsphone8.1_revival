@@ -1,0 +1,13 @@
+--- a/Source/JavaScriptCore/runtime/MachineContext.h
++++ b/Source/JavaScriptCore/runtime/MachineContext.h
+@@ -758,8 +758,8 @@
+ #elif OS(WINDOWS)
+ 
+ #if CPU(ARM)
+-    static_assert(LLInt::LLIntPC == ARMRegisters::r8, "Wrong LLInt PC.");
+-    return reinterpret_cast<void*&>((uintptr_t&) regs.R8);
++    static_assert(LLInt::LLIntPC == ARMRegisters::r4, "Wrong LLInt PC.");
++    return reinterpret_cast<void*&>((uintptr_t&) regs.R4);
+ #elif CPU(ARM64)
+     static_assert(LLInt::LLIntPC == ARM64Registers::x4, "Wrong LLInt PC.");
+     return reinterpret_cast<void*&>((uintptr_t&) regs.X4);

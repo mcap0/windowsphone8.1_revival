@@ -1,0 +1,84 @@
+--- a/Source/JavaScriptCore/bytecode/InlineCacheCompiler.cpp
++++ b/Source/JavaScriptCore/bytecode/InlineCacheCompiler.cpp
+@@ -2036,6 +2036,10 @@
+ 
+     case AccessCase::ArrayLengthStore: {
+         ASSERT(!accessCase.viaGlobalProxy());
++#if USE(JSVALUE32_64)
++        m_failAndIgnore.append(jit.jump());
++        return;
++#else
+ 
+         jit.load8(CCallHelpers::Address(baseGPR, JSCell::indexingTypeAndMiscOffset()), scratchGPR);
+         jit.and32(CCallHelpers::TrustedImm32(IndexingModeMask), scratchGPR);
+@@ -2081,6 +2085,7 @@
+         } else
+             m_failAndIgnore.append(failAndIgnore);
+         return;
++#endif
+     }
+ 
+     case AccessCase::RegExpLastIndexStore: {
+@@ -2468,7 +2473,7 @@
+         fallThrough.append(jit.branchIfNotTrue(m_propertyCache.propertyGPR()));
+ #else
+         fallThrough.append(jit.branch32(CCallHelpers::NotEqual, m_propertyCache.propertyTagGPR(), CCallHelpers::TrustedImm32(JSValue::BooleanTag)));
+-        fallThrough.append(jit.branchTest32(CCallHelpers::Zero, m_propertyCache.propertyPayloadGPR(), CCallHelpers::TrustedImm32(1)));
++        fallThrough.append(jit.branchTest32(CCallHelpers::Zero, m_propertyCache.propertyGPR(), CCallHelpers::TrustedImm32(1)));
+ #endif
+         emitDefaultGuard();
+         break;
+@@ -2482,7 +2487,7 @@
+         fallThrough.append(jit.branchIfNotFalse(m_propertyCache.propertyGPR()));
+ #else
+         fallThrough.append(jit.branch32(CCallHelpers::NotEqual, m_propertyCache.propertyTagGPR(), CCallHelpers::TrustedImm32(JSValue::BooleanTag)));
+-        fallThrough.append(jit.branchTest32(CCallHelpers::NonZero, m_propertyCache.propertyPayloadGPR(), CCallHelpers::TrustedImm32(1)));
++        fallThrough.append(jit.branchTest32(CCallHelpers::NonZero, m_propertyCache.propertyGPR(), CCallHelpers::TrustedImm32(1)));
+ #endif
+         emitDefaultGuard();
+         break;
+@@ -4878,8 +4883,12 @@
+                         break;
+                     }
+                 }
++#if USE(JSVALUE64)
+                 if (allGetters)
+                     return AccessCase::create(vm(), codeBlock, AccessCase::LoadMegamorphicGetter, identifier);
++#else
++                UNUSED_VARIABLE(allGetters);
++#endif
+             }
+ 
+             unsigned numberOfUndesiredMegamorphicAccessVariants = 0;
+@@ -7457,6 +7466,7 @@
+             return finishPreCompiledCodeGeneration(stub.releaseNonNull());
+         }
+     } else {
++#if CPU(ADDRESS64)
+         if (!accessCase.usesPolyProto()) {
+             Vector<ObjectPropertyCondition, 64> watchedConditions;
+             Vector<ObjectPropertyCondition, 64> checkingConditions;
+@@ -8182,6 +8192,7 @@
+                 break;
+             }
+         }
++#endif
+ 
+         SharedJITStubSet::Searcher searcher {
+             SharedJITStubSet::propertyCacheKey(m_propertyCache),
+@@ -8382,6 +8393,7 @@
+ MacroAssemblerCodeRef<JITThunkPtrTag> getByIdCustomAccessorHandler(VM&) { return { }; }
+ MacroAssemblerCodeRef<JITThunkPtrTag> getByIdCustomValueHandler(VM&) { return { }; }
+ MacroAssemblerCodeRef<JITThunkPtrTag> getByIdGetterHandler(VM&) { return { }; }
++MacroAssemblerCodeRef<JITThunkPtrTag> getByIdMegamorphicGetterHandler(VM&) { return { }; }
+ MacroAssemblerCodeRef<JITThunkPtrTag> getByIdProxyObjectLoadHandler(VM&) { return { }; }
+ MacroAssemblerCodeRef<JITThunkPtrTag> getByIdModuleNamespaceLoadHandler(VM&) { return { }; }
+ MacroAssemblerCodeRef<JITThunkPtrTag> putByIdReplaceHandler(VM&) { return { }; }
+@@ -8601,6 +8613,7 @@
+     out.print("]"_s);
+ }
+ 
++
+ } // namespace JSC
+ 
+ namespace WTF {

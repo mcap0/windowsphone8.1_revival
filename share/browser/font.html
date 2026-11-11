@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font</title><script>
+// A new address at every visit: a font the memory cache already holds is there before the first layout.
+var stamp = Date.now();
+document.write('<style>@font-face { font-family: "Prova A"; src: url("/banco/poste/2b7ca72c1b51c6a6.ttf?' + stamp + '"); }'
+  + '@font-face { font-family: "Prova B"; src: url("/banco/poste/2b9f05f4ccc30cbd.ttf?' + stamp + '"); }</' + 'style>');
+</script><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+.a{font-family:"Prova A",monospace;font-size:20px}
+.b::before{content:"prima del testo ";font-family:"Prova B",monospace}
+.c::first-letter{font-family:"Prova B",monospace;font-size:40px}
+.w{display:inline-block;white-space:nowrap}
+#out{font:12px monospace;white-space:pre-wrap}
+</style></head><body>
+<div>Un font web che arriva dopo il primo layout deve cambiare solo chi lo usa: ogni riga deve dire OK.</div>
+<div id="t">
+<span class="w a" id="direct">Testo con il font A, 0123456789</span><br>
+<span class="w a"><span><b id="inherit" style="font-weight:normal">Testo che eredita il font A</b></span></span><br>
+<span class="w b" id="before">dopo</span><br>
+<div class="w c" id="letter">Quando la prima lettera ha il font B</div><br>
+<span class="w" id="plain">Testo che non usa font web</span>
+</div>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var ids = ["direct", "inherit", "before", "letter", "plain"], lines = [], out = T.$("out");
+  function say(s) { lines.push(s); out.textContent = lines.join("\n"); }
+  function widths() { var w = {}; for (var i = 0; i < ids.length; i++) w[ids[i]] = T.$(ids[i]).getBoundingClientRect().width; return w; }
+  // A layout now, while the fonts are on their way: the styles hold the stand-ins.
+  var early = widths();
+  document.fonts.ready.then(function () {
+    T.afterPaint(function () {
+      var late = widths();
+      // The same content made now, with the fonts loaded: what the old elements must measure too.
+      var copy = T.$("t").cloneNode(true);
+      var all = copy.querySelectorAll("[id]");
+      for (var i = 0; i < all.length; i++) all[i].id = "n-" + all[i].id;
+      document.body.insertBefore(copy, out);
+      for (var j = 0; j < ids.length; j++) {
+        var id = ids[j], fresh = T.$("n-" + id).getBoundingClientRect().width;
+        var same = Math.abs(late[id] - fresh) < 0.01;
+        var moved = Math.abs(late[id] - early[id]) > 0.5;
+        var want = id !== "plain";
+        say((same && moved === want ? "OK " : "ERRORE ") + id + ": prima " + early[id].toFixed(1) + ", dopo " + late[id].toFixed(1) + ", nuovo " + fresh.toFixed(1));
+      }
+      say("font: " + document.fonts.size + ", stato " + document.fonts.status);
+      T.send("font", lines);
+    });
+  });
+})();
+</script></body></html>

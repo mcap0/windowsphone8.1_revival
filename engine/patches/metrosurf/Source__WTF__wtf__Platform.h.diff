@@ -1,0 +1,7 @@
+--- a/Source/WTF/wtf/Platform.h
++++ b/Source/WTF/wtf/Platform.h
+@@ -173,3 +173,4 @@
+ #else
+ #define WTF_EMPTY_BASE_CLASS
+ #endif
++

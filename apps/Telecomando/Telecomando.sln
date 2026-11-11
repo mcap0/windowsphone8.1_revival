@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Telecomando", "Telecomando\Telecomando.vcxproj", "{73FA100A-EE2A-4E24-B960-E6E42E6220A1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TsNet", "..\TsNet\TsNet.vcxproj", "{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73FA100A-EE2A-4E24-B960-E6E42E6220A1}.Release|ARM.ActiveCfg = Release|ARM
+		{73FA100A-EE2A-4E24-B960-E6E42E6220A1}.Release|ARM.Build.0 = Release|ARM
+		{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}.Release|ARM.ActiveCfg = Release|ARM
+		{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,165 @@
+<Page
+    x:Class="Musica.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF111111"
+    Foreground="White"
+    NavigationCacheMode="Required">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="68" />
+        </Grid.RowDefinitions>
+
+        <Pivot x:Name="LibraryPivot"
+               Title="MUSICA"
+               Grid.Row="0"
+               SelectionChanged="OnPivotSelectionChanged">
+            <PivotItem Header="brani">
+                <Grid x:Name="SongsPane">
+                <ListView x:Name="SongsList"
+                          IsItemClickEnabled="True"
+                          SelectionChanged="OnSongsSelectionChanged"
+                          ItemClick="OnSongClick"
+                          Holding="OnSongHolding">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,8">
+                                <TextBlock Text="{Binding Title}" FontSize="22" />
+                                <TextBlock Text="{Binding Artist}"
+                                           FontSize="15"
+                                           Foreground="#FFBBBBBB" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem Header="artisti">
+                <Grid x:Name="ArtistsPane">
+                <ListView x:Name="ArtistsList"
+                          IsItemClickEnabled="True"
+                          ItemClick="OnArtistClick"
+                          Holding="OnArtistHolding">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                       FontSize="24"
+                                       Margin="0,12" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </Grid>
+            </PivotItem>
+
+            <PivotItem Header="album">
+                <ListView x:Name="AlbumsList"
+                          IsItemClickEnabled="True"
+                          ItemClick="OnAlbumClick"
+                          Holding="OnAlbumHolding">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Height="100" Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Cover}"
+                                       Width="82"
+                                       Height="82"
+                                       Stretch="UniformToFill" />
+                                <StackPanel Grid.Column="1"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Name}" FontSize="21" />
+                                    <TextBlock Text="{Binding Summary}"
+                                               FontSize="15"
+                                               Foreground="#FFBBBBBB" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+
+            <PivotItem Header="playlist">
+                <ListView x:Name="PlaylistsList"
+                          IsItemClickEnabled="True"
+                          ItemClick="OnPlaylistClick"
+                          Holding="OnPlaylistHolding">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,12">
+                                <TextBlock Text="{Binding Name}" FontSize="24" />
+                                <TextBlock Text="{Binding Summary}"
+                                           FontSize="15"
+                                           Foreground="#FFBBBBBB" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+        </Pivot>
+
+        <Grid Grid.Row="1"
+              Background="#FF242424"
+              Tapped="OnMiniPlayerTapped">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="64" />
+            </Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" Margin="12,0">
+                <TextBlock x:Name="MiniTitle"
+                           Text="Nessun brano"
+                           FontSize="17"
+                           TextTrimming="CharacterEllipsis" />
+                <TextBlock x:Name="MiniArtist"
+                           Text=""
+                           FontSize="13"
+                           Foreground="#FFBBBBBB" />
+            </StackPanel>
+            <Border x:Name="MiniPlayButton"
+                    Grid.Column="1"
+                    Width="64"
+                    Height="68"
+                    Background="Transparent"
+                    Tapped="OnMiniPlayClick">
+                <TextBlock Text="&#x25B6;"
+                           FontFamily="Segoe UI Symbol"
+                           FontSize="23"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar x:Name="MainAppBar" IsSticky="True">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton x:Name="SelectSongsButton"
+                              Label="seleziona"
+                              Icon="Edit"
+                              Click="OnToggleSelection" />
+                <AppBarButton x:Name="NewPlaylistButton"
+                              Label="nuova playlist"
+                              Icon="Add"
+                              Visibility="Collapsed"
+                              Click="OnNewPlaylist" />
+                <AppBarButton x:Name="OnlineButton"
+                              Label="online"
+                              Icon="Find"
+                              Click="OnOnline" />
+                <AppBarButton x:Name="RescanButton"
+                              Label="aggiorna"
+                              Icon="Refresh"
+                              Click="OnRescan" />
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="importa da Spotify"
+                              Click="OnSpotify" />
+                <AppBarButton Label="diagnostica"
+                              Click="OnDiagnostics" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

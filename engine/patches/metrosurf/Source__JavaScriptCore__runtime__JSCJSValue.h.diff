@@ -1,0 +1,10 @@
+--- a/Source/JavaScriptCore/runtime/JSCJSValue.h
++++ b/Source/JavaScriptCore/runtime/JSCJSValue.h
+@@ -26,6 +26,7 @@
+ #include <JavaScriptCore/JSExportMacros.h>
+ #include <JavaScriptCore/PureNaN.h>
+ #include <atomic>
++#include <wtf/Atomics.h>
+ #include <cmath>
+ #include <wtf/Forward.h>
+ #include <wtf/HashFunctions.h>

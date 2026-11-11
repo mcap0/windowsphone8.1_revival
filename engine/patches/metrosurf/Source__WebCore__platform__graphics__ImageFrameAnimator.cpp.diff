@@ -1,0 +1,14 @@
+--- a/Source/WebCore/platform/graphics/ImageFrameAnimator.cpp
++++ b/Source/WebCore/platform/graphics/ImageFrameAnimator.cpp
+@@ -65,7 +65,11 @@
+ {
+     // Animated images over a certain size are considered large enough that we'll
+     // only hang on to one frame at a time.
++#if defined(WP81)
++    static constexpr unsigned LargeAnimationCutoff = 2 * 1024 * 1024;
++#else
+     static constexpr unsigned LargeAnimationCutoff = 30 * 1024 * 1024;
++#endif
+ 
+     Ref source = m_source.get();
+     if (source->decodedSize() < LargeAnimationCutoff)

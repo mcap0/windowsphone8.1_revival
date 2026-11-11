@@ -1,0 +1,23 @@
+--- a/Source/WTF/wtf/PlatformWin.cmake
++++ b/Source/WTF/wtf/PlatformWin.cmake
+@@ -16,7 +16,6 @@
+     win/MemoryPressureHandlerWin.cpp
+     win/OSAllocatorWin.cpp
+     win/PathWalker.cpp
+-    win/RunLoopWin.cpp
+     win/SignalsWin.cpp
+     win/ThreadingWin.cpp
+     win/WTFCRTDebug.cpp
+@@ -36,6 +35,12 @@
+     win/Win32Handle.h
+ )
+ 
++if (WP81)
++    list(APPEND WTF_SOURCES generic/RunLoopGeneric.cpp)
++else ()
++    list(APPEND WTF_SOURCES win/RunLoopWin.cpp)
++endif ()
++
+ list(APPEND WTF_LIBRARIES
+     DbgHelp
+     shlwapi

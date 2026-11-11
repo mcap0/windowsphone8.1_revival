@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""Sincro: one-time Google OAuth consent on the PC (installed-app flow, PKCE, loopback redirect).
+
+Reads  secrets/google-client.json  (the "installed" JSON from Google Cloud Console; the script
+       accepts the file in its original form, with the "installed" key).
+Writes secrets/google-token.json   (mode 0600, the copy we keep: client_id, client_secret, refresh_token, email).
+       share/google-auth.json      (mode 0600, served to the phone; DELETED again after Enter).
+
+Standard library only. Usage:
+    tools/google-auth              run the consent flow
+    tools/google-auth --self-test  offline checks (PKCE vector, URL building, file modes); no network
+"""
+import base64
+import hashlib
+import http.server
+import json
+import os
+import secrets
+import shutil
+import socket
+import stat
+import subprocess
+import sys
+import tempfile
+import threading
+import urllib.error
+import urllib.parse
+import urllib.request
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+CLIENT_FILE = os.path.join(ROOT, "secrets", "google-client.json")
+TOKEN_FILE = os.path.join(ROOT, "secrets", "google-token.json")
+SHARE_FILE = os.path.join(ROOT, "share", "google-auth.json")
+
+AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
+TOKEN_URL = "https://oauth2.googleapis.com/token"
+SCOPES = [
+    "https://www.googleapis.com/auth/contacts.readonly",
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "openid",
+    "email",
+    # Sincro reads the account email from People API people/me, which needs "profile".
+    "profile",
+]
+
+
+def b64url(raw):
+    return base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+
+
+def make_pkce():
+    """RFC 7636: 43-128 char verifier, S256 challenge."""
+    verifier = b64url(secrets.token_bytes(64))  # 86 chars
+    challenge = b64url(hashlib.sha256(verifier.encode("ascii")).digest())
+    return verifier, challenge
+
+
+def build_auth_url(client_id, redirect_uri, challenge, state):
+    params = {
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": " ".join(SCOPES),
+        "access_type": "offline",
+        "prompt": "consent",
+        "code_challenge": challenge,
+        "code_challenge_method": "S256",
+        "state": state,
+    }
+    return AUTH_URL + "?" + urllib.parse.urlencode(params)
+
+
+def load_client(path):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    info = data.get("installed") or data.get("web")
+    if not info or "client_id" not in info or "client_secret" not in info:
+        raise SystemExit("Il file client non contiene installed.client_id / client_secret: " + path)
+    return info["client_id"], info["client_secret"]
+
+
+def write_private(path, obj):
+    """Writes JSON readable only by the owner (0600), replacing any old file."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        json.dump(obj, f, indent=2)
+    os.chmod(tmp, 0o600)
+    os.replace(tmp, path)
+
+
+def email_from_id_token(id_token):
+    """Reads the email claim from the id_token payload (display only; not verified here)."""
+    try:
+        payload = id_token.split(".")[1]
+        payload += "=" * (-len(payload) % 4)
+        return json.loads(base64.urlsafe_b64decode(payload.encode("ascii"))).get("email")
+    except Exception:
+        return None
+
+
+class _CallbackHandler(http.server.BaseHTTPRequestHandler):
+    result = None  # dict with code/state/error, set by do_GET
+
+    def do_GET(self):
+        qs = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
+        _CallbackHandler.result = {k: v[0] for k, v in qs.items()}
+        body = "<!doctype html><meta charset=utf-8><title>Sincro</title><p>Fatto. Puoi chiudere questa scheda.</p>"
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body.encode("utf-8"))))
+        self.end_headers()
+        self.wfile.write(body.encode("utf-8"))
+        self.server.got_request.set()
+
+    def log_message(self, fmt, *args):  # keep the terminal quiet
+        pass
+
+
+def exchange_code(client_id, client_secret, code, redirect_uri, verifier):
+    body = urllib.parse.urlencode({
+        "code": code,
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "redirect_uri": redirect_uri,
+        "grant_type": "authorization_code",
+        "code_verifier": verifier,
+    }).encode("ascii")
+    req = urllib.request.Request(TOKEN_URL, data=body, headers={"Content-Type": "application/x-www-form-urlencoded"})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        raise SystemExit("Scambio del codice fallito: HTTP %d %s" % (e.code, e.read().decode("utf-8", "replace")[:300]))
+
+
+def run_flow():
+    if not os.path.exists(CLIENT_FILE):
+        raise SystemExit("Manca " + CLIENT_FILE + " (scarica il JSON \"Applicazione desktop\" dalla Google Cloud Console).")
+    client_id, client_secret = load_client(CLIENT_FILE)
+
+    verifier, challenge = make_pkce()
+    state = b64url(secrets.token_bytes(16))
+
+    server = http.server.HTTPServer(("127.0.0.1", 0), _CallbackHandler)
+    server.got_request = threading.Event()
+    port = server.server_address[1]
+    redirect_uri = "http://127.0.0.1:%d/" % port
+    url = build_auth_url(client_id, redirect_uri, challenge, state)
+
+    t = threading.Thread(target=server.serve_forever, daemon=True)
+    t.start()
+    print("Apro il browser per il consenso Google. Se non si apre, copia questo indirizzo:\n" + url + "\n")
+    if shutil.which("xdg-open"):
+        subprocess.Popen(["xdg-open", url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    print("In attesa del ritorno da Google (sulla porta %d)..." % port)
+    if not server.got_request.wait(timeout=600):
+        server.shutdown()
+        raise SystemExit("Nessuna risposta da Google entro 10 minuti.")
+    server.shutdown()
+    server.server_close()
+
+    result = _CallbackHandler.result or {}
+    if "error" in result:
+        raise SystemExit("Google ha negato il consenso: " + result["error"])
+    if result.get("state") != state:
+        raise SystemExit("Stato OAuth non valido: risposta scartata.")
+    if "code" not in result:
+        raise SystemExit("Risposta senza codice.")
+
+    tok = exchange_code(client_id, client_secret, result["code"], redirect_uri, verifier)
+    refresh = tok.get("refresh_token")
+    if not refresh:
+        raise SystemExit("Google non ha restituito un refresh_token. Revoca l'accesso di Sincro in myaccount.google.com e riprova.")
+    email = email_from_id_token(tok.get("id_token", "")) if tok.get("id_token") else None
+
+    creds = {"client_id": client_id, "client_secret": client_secret, "refresh_token": refresh}
+    write_private(TOKEN_FILE, dict(creds, email=email))
+    write_private(SHARE_FILE, creds)
+    print("Account: %s" % (email or "(email non letta)"))
+    print("Copia privata salvata in secrets/google-token.json. Il file per il telefono e' in share/google-auth.json.")
+    try:
+        input("Ora sul telefono: Sincro -> Accesso Google -> Importa dal PC, poi premi Invio qui... ")
+    finally:
+        # The share folder is served on the LAN: the secret must not stay there.
+        try:
+            os.remove(SHARE_FILE)
+            print("share/google-auth.json eliminato.")
+        except FileNotFoundError:
+            pass
+
+
+def self_test():
+    failures = []
+
+    def check(cond, label):
+        print(("ok   " if cond else "FAIL ") + label)
+        if not cond:
+            failures.append(label)
+
+    # RFC 7636 appendix B vector.
+    v = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+    check(b64url(hashlib.sha256(v.encode("ascii")).digest()) == "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+          "PKCE S256 challenge matches RFC 7636 vector")
+
+    verifier, challenge = make_pkce()
+    check(43 <= len(verifier) <= 128 and set(verifier) <= set("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"),
+          "PKCE verifier length and charset")
+    check("=" not in challenge and len(challenge) == 43, "PKCE challenge is unpadded base64url of 32 bytes")
+    check(make_pkce()[0] != verifier, "PKCE verifiers are random")
+
+    url = build_auth_url("cid.apps.googleusercontent.com", "http://127.0.0.1:5555/", challenge, "st4te")
+    q = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query)
+    check(url.startswith(AUTH_URL + "?"), "auth URL base")
+    check(q["client_id"] == ["cid.apps.googleusercontent.com"], "auth URL client_id")
+    check(q["redirect_uri"] == ["http://127.0.0.1:5555/"], "auth URL loopback redirect")
+    check(q["code_challenge_method"] == ["S256"] and q["code_challenge"] == [challenge], "auth URL PKCE params")
+    check(q["access_type"] == ["offline"] and q["prompt"] == ["consent"], "auth URL offline + consent")
+    check(q["state"] == ["st4te"] and q["response_type"] == ["code"], "auth URL state and response_type")
+    scope = q["scope"][0].split(" ")
+    check("https://www.googleapis.com/auth/contacts.readonly" in scope
+          and "https://www.googleapis.com/auth/calendar.readonly" in scope
+          and "openid" in scope and "email" in scope and "profile" in scope and len(scope) == 5, "auth URL scopes exactly as specified")
+
+    tmp = tempfile.mkdtemp(prefix="sincro-selftest-")
+    try:
+        p = os.path.join(tmp, "sub", "x.json")
+        write_private(p, {"a": 1})
+        mode = stat.S_IMODE(os.stat(p).st_mode)
+        check(mode == 0o600, "write_private gives mode 0600 (got %o)" % mode)
+        with open(p, "r", encoding="utf-8") as f:
+            check(json.load(f) == {"a": 1}, "write_private content round-trips")
+
+        cj = os.path.join(tmp, "client.json")
+        with open(cj, "w", encoding="utf-8") as f:
+            json.dump({"installed": {"client_id": "C", "client_secret": "S"}}, f)
+        check(load_client(cj) == ("C", "S"), "load_client reads the installed block")
+
+        payload = b64url(json.dumps({"email": "a@b.c"}).encode("utf-8"))
+        check(email_from_id_token("h." + payload + ".s") == "a@b.c", "email read from id_token payload")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+    # Loopback listener must bind to 127.0.0.1 only (checked without serving anything).
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.bind(("127.0.0.1", 0))
+        check(s.getsockname()[0] == "127.0.0.1", "loopback bind address is 127.0.0.1")
+    finally:
+        s.close()
+
+    print("")
+    if failures:
+        print("SELF-TEST FAILED: %d" % len(failures))
+        return 1
+    print("SELF-TEST OK")
+    return 0
+
+
+def main(argv):
+    if "--self-test" in argv:
+        return self_test()
+    if argv:
+        print(__doc__)
+        return 2
+    run_flow()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

@@ -1,0 +1,89 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campi di testo</title><style>
+body{font:16px sans-serif;background:#000;color:#fff;margin:12px}
+h2{font-size:15px;color:#9cf;margin:18px 0 6px}
+.ed{font-size:18px;min-height:90px;padding:6px;background:#fff;color:#000}
+.ed div{min-height:1em}
+.state{font:12px monospace;color:#ccc;white-space:pre-wrap;word-break:break-all}
+/* poste.it: floating label laid over the field, eye button beside it */
+.group{position:relative;margin:14px 0}
+.group label{position:absolute;left:10px;top:11px;color:#666;font-size:16px;transition:all .2s}
+.group label.active{top:-9px;font-size:11px;color:#9cf}
+.group input{width:100%;height:40px;box-sizing:border-box;padding:12px 44px 2px 10px;font-size:17px;border:0}
+.group button{position:absolute;right:0;top:0;width:40px;height:40px;border:0;background:#ddd}
+.small input{height:22px;font-size:13px;width:150px}
+.links a{color:#9cf;font-size:12px;margin-right:6px}
+button.send{font-size:16px;padding:10px;background:#1976d2;color:#fff;border:0;margin-top:12px}
+</style></head><body>
+<div>Prove dei campi che non funzionavano il 28/10 (Gmail mobile, password di poste.it). Fai le prove, poi Invia.</div>
+
+<h2>1. Editor come Gmail (contenteditable a righe)</h2>
+<div>Tocca in mezzo a "Ciao", scrivi, vai a capo, cancella. Il cursore della barra deve restare dove scrivi.</div>
+<div id="ed" class="ed" contenteditable="true"><div>Ciao Mario,</div><div><br></div><div>--</div><div>firma</div></div>
+<div id="edstate" class="state"></div>
+
+<h2>2. Password con etichetta sopra il campo (come poste.it)</h2>
+<div class="group"><label for="user">Nome utente</label><input id="user" type="text" autocomplete="off"></div>
+<div class="group"><label for="pass">Password</label><input id="pass" type="password"><button id="eye" type="button" tabindex="-1">o</button></div>
+<div id="passstate" class="state"></div>
+
+<h2>3. Password readonly fino al fuoco (trucco anti-riempimento)</h2>
+<div class="group"><input id="pass2" type="password" readonly placeholder="password 2"></div>
+
+<h2>4. Bersagli piccoli (tocca vicino al bordo)</h2>
+<div class="small"><input id="tiny" placeholder="campo alto 22 px"></div>
+<div class="links"><a href="#a">uno</a><a href="#b">due</a><a href="#c">tre</a><a href="#d">quattro</a></div>
+<div id="tapstate" class="state"></div>
+
+<button class="send" id="send">Invia</button>
+<script src="common.js"></script><script>
+(function () {
+  var log = [];
+  function note(line) { log.push(Math.round(T.now()) + " " + line); }
+
+  // 1. editor: what the page has, so it can be compared with the bar
+  var ed = T.$("ed"), edstate = T.$("edstate");
+  function caret() {
+    var s = window.getSelection();
+    if (!s.rangeCount) return "nessuna selezione";
+    var r = s.getRangeAt(0), pre = document.createRange();
+    pre.selectNodeContents(ed);
+    pre.setEnd(r.startContainer, r.startOffset);
+    return "cursore a " + pre.toString().length + " (testo senza a capo)";
+  }
+  function showEditor() { edstate.textContent = JSON.stringify(ed.innerText) + "\n" + caret(); }
+  ed.addEventListener("input", function (e) { note("ed input " + (e.inputType || "?") + " " + JSON.stringify(ed.innerText)); showEditor(); });
+  document.addEventListener("selectionchange", showEditor);
+  showEditor();
+
+  // 2-3. password fields: focus, input lengths, label state
+  ["user", "pass", "pass2", "tiny"].forEach(function (id) {
+    var el = T.$(id);
+    el.addEventListener("focus", function () {
+      note(id + " focus");
+      var label = document.querySelector("label[for='" + id + "']");
+      if (label) label.className = "active";
+      if (id === "pass2") el.removeAttribute("readonly");
+      T.$("passstate").textContent = "fuoco su " + id;
+    });
+    el.addEventListener("blur", function () { note(id + " blur, lunghezza " + el.value.length); });
+    el.addEventListener("input", function () { T.$("passstate").textContent = id + ": " + el.value.length + " caratteri"; });
+  });
+  T.$("eye").addEventListener("touchstart", function () { T.$("pass").type = "text"; });
+  T.$("eye").addEventListener("touchend", function () { T.$("pass").type = "password"; });
+
+  // 4. taps: what each one reached
+  document.addEventListener("click", function (e) {
+    var t = e.target, d = t.tagName.toLowerCase() + (t.id ? "#" + t.id : "");
+    note("click " + d + " a " + e.clientX + "," + e.clientY);
+    T.$("tapstate").textContent = "ultimo click: " + d + " a " + e.clientX + "," + e.clientY;
+  });
+
+  T.$("send").addEventListener("click", function () {
+    T.send("campi", log.concat(["editor: " + JSON.stringify(ed.innerText), "user " + T.$("user").value.length + ", pass " +
+      T.$("pass").value.length + ", pass2 " + T.$("pass2").value.length]), function (ok) {
+      T.$("send").textContent = ok ? "Inviato" : "Errore";
+    });
+  });
+})();
+</script></body></html>

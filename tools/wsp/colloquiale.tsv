@@ -1,0 +1,10 @@
+minchia mbare cioè per dire oggi sono andato a fare la spesa e mi scuddai di prendere delle mele mi salvi di scrivere le mele nelle note	prendi_nota	testo=le mele
+senti scrivimi il latte nelle note	prendi_nota	testo=il latte
+mbare salvami nelle note che devo chiamare il meccanico	prendi_nota	testo=devo chiamare il meccanico
+aggiungi alle note comprare le batterie	prendi_nota	testo=comprare le batterie
+allora praticamente scrivi nelle note pane e uova	prendi_nota	testo=pane e uova
+scrivi a mamma che arrivo	online
+minchia mbare che ore sono	ora
+oh mbare mettimi un timer di cinque minuti	imposta_timer	secondi=300
+senti cioè chiamami a Giulia	chiama	chi=giulia
+salva il numero di Marco	online

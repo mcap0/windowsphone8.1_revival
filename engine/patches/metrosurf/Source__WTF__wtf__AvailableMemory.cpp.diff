@@ -1,0 +1,47 @@
+--- a/Source/WTF/wtf/AvailableMemory.cpp
++++ b/Source/WTF/wtf/AvailableMemory.cpp
+@@ -25,6 +25,7 @@
+ 
+ #include "config.h"
+ #include <wtf/AvailableMemory.h>
++#include <wtf/MemoryFootprint.h>
+ 
+ #include <array>
+ #include <mutex>
+@@ -172,8 +173,21 @@
+ #endif
+ }
+ 
++#if defined(WP81)
++static std::atomic<size_t> s_appMemoryLimitForWP81;
++
++void setAppMemoryLimitForWP81(size_t bytes)
++{
++    s_appMemoryLimitForWP81 = bytes;
++}
++#endif
++
+ size_t availableMemory()
+ {
++#if defined(WP81)
++    if (size_t limit = s_appMemoryLimitForWP81.load(std::memory_order_relaxed))
++        return limit;
++#endif
+     static size_t availableMemory;
+     static std::once_flag onceFlag;
+     std::call_once(onceFlag, [] {
+@@ -182,10 +196,12 @@
+     return availableMemory;
+ }
+ 
+-#if PLATFORM(IOS_FAMILY) || OS(LINUX) || OS(FREEBSD)
++#if PLATFORM(IOS_FAMILY) || OS(LINUX) || OS(FREEBSD) || defined(WP81)
+ MemoryStatus memoryStatus()
+ {
+-#if PLATFORM(IOS_FAMILY)
++#if defined(WP81)
++    size_t memoryFootprint = WTF::memoryFootprint();
++#elif PLATFORM(IOS_FAMILY)
+     task_vm_info_data_t vmInfo;
+     mach_msg_type_number_t vmSize = TASK_VM_INFO_COUNT;
+ 

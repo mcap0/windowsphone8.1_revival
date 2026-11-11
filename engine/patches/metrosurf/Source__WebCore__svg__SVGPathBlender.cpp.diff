@@ -1,0 +1,92 @@
+--- a/Source/WebCore/svg/SVGPathBlender.cpp
++++ b/Source/WebCore/svg/SVGPathBlender.cpp
+@@ -121,7 +121,7 @@
+     return animatedPoint;
+ }
+ 
+-template<typename Function> using InvokeResult = typename std::invoke_result_t<Function, SVGPathSource, FloatPoint>::value_type;
++template<typename Function> using InvokeResult = typename std::invoke_result_t<Function, SVGPathSource&, FloatPoint>::value_type;
+ template<typename Function> using ResultPair = std::pair<InvokeResult<Function>, InvokeResult<Function>>;
+ template<typename Function> static std::optional<ResultPair<Function>> pullFromSources(SVGPathSource& fromSource, SVGPathSource& toSource, Function&& function, FloatPoint currentPoint)
+ {
+@@ -142,7 +142,7 @@
+ 
+ bool SVGPathBlender::blendMoveToSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseMoveToSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseMoveToSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -163,7 +163,7 @@
+ 
+ bool SVGPathBlender::blendLineToSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseLineToSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseLineToSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -180,7 +180,7 @@
+ 
+ bool SVGPathBlender::blendLineToHorizontalSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseLineToHorizontalSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseLineToHorizontalSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -197,7 +197,7 @@
+ 
+ bool SVGPathBlender::blendLineToVerticalSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseLineToVerticalSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseLineToVerticalSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -214,7 +214,7 @@
+ 
+ bool SVGPathBlender::blendCurveToCubicSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseCurveToCubicSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseCurveToCubicSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -234,7 +234,7 @@
+ 
+ bool SVGPathBlender::blendCurveToCubicSmoothSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseCurveToCubicSmoothSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseCurveToCubicSmoothSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -253,7 +253,7 @@
+ 
+ bool SVGPathBlender::blendCurveToQuadraticSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseCurveToQuadraticSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseCurveToQuadraticSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -272,7 +272,7 @@
+ 
+ bool SVGPathBlender::blendCurveToQuadraticSmoothSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseCurveToQuadraticSmoothSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseCurveToQuadraticSmoothSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 
+@@ -289,7 +289,7 @@
+ 
+ bool SVGPathBlender::blendArcToSegment(float progress)
+ {
+-    auto result = pullFromSources(m_fromSource, m_toSource, &SVGPathSource::parseArcToSegment, m_fromCurrentPoint);
++    auto result = pullFromSources(m_fromSource, m_toSource, [](SVGPathSource& source, FloatPoint currentPoint) { return source.parseArcToSegment(currentPoint); }, m_fromCurrentPoint);
+     if (!result)
+         return false;
+ 

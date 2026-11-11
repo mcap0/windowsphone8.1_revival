@@ -1,0 +1,43 @@
+<Page
+    x:Class="Authenticator.ScanPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Pictures" Label="Da foto" Click="OnPickPhoto" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid>
+        <CaptureElement x:Name="CameraPreview"
+                        Stretch="UniformToFill"
+                        Tapped="OnPreviewTapped" />
+
+        <Border VerticalAlignment="Top"
+                Background="#CC000000"
+                Padding="12">
+            <TextBlock x:Name="StatusText"
+                       Text="Avvio fotocamera…"
+                       TextWrapping="Wrap"
+                       FontSize="16" />
+        </Border>
+
+        <Border VerticalAlignment="Bottom"
+                Background="#CC000000"
+                Padding="12">
+            <StackPanel>
+                <Button x:Name="ScanButton"
+                        Content="Scansiona"
+                        Height="72"
+                        FontSize="24"
+                        Click="OnScanClick" />
+                <TextBlock Text="Puoi anche usare il tasto Cerca → lettore codici del telefono: il codice si apre direttamente qui."
+                           TextWrapping="Wrap"
+                           FontSize="15"
+                           Margin="4,10,4,4" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

@@ -1,0 +1,22 @@
+#!/bin/bash
+# lumia-follow — keep the Lumia passed through to the VM across re-enumerations, in any mode:
+# Nokia normal/flash/bootloader/mass storage (0421:*), W10 FFU loader (045e:062a), Qualcomm emergency (05c6:9008)
+cd "$(dirname "$0")"
+V="virsh -c qemu:///system"
+last=""; lastxml=""
+xml() { printf "<hostdev mode='subsystem' type='usb' managed='yes'><source startupPolicy='optional'><vendor id='0x%s'/><product id='0x%s'/></source></hostdev>\n" "$1" "$2"; }
+while true; do
+  line=$(lsusb | grep -v "Device 000:" | grep -E " (0421:[0-9a-f]{4}|045e:062a|05c6:9008) " | head -1)
+  dev=$(echo "$line" | awk '{print $2":"$4":"$6}')
+  if [ -n "$line" ] && [ "$dev" != "$last" ]; then
+    id=$(echo "$line" | awk '{print $6}'); num=$(echo "$line" | awk '{print $4+0}')
+    # already passed through (e.g. after restarting this script): just remember it
+    if $V dumpxml Windows-Debugger | grep -q "<address bus='1' device='$num'/>"; then last="$dev"; continue; fi
+    [ -n "$lastxml" ] && $V detach-device Windows-Debugger "$lastxml" --live >/dev/null 2>&1
+    lastxml=$(mktemp --suffix=.xml); xml "${id%:*}" "${id#*:}" > "$lastxml"
+    # attaching can fail while the device is still resetting: retry on the next pass
+    if $V attach-device Windows-Debugger "$lastxml" --live >/dev/null 2>&1; then echo "$(date +%T) attached $line"; last="$dev"; else lastxml=""; fi
+  fi
+  # a device briefly missing from lsusb (driver reset) keeps its passthrough: re-attaching would hand it to the host for a moment
+  sleep 0.3
+done

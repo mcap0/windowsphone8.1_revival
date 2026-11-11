@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A34E6B29-81D7-4D8D-9C27-52A813F0B64A}</ProjectGuid>
+    <RootNamespace>TgNativeCore</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4996;4244;4267;4018;4146;4334</DisableSpecificWarnings>
+      <PreprocessorDefinitions>NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>core;third_party\mbedtls\include;third_party\zlib;third_party\opus;third_party\opus\ogg;third_party\opus\silk;third_party\opus\silk\fixed;third_party\opus\celt;third_party\opus\include;third_party\opus\opusfile;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="core\client.cpp" />
+    <ClCompile Include="core\crypto.cpp" />
+    <ClCompile Include="core\engine.cpp" />
+    <ClCompile Include="core\gzip.cpp" />
+    <ClCompile Include="core\mtproto_auth.cpp" />
+    <ClCompile Include="core\mtproto_dh.cpp" />
+    <ClCompile Include="core\mtproto_msg.cpp" />
+    <ClCompile Include="core\mtproto_rpc.cpp" />
+    <ClCompile Include="core\srp.cpp" />
+    <ClCompile Include="core\tl.cpp" />
+    <ClCompile Include="core\tlobj.cpp" />
+    <ClCompile Include="core\voice.cpp" />
+    <ClCompile Include="third_party\zlib\adler32.c" />
+    <ClCompile Include="third_party\zlib\crc32.c" />
+    <ClCompile Include="third_party\zlib\inffast.c" />
+    <ClCompile Include="third_party\zlib\inflate.c" />
+    <ClCompile Include="third_party\zlib\inftrees.c" />
+    <ClCompile Include="third_party\zlib\zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="TgNativeMbedtls.vcxproj"><Project>{C87B57DA-278C-4CC1-AF38-1B49C62E5271}</Project><ReferenceOutputAssembly>false</ReferenceOutputAssembly><LinkLibraryDependencies>true</LinkLibraryDependencies></ProjectReference>
+    <ProjectReference Include="TgNativeOpus.vcxproj"><Project>{5B1E7C2A-3D4F-4A6B-9C8D-0E1F2A3B4C5D}</Project><ReferenceOutputAssembly>false</ReferenceOutputAssembly><LinkLibraryDependencies>true</LinkLibraryDependencies></ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

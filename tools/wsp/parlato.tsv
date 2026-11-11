@@ -1,0 +1,1002 @@
+# Parlato (giro 8, 2026-11-03): ~1000 richieste a voce come le scrive Vosk, generate da parlato.py con
+# pezzi scritti a mano PRIMA di misurare (aperture, code, verbi sbagliati). "now" = mar 2026-11-03 10:00.
+allora mi potresti mettermi un timer di cinque minuti porca miseria	imposta_timer	secondi=300
+buongiorno mettimi un timer di cinque minuti	imposta_timer	secondi=300
+mi metti un timer di dieci minuti e basta	imposta_timer	secondi=600
+sì allora mi mette un timer di dieci minuti dai su	imposta_timer	secondi=600
+ora mi mette un timer da tre minuti dai su	imposta_timer	secondi=180
+ora mi mette un timer da tre minuti così via	imposta_timer	secondi=180
+ascoltami metti il timer a venti minuti così via	imposta_timer	secondi=1200
+ok puoi mettere il timer a venti minuti e basta	imposta_timer	secondi=1200
+adesso imposta un timer di un quarto d'ora va bene	imposta_timer	secondi=900
+niente imposti un timer di un quarto d'ora se puoi	imposta_timer	secondi=900
+ehi impostare un timer di mezz'ora subito	imposta_timer	secondi=1800
+in pratica impostare un timer di mezz'ora grazie mille	imposta_timer	secondi=1800
+ascoltami fai partire il timer di otto minuti va bene	imposta_timer	secondi=480
+allora in pratica fai partire il timer di otto minuti ok	imposta_timer	secondi=480
+un timer di quaranta secondi	imposta_timer	secondi=40
+dunque un timer di quaranta secondi grazie mille	imposta_timer	secondi=40
+ehi timer quindici minuti dai su	imposta_timer	secondi=900
+per favore timer quindici minuti potresti farlo	imposta_timer	secondi=900
+senti avvisami tra dieci minuti	imposta_timer	secondi=600
+ok allora sapresti avvisarmi tra dieci minuti se ci riesci	imposta_timer	secondi=600
+bene avvisami fra un'ora per piacere	imposta_timer	secondi=3600
+cioè avvisami fra un'ora dai	imposta_timer	secondi=3600
+scusa mi serve un timer di sette minuti per piacere	imposta_timer	secondi=420
+in pratica mi serve un timer di sette minuti	imposta_timer	secondi=420
+ehi assistente fammi un timer di dodici minuti per la pasta ti ringrazio	imposta_timer	secondi=720
+scusami fammi un timer di dodici minuti per la pasta grazie amico mio	imposta_timer	secondi=720
+per piacere mettere un timer di due minuti grazie tante	imposta_timer	secondi=120
+eh niente mettere un timer di due minuti adesso	imposta_timer	secondi=120
+ok senti un conto alla rovescia di trenta secondi se puoi	imposta_timer	secondi=30
+allora praticamente un conto alla rovescia di trenta secondi	imposta_timer	secondi=30
+per favore mi fai un timer di un'ora e mezza per piacere	imposta_timer	secondi=5400
+voglio che tu mi fai un timer di un'ora e mezza così vedo	imposta_timer	secondi=5400
+in pratica vorrei che praticamente adesso metti un timer di quattro minuti per le uova	imposta_timer	secondi=240
+fammi una cortesia metti un timer di quattro minuti per le uova va bene così	imposta_timer	secondi=240
+ascolta puoi far partire un timer di venticinque minuti per favore lo puoi fare	imposta_timer	secondi=1500
+ehi puoi far partire un timer di venticinque minuti per favore	imposta_timer	secondi=1500
+fammi una cortesia quanto manca al timer intanto	stato_timer
+senti scusa quanto manca al timer grazie tante	stato_timer
+praticamente quanto tempo manca al timer dai	stato_timer
+ascoltami quanto tempo manca al timer per favore la specifica	stato_timer
+quanto manca alla fine del timer subito	stato_timer
+eh quanto manca alla fine del timer dai su	stato_timer
+ehm a che punto è il timer così vedo	stato_timer
+allora adesso a che punto è il timer grazie amico mio	stato_timer
+quanto resta sul timer	stato_timer
+eh quanto resta sul timer se non ti dispiace	stato_timer
+allora in pratica il timer quanto manca se non ti dispiace	stato_timer
+allora il timer quanto manca	stato_timer
+ho bisogno che tu puoi fermare il timer porca miseria	annulla_timer
+aspetta potresti fermare il timer grazie amico mio	annulla_timer
+per favore annulla il timer grazie amico mio	annulla_timer
+annulla il timer per favore grazie	annulla_timer
+fammi una cortesia togli il timer dai su	annulla_timer
+in pratica vorrei togli il timer per cortesia	annulla_timer
+scusami cancella il timer per favore grazie	annulla_timer
+allora praticamente cancella il timer per piacere	annulla_timer
+ascolta il timer non serve più grazie	annulla_timer
+allora praticamente il timer non serve più così via	annulla_timer
+ehm stoppa il timer se puoi	annulla_timer
+senti scusa stoppa il timer porca miseria	annulla_timer
+vorrei che tu mi mette una sveglia per le cinque	imposta_sveglia	ora=05:00;giorno=
+ok mi metti una sveglia per le cinque porca miseria	imposta_sveglia	ora=05:00;giorno=
+mi mette una sveglia per le sette mannaggia la miseria	imposta_sveglia	ora=07:00;giorno=
+volevo chiederti mi mette una sveglia per le sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=
+scusa una sveglia per le sei e mezza dai	imposta_sveglia	ora=06:30;giorno=
+mi raccomando una sveglia per le sei e mezza ok	imposta_sveglia	ora=06:30;giorno=
+vorrei che tu svegliami domani alle sette dai su	imposta_sveglia	ora=07:00;giorno=2026-11-04
+senti un attimo ti dispiace svegliarmi domani alle sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=2026-11-04
+allora adesso svegliami alle otto meno un quarto grazie amico mio	imposta_sveglia	ora=07:45;giorno=
+scusa svegliami alle otto meno un quarto porca miseria	imposta_sveglia	ora=07:45;giorno=
+dai sapresti mettere la sveglia alle sei e un quarto adesso	imposta_sveglia	ora=06:15;giorno=
+praticamente potresti mettere la sveglia alle sei e un quarto così via	imposta_sveglia	ora=06:15;giorno=
+volevo chiederti imposta la sveglia per domani mattina alle sei e basta	imposta_sveglia	ora=06:00;giorno=2026-11-04
+allora imposta la sveglia per domani mattina alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04
+no aspetta sveglia alle sette e venti e basta	imposta_sveglia	ora=07:20;giorno=
+ascoltami sveglia alle sette e venti per favore	imposta_sveglia	ora=07:20;giorno=
+per piacere mettere la sveglia alle nove	imposta_sveglia	ora=09:00;giorno=
+mi raccomando mettere la sveglia alle nove	imposta_sveglia	ora=09:00;giorno=
+in pratica mi svegli alle cinque e quaranta che sono di fretta	imposta_sveglia	ora=05:40;giorno=
+senti mi svegli alle cinque e quaranta così vedo	imposta_sveglia	ora=05:40;giorno=
+senti scusa devi svegliarmi alle sei	imposta_sveglia	ora=06:00;giorno=
+ehi assistente devi svegliarmi alle sei porca miseria	imposta_sveglia	ora=06:00;giorno=
+niente punta la sveglia alle sette e mezza se non ti dispiace	imposta_sveglia	ora=07:30;giorno=
+va bene allora punta la sveglia alle sette e mezza e basta	imposta_sveglia	ora=07:30;giorno=
+allora adesso sveglia domani alle otto mannaggia la miseria	imposta_sveglia	ora=08:00;giorno=2026-11-04
+no aspetta sveglia domani alle otto dai	imposta_sveglia	ora=08:00;giorno=2026-11-04
+mi faresti un favore metti una sveglia venerdì alle sei se non ti dispiace	imposta_sveglia	ora=06:00;giorno=2026-11-06
+dunque metti una sveglia venerdì alle sei per favore grazie	imposta_sveglia	ora=06:00;giorno=2026-11-06
+una sveglia alle dieci di sera grazie amico mio	imposta_sveglia	ora=22:00;giorno=
+ehm allora sapresti mettere una sveglia alle dieci di sera per favore	imposta_sveglia	ora=22:00;giorno=
+ehi svegliami dopodomani alle sette e niente	imposta_sveglia	ora=07:00;giorno=2026-11-05
+svegliami dopodomani alle sette grazie	imposta_sveglia	ora=07:00;giorno=2026-11-05
+guarda mette la sveglia per le quattro e cinquanta e basta	imposta_sveglia	ora=04:50;giorno=
+mi faresti un favore potresti mettere la sveglia per le quattro e cinquanta così via	imposta_sveglia	ora=04:50;giorno=
+in pratica vorrei che sveglie ho per favore la specifica	elenca_sveglie
+che sveglie ho	elenca_sveglie
+aspetta quali sveglie ci sono e niente	elenca_sveglie
+sì allora quali sveglie ci sono per favore grazie	elenca_sveglie
+ehi assistente ho messo la sveglia per piacere	elenca_sveglie
+va bene allora ho messo la sveglia grazie	elenca_sveglie
+volevo chiederti dimmi le sveglie per favore grazie	elenca_sveglie
+ok allora dimmi le sveglie se puoi	elenca_sveglie
+ascolta che sveglie ho messo grazie tante	elenca_sveglie
+vorrei che tu che sveglie ho messo così via	elenca_sveglie
+allora praticamente cancella la sveglia delle sette grazie mille	cancella_sveglia	ora=07:00
+ehi cancella la sveglia delle sette	cancella_sveglia	ora=07:00
+senti una cosa togli la sveglia delle sei e mezza adesso	cancella_sveglia	ora=06:30
+per cortesia togli la sveglia delle sei e mezza ok	cancella_sveglia	ora=06:30
+aspetta elimina la sveglia delle otto va bene così	cancella_sveglia	ora=08:00
+ehi assistente elimina la sveglia delle otto grazie	cancella_sveglia	ora=08:00
+allora adesso annulla la sveglia delle cinque	cancella_sveglia	ora=05:00
+fammi una cortesia annulla la sveglia delle cinque grazie tante	cancella_sveglia	ora=05:00
+senti una cosa ricordami alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+vorrei che tu ricordami alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+vorrei che tu ricordami domani alle nove di pagare la bolletta per cortesia	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ascoltami ricordami domani alle nove di pagare la bolletta per favore	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+guarda ricordami tra mezz'ora di spegnere il forno	promemoria	ora=10:30;testo=spegnere il forno
+dai ricordami tra mezz'ora di spegnere il forno grazie mille	promemoria	ora=10:30;testo=spegnere il forno
+ehm ricordami alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+in pratica ricordami alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+senti mi ricordi alle tre di passare in banca	promemoria	ora=15:00;testo=passare in banca
+ehi mi ricordi alle tre di passare in banca	promemoria	ora=15:00;testo=passare in banca
+vorrei che tu ricordami tra un'ora di ritirare il bucato per piacere	promemoria	ora=11:00;testo=ritirare il bucato
+per piacere ricordami tra un'ora di ritirare il bucato	promemoria	ora=11:00;testo=ritirare il bucato
+ehi scrivi nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+senti scrivi nelle note pane latte e uova grazie	prendi_nota	testo=pane latte e uova
+mi faresti un favore mi potresti prendere nota che il codice del cancello è quattro due uno per piacere	prendi_nota	testo=il codice del cancello è quattro due uno
+ehi mi puoi prendere nota che il codice del cancello è quattro due uno per piacere	prendi_nota	testo=il codice del cancello è quattro due uno
+fammi una cortesia segnati di comprare le lampadine	prendi_nota	testo=comprare le lampadine
+eh segnati di comprare le lampadine	prendi_nota	testo=comprare le lampadine
+scusami aggiungi alle note chiamare l'idraulico per cortesia	prendi_nota	testo=chiamare l'idraulico
+scusa mi puoi aggiungere alle note chiamare l'idraulico per piacere	prendi_nota	testo=chiamare l'idraulico
+allora senti salva nelle note che devo portare la macchina dal meccanico grazie mille	prendi_nota	testo=devo portare la macchina dal meccanico
+ora salva nelle note che devo portare la macchina dal meccanico grazie mille	prendi_nota	testo=devo portare la macchina dal meccanico
+senti vorresti annotare che giovedì c'è la riunione	prendi_nota	testo=giovedì c'è la riunione
+in pratica vorrei che praticamente adesso annota che giovedì c'è la riunione per favore	prendi_nota	testo=giovedì c'è la riunione
+ehi assistente metti i pink floyd per cortesia	riproduci_musica	richiesta=pink floyd
+ok metti i pink floyd per piacere	riproduci_musica	richiesta=pink floyd
+eh riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+ehi assistente riproduci i pink floyd grazie mille	riproduci_musica	richiesta=pink floyd
+ascoltami fammi sentire vasco rossi	riproduci_musica	richiesta=vasco rossi
+dai puoi farmi sentire vasco rossi	riproduci_musica	richiesta=vasco rossi
+buongiorno metti un po' di musica per piacere	riproduci_musica	tipo=casuale
+mi raccomando sapresti mettere un po' di musica	riproduci_musica	tipo=casuale
+allora metti della musica	riproduci_musica	tipo=casuale
+allora adesso metti della musica per cortesia	riproduci_musica	tipo=casuale
+mi raccomando voglio ascoltare lucio dalla grazie mille	riproduci_musica	richiesta=lucio dalla
+voglio che tu voglio ascoltare lucio dalla per favore	riproduci_musica	richiesta=lucio dalla
+ehm vorresti mettere qualcosa dei queen	riproduci_musica	richiesta=queen
+senti scusa metti qualcosa dei queen	riproduci_musica	richiesta=queen
+guarda suona battiato	riproduci_musica	richiesta=battiato
+ascolta suona battiato per cortesia	riproduci_musica	richiesta=battiato
+allora sapresti mettere musica a caso	riproduci_musica	tipo=casuale
+ehi assistente metti musica a caso per piacere	riproduci_musica	tipo=casuale
+allora adesso fammi ascoltare de andrè per cortesia	riproduci_musica	richiesta=de andrè
+fammi ascoltare de andrè grazie mille	riproduci_musica	richiesta=de andrè
+eh niente riproduci l'album the wall grazie	riproduci_musica	richiesta=the wall;tipo=album
+ciao riproduci l'album the wall per piacere	riproduci_musica	richiesta=the wall;tipo=album
+sapresti mettere su i beatles per cortesia	riproduci_musica	richiesta=beatles
+no aspetta mette su i beatles grazie	riproduci_musica	richiesta=beatles
+voglio che tu riesci a mettere in pausa	controlla_musica	azione=pausa
+ehi assistente mettere in pausa per favore lo puoi fare	controlla_musica	azione=pausa
+praticamente pausa se ci riesci	controlla_musica	azione=pausa
+ehm pausa per favore grazie	controlla_musica	azione=pausa
+allora senti ferma la musica per favore la specifica	controlla_musica	azione=pausa
+ehm ferma la musica per favore grazie	controlla_musica	azione=pausa
+ehi assistente stop alla musica	controlla_musica	azione=pausa
+guarda stop alla musica potresti farlo	controlla_musica	azione=pausa
+ehi sapresti andare avanti ok	controlla_musica	azione=avanti
+ehi puoi andare avanti per favore	controlla_musica	azione=avanti
+passa alla prossima canzone grazie mille	controlla_musica	azione=avanti
+ciao passa alla prossima canzone mannaggia la miseria	controlla_musica	azione=avanti
+volevo chiederti salta questa canzone ti ringrazio	controlla_musica	azione=avanti
+senti un attimo salta questa canzone per piacere	controlla_musica	azione=avanti
+in pratica cambia canzone potresti farlo	controlla_musica	azione=avanti
+allora vediamo cambia canzone	controlla_musica	azione=avanti
+eh niente metti la canzone di prima e basta	controlla_musica	azione=indietro
+allora in pratica metti la canzone di prima così vedo	controlla_musica	azione=indietro
+per piacere torna alla canzone precedente grazie mille	controlla_musica	azione=indietro
+no aspetta mi potresti tornare alla canzone precedente va bene così	controlla_musica	azione=indietro
+buongiorno riprendi la musica così via	controlla_musica	azione=riprendi
+ehm riprendi la musica se non ti dispiace	controlla_musica	azione=riprendi
+ascoltami fai ripartire la musica dai	controlla_musica	azione=riprendi
+in pratica vorrei che praticamente adesso fai ripartire la musica potresti farlo	controlla_musica	azione=riprendi
+senti una cosa continua la musica	controlla_musica	azione=riprendi
+continua la musica porca miseria	controlla_musica	azione=riprendi
+chiami mia madre grazie	chiama	chi=mia madre
+no aspetta chiamo mia madre per favore lo puoi fare	chiama	chi=mia madre
+allora in pratica chiamare mia madre subito	chiama	chi=mia madre
+allora vediamo chiamare mia madre potresti farlo	chiama	chi=mia madre
+aspetta chiamare mamma subito	chiama	chi=mamma
+per favore chiama mamma per favore lo puoi fare	chiama	chi=mamma
+eh niente vorresti telefonare a papà grazie mille	chiama	chi=papà
+ascoltami potresti telefonare a papà	chiama	chi=papà
+va bene allora chiama giuseppe se puoi	chiama	chi=giuseppe
+guarda chiama giuseppe	chiama	chi=giuseppe
+aspetta fai una telefonata a marco grazie	chiama	chi=marco
+praticamente fai una telefonata a marco per favore lo puoi fare	chiama	chi=marco
+ascoltami chiamami la nonna lo puoi fare	chiama	chi=la nonna
+cioè chiamami la nonna lo puoi fare	chiama	chi=la nonna
+ho bisogno che tu mi puoi fare partire una chiamata a luca grazie mille	chiama	chi=luca
+senti un attimo fai partire una chiamata a luca potresti farlo per favore	chiama	chi=luca
+senti un attimo chiama a casa dai	chiama	chi=casa
+niente chiama a casa per piacere	chiama	chi=casa
+ascoltami telefonare a salvo potresti farlo	chiama	chi=salvo
+ehi assistente telefonare a salvo dai	chiama	chi=salvo
+allora devo chiamare francesca per favore	chiama	chi=francesca
+devo chiamare francesca per favore lo puoi fare	chiama	chi=francesca
+adesso componi il numero di anna potresti farlo per favore	chiama	chi=anna
+in pratica potresti comporre il numero di anna per piacere	chiama	chi=anna
+ehi assistente puoi aprire il bluetooth grazie mille	apri	cosa=bluetooth
+sì allora apri il bluetooth subito	apri	cosa=bluetooth
+dai apri le impostazioni del wifi per favore lo puoi fare internazionale	apri	cosa=wi-fi
+allora senti apri le impostazioni del wifi per favore lo puoi fare internazionale	apri	cosa=wi-fi
+allora aprimi telegram per favore la specifica	apri	cosa=telegram
+ehi assistente aprimi telegram grazie mille	apri	cosa=telegram
+senti scusa vorresti aprire la posta per favore lo puoi fare internazionale	apri	cosa=posta
+allora senti apri la posta per favore lo puoi fare	apri	cosa=posta
+eh apri il registratore e niente	apri	cosa=registratore
+ok apri il registratore va bene	apri	cosa=registratore
+cioè attiva il bluetooth che sono di fretta	apri	cosa=bluetooth
+praticamente attiva il bluetooth	apri	cosa=bluetooth
+guarda vai nelle impostazioni del bluetooth	apri	cosa=bluetooth
+allora vediamo mi puoi andare nelle impostazioni del bluetooth ti ringrazio	apri	cosa=bluetooth
+mi faresti un favore apri il calendario per favore lo puoi fare	apri	cosa=calendario
+guarda apri il calendario dai su	apri	cosa=calendario
+ti volevo chiedere aprire l'orologio per favore	apri	cosa=orologio
+scusa aprire l'orologio per piacere	apri	cosa=orologio
+allora adesso apri la modalità aereo per cortesia	apri	cosa=modalità aereo
+scusami apri la modalità aereo subito	apri	cosa=modalità aereo
+per favore sapresti cercare su internet la ricetta della caponata per piacere	cerca_sul_web	domanda=la ricetta della caponata
+praticamente cerca su internet la ricetta della caponata per cortesia	cerca_sul_web	domanda=la ricetta della caponata
+cercare su google gli orari del treno per messina per cortesia	cerca_sul_web	domanda=gli orari del treno per messina
+allora cerca su google gli orari del treno per messina	cerca_sul_web	domanda=gli orari del treno per messina
+ok ti dispiace cercarmi la farmacia di turno per cortesia	cerca_sul_web	domanda=la farmacia di turno
+per cortesia cercami la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+volevo chiederti puoi cercare come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+ciao cerca come si pulisce il forno per cortesia	cerca_sul_web	domanda=come si pulisce il forno
+sì allora che tempo fa a catania per cortesia	meteo	luogo=catania;giorno=
+ora che tempo fa a catania così via	meteo	luogo=catania;giorno=
+senti una cosa che tempo fa a palermo così vedo	meteo	luogo=palermo;giorno=
+ehm che tempo fa a palermo	meteo	luogo=palermo;giorno=
+allora adesso che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+dai che tempo farà domani a palermo e niente	meteo	luogo=palermo;giorno=2026-11-04
+com'è il tempo a catania per favore lo puoi fare internazionale	meteo	luogo=catania;giorno=
+eh niente com'è il tempo a catania se ci riesci	meteo	luogo=catania;giorno=
+senti un attimo come è il tempo a catania porca miseria	meteo	luogo=catania;giorno=
+aspetta come è il tempo a catania intanto	meteo	luogo=catania;giorno=
+no aspetta il meteo di messina	meteo	luogo=messina;giorno=
+ehm allora il meteo di messina se puoi	meteo	luogo=messina;giorno=
+ora che tempo fa se puoi	meteo	luogo=;giorno=
+dai che tempo fa va bene	meteo	luogo=;giorno=
+posso chiederti una cosa che tempo fa domani per favore lo puoi fare	meteo	luogo=;giorno=2026-11-04
+ascoltami che tempo fa domani grazie amico mio	meteo	luogo=;giorno=2026-11-04
+piove domani a roma grazie mille	meteo	luogo=roma;giorno=2026-11-04
+piove domani a roma che devo uscire	meteo	luogo=roma;giorno=2026-11-04
+ehm allora le previsioni del tempo per domani per cortesia	meteo	luogo=;giorno=2026-11-04
+allora adesso le previsioni del tempo per domani va bene	meteo	luogo=;giorno=2026-11-04
+scusa quanti gradi ci sono a milano intanto	meteo	luogo=milano;giorno=
+vorrei che tu quanti gradi ci sono a milano grazie	meteo	luogo=milano;giorno=
+per cortesia devo prendere l'ombrello se ci riesci	meteo	luogo=;giorno=
+ti volevo chiedere devo prendere l'ombrello ti ringrazio	meteo	luogo=;giorno=
+dunque fa freddo fuori	meteo	luogo=;giorno=
+dai fa freddo fuori per cortesia	meteo	luogo=;giorno=
+senti mi puoi dirmi il meteo di sabato a siracusa lo puoi fare	meteo	luogo=siracusa;giorno=2026-11-07
+allora vediamo dimmi il meteo di sabato a siracusa	meteo	luogo=siracusa;giorno=2026-11-07
+ehi che tempo fa oggi a ragusa grazie tante	meteo	luogo=ragusa;giorno=
+ehi che tempo fa oggi a ragusa	meteo	luogo=ragusa;giorno=
+ascolta che tempo ci sarà dopodomani a napoli se puoi	meteo	luogo=napoli;giorno=2026-11-05
+allora senti che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+in pratica vorrei che praticamente adesso cosa ho domani dai	leggi_calendario	dal=2026-11-04;giorni=1
+cosa ho domani	leggi_calendario	dal=2026-11-04;giorni=1
+fammi una cortesia che impegni ho oggi intanto	leggi_calendario	dal=2026-11-03;giorni=1
+che impegni ho oggi porca miseria	leggi_calendario	dal=2026-11-03;giorni=1
+allora in pratica cosa c'è in agenda domani mannaggia	leggi_calendario	dal=2026-11-04;giorni=1
+ehm allora cosa c'è in agenda domani per cortesia	leggi_calendario	dal=2026-11-04;giorni=1
+posso chiederti una cosa leggimi il calendario di oggi che sono di fretta	leggi_calendario	dal=2026-11-03;giorni=1
+posso chiederti una cosa leggimi il calendario di oggi potresti farlo	leggi_calendario	dal=2026-11-03;giorni=1
+praticamente ho appuntamenti domani per favore lo puoi fare internazionale	leggi_calendario	dal=2026-11-04;giorni=1
+senti scusa ho appuntamenti domani intanto	leggi_calendario	dal=2026-11-04;giorni=1
+mi faresti un favore che impegni ho questa settimana così vedo	leggi_calendario	dal=2026-11-03;giorni=7
+in pratica che impegni ho questa settimana	leggi_calendario	dal=2026-11-03;giorni=7
+niente sono libero venerdì che sono di fretta	leggi_calendario	dal=2026-11-06;giorni=1
+ciao sono libero venerdì per cortesia	leggi_calendario	dal=2026-11-06;giorni=1
+cosa devo fare oggi dai	leggi_calendario	dal=2026-11-03;giorni=1
+mi raccomando cosa devo fare oggi se ci riesci	leggi_calendario	dal=2026-11-03;giorni=1
+allora vediamo che ore sono	ora
+mi raccomando che ore sono per favore la specifica	ora
+scusa che ora è	ora
+in pratica vorrei che ora è porca miseria	ora
+senti una cosa mi dici che ore sono	ora
+per piacere mi dici che ore sono così via	ora
+sai che ore sono dai	ora
+vorrei che tu sai che ore sono dai	ora
+ora dimmi l'ora per favore lo puoi fare	ora
+senti una cosa dimmi l'ora grazie tante	ora
+ehi che giorno è oggi	data
+ok che giorno è oggi ok	data
+ok quanti ne abbiamo oggi per cortesia	data
+ehm quanti ne abbiamo oggi ok	data
+ehm che giorno è per cortesia	data
+che giorno è per favore lo puoi fare	data
+senti scusa dimmi la data di oggi se ci riesci	data
+no aspetta dimmi la data di oggi porca miseria	data
+vorrei che tu che data è oggi	data
+eh niente che data è oggi	data
+ascoltami chi ha vinto la partita ieri sera per piacere	online
+ora chi ha vinto la partita ieri sera per favore	online
+come funziona la fotosintesi	online
+per piacere come funziona la fotosintesi	online
+dai spiegami come si fa la pasta alla norma per cortesia	online
+buongiorno spiegami come si fa la pasta alla norma per piacere	online
+ok allora chi è il presidente della repubblica	online
+senti chi è il presidente della repubblica grazie mille	online
+come si chiama il cantante dei pink floyd grazie mille	online
+mi raccomando come si chiama il cantante dei pink floyd	online
+senti un attimo quanto è alto l'etna	online
+allora senti quanto è alto l'etna	online
+no aspetta che cos'è un timer	online
+che cos'è un timer	online
+allora adesso come si imposta una sveglia per piacere	online
+per favore come si imposta una sveglia per piacere	online
+dai raccontami una barzelletta	online
+ehm raccontami una barzelletta per piacere	online
+traduci buongiorno in inglese per piacere	online
+per favore traduci buongiorno in inglese	online
+dunque quanto fa sette per otto per cortesia	online
+ehi assistente quanto fa sette per otto	online
+per favore perché il cielo è blu	online
+ok perché il cielo è blu	online
+ti volevo chiedere che canzone è questa per cortesia	online
+per cortesia che canzone è questa	online
+vorrei che tu chi canta questa canzone grazie	online
+adesso chi canta questa canzone	online
+ok senti il meteo dice sempre che piove	online
+ehm il meteo dice sempre che piove	online
+ho bisogno che tu mia madre mi chiama sempre alle otto	online
+mia madre mi chiama sempre alle otto grazie	online
+la sveglia stamattina non ha suonato grazie mille	online
+ciao la sveglia stamattina non ha suonato	online
+ehi ieri ho ascoltato i pink floyd tutto il giorno per favore	online
+dai ieri ho ascoltato i pink floyd tutto il giorno per cortesia	online
+bene scrivimi una poesia sul mare grazie mille	online
+senti scrivimi una poesia sul mare	online
+dove si trova la farmacia più vicina	online
+voglio che tu dove si trova la farmacia più vicina grazie mille	online
+per favore come sta andando la borsa oggi	online
+allora come sta andando la borsa oggi	online
+eh quanti abitanti ha catania per cortesia	online
+senti quanti abitanti ha catania per piacere	online
+allora in pratica consigliami un film da vedere stasera	online
+ti volevo chiedere consigliami un film da vedere stasera	online
+no aspetta che differenza c'è tra un virus e un batterio	online
+in pratica vorrei che differenza c'è tra un virus e un batterio grazie	online
+senti fammi un riassunto dei promessi sposi grazie	online
+fammi un riassunto dei promessi sposi	online
+in pratica quando è nato garibaldi	online
+cioè quando è nato garibaldi per favore	online
+aspetta mi spieghi cosa vuol dire resilienza per favore	online
+mi raccomando mi spieghi cosa vuol dire resilienza grazie mille	online
+come si dice gatto in francese	online
+volevo chiederti come si dice gatto in francese	online
+ok senti fa freddo fuori va bene così	meteo	luogo=;giorno=
+ascolta chiama mamma lo puoi fare	chiama	chi=mamma
+in pratica vorrei che praticamente adesso vai nelle impostazioni del bluetooth va bene così	apri	cosa=bluetooth
+ho bisogno che tu che tempo farà domani a palermo che devo uscire	meteo	luogo=palermo;giorno=2026-11-04
+allora praticamente che tempo ci sarà dopodomani a napoli e basta	meteo	luogo=napoli;giorno=2026-11-05
+allora in pratica vai avanti se puoi	controlla_musica	azione=avanti
+allora in pratica che data è oggi per favore lo puoi fare	data
+niente mettimi una sveglia per le cinque	imposta_sveglia	ora=05:00;giorno=
+ok senti dimmi le sveglie ok	elenca_sveglie
+per cortesia che differenza c'è tra un virus e un batterio	online
+dai svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04
+cosa c'è in agenda domani se ci riesci	leggi_calendario	dal=2026-11-04;giorni=1
+guarda dove si trova la farmacia più vicina grazie mille	online
+guarda come è il tempo a catania se ci riesci	meteo	luogo=catania;giorno=
+eh sapresti annullare il timer se puoi	annulla_timer
+ehm chiama a casa per piacere	chiama	chi=casa
+cosa ho domani se ci riesci	leggi_calendario	dal=2026-11-04;giorni=1
+ascoltami che tempo fa e basta	meteo	luogo=;giorno=
+eh perché il cielo è blu per cortesia	online
+fammi una cortesia mettere della musica	riproduci_musica	tipo=casuale
+cosa ho domani e niente	leggi_calendario	dal=2026-11-04;giorni=1
+ti volevo chiedere mi potresti mettere qualcosa dei queen grazie mille	riproduci_musica	richiesta=queen
+ehm allora imposta la sveglia per domani mattina alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04
+ho bisogno che tu vai nelle impostazioni del bluetooth	apri	cosa=bluetooth
+allora in pratica che canzone è questa grazie mille	online
+spiegami come si fa la pasta alla norma	online
+vorrei che tu cosa c'è in agenda domani subito	leggi_calendario	dal=2026-11-04;giorni=1
+ora riproduci l'album the wall per cortesia	riproduci_musica	richiesta=the wall;tipo=album
+aspetta riesci a mettere la sveglia alle sei e un quarto per favore la specifica	imposta_sveglia	ora=06:15;giorno=
+ehm allora mi metti un timer di dieci minuti per cortesia	imposta_timer	secondi=600
+allora senti sveglia domani alle otto dai su	imposta_sveglia	ora=08:00;giorno=2026-11-04
+per favore come è il tempo a catania per favore lo puoi fare internazionale	meteo	luogo=catania;giorno=
+ok che impegni ho oggi se non ti dispiace	leggi_calendario	dal=2026-11-03;giorni=1
+ehi cosa ho domani che sono di fretta	leggi_calendario	dal=2026-11-04;giorni=1
+ascolta un conto alla rovescia di trenta secondi grazie tante	imposta_timer	secondi=30
+ehm riproduci l'album the wall per cortesia	riproduci_musica	richiesta=the wall;tipo=album
+ora sai che ore sono mannaggia	ora
+cioè come è il tempo a catania intanto	meteo	luogo=catania;giorno=
+eh niente metti un po' di musica grazie mille	riproduci_musica	tipo=casuale
+senti una cosa le previsioni del tempo per domani	meteo	luogo=;giorno=2026-11-04
+senti un attimo mi mette una sveglia per le sette lo puoi fare	imposta_sveglia	ora=07:00;giorno=
+eh niente fammi un riassunto dei promessi sposi grazie mille	online
+scusami che differenza c'è tra un virus e un batterio per cortesia	online
+senti un attimo continua la musica per cortesia	controlla_musica	azione=riprendi
+puoi svegliarmi domani alle sette se non ti dispiace	imposta_sveglia	ora=07:00;giorno=2026-11-04
+ehm metti un po' di musica per piacere	riproduci_musica	tipo=casuale
+per favore sveglia domani alle otto che devo uscire	imposta_sveglia	ora=08:00;giorno=2026-11-04
+ti volevo chiedere telefonare a salvo grazie mille	chiama	chi=salvo
+allora in pratica vorresti mettere la sveglia alle sei e un quarto va bene	imposta_sveglia	ora=06:15;giorno=
+scusami apri il bluetooth dai su	apri	cosa=bluetooth
+scusami mi mettere un timer di dieci minuti porca miseria	imposta_timer	secondi=600
+eh che canzone è questa grazie mille	online
+praticamente quanti abitanti ha catania	online
+chiamare mia madre adesso	chiama	chi=mia madre
+ehi segnati di comprare le lampadine per cortesia	prendi_nota	testo=comprare le lampadine
+buongiorno apri il calendario grazie tante	apri	cosa=calendario
+allora praticamente ieri ho ascoltato i pink floyd tutto il giorno grazie	online
+dunque torna alla canzone precedente subito	controlla_musica	azione=indietro
+aspetta le previsioni del tempo per domani se non ti dispiace	meteo	luogo=;giorno=2026-11-04
+ok senti timer quindici minuti per cortesia	imposta_timer	secondi=900
+aspetta il meteo dice sempre che piove	online
+mi faresti un favore mi puoi mettermi una sveglia per le cinque grazie amico mio	imposta_sveglia	ora=05:00;giorno=
+per piacere aprire l'orologio per favore lo puoi fare	apri	cosa=orologio
+scusami timer quindici minuti adesso	imposta_timer	secondi=900
+ehm ieri ho ascoltato i pink floyd tutto il giorno	online
+senti quanto manca al timer mannaggia la miseria	stato_timer
+allora praticamente come si dice gatto in francese	online
+allora praticamente riesci a farmi sentire vasco rossi per cortesia	riproduci_musica	richiesta=vasco rossi
+ehm dimmi il meteo di sabato a siracusa adesso	meteo	luogo=siracusa;giorno=2026-11-07
+volevo chiederti cosa c'è in agenda domani per piacere	leggi_calendario	dal=2026-11-04;giorni=1
+per piacere svegliami domani alle sette mannaggia	imposta_sveglia	ora=07:00;giorno=2026-11-04
+mi faresti un favore riesci a passare alla prossima canzone se puoi	controlla_musica	azione=avanti
+senti un attimo come si chiama il cantante dei pink floyd per piacere	online
+fai una telefonata a marco adesso	chiama	chi=marco
+per favore potresti chiamare giuseppe grazie mille	chiama	chi=giuseppe
+per favore torna alla canzone precedente per cortesia	controlla_musica	azione=indietro
+dunque metti la sveglia per le quattro e cinquanta potresti farlo	imposta_sveglia	ora=04:50;giorno=
+ho bisogno che tu dimmi le sveglie se non ti dispiace	elenca_sveglie
+allora vediamo telefonare a salvo se puoi	chiama	chi=salvo
+ehm allora metti la sveglia per le quattro e cinquanta	imposta_sveglia	ora=04:50;giorno=
+fammi una cortesia apri la modalità aereo porca miseria	apri	cosa=modalità aereo
+eh niente come si chiama il cantante dei pink floyd per favore	online
+per piacere mette qualcosa dei queen per cortesia	riproduci_musica	richiesta=queen
+vorrei che tu vorresti chiamare giuseppe per favore	chiama	chi=giuseppe
+fammi una cortesia come si chiami il cantante dei pink floyd per piacere	online
+mi raccomando che canzone è questa	online
+dai mi metti un timer di dieci minuti grazie tante	imposta_timer	secondi=600
+in pratica vorrei che praticamente adesso vorresti annotare che giovedì c'è la riunione per cortesia	prendi_nota	testo=giovedì c'è la riunione
+no aspetta aggiungi alle note chiamare l'idraulico grazie	prendi_nota	testo=chiamare l'idraulico
+scusa impostare un timer di mezz'ora ti ringrazio	imposta_timer	secondi=1800
+buongiorno fai partire il timer di otto minuti	imposta_timer	secondi=480
+dunque svegliami dopodomani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-05
+allora adesso apre il bluetooth intanto	apri	cosa=bluetooth
+ehi assistente puoi cambiare canzone mannaggia	controlla_musica	azione=avanti
+ascoltami sveglia alle sette e venti se non ti dispiace	imposta_sveglia	ora=07:20;giorno=
+ok senti come si dice gatto in francese per cortesia	online
+in pratica vorrei che praticamente adesso fai partire una chiamata a luca per cortesia	chiama	chi=luca
+mi puoi suonare battiato per piacere	riproduci_musica	richiesta=battiato
+puoi far partire un timer di venticinque minuti va bene così	imposta_timer	secondi=1500
+ehm allora fai una telefonata a marco	chiama	chi=marco
+allora in pratica metti il timer a venti minuti così via	imposta_timer	secondi=1200
+fammi una cortesia chi è il presidente della repubblica	online
+guarda timer quindici minuti mannaggia	imposta_timer	secondi=900
+mi raccomando mettimi una sveglia per le cinque intanto	imposta_sveglia	ora=05:00;giorno=
+ehm quando è nato garibaldi	online
+praticamente mi fai un timer di un'ora e mezza va bene	imposta_timer	secondi=5400
+ehm chi è il presidente della repubblica	online
+telefonare a salvo subito	chiama	chi=salvo
+ascoltami chi canta questa canzone	online
+in pratica vorrei metti della musica per cortesia	riproduci_musica	tipo=casuale
+in pratica vorrei mi potresti fare partire una chiamata a luca per favore lo puoi fare	chiama	chi=luca
+senti un attimo spiegami come si fa la pasta alla norma	online
+eh mi potresti chiamare mia madre per piacere	chiama	chi=mia madre
+apri il bluetooth	apri	cosa=bluetooth
+no aspetta telefona a papà se puoi	chiama	chi=papà
+voglio che tu che tempo fa a catania grazie tante	meteo	luogo=catania;giorno=
+senti telefonare a salvo	chiama	chi=salvo
+mi raccomando quanti gradi ci sono a milano intanto	meteo	luogo=milano;giorno=
+allora in pratica chi è il presidente della repubblica per piacere	online
+niente che tempo fa per cortesia	meteo	luogo=;giorno=
+ascoltami mi puoi mettere un timer di quattro minuti per le uova se non ti dispiace	imposta_timer	secondi=240
+dai chiamare mia madre	chiama	chi=mia madre
+ti volevo chiedere il meteo dice sempre che piove grazie mille	online
+eh fai partire una chiamata a luca per favore lo puoi fare	chiama	chi=luca
+ehi assistente sono libero venerdì adesso	leggi_calendario	dal=2026-11-06;giorni=1
+vorrei che tu cerca su internet la ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+ascolta voglio ascoltare lucio dalla per cortesia	riproduci_musica	richiesta=lucio dalla
+in pratica vorrei che praticamente adesso cosa devo fare oggi ok	leggi_calendario	dal=2026-11-03;giorni=1
+ehi assistente riesci a svegliarmi domani alle sette dai su	imposta_sveglia	ora=07:00;giorno=2026-11-04
+scusa togli il timer subito	annulla_timer
+eh niente aprire le impostazioni del wifi che devo uscire	apri	cosa=wi-fi
+praticamente pausa dai	controlla_musica	azione=pausa
+cioè mi mette un timer di cinque minuti potresti farlo	imposta_timer	secondi=300
+allora praticamente raccontami una barzelletta per piacere	online
+ehm allora fai ripartire la musica adesso	controlla_musica	azione=riprendi
+scusami il meteo di messina così vedo	meteo	luogo=messina;giorno=
+scusa sapresti prendere nota che il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+cioè fai ripartire la musica potresti farlo	controlla_musica	azione=riprendi
+ora che tempo fa a catania adesso	meteo	luogo=catania;giorno=
+vorrei che tu che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+mi raccomando la sveglia stamattina non ha suonato per cortesia	online
+ehi assistente quanto è alto l'etna per cortesia	online
+adesso mi potresti aprirmi telegram porca miseria	apri	cosa=telegram
+allora praticamente riesci a comporre il numero di anna grazie	chiama	chi=anna
+no aspetta chi canta questa canzone grazie	online
+mi raccomando mi potresti mettere la sveglia alle sei e un quarto ok	imposta_sveglia	ora=06:15;giorno=
+aspetta apri il calendario adesso	apri	cosa=calendario
+sì allora sono libero venerdì per favore lo puoi fare internazionale	leggi_calendario	dal=2026-11-06;giorni=1
+allora praticamente com'è il tempo a catania grazie amico mio	meteo	luogo=catania;giorno=
+ora timer quindici minuti per favore la specifica	imposta_timer	secondi=900
+allora in pratica spiegami come si fa la pasta alla norma per piacere	online
+bene che tempo fa a palermo se non ti dispiace	meteo	luogo=palermo;giorno=
+in pratica mi sveglia domani alle sette e niente	imposta_sveglia	ora=07:00;giorno=2026-11-04
+sì allora timer quindici minuti per favore grazie	imposta_timer	secondi=900
+dunque che canzone è questa	online
+mi raccomando che tempo fa domani mannaggia	meteo	luogo=;giorno=2026-11-04
+ehi che cos'è un timer	online
+ok allora che tempo fa a palermo intanto	meteo	luogo=palermo;giorno=
+cioè una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;giorno=
+ehm allora scrivi nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+ciao chiama mia madre per favore	chiama	chi=mia madre
+dunque che differenza c'è tra un virus e un batterio per cortesia	online
+imposta la sveglia per domani mattina alle sei così via	imposta_sveglia	ora=06:00;giorno=2026-11-04
+adesso cosa ho domani	leggi_calendario	dal=2026-11-04;giorni=1
+per piacere quanto è alto l'etna	online
+allora senti sai che ore sono per favore lo puoi fare internazionale	ora
+senti annulla il timer	annulla_timer
+buongiorno che sveglie ho ti ringrazio	elenca_sveglie
+ciao svegliami domani alle sette mannaggia	imposta_sveglia	ora=07:00;giorno=2026-11-04
+voglio che tu devi svegliarmi alle sei porca miseria	imposta_sveglia	ora=06:00;giorno=
+niente mettimi un timer di cinque minuti dai	imposta_timer	secondi=300
+praticamente come è il tempo a catania se ci riesci	meteo	luogo=catania;giorno=
+volevo chiederti punta la sveglia alle sette e mezza grazie tante	imposta_sveglia	ora=07:30;giorno=
+ehm punta la sveglia alle sette e mezza così via	imposta_sveglia	ora=07:30;giorno=
+ascolta chi ha vinto la partita ieri sera	online
+ehi prendi nota che il codice del cancello è quattro due uno grazie	prendi_nota	testo=il codice del cancello è quattro due uno
+ti volevo chiedere sapresti cercare come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ok allora che tempo fa domani per cortesia	meteo	luogo=;giorno=2026-11-04
+volevo chiederti timer quindici minuti e niente	imposta_timer	secondi=900
+mi raccomando che giorno è oggi se ci riesci	data
+ok senti mettere la sveglia alle nove per favore grazie	imposta_sveglia	ora=09:00;giorno=
+eh niente impostare un timer di mezz'ora dai	imposta_timer	secondi=1800
+scusa metti la canzone di prima grazie amico mio	controlla_musica	azione=indietro
+in pratica fammi ascoltare de andrè	riproduci_musica	richiesta=de andrè
+ehm un conto alla rovescia di trenta secondi ti ringrazio	imposta_timer	secondi=30
+senti mi mette un timer da tre minuti se ci riesci	imposta_timer	secondi=180
+in pratica vorrei come funziona la fotosintesi per favore	online
+mi serve un timer di sette minuti mannaggia	imposta_timer	secondi=420
+in pratica vorrei che praticamente adesso come sta andando la borsa oggi grazie	online
+ehi assistente che sveglie ho mannaggia	elenca_sveglie
+in pratica vorrei che praticamente adesso quando è nato garibaldi per favore	online
+in pratica ricordami alle cinque di chiamare il dottore grazie	promemoria	ora=17:00;testo=chiamare il dottore
+va bene allora telefonare a salvo	chiama	chi=salvo
+eh niente chi canta questa canzone	online
+dai metti il timer a venti minuti va bene così	imposta_timer	secondi=1200
+allora in pratica telefonare a salvo grazie mille	chiama	chi=salvo
+mi raccomando dimmi il meteo di sabato a siracusa grazie mille	meteo	luogo=siracusa;giorno=2026-11-07
+per cortesia raccontami una barzelletta grazie mille	online
+buongiorno che giorno è se ci riesci	data
+in pratica vorrei che praticamente adesso quanto manca alla fine del timer subito	stato_timer
+eh niente punta la sveglia alle sette e mezza	imposta_sveglia	ora=07:30;giorno=
+voglio che tu sveglia domani alle otto grazie	imposta_sveglia	ora=08:00;giorno=2026-11-04
+ehm allora chiamare mia madre se puoi	chiama	chi=mia madre
+allora adesso fai partire una chiamata a luca lo puoi fare	chiama	chi=luca
+dai timer quindici minuti	imposta_timer	secondi=900
+in pratica vorrei che praticamente adesso che canzone è questa	online
+volevo chiederti metti della musica grazie	riproduci_musica	tipo=casuale
+senti una cosa vorresti fare partire una chiamata a luca per cortesia	chiama	chi=luca
+senti riprendi la musica intanto	controlla_musica	azione=riprendi
+aspetta segnati di comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+cioè ti dispiace andare avanti per favore lo puoi fare	controlla_musica	azione=avanti
+ciao impostare un timer di mezz'ora	imposta_timer	secondi=1800
+per cortesia traduci buongiorno in inglese per favore	online
+ehi assistente che tempo farà domani a palermo mannaggia la miseria	meteo	luogo=palermo;giorno=2026-11-04
+no aspetta fa freddo fuori	meteo	luogo=;giorno=
+consigliami un film da vedere stasera grazie mille	online
+praticamente una sveglia alle dieci di sera grazie amico mio	imposta_sveglia	ora=22:00;giorno=
+ok allora ti dispiace mettere il timer a venti minuti se non ti dispiace	imposta_timer	secondi=1200
+ehm allora imposta un timer di un quarto d'ora ok	imposta_timer	secondi=900
+mi raccomando puoi mettere un timer di quattro minuti per le uova lo puoi fare	imposta_timer	secondi=240
+buongiorno fammi un timer di dodici minuti per la pasta	imposta_timer	secondi=720
+allora senti mi metti un timer di dieci minuti	imposta_timer	secondi=600
+senti come sta andando la borsa oggi	online
+per cortesia salta questa canzone	controlla_musica	azione=avanti
+fammi una cortesia mi potresti mettere un timer di quattro minuti per le uova e niente	imposta_timer	secondi=240
+ok senti impostare un timer di mezz'ora porca miseria	imposta_timer	secondi=1800
+imposta un timer di un quarto d'ora se ci riesci	imposta_timer	secondi=900
+vorresti togliere il timer così via	annulla_timer
+eh niente sveglia domani alle otto così vedo	imposta_sveglia	ora=08:00;giorno=2026-11-04
+posso chiederti una cosa mi fai un timer di un'ora e mezza porca miseria	imposta_timer	secondi=5400
+scusami dimmi il meteo di sabato a siracusa grazie	meteo	luogo=siracusa;giorno=2026-11-07
+no aspetta spiegami come si fa la pasta alla norma grazie mille	online
+ehi mi mette un timer da tre minuti	imposta_timer	secondi=180
+va bene allora cercami la farmacia di turno grazie mille	cerca_sul_web	domanda=la farmacia di turno
+sì allora metti un timer di quattro minuti per le uova per favore grazie	imposta_timer	secondi=240
+ehm ricordami alle cinque di chiamare il dottore per cortesia	promemoria	ora=17:00;testo=chiamare il dottore
+senti che tempo fa mannaggia la miseria	meteo	luogo=;giorno=
+scusa mi potresti fare partire una chiamata a luca se puoi	chiama	chi=luca
+in pratica vorrei che praticamente adesso mettimi una sveglia per le cinque adesso	imposta_sveglia	ora=05:00;giorno=
+posso chiederti una cosa come è il tempo a catania mannaggia	meteo	luogo=catania;giorno=
+per favore metti qualcosa dei queen	riproduci_musica	richiesta=queen
+dunque puoi far partire un timer di venticinque minuti per cortesia	imposta_timer	secondi=1500
+niente metti un timer di quattro minuti per le uova grazie mille	imposta_timer	secondi=240
+ti volevo chiedere metti in pausa va bene	controlla_musica	azione=pausa
+senti una cosa fammi ascoltare de andrè grazie	riproduci_musica	richiesta=de andrè
+per piacere mettere un timer di due minuti va bene	imposta_timer	secondi=120
+aspetta stop alla musica va bene così	controlla_musica	azione=pausa
+mi faresti un favore puoi far partire un timer di venticinque minuti grazie mille	imposta_timer	secondi=1500
+sì allora quanto resta sul timer per favore lo puoi fare	stato_timer
+sì allora chi ha vinto la partita ieri sera	online
+in pratica vorrei fai ripartire la musica se ci riesci	controlla_musica	azione=riprendi
+aspetta quanto fa sette per otto	online
+ascoltami quanto manca al timer porca miseria	stato_timer
+ora che tempo fa oggi a ragusa ti ringrazio	meteo	luogo=ragusa;giorno=
+allora senti chi ha vinto la partita ieri sera	online
+va bene allora mia madre mi chiama sempre alle otto	online
+ok senti come è il tempo a catania così via	meteo	luogo=catania;giorno=
+allora vediamo che tempo farà domani a palermo va bene così	meteo	luogo=palermo;giorno=2026-11-04
+chiamare mia madre per piacere	chiama	chi=mia madre
+dai mi metti un timer di dieci minuti va bene così	imposta_timer	secondi=600
+senti un attimo metti un timer di quattro minuti per le uova per favore	imposta_timer	secondi=240
+allora adesso mi potresti farmi sentire vasco rossi	riproduci_musica	richiesta=vasco rossi
+ciao quando è nato garibaldi per favore	online
+ascoltami che cos'è un timer per favore	online
+vorrei che tu telefona a papà	chiama	chi=papà
+ascolta ricordami domani alle nove di pagare la bolletta per favore	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+in pratica vorrei che praticamente adesso chiamo mia madre adesso	chiama	chi=mia madre
+allora in pratica ricordami alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+per piacere suona battiato	riproduci_musica	richiesta=battiato
+sapresti mettere la sveglia alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=
+adesso togli la sveglia delle sei e mezza se non ti dispiace	cancella_sveglia	ora=06:30
+dai metti i pink floyd	riproduci_musica	richiesta=pink floyd
+allora senti mettimi una sveglia per le cinque	imposta_sveglia	ora=05:00;giorno=
+praticamente chiama a casa per piacere	chiama	chi=casa
+ehi salva nelle note che devo portare la macchina dal meccanico	prendi_nota	testo=devo portare la macchina dal meccanico
+fammi una cortesia togli il timer mannaggia	annulla_timer
+come si imposti una sveglia per cortesia	online
+ora fai ripartire la musica subito	controlla_musica	azione=riprendi
+mi faresti un favore svegliami alle otto meno un quarto mannaggia	imposta_sveglia	ora=07:45;giorno=
+buongiorno annulla il timer e niente	annulla_timer
+dai chiama mamma dai	chiama	chi=mamma
+ehm un conto alla rovescia di trenta secondi dai	imposta_timer	secondi=30
+adesso come si imposta una sveglia	online
+telefonare a salvo per favore	chiama	chi=salvo
+per piacere ricordami domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+eh mi spieghi cosa vuol dire resilienza per cortesia	online
+dimmi l'ora dai su	ora
+ok devo chiamare francesca se puoi	chiama	chi=francesca
+volevo chiederti che tempo ci sarà dopodomani a napoli grazie amico mio	meteo	luogo=napoli;giorno=2026-11-05
+scusa quanti abitanti ha catania	online
+ho bisogno che tu apre la posta per favore	apri	cosa=posta
+sì allora sveglia domani alle otto va bene così	imposta_sveglia	ora=08:00;giorno=2026-11-04
+ok quanti gradi ci sono a milano grazie mille	meteo	luogo=milano;giorno=
+in pratica vorrei che praticamente adesso potresti fermare la musica per favore grazie	controlla_musica	azione=pausa
+voglio che tu il timer quanto manca	stato_timer
+allora adesso ferma il timer così via	annulla_timer
+praticamente vorresti mettere una sveglia venerdì alle sei se ci riesci	imposta_sveglia	ora=06:00;giorno=2026-11-06
+senti un attimo potresti mettere un timer di quattro minuti per le uova	imposta_timer	secondi=240
+aspetta sveglia domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04
+in pratica vorrei mi metti un timer di dieci minuti per favore la specifica	imposta_timer	secondi=600
+scusami raccontami una barzelletta	online
+bene componi il numero di anna dai	chiama	chi=anna
+allora praticamente svegliami dopodomani alle sette per favore grazie	imposta_sveglia	ora=07:00;giorno=2026-11-05
+guarda un timer di quaranta secondi se non ti dispiace	imposta_timer	secondi=40
+senti un attimo riprodurre i pink floyd	riproduci_musica	richiesta=pink floyd
+senti una cosa mi puoi dirmi il meteo di sabato a siracusa grazie mille	meteo	luogo=siracusa;giorno=2026-11-07
+mi faresti un favore fammi un timer di dodici minuti per la pasta potresti farlo	imposta_timer	secondi=720
+bene chiamami la nonna subito	chiama	chi=la nonna
+suona battiato grazie mille	riproduci_musica	richiesta=battiato
+ora quali sveglie ci sono	elenca_sveglie
+ok senti spiegami come si fa la pasta alla norma per piacere	online
+mi ricordi alle tre di passare in banca	promemoria	ora=15:00;testo=passare in banca
+senti scusa metti la sveglia alle sei e un quarto se puoi	imposta_sveglia	ora=06:15;giorno=
+ho bisogno che tu mi spieghi cosa vuol dire resilienza per piacere	online
+scusa ferma la musica	controlla_musica	azione=pausa
+scusami metti la sveglia alle sei e un quarto dai su	imposta_sveglia	ora=06:15;giorno=
+volevo chiederti una sveglia alle dieci di sera porca miseria	imposta_sveglia	ora=22:00;giorno=
+volevo chiederti devo chiamare francesca	chiama	chi=francesca
+cancella il timer	annulla_timer
+allora praticamente cancella il timer per favore lo puoi fare	annulla_timer
+per favore mettimi un timer di cinque minuti per cortesia	imposta_timer	secondi=300
+ehi assistente dove si trova la farmacia più vicina grazie	online
+scrivimi una poesia sul mare	online
+mettere qualcosa dei queen	riproduci_musica	richiesta=queen
+praticamente che impegni ho questa settimana per favore lo puoi fare internazionale	leggi_calendario	dal=2026-11-03;giorni=7
+aspetta la sveglia stamattina non ha suonato	online
+niente mi fai un timer di un'ora e mezza porca miseria	imposta_timer	secondi=5400
+ho bisogno che tu devo chiamare francesca per favore	chiama	chi=francesca
+per favore ho appuntamenti domani per favore lo puoi fare	leggi_calendario	dal=2026-11-04;giorni=1
+volevo chiederti salta questa canzone per favore la specifica	controlla_musica	azione=avanti
+in pratica vorrei sveglia alle sette e venti	imposta_sveglia	ora=07:20;giorno=
+senti un attimo mettere la sveglia alle nove dai	imposta_sveglia	ora=09:00;giorno=
+ora metti un timer di quattro minuti per le uova va bene così	imposta_timer	secondi=240
+posso chiederti una cosa fa freddo fuori così vedo	meteo	luogo=;giorno=
+fammi una cortesia chiama a casa per piacere	chiama	chi=casa
+senti un attimo riproduci l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+voglio che tu che tempo ci sarà dopodomani a napoli per favore	meteo	luogo=napoli;giorno=2026-11-05
+in pratica vorrei che praticamente adesso mettere la sveglia alle nove ok	imposta_sveglia	ora=09:00;giorno=
+mettere qualcosa dei queen grazie mille	riproduci_musica	richiesta=queen
+scusa ferma la musica per cortesia	controlla_musica	azione=pausa
+aspetta sapresti andare avanti intanto	controlla_musica	azione=avanti
+ascolta quanti gradi ci sono a milano subito	meteo	luogo=milano;giorno=
+senti una cosa devo chiamare francesca lo puoi fare	chiama	chi=francesca
+in pratica vorrei come sta andando la borsa oggi per cortesia	online
+ok senti che tempo fa per piacere	meteo	luogo=;giorno=
+dai cambia canzone	controlla_musica	azione=avanti
+per cortesia componi il numero di anna grazie mille	chiama	chi=anna
+in pratica metti su i beatles per piacere	riproduci_musica	richiesta=beatles
+voglio che tu suona battiato	riproduci_musica	richiesta=battiato
+ehm come si chiama il cantante dei pink floyd grazie	online
+aspetta quanto è alto l'etna	online
+dunque come è il tempo a catania per favore lo puoi fare internazionale	meteo	luogo=catania;giorno=
+ehm allora quanti abitanti ha catania	online
+ora metti la sveglia per le quattro e cinquanta e niente	imposta_sveglia	ora=04:50;giorno=
+ascoltami che impegni ho oggi dai su	leggi_calendario	dal=2026-11-03;giorni=1
+volevo chiederti quali sveglie ci sono così via	elenca_sveglie
+per favore telefonare a salvo lo puoi fare	chiama	chi=salvo
+allora senti stoppa il timer subito	annulla_timer
+mi raccomando componi il numero di anna per favore	chiama	chi=anna
+senti scusa mi potresti togliere il timer per piacere	annulla_timer
+fammi una cortesia quanto resta sul timer grazie tante	stato_timer
+ehi assistente annulla la sveglia delle cinque per piacere	cancella_sveglia	ora=05:00
+mi raccomando sapresti cercare su google gli orari del treno per messina per cortesia	cerca_sul_web	domanda=gli orari del treno per messina
+in pratica vorrei come funziona la fotosintesi	online
+allora vediamo che tempo ci sarà dopodomani a napoli	meteo	luogo=napoli;giorno=2026-11-05
+aspetta cerca come si pulisce il forno grazie	cerca_sul_web	domanda=come si pulisce il forno
+ti volevo chiedere metti musica a caso	riproduci_musica	tipo=casuale
+allora adesso mettere un timer di due minuti porca miseria	imposta_timer	secondi=120
+per favore metti su i beatles per favore	riproduci_musica	richiesta=beatles
+cioè la sveglia stamattina non ha suonato	online
+allora adesso scrivimi una poesia sul mare	online
+vorrei che tu telefona a papà grazie mille	chiama	chi=papà
+senti una cosa puoi mettere il timer a venti minuti per favore	imposta_timer	secondi=1200
+posso chiederti una cosa ieri ho ascoltato i pink floyd tutto il giorno grazie mille	online
+per cortesia che ore sono se non ti dispiace	ora
+dunque che canzone è questa grazie mille	online
+in pratica vorrei che praticamente adesso annulla il timer adesso	annulla_timer
+ok senti che tempo fa oggi a ragusa e niente	meteo	luogo=ragusa;giorno=
+allora adesso svegliami domani alle sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=2026-11-04
+ascoltami apri la modalità aereo porca miseria	apri	cosa=modalità aereo
+fai partire una chiamata a luca per piacere	chiama	chi=luca
+dai scrivi nelle note pane latte e uova	prendi_nota	testo=pane latte e uova
+scusami ti dispiace mettere su i beatles grazie mille	riproduci_musica	richiesta=beatles
+ascoltami che tempo fa domani va bene	meteo	luogo=;giorno=2026-11-04
+mi faresti un favore metti un timer di quattro minuti per le uova per favore grazie	imposta_timer	secondi=240
+ehm svegliami dopodomani alle sette che sono di fretta	imposta_sveglia	ora=07:00;giorno=2026-11-05
+in pratica vorrei che tempo fa domani	meteo	luogo=;giorno=2026-11-04
+fammi una cortesia com'è il tempo a catania così vedo	meteo	luogo=catania;giorno=
+ascoltami mettimi un timer di cinque minuti grazie amico mio	imposta_timer	secondi=300
+voglio che tu che tempo fa oggi a ragusa potresti farlo	meteo	luogo=ragusa;giorno=
+che tempo fa oggi a ragusa per favore	meteo	luogo=ragusa;giorno=
+come funziona la fotosintesi grazie mille	online
+buongiorno svegliami domani alle sette per favore la specifica	imposta_sveglia	ora=07:00;giorno=2026-11-04
+allora vediamo che tempo fa oggi a ragusa per favore lo puoi fare internazionale	meteo	luogo=ragusa;giorno=
+cercare su google gli orari del treno per messina	cerca_sul_web	domanda=gli orari del treno per messina
+allora praticamente una sveglia per le sei e mezza mannaggia la miseria	imposta_sveglia	ora=06:30;giorno=
+senti una cosa mi puoi mettere in pausa porca miseria	controlla_musica	azione=pausa
+ascoltami potresti mettere su i beatles per piacere	riproduci_musica	richiesta=beatles
+no aspetta mia madre mi chiama sempre alle otto	online
+per cortesia puoi mettere qualcosa dei queen	riproduci_musica	richiesta=queen
+per piacere come si imposta una sveglia per piacere	online
+per cortesia un conto alla rovescia di trenta secondi grazie mille	imposta_timer	secondi=30
+allora in pratica fa freddo fuori che sono di fretta	meteo	luogo=;giorno=
+ehm un timer di quaranta secondi mannaggia la miseria	imposta_timer	secondi=40
+scrivi nelle note pane latte e uova per cortesia	prendi_nota	testo=pane latte e uova
+senti un attimo metti della musica per favore	riproduci_musica	tipo=casuale
+scusami dimmi il meteo di sabato a siracusa così vedo	meteo	luogo=siracusa;giorno=2026-11-07
+mi faresti un favore quanto è alto l'etna per favore	online
+in pratica vorrei che praticamente adesso puoi far partire un timer di venticinque minuti per favore lo puoi fare	imposta_timer	secondi=1500
+come sta andando la borsa oggi grazie mille	online
+ok dimmi le sveglie se puoi	elenca_sveglie
+ho bisogno che tu mettere un timer di due minuti porca miseria	imposta_timer	secondi=120
+punta la sveglia alle sette e mezza	imposta_sveglia	ora=07:30;giorno=
+bene riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+allora in pratica cambia canzone va bene così	controlla_musica	azione=avanti
+senti quanto fa sette per otto per favore	online
+va bene allora svegliami domani alle sette per favore lo puoi fare	imposta_sveglia	ora=07:00;giorno=2026-11-04
+eh riesci a annotare che giovedì c'è la riunione grazie	prendi_nota	testo=giovedì c'è la riunione
+buongiorno puoi dirmi la data di oggi	data
+vorrei che tu mettere la sveglia alle nove se ci riesci	imposta_sveglia	ora=09:00;giorno=
+per favore riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+ok che tempo fa a catania per piacere	meteo	luogo=catania;giorno=
+volevo chiederti mettere un timer di due minuti subito	imposta_timer	secondi=120
+guarda mi puoi ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ehm allora quanti gradi ci sono a milano per favore	meteo	luogo=milano;giorno=
+senti una cosa quanto manca alla fine del timer mannaggia la miseria	stato_timer
+ti volevo chiedere chi canta questa canzone per favore	online
+buongiorno chiamare mia madre potresti farlo	chiama	chi=mia madre
+vorrei che tu dimmi le sveglie	elenca_sveglie
+allora metti un po' di musica	riproduci_musica	tipo=casuale
+che tempo ci sarà dopodomani a napoli se puoi	meteo	luogo=napoli;giorno=2026-11-05
+per cortesia quanto fa sette per otto per piacere	online
+ehm allora fammi ascoltare de andrè grazie mille	riproduci_musica	richiesta=de andrè
+dai puoi mettere la sveglia alle sei e un quarto che devo uscire	imposta_sveglia	ora=06:15;giorno=
+mi raccomando mi puoi svegliarmi dopodomani alle sette e basta	imposta_sveglia	ora=07:00;giorno=2026-11-05
+volevo chiederti sono libero venerdì grazie mille	leggi_calendario	dal=2026-11-06;giorni=1
+praticamente fai partire il timer di otto minuti che devo uscire	imposta_timer	secondi=480
+eh niente mi svegli alle cinque e quaranta grazie mille	imposta_sveglia	ora=05:40;giorno=
+ok senti chiamare mia madre per favore lo puoi fare	chiama	chi=mia madre
+allora in pratica punta la sveglia alle sette e mezza e niente	imposta_sveglia	ora=07:30;giorno=
+dunque puoi mettermi un timer di cinque minuti va bene così	imposta_timer	secondi=300
+dunque mi spieghi cosa vuol dire resilienza	online
+allora adesso ferma la musica dai su	controlla_musica	azione=pausa
+ho bisogno che tu chiama mamma adesso	chiama	chi=mamma
+ok metti qualcosa dei queen per favore	riproduci_musica	richiesta=queen
+allora come è il tempo a catania se ci riesci	meteo	luogo=catania;giorno=
+per piacere svegliami alle otto meno un quarto per piacere	imposta_sveglia	ora=07:45;giorno=
+allora in pratica metti qualcosa dei queen per favore	riproduci_musica	richiesta=queen
+praticamente che tempo fa grazie	meteo	luogo=;giorno=
+ho bisogno che tu chi ha vinto la partita ieri sera	online
+eh fa freddo fuori e basta	meteo	luogo=;giorno=
+allora torna alla canzone precedente che sono di fretta	controlla_musica	azione=indietro
+ok allora metti della musica	riproduci_musica	tipo=casuale
+in pratica vorrei spiegami come si fa la pasta alla norma per piacere	online
+ciao ti dispiace eliminare la sveglia delle otto grazie	cancella_sveglia	ora=08:00
+mi mette un timer da tre minuti mannaggia la miseria	imposta_timer	secondi=180
+scusa vorresti ricordarmi tra mezz'ora di spegnere il forno	promemoria	ora=10:30;testo=spegnere il forno
+senti una cosa sveglia alle sette e venti intanto	imposta_sveglia	ora=07:20;giorno=
+senti scusa che tempo fa dai su	meteo	luogo=;giorno=
+adesso puoi fare una telefonata a marco lo puoi fare	chiama	chi=marco
+ok senti puoi puntare la sveglia alle sette e mezza così via	imposta_sveglia	ora=07:30;giorno=
+praticamente chiami a casa per favore	chiama	chi=casa
+eh niente stop alla musica se non ti dispiace	controlla_musica	azione=pausa
+eh niente una sveglia alle dieci di sera per favore	imposta_sveglia	ora=22:00;giorno=
+allora quanto manca alla fine del timer e niente	stato_timer
+niente dimmi il meteo di sabato a siracusa per piacere	meteo	luogo=siracusa;giorno=2026-11-07
+ascolta puoi mettere la sveglia per le quattro e cinquanta se ci riesci	imposta_sveglia	ora=04:50;giorno=
+no aspetta puoi avvisarmi fra un'ora dai	imposta_timer	secondi=3600
+scusami potresti avvisarmi fra un'ora per favore grazie	imposta_timer	secondi=3600
+buongiorno fai partire il timer di otto minuti e basta	imposta_timer	secondi=480
+allora vediamo avvisami tra dieci minuti così vedo	imposta_timer	secondi=600
+voglio che tu come si chiama il cantante dei pink floyd per favore	online
+allora in pratica metti una sveglia venerdì alle sei se puoi	imposta_sveglia	ora=06:00;giorno=2026-11-06
+mi faresti un favore che tempo farà domani a palermo intanto	meteo	luogo=palermo;giorno=2026-11-04
+ehm svegliami alle otto meno un quarto e niente	imposta_sveglia	ora=07:45;giorno=
+fammi una cortesia mettimi una sveglia per le cinque se puoi	imposta_sveglia	ora=05:00;giorno=
+ehm timer quindici minuti se ci riesci	imposta_timer	secondi=900
+scusami stoppa il timer grazie tante	annulla_timer
+in pratica mi spieghi cosa vuol dire resilienza	online
+va bene allora ieri ho ascoltato i pink floyd tutto il giorno	online
+eh che tempo fa domani mannaggia la miseria	meteo	luogo=;giorno=2026-11-04
+ascoltami mettere la sveglia alle nove intanto	imposta_sveglia	ora=09:00;giorno=
+eh ti dispiace svegliarmi domani alle sette e niente	imposta_sveglia	ora=07:00;giorno=2026-11-04
+ascoltami togli la sveglia delle sei e mezza per cortesia	cancella_sveglia	ora=06:30
+sì allora vai avanti	controlla_musica	azione=avanti
+allora in pratica devo prendere l'ombrello lo puoi fare	meteo	luogo=;giorno=
+no aspetta voglio ascoltare lucio dalla grazie mille	riproduci_musica	richiesta=lucio dalla
+ehi mettimi una sveglia per le cinque	imposta_sveglia	ora=05:00;giorno=
+sì allora come sta andando la borsa oggi per cortesia	online
+senti una cosa ho messo la sveglia ok	elenca_sveglie
+allora in pratica mi mette un timer da tre minuti dai	imposta_timer	secondi=180
+ok senti che tempo fa va bene così	meteo	luogo=;giorno=
+fammi una cortesia chi canta questa canzone per favore	online
+eh imposta un timer di un quarto d'ora	imposta_timer	secondi=900
+ehm mi puoi aprire il bluetooth va bene	apri	cosa=bluetooth
+componi il numero di anna	chiama	chi=anna
+allora praticamente ho appuntamenti domani porca miseria	leggi_calendario	dal=2026-11-04;giorni=1
+praticamente come è il tempo a catania grazie	meteo	luogo=catania;giorno=
+avvisami tra dieci minuti grazie mille	imposta_timer	secondi=600
+allora senti devo prendere l'ombrello adesso	meteo	luogo=;giorno=
+in pratica vorrei che tempo fa	meteo	luogo=;giorno=
+ho bisogno che tu cambia canzone va bene così	controlla_musica	azione=avanti
+ok senti imposta la sveglia per domani mattina alle sei grazie tante	imposta_sveglia	ora=06:00;giorno=2026-11-04
+eh niente devo chiamare francesca potresti farlo per favore	chiama	chi=francesca
+per favore come è il tempo a catania	meteo	luogo=catania;giorno=
+in pratica vorrei chiamo mamma per cortesia	chiama	chi=mamma
+dai metti musica a caso per cortesia	riproduci_musica	tipo=casuale
+va bene allora ricordami alle sei di comprare il pane	promemoria	ora=18:00;testo=comprare il pane
+va bene allora imposta un timer di un quarto d'ora dai su	imposta_timer	secondi=900
+no aspetta punta la sveglia alle sette e mezza grazie tante	imposta_sveglia	ora=07:30;giorno=
+no aspetta ricordami tra un'ora di ritirare il bucato per favore	promemoria	ora=11:00;testo=ritirare il bucato
+bene avvisami tra dieci minuti e basta	imposta_timer	secondi=600
+allora in pratica che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+no aspetta chiamami la nonna adesso	chiama	chi=la nonna
+ok allora aprire l'orologio	apri	cosa=orologio
+ehi a che punto è il timer mannaggia la miseria	stato_timer
+volevo chiederti che tempo ci sarà dopodomani a napoli dai su	meteo	luogo=napoli;giorno=2026-11-05
+posso chiederti una cosa mettere un timer di due minuti che devo uscire	imposta_timer	secondi=120
+fammi una cortesia ricordami tra un'ora di ritirare il bucato grazie	promemoria	ora=11:00;testo=ritirare il bucato
+dai mi svegli alle cinque e quaranta se non ti dispiace	imposta_sveglia	ora=05:40;giorno=
+aspetta mi svegli alle cinque e quaranta e basta	imposta_sveglia	ora=05:40;giorno=
+ehi assistente quando è nato garibaldi per cortesia	online
+bene vorresti farmi ascoltare de andrè	riproduci_musica	richiesta=de andrè
+scusami mi mette un timer da tre minuti dai	imposta_timer	secondi=180
+voglio che tu fai partire il timer di otto minuti dai	imposta_timer	secondi=480
+allora senti il meteo di messina per cortesia	meteo	luogo=messina;giorno=
+ascoltami che tempo ci sarà dopodomani a napoli porca miseria	meteo	luogo=napoli;giorno=2026-11-05
+eh imposti un timer di un quarto d'ora se puoi	imposta_timer	secondi=900
+allora senti fammi un riassunto dei promessi sposi grazie mille	online
+va bene allora dimmi il meteo di sabato a siracusa adesso	meteo	luogo=siracusa;giorno=2026-11-07
+per favore mia madre mi chiama sempre alle otto	online
+adesso puoi mettermi una sveglia per le cinque porca miseria	imposta_sveglia	ora=05:00;giorno=
+ok fammi un riassunto dei promessi sposi per favore	online
+senti aggiungi alle note chiamare l'idraulico per cortesia	prendi_nota	testo=chiamare l'idraulico
+dai che tempo fa a palermo	meteo	luogo=palermo;giorno=
+allora che tempo fa a palermo	meteo	luogo=palermo;giorno=
+in pratica vorrei che praticamente adesso che tempo ci sarà dopodomani a napoli se ci riesci	meteo	luogo=napoli;giorno=2026-11-05
+mi faresti un favore sveglia domani alle otto	imposta_sveglia	ora=08:00;giorno=2026-11-04
+ora mi sveglia domani alle sette per favore lo puoi fare internazionale	imposta_sveglia	ora=07:00;giorno=2026-11-04
+dunque spiegami come si fa la pasta alla norma	online
+ti volevo chiedere fa freddo fuori mannaggia la miseria	meteo	luogo=;giorno=
+guarda spiegami come si fa la pasta alla norma grazie	online
+senti un attimo riprendi la musica mannaggia	controlla_musica	azione=riprendi
+praticamente che tempo fa a catania dai su	meteo	luogo=catania;giorno=
+senti scusa riesci a mettere una sveglia per le sei e mezza porca miseria	imposta_sveglia	ora=06:30;giorno=
+cerca su internet la ricetta della caponata	cerca_sul_web	domanda=la ricetta della caponata
+niente metti in pausa grazie mille	controlla_musica	azione=pausa
+riesci a mettere in pausa così vedo	controlla_musica	azione=pausa
+in pratica vorrei che praticamente adesso riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+eh svegliami domani alle sette e basta	imposta_sveglia	ora=07:00;giorno=2026-11-04
+scusa fai partire il timer di otto minuti dai su	imposta_timer	secondi=480
+ho bisogno che tu metti in pausa	controlla_musica	azione=pausa
+per favore puoi far partire un timer di venticinque minuti	imposta_timer	secondi=1500
+adesso punta la sveglia alle sette e mezza se non ti dispiace	imposta_sveglia	ora=07:30;giorno=
+fammi una cortesia fai partire il timer di otto minuti grazie mille	imposta_timer	secondi=480
+posso chiederti una cosa che tempo ci sarà dopodomani a napoli per cortesia	meteo	luogo=napoli;giorno=2026-11-05
+sì allora il meteo di messina per favore la specifica	meteo	luogo=messina;giorno=
+senti scusa quando è nato garibaldi grazie mille	online
+in pratica vorrei a che punto è il timer porca miseria	stato_timer
+praticamente chiama mamma dai	chiama	chi=mamma
+voglio che tu spiegami come si fa la pasta alla norma grazie mille	online
+volevo chiederti sapresti mettere una sveglia alle dieci di sera ok	imposta_sveglia	ora=22:00;giorno=
+no aspetta mi serve un timer di sette minuti porca miseria	imposta_timer	secondi=420
+mi faresti un favore fai partire una chiamata a luca lo puoi fare	chiama	chi=luca
+in pratica vorrei che praticamente adesso che tempo fa oggi a ragusa che sono di fretta	meteo	luogo=ragusa;giorno=
+ok senti svegliami dopodomani alle sette per piacere	imposta_sveglia	ora=07:00;giorno=2026-11-05
+ok allora dove si trova la farmacia più vicina	online
+mi faresti un favore ho appuntamenti domani dai	leggi_calendario	dal=2026-11-04;giorni=1
+dai riprodurre l'album the wall	riproduci_musica	richiesta=the wall;tipo=album
+mi mette una sveglia per le sette e basta	imposta_sveglia	ora=07:00;giorno=
+allora praticamente chiama mamma grazie	chiama	chi=mamma
+mi metti un timer di dieci minuti che devo uscire	imposta_timer	secondi=600
+va bene allora avvisami fra un'ora mannaggia	imposta_timer	secondi=3600
+ho bisogno che tu fa freddo fuori grazie mille	meteo	luogo=;giorno=
+volevo chiederti fa freddo fuori porca miseria	meteo	luogo=;giorno=
+ok senti riprendi la musica va bene	controlla_musica	azione=riprendi
+dimmi la data di oggi per cortesia	data
+allora devi svegliarmi alle sei	imposta_sveglia	ora=06:00;giorno=
+senti un attimo le previsioni del tempo per domani se ci riesci	meteo	luogo=;giorno=2026-11-04
+fammi una cortesia scrivimi una poesia sul mare per piacere	online
+niente torna alla canzone precedente lo puoi fare	controlla_musica	azione=indietro
+ehi chi canta questa canzone grazie	online
+senti un attimo puoi far partire un timer di venticinque minuti se non ti dispiace	imposta_timer	secondi=1500
+in pratica metti i pink floyd per piacere	riproduci_musica	richiesta=pink floyd
+volevo chiederti vorresti puntare la sveglia alle sette e mezza porca miseria	imposta_sveglia	ora=07:30;giorno=
+scusami come si chiama il cantante dei pink floyd grazie	online
+ciao fai una telefonata a marco potresti farlo	chiama	chi=marco
+per cortesia ferma la musica	controlla_musica	azione=pausa
+svegliami alle otto meno un quarto così via	imposta_sveglia	ora=07:45;giorno=
+per cortesia cerca come si pulisce il forno	cerca_sul_web	domanda=come si pulisce il forno
+ehm quanto manca al timer lo puoi fare	stato_timer
+guarda il meteo dice sempre che piove	online
+per cortesia quanti ne abbiamo oggi grazie	data
+volevo chiederti chiamami la nonna	chiama	chi=la nonna
+allora adesso mi dici che ore sono per favore grazie	ora
+mi raccomando mettere un timer di quattro minuti per le uova potresti farlo	imposta_timer	secondi=240
+va bene allora metti la canzone di prima va bene	controlla_musica	azione=indietro
+niente mi potresti mettere un timer di quaranta secondi che devo uscire	imposta_timer	secondi=40
+fammi una cortesia togli la sveglia delle sei e mezza va bene così	cancella_sveglia	ora=06:30
+allora vediamo dimmi le sveglie e niente	elenca_sveglie
+ti volevo chiedere passa alla prossima canzone così vedo	controlla_musica	azione=avanti
+praticamente metti un timer di quattro minuti per le uova e basta	imposta_timer	secondi=240
+senti una cosa imposta la sveglia per domani mattina alle sei grazie mille	imposta_sveglia	ora=06:00;giorno=2026-11-04
+ciao telefonare a salvo grazie	chiama	chi=salvo
+senti un attimo chiama giuseppe	chiama	chi=giuseppe
+allora in pratica torna alla canzone precedente mannaggia la miseria	controlla_musica	azione=indietro
+allora in pratica metti una sveglia venerdì alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-06
+ehi mettere un timer di quattro minuti per le uova ok	imposta_timer	secondi=240
+sì allora una sveglia alle dieci di sera	imposta_sveglia	ora=22:00;giorno=
+adesso chiamare mia madre lo puoi fare	chiama	chi=mia madre
+senti scusa quando è nato garibaldi per favore	online
+ascoltami riproduci i pink floyd	riproduci_musica	richiesta=pink floyd
+sì allora mi mette un timer da tre minuti per piacere	imposta_timer	secondi=180
+senti un attimo mi dici che ore sono per favore lo puoi fare internazionale	ora
+ok allora fammi un timer di dodici minuti per la pasta ti ringrazio	imposta_timer	secondi=720
+guarda sveglia alle sette e venti dai	imposta_sveglia	ora=07:20;giorno=
+scusa sveglia alle sette e venti per piacere	imposta_sveglia	ora=07:20;giorno=
+allora vediamo annota che giovedì c'è la riunione grazie mille	prendi_nota	testo=giovedì c'è la riunione
+allora senti scrivimi una poesia sul mare	online
+volevo chiederti mi potresti fermare il timer che sono di fretta	annulla_timer
+in pratica vorrei che praticamente adesso avvisami fra un'ora e basta	imposta_timer	secondi=3600
+senti spiegami come si fa la pasta alla norma grazie mille	online
+senti che tempo fa grazie	meteo	luogo=;giorno=
+scusami vorresti puntare la sveglia alle sette e mezza per favore	imposta_sveglia	ora=07:30;giorno=
+ora che cos'è un timer per piacere	online
+per piacere avvisami fra un'ora grazie mille	imposta_timer	secondi=3600
+senti imposta la sveglia per domani mattina alle sei mannaggia	imposta_sveglia	ora=06:00;giorno=2026-11-04
+senti una cosa punta la sveglia alle sette e mezza e basta	imposta_sveglia	ora=07:30;giorno=
+ok allora scrivi nelle note pane latte e uova per piacere	prendi_nota	testo=pane latte e uova
+ok senti vai nelle impostazioni del bluetooth mannaggia la miseria	apri	cosa=bluetooth
+cercami la farmacia di turno	cerca_sul_web	domanda=la farmacia di turno
+ascoltami quanto è alto l'etna	online
+mi mette una sveglia per le sette grazie amico mio	imposta_sveglia	ora=07:00;giorno=
+in pratica devo prendere l'ombrello dai su	meteo	luogo=;giorno=
+guarda quanto fa sette per otto	online
+senti un attimo il meteo di messina	meteo	luogo=messina;giorno=
+posso chiederti una cosa sapresti mettermi una sveglia per le cinque grazie mille	imposta_sveglia	ora=05:00;giorno=
+posso chiederti una cosa sveglia domani alle otto se puoi	imposta_sveglia	ora=08:00;giorno=2026-11-04

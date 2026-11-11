@@ -1,0 +1,11 @@
+--- a/Source/bmalloc/bmalloc/VMAllocate.h
++++ b/Source/bmalloc/bmalloc/VMAllocate.h
+@@ -417,7 +417,7 @@
+         MEMORY_BASIC_INFORMATION memInfo;
+         VirtualQuery(currentPtr, &memInfo, sizeof(memInfo));
+         RELEASE_BASSERT(memInfo.RegionSize > 0);
+-        size_t chunkSize = std::min(memInfo.RegionSize, vmSize - totalSeen);
++        size_t chunkSize = std::min<size_t>(memInfo.RegionSize, vmSize - totalSeen);
+         BOOL freeResult = VirtualFree(currentPtr, chunkSize, MEM_DECOMMIT);
+         RELEASE_BASSERT(freeResult);
+         void* allocResult = VirtualAlloc(currentPtr, chunkSize, MEM_COMMIT, PAGE_READWRITE);

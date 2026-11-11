@@ -1,0 +1,18 @@
+#!/bin/bash
+# perle81build — sync apps/Perle81 (+ apps/Perle, linked sources) to the VM, restore Newtonsoft.Json 6.0.8
+# into Perle81\packages (not in the repo) and build Perle81.Core for WP8.1 ARM Release with MSBuild 14.
+cd ~/dumbphone/apps || exit 1
+for p in Perle Perle81; do
+  ssh user@192.168.122.21 "if exist C:\\lumia\\src\\$p rmdir /s /q C:\\lumia\\src\\$p" >/dev/null 2>&1
+  tar --exclude=bin --exclude=obj --exclude=packages -cf - $p | ssh user@192.168.122.21 "tar -xf - -C C:/lumia/src"
+done
+SP=$(mktemp -d)
+cat > $SP/build.ps1 <<'PS'
+$ErrorActionPreference = 'Continue'
+Set-Location C:\lumia\src\Perle81
+& C:\lumia\tools\nuget.exe install Newtonsoft.Json -Version 6.0.8 -OutputDirectory C:\lumia\src\Perle81\packages 2>&1 | Select-Object -Last 2
+& "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" Perle81.sln /m:1 /t:Build /p:Configuration=Release /p:Platform=ARM /nologo /v:m 2>&1 | Select-Object -Last 40
+"EXIT " + $LASTEXITCODE
+PS
+cd "$SP" && ../../../tools/vps "$SP/build.ps1" 2>/dev/null || ~/dumbphone/tools/vps "$SP/build.ps1"
+rm -rf "$SP"

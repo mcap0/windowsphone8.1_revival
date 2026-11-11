@@ -1,0 +1,26 @@
+--- a/Source/WebCore/page/PointerCaptureController.h
++++ b/Source/WebCore/page/PointerCaptureController.h
+@@ -63,7 +63,7 @@
+ 
+     RefPtr<PointerEvent> pointerEventForMouseEvent(const MouseEvent&, PointerID, const String& pointerType);
+ 
+-#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK))
++#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK) || defined(WP81))
+     void dispatchEventForTouchAtIndex(EventTarget&, const PlatformTouchEvent&, unsigned, bool isPrimary, WindowProxy&, const DoublePoint&);
+ #endif
+ 
+@@ -88,12 +88,12 @@
+         WeakPtr<Document, WeakPtrImplWithEventTargetData> activeDocument;
+         RefPtr<Element> pendingTargetOverride;
+         RefPtr<Element> targetOverride;
+-#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK))
++#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK) || defined(WP81))
+         RefPtr<Element> previousTarget;
+ #endif
+         bool hasAnyElement() const {
+             return pendingTargetOverride || targetOverride
+-#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK))
++#if ENABLE(TOUCH_EVENTS) && (PLATFORM(IOS_FAMILY) || PLATFORM(WPE) || PLATFORM(GTK) || defined(WP81))
+                 || previousTarget
+ #endif
+                 ;

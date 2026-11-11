@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# wp81build <App> <solution.sln> [install]
+# Sync one WP8.1 app to Windows-Debugger, build Release|ARM, copy the fresh APPX back,
+# and optionally install it on the connected phone.
+set -Eeuo pipefail
+
+if (( $# < 2 || $# > 3 )); then
+    echo "usage: wp81build <App> <solution.sln> [install]" >&2
+    exit 2
+fi
+
+app=$1
+sln=$2
+mode=${3:-}
+if [[ ! $app =~ ^[A-Za-z0-9_-]+$ || ! $sln =~ ^[A-Za-z0-9_.-]+$ ]]; then
+    echo "App and solution must be simple names" >&2
+    exit 2
+fi
+first_install=${FIRST_INSTALL:-0}
+if [[ -n $mode && $mode != install ]]; then
+    echo "third argument must be 'install'" >&2
+    exit 2
+fi
+
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+apps_dir="$repo_root/apps"
+if [[ ! -d $apps_dir/$app || ! -f $apps_dir/$app/$sln ]]; then
+    echo "app or solution not found: apps/$app/$sln" >&2
+    exit 2
+fi
+
+extra_dirs=()
+if [[ -n ${EXTRA:-} ]]; then read -r -a extra_dirs <<< "$EXTRA"; fi
+for dir in "$app" "${extra_dirs[@]}"; do
+    if [[ ! -d $apps_dir/$dir ]]; then
+        echo "sync directory not found: apps/$dir" >&2
+        exit 2
+    fi
+done
+
+remote=user@192.168.122.21
+vmssh="$repo_root/tools/vmssh"
+"$vmssh" ssh "$remote" "if exist C:\\lumia\\src\\$app rmdir /s /q C:\\lumia\\src\\$app"
+for dir in "${extra_dirs[@]}"; do
+    windir=${dir//\//\\}   # nested dirs (TsNet): "/" would be read as a cmd option
+    "$vmssh" ssh "$remote" "if exist C:\\lumia\\src\\$windir rmdir /s /q C:\\lumia\\src\\$windir"
+done
+tar --exclude=bin --exclude=obj --exclude=build/run --exclude=build/opus \
+    --exclude=AppPackages --exclude=ARM -cf - -C "$apps_dir" \
+    "$app" "${extra_dirs[@]}" DumbPhone.pfx | "$vmssh" ssh "$remote" "tar -xf - -C C:/lumia/src"
+
+if [[ $mode == install ]]; then
+    # The phone's USB device number changes after a reboot; reconnect it to the VM.
+    usb_xml="$repo_root/tools/lumia-usb.xml"
+    if [[ -f $usb_xml ]] && command -v virsh >/dev/null 2>&1; then
+        while virsh -c qemu:///system detach-device Windows-Debugger "$usb_xml" --live >/dev/null 2>&1; do :; done
+        virsh -c qemu:///system attach-device Windows-Debugger "$usb_xml" --live >/dev/null 2>&1 || true
+        sleep 8
+    fi
+fi
+
+# UNSIGNED=1: build without the package signature (no DumbPhone.pfx import on the VM). The rooted phone installs it.
+sign_prop=""
+# XAP=1: a Silverlight 8.1 app (C#, AnyCPU): the package is the .xap (PLAN §69, apps/ProvaVoip).
+platform=ARM; pkg_filter='*.appx'
+if [[ -n ${XAP:-} ]]; then platform='"Any CPU"'; pkg_filter='*.xap'; fi
+if [[ -n ${UNSIGNED:-} ]]; then sign_prop="/p:AppxPackageSigningEnabled=false"; fi
+
+scratch=$(mktemp -d)
+trap 'rm -rf -- "$scratch"' EXIT
+ps_script="$scratch/build.ps1"
+stamp=$(date -u +%Y%m%d%H%M%S)
+cat > "$ps_script" <<PS
+\$ErrorActionPreference = 'Stop'
+\$app = '$app'
+\$sln = '$sln'
+\$src = "C:\\lumia\\src\\\$app"
+\$out = "C:\\lumia\\out\\\$app\\$stamp\\"
+Set-Location \$src
+Get-ChildItem -Recurse -Filter packages.config | ForEach-Object {
+    & C:\\lumia\\tools\\nuget.exe install \$_.FullName -OutputDirectory "C:\\lumia\\src\\\$app\\packages" -NonInteractive 2>&1 | Out-Null
+    if (\$LASTEXITCODE -ne 0) { throw "NuGet restore failed for \$(\$_.FullName)" }
+}
+\$msbuild = 'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MSBuild.exe'
+\$buildLog = & \$msbuild \$sln /m:1 /t:Build /p:Configuration=Release /p:Platform=$platform /p:AppxPackageDir=\$out $sign_prop /nologo /v:m 2>&1
+\$buildCode = \$LASTEXITCODE
+\$buildLog | Select-String -Pattern 'error|->.*\\.(appx|xap)\$' | Select-Object -Last 40
+if (\$buildCode -ne 0) { throw "MSBuild failed with exit code \$buildCode" }
+\$a = Get-ChildItem \$(if ('$pkg_filter' -eq '*.xap') { \$src } else { \$out }) -Recurse -Filter '$pkg_filter' |
+    Where-Object { \$_.Name -notlike '*Dependencies*' -and \$_.DirectoryName -notlike '*Dependencies*' } |
+    Sort-Object LastWriteTime | Select-Object -Last 1
+if (-not \$a) { throw "Build succeeded but produced no app package under \$out" }
+Write-Output ("APPX " + \$a.FullName)
+if ('$mode' -eq 'install') {
+    \$ErrorActionPreference = 'Continue'
+    \$adc = 'C:\\Program Files (x86)\\Microsoft SDKs\\Windows Phone\\v8.1\\Tools\\AppDeploy\\AppDeployCmd.exe'
+    \$deployLog = & \$adc /update \$a.FullName /targetdevice:de 2>&1
+    \$deployCode = \$LASTEXITCODE
+    Write-Output '--- AppDeploy /update'
+    \$deployLog | ForEach-Object { Write-Output \$_ }
+    # /install wipes the app's data (logins, cookies, chats): never as a fallback of a failed update.
+    # 0x81030137 also comes back for an installed app whose package version did not go up, so it does not mean
+    # "not installed": a first install has to be asked for (FIRST_INSTALL=1), never inferred.
+    if (\$deployCode -ne 0 -and '$first_install' -eq '1') {
+        Write-Output '--- AppDeploy /install (FIRST_INSTALL=1)'
+        \$deployLog = & \$adc /install \$a.FullName /targetdevice:de 2>&1
+        \$deployCode = \$LASTEXITCODE
+        \$deployLog | ForEach-Object { Write-Output \$_ }
+    }
+    if (\$deployCode -ne 0) { throw "AppDeploy failed with exit code \$deployCode" }
+}
+PS
+
+build_status=0
+output=$("$repo_root/tools/vps" "$ps_script" 2>&1) || build_status=$?
+printf '%s\n' "$output"
+appx=$(printf '%s\n' "$output" | tr -d '\r' | sed -n 's/^APPX \(.*\.\(appx\|xap\)\)$/\1/p' | tail -n 1)
+if [[ -z $appx ]]; then
+    echo "Windows build returned no APPX path" >&2
+    if (( build_status == 0 )); then build_status=1; fi
+    exit "$build_status"
+fi
+
+mkdir -p "$repo_root/releases"
+local_name=${appx//\\//}
+local_name=${local_name##*/}
+"$vmssh" scp -q "$remote:${appx//\\//}" "$repo_root/releases/$local_name"
+echo "copied $local_name to releases/"
+if (( build_status != 0 )); then
+    echo "The APPX was built and copied, but the remote build or installation step failed." >&2
+    exit "$build_status"
+fi

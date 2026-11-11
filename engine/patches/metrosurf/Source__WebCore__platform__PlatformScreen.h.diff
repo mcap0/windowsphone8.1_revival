@@ -1,0 +1,12 @@
+--- a/Source/WebCore/platform/PlatformScreen.h
++++ b/Source/WebCore/platform/PlatformScreen.h
+@@ -75,6 +75,9 @@
+ #endif
+ 
+ WEBCORE_EXPORT FloatRect screenRect(Widget*);
++#if defined(WP81)
++WEBCORE_EXPORT void setScreenSizeForWP81(FloatSize);
++#endif
+ FloatRect screenAvailableRect(Widget*);
+ 
+ WEBCORE_EXPORT OptionSet<ContentsFormat> screenContentsFormats(Widget* = nullptr);

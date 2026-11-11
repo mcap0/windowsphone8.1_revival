@@ -1,0 +1,381 @@
+#!/usr/bin/env python3
+"""wnsfake — our own push server for the Lumia, in place of Microsoft's WNS (PLAN §69.8).
+
+The phone's WNS client (WPNPRV.DLL, WP8.1) connects to the host in
+  HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications  Server = "<dns name>:<port>"
+(DisableTLS = 1: plain TCP; otherwise TLS, with DisableTLSCertCheck = 1 for our own certificate).
+Server must be a DNS name, not an IP literal: WPNPRV resolves it with an async GetAddrInfoExW and takes a
+synchronous 0 (what ws2_32 returns for a numeric address) for "pending", so it would wait forever.
+
+Protocol (read from WPNPRV.DLL with its public symbols; every message, both ways):
+  "<VERB> <trid> <target> <length>\\r\\n" + <length> bytes; payload = MIME-like headers, blank line, body.
+  phone -> CNT n CON          <connect>... device info; fast reconnect carries <session><id>
+           ATH n CON\\<x>      account ticket: ignored, never stored or logged
+           BND n CON\\<y>      <wns><ver>1</ver><client>...
+           PNG n CON 0        keep-alive
+           GET n WNS\\CHANNEL  Context + <channel><appkey>..</appkey><properties>..</properties></channel>
+           PUT n WNS\\CHANNEL  renewal (<channel><id>..), DEL revoke, ACK n WNS\\NOTIF (Msg-Id)
+  server -> same verb/trid/target as the reply; CNT gets <connect-response><session><id>/<timeout>,
+           a channel request gets <channel><id>..</id><url>..</url><exp>YYYY-MM-DDTHH:MM:SSZ</exp></channel>,
+           NFY 0 WNS\\NOTIF + headers Context, Msg-Id, Ack: true, Time, Type: wns/raw, Channel, then the body.
+
+HTTP API (for the PC / the Ponte):
+  POST /push/<channel id>   body = payload; headers X-WNS-Type (wns/raw default, wns/toast...), X-Token (if a
+                            token is set), X-TTL seconds kept while the phone is away (default 60), X-WNS-Tag and
+                            X-WNS-Group (<= 16 chars: a toast with the same tag replaces the older one)
+                            -> 200 {"stato":"ack","ms":..} when the phone acknowledged, 202 if queued/no ack yet
+  GET  /status              connections and channels
+
+Usage: tools/wnsfake [--bind 192.168.1.148] [--port 8799] [--http-port 8800] [--public-url URL]
+                     [--data DIR] [--token SECRET] [--tls CERT KEY]
+Single phone: a push goes to every live connection that finished its handshake (there is one phone).
+"""
+import argparse, datetime, http.server, json, os, re, secrets, socket, ssl, sys, threading, time
+
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+ap = argparse.ArgumentParser()
+ap.add_argument("--bind", default="192.168.1.148")
+ap.add_argument("--port", type=int, default=8799)
+ap.add_argument("--http-bind", default=None, help="default: same as --bind")
+ap.add_argument("--http-port", type=int, default=8800)
+ap.add_argument("--public-url", default="http://192-168-1-148.sslip.io:8800",
+                help="base of the channel URIs handed to apps")
+ap.add_argument("--data", default=os.path.join(ROOT, "share", "chiamate"))
+ap.add_argument("--token", default=os.environ.get("WNSFAKE_TOKEN", ""))
+ap.add_argument("--tls", nargs=2, metavar=("CERT", "KEY"))
+ap.add_argument("--session-timeout", type=int, default=3600, help="fast-reconnect window given to the phone (s)")
+args = ap.parse_args()
+
+os.makedirs(args.data, exist_ok=True)
+logpath = os.path.join(args.data, "wns-" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + ".log")
+chanpath = os.path.join(args.data, "wns-channels.json")
+rolepath = os.path.join(args.data, "wns-roles.json")   # session id -> WNS/QOS, kept across restarts (fast reconnects)
+loglock = threading.Lock()
+
+LONG_BLOB = re.compile(rb"[A-Za-z0-9+/=_%.!*-]{100,}")
+
+
+def log(line):
+    stamp = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
+    with loglock:
+        with open(logpath, "a") as f:
+            f.write(stamp + " " + line + "\n")
+        print(stamp, line, flush=True)
+
+
+def shown(payload):
+    """Payload as loggable text: long opaque runs replaced by their length (no secrets in the log)."""
+    payload = LONG_BLOB.sub(lambda m: b"[%d byte]" % len(m.group(0)), payload)
+    return "".join(c if 32 <= ord(c) < 127 else "|" if c == "\n" else "" for c in payload.decode("latin-1"))
+
+
+def utcstamp(t):
+    return datetime.datetime.fromtimestamp(t, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def split_payload(payload):
+    """(headers dict, body bytes) of a "Name: value\\r\\n...\\r\\n\\r\\nbody" payload."""
+    head, sep, body = payload.partition(b"\r\n\r\n")
+    if not sep:
+        if payload.startswith(b"\r\n"):
+            return {}, payload[2:]
+        return {}, payload
+    hdrs = {}
+    for line in head.split(b"\r\n"):
+        k, _, v = line.partition(b":")
+        if k:
+            hdrs[k.strip().decode("latin-1")] = v.strip().decode("latin-1")
+    return hdrs, body
+
+
+def xml_text(body, tag):
+    m = re.search(rb"<%s>(.*?)</%s>" % (tag, tag), body, re.S)
+    return m.group(1).decode("utf-8", "replace") if m else None
+
+
+class Channels:
+    """channel id -> {appkey, url, exp, created}; kept in a JSON file (no secrets in it)."""
+
+    def __init__(self, path):
+        self.path, self.lock = path, threading.Lock()
+        try:
+            self.map = json.load(open(path))
+        except (OSError, ValueError):
+            self.map = {}
+
+    def save(self):
+        tmp = self.path + ".tmp"
+        json.dump(self.map, open(tmp, "w"), indent=1)
+        os.replace(tmp, self.path)
+
+    def issue(self, appkey, cid=None):
+        with self.lock:
+            if not cid or cid not in self.map:
+                # one channel per app key: a new request for the same app gets the same channel back
+                cid = next((k for k, v in self.map.items() if v["appkey"] == appkey), None) or secrets.token_hex(16)
+            c = self.map.setdefault(cid, {"appkey": appkey, "created": utcstamp(time.time())})
+            c["url"] = "%s/push/%s" % (args.public_url.rstrip("/"), cid)
+            c["exp"] = utcstamp(time.time() + 30 * 86400)
+            self.save()
+            return cid, dict(c)
+
+    def revoke(self, cid):
+        with self.lock:
+            if self.map.pop(cid, None) is not None:
+                self.save()
+
+
+channels = Channels(chanpath)
+
+
+class Phone:
+    """One TCP (or TLS) connection from the phone's WNS client."""
+    live = set()
+    live_lock = threading.Lock()
+    roles = {}                      # session id -> "WNS" / "QOS" (BND target), for fast reconnects that skip BND
+    try:
+        roles = json.load(open(rolepath))
+    except (OSError, ValueError):
+        pass
+
+    def __init__(self, sock, addr):
+        self.sock, self.addr = sock, "%s:%d" % addr[:2]
+        self.wlock = threading.Lock()
+        self.ready = False          # CNT answered (and ATH/BND, unless fast reconnect)
+        self.session = None
+        self.role = None            # "WNS": the connection that takes pushes; "QOS": the phone's second one
+        self.acks = {}              # msg id (int: the phone echoes it in hex without leading zeros) -> Event
+        self.connected_at = time.time()
+        self.last_rx = time.time()
+
+    def send(self, verb, trid, target, payload=b""):
+        msg = b"%s %d %s %d\r\n" % (verb.encode(), trid, target.encode(), len(payload)) + payload
+        with self.wlock:
+            self.sock.sendall(msg)
+        log("-> %s %s %d %s %d %s" % (self.addr, verb, trid, target, len(payload), shown(payload)))
+
+    def run(self):
+        log("connessione da %s" % self.addr)
+        buf = b""
+        try:
+            while True:
+                data = self.sock.recv(65536)
+                if not data:
+                    break
+                self.last_rx = time.time()
+                buf += data
+                while True:
+                    end = buf.find(b"\r\n")
+                    if end < 0:
+                        if len(buf) > 4096:
+                            raise ValueError("header line too long")
+                        break
+                    parts = buf[:end].split(b" ")
+                    if len(parts) != 4:
+                        raise ValueError("bad command line %r" % buf[:min(end, 80)])
+                    verb, trid, target, length = parts[0].decode("latin-1"), int(parts[1]), \
+                        parts[2].decode("latin-1"), int(parts[3])
+                    if len(buf) < end + 2 + length:
+                        break
+                    payload, buf = buf[end + 2:end + 2 + length], buf[end + 2 + length:]
+                    self.handle(verb, trid, target, payload)
+        except Exception as e:
+            log("errore %s %r" % (self.addr, e))
+        finally:
+            with Phone.live_lock:
+                Phone.live.discard(self)
+            log("chiusa %s dopo %.0f s" % (self.addr, time.time() - self.connected_at))
+            try:
+                self.sock.close()
+            except OSError:
+                pass
+
+    def handle(self, verb, trid, target, payload):
+        if verb == "ATH":   # the account ticket: never logged, never stored, never forwarded
+            log("<- %s ATH %d %s %d (ticket ignorato)" % (self.addr, trid, target, len(payload)))
+            self.send("ATH", trid, target)
+            return
+        log("<- %s %s %d %s %d %s" % (self.addr, verb, trid, target, len(payload), shown(payload)))
+        hdrs, body = split_payload(payload)
+        ctx = ("Context: %s\r\n" % hdrs["Context"]).encode() if "Context" in hdrs else b""
+        kind = target.split("\\")[-1]   # the phone sends WNS\CHANNEL, WNS\NOTIF...
+        if verb == "CNT":
+            old = xml_text(body, b"id")      # <session><id> on a fast reconnect
+            self.session = old or secrets.token_hex(8)
+            self.send("CNT", trid, target, b"\r\n<connect-response><session><id>%s</id><timeout>%d</timeout>"
+                      b"</session></connect-response>" % (self.session.encode(), args.session_timeout))
+            if old:          # fast reconnect: no ATH/BND follow
+                self.role = Phone.roles.get(old)
+                self.set_ready()
+        elif verb == "BND":
+            self.role = target.split("\\")[-1]
+            Phone.roles[self.session] = self.role
+            try:
+                with open(rolepath, "w") as f:
+                    json.dump(dict(list(Phone.roles.items())[-20:]), f)
+            except OSError as e:
+                log("ruoli: %r" % e)
+            self.send("BND", trid, target, b"\r\n")
+            self.set_ready()
+        elif verb == "PNG":
+            self.send("PNG", trid, target)
+        elif kind == "CHANNEL" and verb in ("GET", "PUT"):
+            appkey = xml_text(body, b"appkey") or ""
+            cid, c = channels.issue(appkey, xml_text(body, b"id"))
+            log("canale %s per %s -> %s" % (cid, appkey, c["url"]))
+            self.send(verb, trid, target, ctx + b"\r\n<channel><id>%s</id><url>%s</url><exp>%s</exp></channel>"
+                      % (cid.encode(), c["url"].encode(), c["exp"].encode()))
+        elif kind == "CHANNEL" and verb == "DEL":
+            for cid in re.findall(rb"<id>(.*?)</id>", body):
+                channels.revoke(cid.decode())
+            self.send(verb, trid, target, ctx + b"\r\n" if ctx else b"\r\n")
+        elif verb == "ACK":
+            try:
+                ev = self.acks.pop(int(hdrs.get("Msg-Id", ""), 16), None)
+            except ValueError:
+                ev = None
+            if ev:
+                ev.set()
+            self.send(verb, trid, target)
+        else:                # OPTIONS, FILTER, OPTIMALPNG, DEVICE...: acknowledge, nothing to do
+            self.send(verb, trid, target, ctx + b"\r\n" if ctx else b"\r\n")
+
+    def set_ready(self):
+        if not self.ready:
+            self.ready = True
+            with Phone.live_lock:
+                Phone.live.add(self)
+            log("telefono pronto (%s, sessione %s)" % (self.addr, self.session))
+            Queue.flush()
+
+    last_mid = 0
+    mid_lock = threading.Lock()
+
+    def notify(self, cid, body, kind="wns/raw", tag=None, group=None):
+        # Msg-Id strictly increasing (microseconds): the phone reports the last one it saw (Last-Msg-Id in CNT)
+        with Phone.mid_lock:
+            Phone.last_mid = max(Phone.last_mid + 1, int(time.time() * 1e6))
+            n = Phone.last_mid
+        mid = "%016x" % n
+        ev = threading.Event()
+        self.acks[n] = ev
+        extra = ("Tag: %s\r\n" % tag if tag else "") + ("Group: %s\r\n" % group if group else "")
+        hdr = ("Context: %s\r\nMsg-Id: %s\r\nAck: true\r\nTime: %s\r\nType: %s\r\nChannel: %s\r\n%s\r\n"
+               % (secrets.token_hex(8), mid, utcstamp(time.time()), kind, cid, extra)).encode()
+        self.send("NFY", 0, "WNS\\NOTIF", hdr + body)
+        return ev
+
+
+class Queue:
+    """Pushes waiting for the phone to come back (TTL from X-TTL: short for a ring, longer for a message toast)."""
+    items, lock = [], threading.Lock()
+
+    @classmethod
+    def add(cls, cid, body, ttl, kind, tag, group):
+        with cls.lock:
+            cls.items.append((time.time() + ttl, cid, body, kind, tag, group))
+
+    @classmethod
+    def flush(cls):
+        with cls.lock:
+            items, cls.items = [i for i in cls.items if i[0] > time.time()], []
+        for _, cid, body, kind, tag, group in items:
+            deliver(cid, body, kind, tag, group)
+
+
+def deliver(cid, body, kind="wns/raw", tag=None, group=None):
+    # pushes go on the phone's WNS connection; the QOS one (BND CON\QOS) never acks them. If no connection is known
+    # as WNS yet (server restarted, roles unknown), all of them.
+    with Phone.live_lock:
+        phones = [p for p in Phone.live if p.role == "WNS"] or [p for p in Phone.live if p.role != "QOS"] or list(Phone.live)
+    return [(p, p.notify(cid, body, kind, tag, group)) for p in phones]
+
+
+class Api(http.server.BaseHTTPRequestHandler):
+    def reply(self, code, obj):
+        data = json.dumps(obj).encode()
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def authorized(self):
+        return not args.token or secrets.compare_digest(self.headers.get("X-Token", ""), args.token)
+
+    def do_GET(self):
+        if self.path != "/status" or not self.authorized():
+            return self.reply(404, {})
+        with Phone.live_lock:
+            phones = [{"addr": p.addr, "sessione": p.session, "da_s": round(time.time() - p.connected_at),
+                       "ultimo_rx_s": round(time.time() - p.last_rx)} for p in Phone.live]
+        self.reply(200, {"telefoni": phones, "canali": channels.map, "in_coda": len(Queue.items)})
+
+    def do_POST(self):
+        m = re.fullmatch(r"/push/([0-9a-f]{32})", self.path)
+        if not m or not self.authorized():
+            return self.reply(404, {})
+        cid = m.group(1)
+        if cid not in channels.map:
+            return self.reply(410, {"errore": "canale sconosciuto"})
+        body = self.rfile.read(int(self.headers.get("Content-Length", "0")))
+        kind = self.headers.get("X-WNS-Type", "wns/raw")
+        if kind not in ("wns/raw", "wns/toast", "wns/tile", "wns/badge"):
+            return self.reply(400, {"errore": "X-WNS-Type sconosciuto"})
+        # X-WNS-Tag / X-WNS-Group: a toast with the same tag (and group) replaces the older one (WP8.1: tag <= 16)
+        tag, group = self.headers.get("X-WNS-Tag"), self.headers.get("X-WNS-Group")
+        if (tag and len(tag) > 16) or (group and len(group) > 16):
+            return self.reply(400, {"errore": "X-WNS-Tag / X-WNS-Group oltre 16 caratteri"})
+        t0 = time.time()
+        sent = deliver(cid, body, kind, tag, group)
+        log("push %s %s %d byte -> %d connessioni" % (cid, kind, len(body), len(sent)))
+        if not sent:
+            Queue.add(cid, body, int(self.headers.get("X-TTL", "60")), kind, tag, group)
+            return self.reply(202, {"stato": "in coda"})
+        # every live connection got it; the first ACK from any of them answers (a stale one never acks)
+        deadline = time.time() + 10
+        while time.time() < deadline:
+            for p, ev in sent:
+                if ev.is_set():
+                    ms = round((time.time() - t0) * 1000)
+                    log("ack da %s in %d ms" % (p.addr, ms))
+                    return self.reply(200, {"stato": "ack", "ms": ms})
+            time.sleep(0.005)
+        self.reply(202, {"stato": "inviata, nessun ack in 10 s"})
+
+    def log_message(self, fmt, *a):
+        pass
+
+
+def serve_phones():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    s.bind((args.bind, args.port))
+    s.listen(16)
+    ctx = None
+    if args.tls:
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ctx.load_cert_chain(*args.tls)
+    while True:
+        c, a = s.accept()
+        c.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
+        def run(c=c, a=a):
+            try:
+                if ctx:
+                    c.settimeout(30)
+                    c = ctx.wrap_socket(c, server_side=True)
+                c.settimeout(None)
+            except Exception as e:
+                log("TLS fallito da %s:%d %r" % (a[0], a[1], e))
+                c.close()
+                return
+            Phone(c, a).run()
+        threading.Thread(target=run, daemon=True).start()
+
+
+log("wnsfake: telefono su %s:%d%s, API su %s:%d, URI canali %s/push/<id>, log %s"
+    % (args.bind, args.port, " (TLS)" if args.tls else "", args.http_bind or args.bind, args.http_port,
+       args.public_url.rstrip("/"), logpath))
+threading.Thread(target=serve_phones, daemon=True).start()
+http.server.ThreadingHTTPServer((args.http_bind or args.bind, args.http_port), Api).serve_forever()

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Navit configuration for Mappe (Lumia 1020, Windows Phone 8.1). Paths come from the environment set by the app:
+     NAVIT_SHAREDIR = <package>\navit (this file, layouts, icons, locale), NAVIT_USER_DATADIR = LocalFolder\navit
+     (maps\*.bin, center.txt, destination.txt, bookmarks). No internal GUI: menus are XAML (flags="2"). -->
+<config xmlns:xi="http://www.w3.org/2001/XInclude">
+	<debug name="global" dbg_level="error"/>
+	<debug name="segv" level="0"/>
+	<navit center="13.3615 38.1157" zoom="32" tracking="1" orientation="-1" recent_dest="30" drag_bitmap="1"
+	       default_layout="Car" flags="2" autozoom_active="1" autozoom_min="7" follow_cursor="1" timeout="10"
+	       imperial="0">
+		<graphics type="d2d" virtual_dpi="160" real_dpi="334"/>
+		<vehicle name="GPS" profilename="car" enabled="yes" active="1" follow="1" source="wp81://"/>
+		<tracking cdf_histsize="0"/>
+		<vehicleprofile name="car" route_depth="4:25%,8:40000,18:10000" flags="0x4000000" flags_forward_mask="0x4040002" flags_reverse_mask="0x4040001" route_mode="0" static_speed="5" static_distance="25">
+			<roadprofile item_types="street_0,street_1_city,living_street,street_service,track_gravelled,track_unpaved,street_parking_lane" speed="10"/>
+			<roadprofile item_types="street_2_city,track_paved" speed="30"/>
+			<roadprofile item_types="street_3_city" speed="40"/>
+			<roadprofile item_types="street_4_city" speed="50"/>
+			<roadprofile item_types="highway_city" speed="80"/>
+			<roadprofile item_types="street_1_land" speed="60"/>
+			<roadprofile item_types="street_2_land" speed="65"/>
+			<roadprofile item_types="street_3_land" speed="70"/>
+			<roadprofile item_types="street_4_land" speed="80"/>
+			<roadprofile item_types="street_n_lanes" speed="120"/>
+			<roadprofile item_types="highway_land" speed="120"/>
+			<roadprofile item_types="ramp" speed="40"/>
+			<roadprofile item_types="roundabout" speed="10"/>
+			<roadprofile item_types="ferry" speed="40"/>
+		</vehicleprofile>
+		<vehicleprofile name="bike" route_depth="18:25%,18:40000" flags="0x40000000" flags_forward_mask="0x40000002" flags_reverse_mask="0x40000001" route_mode="0" static_speed="5" static_distance="25">
+			<roadprofile item_types="track_paved,cycleway" speed="20"/>
+			<roadprofile item_types="street_0,street_1_city,street_1_land,living_street" speed="20"/>
+			<roadprofile item_types="street_pedestrian,footway" speed="17"/>
+			<roadprofile item_types="street_service,street_parking_lane" speed="17"/>
+			<roadprofile item_types="street_2_city,street_2_land" speed="20"/>
+			<roadprofile item_types="street_3_city,street_3_land" speed="20"/>
+			<roadprofile item_types="street_4_land,street_4_city" speed="20"/>
+			<roadprofile item_types="street_n_lanes,ramp" speed="20"/>
+			<roadprofile item_types="path,track_ground" speed="7"/>
+			<roadprofile item_types="track_gravelled" speed="17"/>
+			<roadprofile item_types="steps" speed="2"/>
+			<roadprofile item_types="roundabout" speed="20"/>
+			<roadprofile item_types="ferry" speed="40"/>
+		</vehicleprofile>
+		<vehicleprofile name="pedestrian" route_depth="18:25%,18:10000" flags="0x80000000" flags_forward_mask="0x80000000" flags_reverse_mask="0x80000000" route_mode="0" static_speed="3" static_distance="10">
+			<roadprofile item_types="footway,bridleway,path,steps" speed="5"/>
+			<roadprofile item_types="hiking_mountain" speed="4"/>
+			<roadprofile item_types="living_street,street_pedestrian" speed="5"/>
+			<roadprofile item_types="track_gravelled,track_unpaved,track_grass,track_ground,hiking" speed="5"/>
+			<roadprofile item_types="track_paved" speed="5"/>
+			<roadprofile item_types="cycleway" speed="5"/>
+			<roadprofile item_types="street_0,street_1_city,street_2_city" speed="5"/>
+			<roadprofile item_types="street_3_city,street_4_city,street_service,street_parking_lane" speed="5"/>
+			<roadprofile item_types="street_1_land,street_2_land" speed="5"/>
+			<roadprofile item_types="street_3_land,street_4_land" speed="5"/>
+			<roadprofile item_types="roundabout" speed="5"/>
+			<roadprofile item_types="ferry" speed="40"/>
+		</vehicleprofile>
+		<route destination_distance="50"/>
+		<navigation>
+			<announce type="street_0,street_1_city,street_parking_lane,living_street,street_service" level0="25" level1="100" level2="200" unit="m"/>
+			<announce type="street_2_city,street_3_city,street_4_city,ramp" level0="50" level1="200" level2="500" unit="m"/>
+			<announce type="highway_city,street_1_land,street_2_land,street_3_land,street_4_land" level0="100" level1="400" level2="1000" unit="m"/>
+			<announce type="street_n_lanes,highway_land" level0="300" level1="1000" level2="2000" unit="m"/>
+		</navigation>
+		<speech type="wp81" cps="15"/>
+		<mapset enabled="yes">
+			<map type="binfile" enabled="yes" data="$NAVIT_USER_DATADIR/maps/*.bin"/>
+		</mapset>
+		<layer name="Found items" order="0-">
+			<itemgra item_types="found_item">
+				<circle color="#008080" radius="24" width="2" text_size="12"/>
+			</itemgra>
+		</layer>
+		<xi:include href="$NAVIT_SHAREDIR/navit_layout_car_shipped.xml"/>
+		<xi:include href="$NAVIT_SHAREDIR/navit_layout_car_dark_shipped.xml"/>
+		<layout name="Route">
+			<layer name="streets">
+				<itemgra item_types="street_route_occluded" order="0-">
+					<polyline color="#0000a0" width="20"/>
+				</itemgra>
+			</layer>
+		</layout>
+	</navit>
+</config>

@@ -1,0 +1,11 @@
+--- a/Source/JavaScriptCore/jsc.cpp
++++ b/Source/JavaScriptCore/jsc.cpp
+@@ -3499,7 +3499,7 @@
+ // be in a separate main function because the jscmain function requires object
+ // unwinding.
+ 
+-#if COMPILER(MSVC) && !defined(_DEBUG)
++#if COMPILER(MSVC) && !defined(_DEBUG) && !CPU(ARM_THUMB2)
+ #define TRY       __try {
+ #define EXCEPT(x) } __except (EXCEPTION_EXECUTE_HANDLER) { x; }
+ #else

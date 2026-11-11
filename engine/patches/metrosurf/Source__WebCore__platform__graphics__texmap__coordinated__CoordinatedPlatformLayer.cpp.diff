@@ -1,0 +1,15 @@
+--- a/Source/WebCore/platform/graphics/texmap/coordinated/CoordinatedPlatformLayer.cpp
++++ b/Source/WebCore/platform/graphics/texmap/coordinated/CoordinatedPlatformLayer.cpp
+@@ -1247,6 +1247,12 @@
+             m_contentsBuffer.committed = WTF::move(m_contentsBuffer.pending);
+             m_contentsBuffer.hasCommitted = !!m_contentsBuffer.committed;
+             m_pendingChanges.remove(Change::ContentsBuffer);
++#if defined(WP81) && ENABLE(DAMAGE_TRACKING)
++            if (m_pendingChanges.contains(Change::Damage)) {
++                layer.setDamage(*std::exchange(m_damage, std::nullopt));
++                m_pendingChanges.remove(Change::Damage);
++            }
++#endif
+         }
+ 
+         if (m_contentsBuffer.committed)

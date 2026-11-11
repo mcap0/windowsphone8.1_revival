@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stile</title><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+.box{width:40px;height:14px;background:#0a7;margin:4px 0}
+#a{animation:gira 4s linear infinite}
+#b::before{content:"";display:block;width:40px;height:14px;background:#a70;animation:girab 4s linear infinite}
+#c{animation:girac 4s linear infinite}
+#out{font:12px monospace;white-space:pre-wrap}
+#lungo{height:1600px;border-left:6px solid #333;margin-top:12px;padding-left:8px}
+</style></head><body>
+<div>Un foglio di stile con @keyframes aggiunto dopo, e un listener touch messo sul documento dopo, devono valere per
+gli elementi che c'erano gi&agrave;: ogni riga deve dire OK.</div>
+<div class="box" id="a"></div>
+<div id="b"></div>
+<div class="box tardi" id="c"></div>
+<div id="host"></div>
+<div class="box" id="fermo"></div>
+<div id="out"></div>
+<div id="lungo">Prova a mano: per 6 secondi dopo il rapporto la pagina scorre; poi un listener touchmove sul documento
+la ferma, e questo testo lo dice.<div id="mano"></div></div>
+<script src="common.js"></script><script>
+(function () {
+  var lines = [], out = T.$("out");
+  function say(ok, s) { lines.push((ok ? "OK " : "ERRORE ") + s); out.textContent = lines.join("\n"); }
+  function left(element, pseudo) { return parseFloat(getComputedStyle(element, pseudo || null).marginLeft); }
+  function count(element) { return element.getAnimations ? element.getAnimations({ subtree: true }).length : -1; }
+
+  // An element inside a shadow tree, animated by a name that the document's sheets will define.
+  var inner = null, host = T.$("host");
+  if (host.attachShadow) {
+    var root = host.attachShadow({ mode: "open" });
+    root.innerHTML = '<div id="s" style="width:40px;height:14px;background:#07a;animation:gira 4s linear infinite"></div>';
+    inner = root.getElementById("s");
+  }
+
+  // A layout with the names still unknown: nothing moves.
+  var before = [count(T.$("a")), count(T.$("b")), count(T.$("c"))];
+  left(T.$("a"));
+
+  T.afterPaint(function () {
+    var style = document.createElement("style");
+    style.textContent = "@keyframes gira{from{margin-left:0}to{margin-left:200px}}"
+      + "@keyframes girab{from{margin-left:0}to{margin-left:200px}}"
+      + "@supports (display:block){@media all{@keyframes girac{from{margin-left:0}to{margin-left:200px}}.tardi{color:rgb(1,2,3)}}}";
+    document.head.appendChild(style);
+    setTimeout(function () {
+      say(before.join() === "0,0,0", "prima del foglio nessuna animazione: " + before.join());
+      say(count(T.$("a")) === 1 && left(T.$("a")) > 5, "elemento: animazioni " + count(T.$("a")) + ", margine " + left(T.$("a")).toFixed(1));
+      say(count(T.$("b")) === 1 && left(T.$("b"), "::before") > 5, "::before: animazioni " + count(T.$("b")) + ", margine " + left(T.$("b"), "::before").toFixed(1));
+      say(count(T.$("c")) === 1 && left(T.$("c")) > 5, "dentro @supports e @media: animazioni " + count(T.$("c")) + ", margine " + left(T.$("c")).toFixed(1));
+      say(getComputedStyle(T.$("c")).color === "rgb(1, 2, 3)", "regola normale dello stesso foglio: " + getComputedStyle(T.$("c")).color);
+      if (inner)
+        say(count(inner) === 1 && left(inner) > 5, "albero shadow: animazioni " + count(inner) + ", margine " + left(inner).toFixed(1));
+      say(count(T.$("fermo")) === 0 && left(T.$("fermo")) === 0, "elemento senza animazione: fermo");
+
+      // The same name defined again by a later sheet: the running animation takes the new keyframes.
+      var again = document.createElement("style");
+      again.textContent = "@keyframes gira{from{margin-left:300px}to{margin-left:300px}}";
+      document.head.appendChild(again);
+      T.afterPaint(function () {
+        say(left(T.$("a")) === 300, "nome ridefinito: margine " + left(T.$("a")).toFixed(1));
+        T.send("stile", lines);
+        setTimeout(function () {
+          document.addEventListener("touchmove", function (e) { e.preventDefault(); }, { passive: false });
+          T.$("mano").textContent = "ORA la pagina non deve più scorrere col dito.";
+        }, 6000);
+      });
+    }, 600);
+  });
+})();
+</script></body></html>

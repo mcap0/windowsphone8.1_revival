@@ -1,0 +1,11 @@
+--- a/Source/cmake/OptionsJSCOnly.cmake
++++ b/Source/cmake/OptionsJSCOnly.cmake
+@@ -49,7 +49,7 @@
+     set(ENABLE_API_TESTS ON)
+ endif ()
+ 
+-if (WTF_CPU_ARM OR WTF_CPU_MIPS)
++if ((WTF_CPU_ARM OR WTF_CPU_MIPS) AND NOT WP81)
+     SET_AND_EXPOSE_TO_BUILD(USE_CAPSTONE TRUE)
+ endif ()
+ 

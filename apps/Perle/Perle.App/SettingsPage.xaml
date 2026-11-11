@@ -1,0 +1,30 @@
+<Page x:Class="Perle.App.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+  <Grid Margin="12,8">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="Trasmetti a TV" FontSize="24" FontWeight="SemiBold" />
+    <StackPanel Grid.Row="1" Margin="0,12,0,0">
+      <ToggleSwitch x:Name="DirectLinkSwitch" Header="Invia link diretto" Toggled="OnDirectLinkToggled" />
+      <TextBlock FontSize="12" Opacity="0.7" TextWrapping="Wrap"
+                 Text="Passa al TV il link originale del video invece di farlo passare dal telefono. Solo per TV che supportano HTTPS; YouTube potrebbe rifiutare il TV." />
+    </StackPanel>
+    <StackPanel Grid.Row="2" Margin="0,20,0,0">
+      <TextBlock Text="Log Trasmetti a TV" FontSize="18" />
+      <TextBlock FontSize="12" Opacity="0.7" TextWrapping="Wrap" Text="Registro tecnico degli ultimi tentativi, da allegare a una segnalazione" />
+      <StackPanel Orientation="Horizontal" Margin="0,8,0,8">
+        <Button Content="Copia log" Click="OnCopy" Margin="0,0,8,0" />
+        <Button Content="Cancella" Click="OnClear" />
+      </StackPanel>
+    </StackPanel>
+    <ScrollViewer Grid.Row="3" Background="#11888888">
+      <TextBlock x:Name="LogText" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap" IsTextSelectionEnabled="True" Margin="4" />
+    </ScrollViewer>
+  </Grid>
+</Page>

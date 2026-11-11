@@ -1,0 +1,23 @@
+--- a/Source/WTF/wtf/PlatformEnable.h
++++ b/Source/WTF/wtf/PlatformEnable.h
+@@ -725,7 +725,7 @@
+ #define ENABLE_JIT 1
+ #endif
+ 
+-#if USE(JSVALUE32_64)
++#if USE(JSVALUE32_64) && !(OS(WINDOWS) && CPU(ARM_THUMB2))
+ #undef ENABLE_JIT
+ #define ENABLE_JIT 0
+ #endif
+@@ -758,9 +758,11 @@
+ #if USE(JSVALUE32_64)
+ #undef ENABLE_FTL_JIT
+ #define ENABLE_FTL_JIT 0
++#if !(OS(WINDOWS) && CPU(ARM_THUMB2))
+ #undef ENABLE_DFG_JIT
+ #define ENABLE_DFG_JIT 0
+ #endif
++#endif
+ 
+ /* If possible, try to enable a disassembler. This is optional. We proceed in two
+    steps: first we try to find some disassembler that we can use, and then we

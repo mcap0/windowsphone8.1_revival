@@ -1,0 +1,304 @@
+diff --git a/src/model.cc b/src/model.cc
+index 035ffee..9bfc1ce 100644
+--- a/src/model.cc
++++ b/src/model.cc
+@@ -17,6 +17,13 @@
+ // For details of possible model layout see doc/models.md section model-structure
+ 
+ #include "model.h"
++#include <sstream>
++#include <thread>
++#include <memory>
++#include "nnet3/nnet-compile-looped.h"
++#include "msym.h"  // vosk/msym.h
++#include <fst/flags.h>
++DECLARE_string(fst_read_mode);
+ 
+ #include <sys/stat.h>
+ #include <fst/fst.h>
+@@ -111,7 +118,9 @@ static void KaldiLogHandler(const LogMessageEnvelope &env, const char *message)
+ 
+ Model::Model(const char *model_path) : model_path_str_(model_path) {
+ 
+-    SetLogHandler(KaldiLogHandler);
++    // keep a handler the app installed (vosk_wp81_set_log_handler: load-phase timestamps on the phone)
++    LogHandler app_handler = SetLogHandler(KaldiLogHandler);
++    if (app_handler) SetLogHandler(app_handler);
+ 
+ #ifdef HAVE_MKL
+     mkl_set_num_threads(1);
+@@ -240,20 +249,64 @@ void Model::ReadDataFiles()
+     feature_info_.silence_weighting_config.silence_weight = 1e-3;
+     feature_info_.silence_weighting_config.silence_phones_str = endpoint_config_.silence_phones;
+ 
++    // The network (read, collapse, compile the looped computation) loads on its own thread while this one
++    // loads the i-vector extractor and maps the graph: the load costs the slowest part, not the sum
++    // (PLAN.md §59.6). Nothing below touches nnet_, trans_model_ or decodable_info_ before the join.
+     trans_model_ = new kaldi::TransitionModel();
+     nnet_ = new kaldi::nnet3::AmNnetSimple();
+-    {
+-        bool binary;
+-        kaldi::Input ki(nnet3_rxfilename_, &binary);
+-        trans_model_->Read(ki.Stream(), binary);
+-        nnet_->Read(ki.Stream(), binary);
+-        SetBatchnormTestMode(true, &(nnet_->GetNnet()));
+-        SetDropoutTestMode(true, &(nnet_->GetNnet()));
+-        nnet3::CollapseModel(nnet3::CollapseModelConfig(), &(nnet_->GetNnet()));
+-    }
+-
+-    decodable_info_ = new nnet3::DecodableNnetSimpleLoopedInfo(decodable_opts_,
+-                                                               nnet_);
++    // no C++ exceptions in this build (CMakeLists.txt): a KALDI_ERR on this thread ends the process as on the main one
++    std::thread nnet_thread([this]() {
++        // final.mdl.prep (vosktest VOSK_WRITE_PREP=1 on the PC) holds the compiled looped computation, ~0.8 s
++        // to compile on the phone. The network itself always comes from final.mdl: written back, BatchNorm
++        // stats round-trip through mean/variance in float and the text changes (PLAN.md §59.6).
++        struct stat prep_stat, mdl_stat;
++        const std::string prep = nnet3_rxfilename_ + ".prep";
++        std::unique_ptr<kaldi::Input> prep_in;
++        bool prep_binary = true;
++        if (stat(prep.c_str(), &prep_stat) == 0 && stat(nnet3_rxfilename_.c_str(), &mdl_stat) == 0) {
++            prep_in.reset(new kaldi::Input(prep, &prep_binary));
++            std::istream &is = prep_in->Stream();
++            int32 version, chunk, subsampling, left_initial;
++            int64 mdl_size;
++            ExpectToken(is, prep_binary, "<VoskPrep>");
++            ReadBasicType(is, prep_binary, &version);
++            ReadBasicType(is, prep_binary, &mdl_size);
++            ReadBasicType(is, prep_binary, &chunk);
++            ReadBasicType(is, prep_binary, &subsampling);
++            ReadBasicType(is, prep_binary, &left_initial);
++            if (version != 2 || mdl_size != static_cast<int64>(mdl_stat.st_size) ||
++                chunk != decodable_opts_.frames_per_chunk ||
++                subsampling != decodable_opts_.frame_subsampling_factor ||
++                left_initial != decodable_opts_.extra_left_context_initial) {
++                KALDI_LOG << "Ignoring " << prep << ": made for another final.mdl or other decoding options";
++                prep_in.reset();
++            }
++        }
++        {
++            bool binary;
++            kaldi::Input ki(nnet3_rxfilename_, &binary);
++            trans_model_->Read(ki.Stream(), binary);
++            // the context recomputation in Read() is only needed to build the computation
++            if (prep_in) nnet_->ReadTrustingContext(ki.Stream(), binary);
++            else nnet_->Read(ki.Stream(), binary);
++            KALDI_LOG << "Network read";
++            SetBatchnormTestMode(true, &(nnet_->GetNnet()));
++            SetDropoutTestMode(true, &(nnet_->GetNnet()));
++            nnet3::CollapseModel(nnet3::CollapseModelConfig(), &(nnet_->GetNnet()));
++            KALDI_LOG << "Network collapsed";
++        }
++        if (prep_in) {
++            decodable_info_ = new nnet3::DecodableNnetSimpleLoopedInfo(decodable_opts_, nnet_, prep_in->Stream(), prep_binary);
++            // what Init() does to the network besides compiling
++            if (decodable_info_->has_ivectors)
++                nnet3::ModifyNnetIvectorPeriod(decodable_info_->frames_per_chunk, &(nnet_->GetNnet()));
++            KALDI_LOG << "Network ready (prepared computation)";
++        } else {
++            decodable_info_ = new nnet3::DecodableNnetSimpleLoopedInfo(decodable_opts_, nnet_);
++            KALDI_LOG << "Network ready";
++        }
++    });
++    bool have_ivector = false;
+ 
+     if (stat(final_ie_rxfilename_.c_str(), &buffer) == 0) {
+         KALDI_LOG << "Loading i-vector extractor from " << final_ie_rxfilename_;
+@@ -269,8 +322,7 @@ void Model::ReadDataFiles()
+ 
+         feature_info_.use_ivectors = true;
+         feature_info_.ivector_extractor_info.Init(ivector_extraction_opts);
+-    } else if (nnet_->IvectorDim() > 0) {
+-        KALDI_ERR << "Can't find required ivector extractor";
++        have_ivector = true;
+     } else {
+         feature_info_.use_ivectors = false;
+     }
+@@ -290,9 +342,21 @@ void Model::ReadDataFiles()
+ 
+     if (stat(hclg_fst_rxfilename_.c_str(), &buffer) == 0) {
+         KALDI_LOG << "Loading HCLG from " << hclg_fst_rxfilename_;
+-        hclg_fst_ = fst::ReadFstKaldiGeneric(hclg_fst_rxfilename_);
++        // precomposed by vosk/mkhclg as an aligned ConstFst: mapped, not read (PLAN.md §59.5)
++        FLAGS_fst_read_mode = "map";
++        {
++            // OpenFst logs to std::cerr, which the phone app never sees: catch it for the Kaldi log
++            std::ostringstream fst_log;
++            std::streambuf *old_cerr = std::cerr.rdbuf(fst_log.rdbuf());
++            hclg_fst_ = fst::StdFst::Read(hclg_fst_rxfilename_);
++            std::cerr.rdbuf(old_cerr);
++            KALDI_LOG << "HCLG read, type " << (hclg_fst_ ? hclg_fst_->Type() : std::string("none"))
++                      << ", OpenFst says: [" << fst_log.str() << "]";
++        }
+     } else {
+         KALDI_LOG << "Loading HCL and G from " << hcl_fst_rxfilename_ << " " << g_fst_rxfilename_;
++        // map the two graphs instead of copying them (64 MB): the slow part of loading on the phone
++        FLAGS_fst_read_mode = "map";  // DEFINE_string in openfst/src/lib/fst.cc
+         hcl_fst_ = fst::StdFst::Read(hcl_fst_rxfilename_);
+         g_fst_ = fst::StdFst::Read(g_fst_rxfilename_);
+         if (!ReadIntegerVectorSimple(disambig_rxfilename_, &disambig_)) {
+@@ -306,6 +370,14 @@ void Model::ReadDataFiles()
+     } else if (g_fst_ && g_fst_->OutputSymbols()) {
+         word_syms_ = g_fst_->OutputSymbols();
+     }
++    if (!word_syms_) {
++        // graph/words.msym (vosk/fstalign): the word table mapped, nothing parsed
++        std::string msym_path = model_path_str_ + "/graph/words.msym";
++        if (stat(msym_path.c_str(), &buffer) == 0 && (word_syms_ = msym::Map(msym_path))) {
++            KALDI_LOG << "Mapped words from " << msym_path;
++            word_syms_loaded_ = true;
++        }
++    }
+     if (!word_syms_) {
+         KALDI_LOG << "Loading words from " << word_syms_rxfilename_;
+         if (!(word_syms_ = fst::SymbolTable::ReadText(word_syms_rxfilename_)))
+@@ -356,6 +428,27 @@ void Model::ReadDataFiles()
+         rnnlm_enabled_ = true;
+     }
+ 
++
++    nnet_thread.join();
++    if (!have_ivector && nnet_->IvectorDim() > 0) {
++        KALDI_ERR << "Can't find required ivector extractor";
++    }
++}
++
++void Model::WritePrepared(const std::string &path) const
++{
++    struct stat mdl_stat;
++    if (stat(nnet3_rxfilename_.c_str(), &mdl_stat) != 0)  // not inside KALDI_ASSERT: compiled out with NDEBUG
++        KALDI_ERR << "Can't stat " << nnet3_rxfilename_;
++    kaldi::Output ko(path, true);
++    std::ostream &os = ko.Stream();
++    WriteToken(os, true, "<VoskPrep>");
++    WriteBasicType(os, true, static_cast<int32>(2));
++    WriteBasicType(os, true, static_cast<int64>(mdl_stat.st_size));
++    WriteBasicType(os, true, static_cast<int32>(decodable_opts_.frames_per_chunk));
++    WriteBasicType(os, true, static_cast<int32>(decodable_opts_.frame_subsampling_factor));
++    WriteBasicType(os, true, static_cast<int32>(decodable_opts_.extra_left_context_initial));
++    decodable_info_->WritePrepared(os, true);
+ }
+ 
+ void Model::Ref() 
+diff --git a/src/model.h b/src/model.h
+index 7fc09df..af21803 100644
+--- a/src/model.h
++++ b/src/model.h
+@@ -45,6 +45,9 @@ public:
+     void Ref();
+     void Unref();
+     int FindWord(const char *word);
++    // final.mdl.prep: the compiled looped computation of this load, so the phone skips CompileLooped and the
++    // context recomputation of AmNnetSimple::Read (PLAN.md §59.6)
++    void WritePrepared(const std::string &path) const;
+ 
+ protected:
+     ~Model();
+diff --git a/src/vosk_api.cc b/src/vosk_api.cc
+index 0c205f8..c56d1c3 100644
+--- a/src/vosk_api.cc
++++ b/src/vosk_api.cc
+@@ -30,9 +30,9 @@ using namespace kaldi;
+ 
+ VoskModel *vosk_model_new(const char *model_path)
+ {
+-    try {
++    {
+         return (VoskModel *)new Model(model_path);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }
+@@ -52,9 +52,9 @@ int vosk_model_find_word(VoskModel *model, const char *word)
+ 
+ VoskSpkModel *vosk_spk_model_new(const char *model_path)
+ {
+-    try {
++    {
+         return (VoskSpkModel *)new SpkModel(model_path);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }
+@@ -69,27 +69,27 @@ void vosk_spk_model_free(VoskSpkModel *model)
+ 
+ VoskRecognizer *vosk_recognizer_new(VoskModel *model, float sample_rate)
+ {
+-    try {
++    {
+         return (VoskRecognizer *)new Recognizer((Model *)model, sample_rate);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }
+ 
+ VoskRecognizer *vosk_recognizer_new_spk(VoskModel *model, float sample_rate, VoskSpkModel *spk_model)
+ {
+-    try {
++    {
+         return (VoskRecognizer *)new Recognizer((Model *)model, sample_rate, (SpkModel *)spk_model);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }
+ 
+ VoskRecognizer *vosk_recognizer_new_grm(VoskModel *model, float sample_rate, const char *grammar)
+ {
+-    try {
++    {
+         return (VoskRecognizer *)new Recognizer((Model *)model, sample_rate, grammar);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }
+@@ -148,27 +148,27 @@ void vosk_recognizer_set_endpointer_delays(VoskRecognizer *recognizer, float t_s
+ 
+ int vosk_recognizer_accept_waveform(VoskRecognizer *recognizer, const char *data, int length)
+ {
+-    try {
++    {
+         return ((Recognizer *)(recognizer))->AcceptWaveform(data, length);
+-    } catch (...) {
++    } if (false) {
+         return -1;
+     }
+ }
+ 
+ int vosk_recognizer_accept_waveform_s(VoskRecognizer *recognizer, const short *data, int length)
+ {
+-    try {
++    {
+         return ((Recognizer *)(recognizer))->AcceptWaveform(data, length);
+-    } catch (...) {
++    } if (false) {
+         return -1;
+     }
+ }
+ 
+ int vosk_recognizer_accept_waveform_f(VoskRecognizer *recognizer, const float *data, int length)
+ {
+-    try {
++    {
+         return ((Recognizer *)(recognizer))->AcceptWaveform(data, length);
+-    } catch (...) {
++    } if (false) {
+         return -1;
+     }
+ }
+@@ -308,9 +308,9 @@ int vosk_batch_recognizer_get_pending_chunks(VoskBatchRecognizer *recognizer)
+ 
+ VoskTextProcessor *vosk_text_processor_new(const char *tagger, const char *verbalizer)
+ {
+-    try {
++    {
+         return (VoskTextProcessor *)new Processor(tagger, verbalizer);
+-    } catch (...) {
++    } if (false) {
+         return nullptr;
+     }
+ }

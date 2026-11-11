@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""browsertest [page ...] — runs the self-reporting test pages of share/browser on the phone and prints what each sent.
+
+Each page is opened in the "Internet" app through tools/phonecmd (the app must be open, on the home Wi-Fi), then this
+waits for its report in share/inbox/browser.txt (the pages post it with T.send). Default pages: features, moduli, media.
+The PC's pages count as a secure context for the run ("motore sicuro"), so the HTTPS-only APIs are tested too.
+
+    tools/browsertest                 # the three pages
+    tools/browsertest media           # one
+    tools/browsertest --wait 120 media
+"""
+import os, subprocess, sys, time
+
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+REPORT = os.path.join(ROOT, "share", "inbox", "browser.txt")
+HOST = "192.168.1.148"
+WAITS = {"media": 180, "riproduzione": 120}
+
+args = sys.argv[1:]
+wait = None
+if args[:1] == ["--wait"]:
+    wait, args = int(args[1]), args[2:]
+pages = args or ["features", "moduli", "media"]
+cmd = os.path.join(ROOT, "tools", "phonecmd")
+subprocess.check_call([cmd, "motore sicuro " + HOST])
+for page in pages:
+    start = os.path.getsize(REPORT) if os.path.exists(REPORT) else 0
+    subprocess.check_call([cmd, "http://%s:8765/browser/%s.html?%d" % (HOST, page, time.time())])
+    deadline = time.time() + (wait or WAITS.get(page, 60))
+    text = ""
+    while time.time() < deadline:
+        time.sleep(1)
+        if os.path.exists(REPORT) and os.path.getsize(REPORT) > start:
+            with open(REPORT, "rb") as f:
+                f.seek(start)
+                text = f.read().decode("utf-8", "replace")
+            if "[%s]" % page in text:
+                break
+    print("==== %s ====" % page)
+    print(text.strip() if "[%s]" % page in text else "nessun rapporto (app chiusa, o pagina ferma)")

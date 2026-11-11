@@ -1,0 +1,13 @@
+--- a/Source/WebCore/platform/graphics/SourceBufferPrivate.cpp
++++ b/Source/WebCore/platform/graphics/SourceBufferPrivate.cpp
+@@ -583,6 +583,10 @@
+     flushTracksThatNeedReenqueueing();
+     reenqueueMediaIfNeeded(currentTime);
+ 
++#if defined(WP81)
++    didRemoveCodedFrames(start, end);
++#endif
++
+     // 4. If buffer full flag equals true and this object is ready to accept more bytes, then set the buffer full flag to false.
+     // No-op
+ 

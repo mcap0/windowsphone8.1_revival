@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="DumbPhone.Posta" Publisher="CN=DumbPhone" Version="1.2.3.0" />
+  <mp:PhoneIdentity PhoneProductId="902fb31e-681c-4a5c-bc76-274ce3d8c44c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Posta</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Posta.App">
+      <m3:VisualElements DisplayName="Posta"
+                         Square150x150Logo="Assets\Square150x150Logo.png"
+                         Square44x44Logo="Assets\Square44x44Logo.png"
+                         Description="Client e-mail IMAP/SMTP (Gmail con password per le app)"
+                         ForegroundText="light"
+                         BackgroundColor="transparent"
+                         ToastCapable="true">
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png" ShortName="Posta" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1565C0" />
+      </m3:VisualElements>
+      <Extensions>
+        <!-- PostaTask.Watch: new-mail check every 15 min (the system minimum) and when the internet comes back,
+             also with the phone locked; toasts come from this app -->
+        <Extension Category="windows.backgroundTasks" EntryPoint="PostaTask.Watch">
+          <BackgroundTasks>
+            <Task Type="timer" />
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>

@@ -1,0 +1,11 @@
+--- a/Source/JavaScriptCore/assembler/ARMv7Assembler.h
++++ b/Source/JavaScriptCore/assembler/ARMv7Assembler.h
+@@ -2886,6 +2886,8 @@
+             linuxPageFlush(current, current + page);
+ 
+         linuxPageFlush(current, end);
++#elif OS(WINDOWS)
++        FlushInstructionCache(GetCurrentProcess(), code, size);
+ #else
+ #error "The cacheFlush support is missing on this platform."
+ #endif

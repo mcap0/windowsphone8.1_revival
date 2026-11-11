@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# navitmap [sicilia] — latest OSM data → Navit binfile for the phone: share/maps/<region>.bin + share/maps/index.json.
+# Download (Geofabrik, daily), osmium cut and maptool all run in the dumbphone-navit container
+# (tools/navit/Containerfile); nothing is installed on the host. The phone app reads index.json from tools/inbox.
+set -Eeuo pipefail
+
+region=${1:-sicilia}
+case $region in
+    # Sicily with Egadi, Eolie, Ustica, Pantelleria, Pelagie and the Messina strait (no Sardinia).
+    sicilia) source=europe/italy/isole; bbox=11.8,35.4,15.7,38.9 ;;
+    *) echo "unknown region: $region" >&2; exit 2 ;;
+esac
+
+repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+image=dumbphone-navit
+run() { podman run --rm --security-opt label=disable -v "$repo":/w -w /w "$image" bash -c "$1"; }
+
+podman image exists "$image" || podman build -t "$image" -f "$repo/tools/navit/Containerfile" "$repo/tools/navit"
+
+if [[ ! -x $repo/data/navit-build/navit/maptool/maptool ]]; then
+    mkdir -p "$repo/data/navit-build"
+    run "cd data/navit-build && cmake /w/ref/navit -DSAMPLE_MAP=n -DBUILD_MAPTOOL=y -DDISABLE_QT=y \
+         -DCMAKE_BUILD_TYPE=Release >cmake.log && make -j8 maptool >make-maptool.log"
+fi
+
+mkdir -p "$repo/data/osm" "$repo/share/maps"
+pbf=data/osm/$(basename "$source")-latest.osm.pbf
+url=https://download.geofabrik.de/$source-latest.osm.pbf
+echo "download $url (only if newer)"
+run "curl -sSfL -z $pbf -o $pbf $url && curl -sSfL -o $pbf.md5 $url.md5 && cd data/osm && md5sum -c $(basename "$pbf").md5"
+
+work=data/navit-build/map-$region
+echo "cut $region ($bbox) and run maptool"
+run "rm -rf $work && mkdir -p $work && osmium extract --overwrite -b $bbox $pbf -o $work/$region.osm.pbf && \
+     osmium fileinfo -g header.option.osmosis_replication_timestamp $pbf > $work/osmdate && \
+     cd $work && /w/data/navit-build/navit/maptool/maptool --protobuf -i $region.osm.pbf $region.bin > maptool.log 2>&1"
+
+out=$repo/$work/$region.bin
+osmdate=$(cat "$repo/$work/osmdate")
+size=$(stat -c %s "$out")
+md5=$(md5sum "$out" | cut -d' ' -f1)
+mv -f "$out" "$repo/share/maps/$region.bin"
+python3 - "$repo/share/maps/index.json" "$region" "$osmdate" "$size" "$md5" <<'PY'
+import json, sys, time, os
+path, region, osmdate, size, md5 = sys.argv[1:]
+index = {}
+if os.path.exists(path):
+    try:
+        index = json.load(open(path))
+    except ValueError:
+        index = {}
+maps = {m["name"]: m for m in index.get("maps", [])}
+maps[region] = {"name": region, "file": region + ".bin", "osm_date": osmdate, "size": int(size), "md5": md5,
+                "built": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+json.dump({"maps": sorted(maps.values(), key=lambda m: m["name"])}, open(path, "w"), indent=1)
+PY
+echo "share/maps/$region.bin  $size byte  OSM $osmdate  md5 $md5"

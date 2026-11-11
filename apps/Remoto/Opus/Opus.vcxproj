@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- libopus (the copy in TelegramClient.Opus: celt, silk, src; fixed point as there), static, for Remoto's audio. -->
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7C1E9B52-3A4D-4F80-9E61-2B5D8C0A4F17}</ProjectGuid>
+    <RootNamespace>Opus</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OpusDir>$(ProjectDir)..\..\TelegramNative\TelegramClient.Opus\opus\</OpusDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>NDEBUG;OPUS_BUILD;FIXED_POINT;USE_ALLOCA;HAVE_LRINTF;HAVE_LRINT;DISABLE_FLOAT_API;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(OpusDir)silk\fixed;$(OpusDir);$(OpusDir)silk;$(OpusDir)celt;$(OpusDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAsWinRT>false</CompileAsWinRT>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(OpusDir)celt\arm\armcpu.c" />
+    <ClCompile Include="$(OpusDir)celt\arm\arm_celt_map.c" />
+    <ClCompile Include="$(OpusDir)celt\bands.c" />
+    <ClCompile Include="$(OpusDir)celt\celt.c" />
+    <ClCompile Include="$(OpusDir)celt\celt_decoder.c" />
+    <ClCompile Include="$(OpusDir)celt\celt_encoder.c" />
+    <ClCompile Include="$(OpusDir)celt\celt_lpc.c" />
+    <ClCompile Include="$(OpusDir)celt\cwrs.c" />
+    <ClCompile Include="$(OpusDir)celt\entcode.c" />
+    <ClCompile Include="$(OpusDir)celt\entdec.c" />
+    <ClCompile Include="$(OpusDir)celt\entenc.c" />
+    <ClCompile Include="$(OpusDir)celt\kiss_fft.c" />
+    <ClCompile Include="$(OpusDir)celt\laplace.c" />
+    <ClCompile Include="$(OpusDir)celt\mathops.c" />
+    <ClCompile Include="$(OpusDir)celt\mdct.c" />
+    <ClCompile Include="$(OpusDir)celt\modes.c" />
+    <ClCompile Include="$(OpusDir)celt\pitch.c" />
+    <ClCompile Include="$(OpusDir)celt\quant_bands.c" />
+    <ClCompile Include="$(OpusDir)celt\rate.c" />
+    <ClCompile Include="$(OpusDir)celt\vq.c" />
+    <ClCompile Include="$(OpusDir)silk\A2NLSF.c" />
+    <ClCompile Include="$(OpusDir)silk\ana_filt_bank_1.c" />
+    <ClCompile Include="$(OpusDir)silk\biquad_alt.c" />
+    <ClCompile Include="$(OpusDir)silk\bwexpander.c" />
+    <ClCompile Include="$(OpusDir)silk\bwexpander_32.c" />
+    <ClCompile Include="$(OpusDir)silk\check_control_input.c" />
+    <ClCompile Include="$(OpusDir)silk\CNG.c" />
+    <ClCompile Include="$(OpusDir)silk\code_signs.c" />
+    <ClCompile Include="$(OpusDir)silk\control_audio_bandwidth.c" />
+    <ClCompile Include="$(OpusDir)silk\control_codec.c" />
+    <ClCompile Include="$(OpusDir)silk\control_SNR.c" />
+    <ClCompile Include="$(OpusDir)silk\debug.c" />
+    <ClCompile Include="$(OpusDir)silk\decoder_set_fs.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_core.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_frame.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_indices.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_parameters.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_pitch.c" />
+    <ClCompile Include="$(OpusDir)silk\decode_pulses.c" />
+    <ClCompile Include="$(OpusDir)silk\dec_API.c" />
+    <ClCompile Include="$(OpusDir)silk\encode_indices.c" />
+    <ClCompile Include="$(OpusDir)silk\encode_pulses.c" />
+    <ClCompile Include="$(OpusDir)silk\enc_API.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\apply_sine_window_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\autocorr_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\burg_modified_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\corrMatrix_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\encode_frame_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\find_LPC_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\find_LTP_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\find_pitch_lags_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\find_pred_coefs_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\k2a_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\k2a_Q16_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\LTP_analysis_filter_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\LTP_scale_ctrl_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\noise_shape_analysis_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\pitch_analysis_core_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\prefilter_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\process_gains_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\regularize_correlations_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\residual_energy16_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\residual_energy_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\schur64_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\schur_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\solve_LS_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\vector_ops_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\fixed\warped_autocorrelation_FIX.c" />
+    <ClCompile Include="$(OpusDir)silk\gain_quant.c" />
+    <ClCompile Include="$(OpusDir)silk\HP_variable_cutoff.c" />
+    <ClCompile Include="$(OpusDir)silk\init_decoder.c" />
+    <ClCompile Include="$(OpusDir)silk\init_encoder.c" />
+    <ClCompile Include="$(OpusDir)silk\inner_prod_aligned.c" />
+    <ClCompile Include="$(OpusDir)silk\interpolate.c" />
+    <ClCompile Include="$(OpusDir)silk\lin2log.c" />
+    <ClCompile Include="$(OpusDir)silk\log2lin.c" />
+    <ClCompile Include="$(OpusDir)silk\LPC_analysis_filter.c" />
+    <ClCompile Include="$(OpusDir)silk\LPC_inv_pred_gain.c" />
+    <ClCompile Include="$(OpusDir)silk\LP_variable_cutoff.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF2A.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_decode.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_del_dec_quant.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_encode.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_stabilize.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_unpack.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_VQ.c" />
+    <ClCompile Include="$(OpusDir)silk\NLSF_VQ_weights_laroia.c" />
+    <ClCompile Include="$(OpusDir)silk\NSQ.c" />
+    <ClCompile Include="$(OpusDir)silk\NSQ_del_dec.c" />
+    <ClCompile Include="$(OpusDir)silk\pitch_est_tables.c" />
+    <ClCompile Include="$(OpusDir)silk\PLC.c" />
+    <ClCompile Include="$(OpusDir)silk\process_NLSFs.c" />
+    <ClCompile Include="$(OpusDir)silk\quant_LTP_gains.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_down2.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_down2_3.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_private_AR2.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_private_down_FIR.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_private_IIR_FIR.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_private_up2_HQ.c" />
+    <ClCompile Include="$(OpusDir)silk\resampler_rom.c" />
+    <ClCompile Include="$(OpusDir)silk\shell_coder.c" />
+    <ClCompile Include="$(OpusDir)silk\sigm_Q15.c" />
+    <ClCompile Include="$(OpusDir)silk\sort.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_decode_pred.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_encode_pred.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_find_predictor.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_LR_to_MS.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_MS_to_LR.c" />
+    <ClCompile Include="$(OpusDir)silk\stereo_quant_pred.c" />
+    <ClCompile Include="$(OpusDir)silk\sum_sqr_shift.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_gain.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_LTP.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_NLSF_CB_NB_MB.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_NLSF_CB_WB.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_other.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_pitch_lag.c" />
+    <ClCompile Include="$(OpusDir)silk\tables_pulses_per_block.c" />
+    <ClCompile Include="$(OpusDir)silk\table_LSF_cos.c" />
+    <ClCompile Include="$(OpusDir)silk\VAD.c" />
+    <ClCompile Include="$(OpusDir)silk\VQ_WMat_EC.c" />
+    <ClCompile Include="$(OpusDir)src\analysis.c" />
+    <ClCompile Include="$(OpusDir)src\mlp.c" />
+    <ClCompile Include="$(OpusDir)src\mlp_data.c" />
+    <ClCompile Include="$(OpusDir)src\opus.c" />
+    <ClCompile Include="$(OpusDir)src\opus_decoder.c" />
+    <ClCompile Include="$(OpusDir)src\opus_encoder.c" />
+    <ClCompile Include="$(OpusDir)src\opus_multistream.c" />
+    <ClCompile Include="$(OpusDir)src\opus_multistream_decoder.c" />
+    <ClCompile Include="$(OpusDir)src\opus_multistream_encoder.c" />
+    <ClCompile Include="$(OpusDir)src\repacketizer.c" />
+    <ClCompile Include="$(OpusDir)src\repacketizer_demo.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

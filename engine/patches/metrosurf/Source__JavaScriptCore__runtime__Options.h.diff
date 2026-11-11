@@ -1,0 +1,16 @@
+--- a/Source/JavaScriptCore/runtime/Options.h
++++ b/Source/JavaScriptCore/runtime/Options.h
+@@ -174,7 +174,13 @@
+     static unsigned computeNumberOfGCMarkers(unsigned maxNumberOfGCMarkers);
+     static unsigned computeNumberOfWorkerThreads(int maxNumberOfWorkerThreads, int minimum = 1);
+     static int32_t computePriorityDeltaOfWorkerThreads(int32_t twoCorePriorityDelta, int32_t multiCorePriorityDelta);
++#if OS(WINDOWS) && CPU(ARM_THUMB2) && ENABLE(JIT)
++    static constexpr bool isWP81ARMJIT() { return true; }
++    static constexpr bool jitEnabledByDefault() { return true; }
++#else
++    static constexpr bool isWP81ARMJIT() { return false; }
+     static constexpr bool jitEnabledByDefault() { return isAddress64Bit(); }
++#endif
+     static constexpr bool ipintEnabledByDefault() { return isARM64() || isARM64E() || isX86_64(); }
+     static double defaultQuickDFGTierUpThresholdFactor()
+     {

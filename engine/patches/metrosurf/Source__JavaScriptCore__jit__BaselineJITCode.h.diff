@@ -1,0 +1,10 @@
+--- a/Source/JavaScriptCore/jit/BaselineJITCode.h
++++ b/Source/JavaScriptCore/jit/BaselineJITCode.h
+@@ -26,6 +26,7 @@
+ #pragma once
+ 
+ #include "CallLinkInfo.h"
++#include "JumpTable.h"
+ #include "JITCode.h"
+ #include "JITCodeMap.h"
+ #include "PropertyInlineCache.h"

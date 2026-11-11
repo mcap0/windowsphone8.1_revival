@@ -1,0 +1,100 @@
+comandi-001	fai partire timer da un'ora e mezza
+comandi-002	quanto manca alla fine del timer
+comandi-003	cancella timer
+comandi-004	svegliami giovedì all'una e mezza nel weekend
+comandi-005	ho sveglie domani
+comandi-006	annulla la sveglia di diciotto e quarantadue
+comandi-007	chiamami mamma al cellulare
+comandi-008	metti La voce del padrone
+comandi-009	riprendi la musica
+comandi-010	accendi la bluetooth
+comandi-011	piove per Ragusa
+comandi-012	leggi il calendario nel fine settimana
+comandi-013	mi dici che ore sono
+comandi-014	che giorno è domani
+comandi-015	imposta timer a un'ora e mezza
+comandi-016	quanto resta al timer
+comandi-017	togli il timer
+comandi-018	metti una sveglia all'una e trentasei
+comandi-019	a che ora suona la sveglia
+comandi-020	disattiva la sveglia delle ventidue e un quarto
+comandi-021	chiamami Francesca
+comandi-022	musica a caso
+comandi-023	fai ripartire la musica
+comandi-024	aprimi le impostazioni del appunti
+comandi-025	meteo Trieste venerdì
+comandi-026	leggimi gli impegni questa settimana
+comandi-027	dimmi l'ora
+comandi-028	avvertimi tra mezz'ora
+comandi-029	quanto tempo manca al timer
+comandi-030	imposta una sveglia nel weekend le due
+comandi-031	quali sveglie ho
+comandi-032	annulla la sveglia delle tredici e un quarto
+comandi-033	telefona a papà
+comandi-034	riproduci musica casuale
+comandi-035	metti in pausa
+comandi-036	impostazioni rete cellulare
+comandi-037	meteo Palermo
+comandi-038	leggimi gli impegni
+comandi-039	conto alla rovescia di un quarto d'ora
+comandi-040	elimina timer
+comandi-041	svegliami dopodomani a mezzanotte
+comandi-042	annulla le sveglie alle tredici
+comandi-043	telefona a papà al fisso
+comandi-044	suona Battiato
+comandi-045	apri registratore
+comandi-046	meteo Venezia nel weekend
+comandi-047	che giorno è
+comandi-048	fai partire un timer cinquantuno secondi e ventisei minuti
+comandi-049	ferma timer
+comandi-050	metti la sveglia tutti i giorni all'una meno cinquantotto
+comandi-051	leggi le sveglie
+comandi-052	disattiva le sveglie alle quattro
+comandi-053	chiama dottor Bianchi
+comandi-054	torna indietro
+comandi-055	impostazioni batteria
+comandi-056	che tempo farà per Padova nel fine settimana
+comandi-057	che cosa ho venerdì
+comandi-058	sai che ore sono
+comandi-059	che data è
+comandi-060	avvisami tra un'ora e mezza
+comandi-061	a che punto è il timer
+comandi-062	metti la sveglia tutti i giorni alle ventidue e mezza di notte
+comandi-063	dimmi le sveglie
+comandi-064	annulla le sveglie delle tredici meno un quarto
+comandi-065	telefona a Giulia
+comandi-066	impostazioni rotazione schermo
+comandi-067	dimmi gli impegni nel fine settimana
+comandi-068	che data è oggi
+comandi-069	avvertimi tra undici minuti e mezza
+comandi-070	timer quanto manca
+comandi-071	cancella il timer
+comandi-072	puoi svegliarmi lunedì per mezzogiorno nel weekend
+comandi-073	elenca le sveglie
+comandi-074	togli le sveglie alle diciannove
+comandi-075	chiamami mamma
+comandi-076	com'è il meteo in Bari
+comandi-077	impegni della nel weekend
+comandi-078	che ora è
+comandi-079	avvertimi tra tredici secondo e mezzo
+comandi-080	ferma il timer
+comandi-081	imposta una sveglia nel weekend alle diciotto e un quarto del pomeriggio
+comandi-082	togli la sveglia delle diciannove
+comandi-083	puoi chiamare dottor Bianchi
+comandi-084	impostazioni account email
+comandi-085	com'è il meteo
+comandi-086	leggi il calendario
+comandi-087	che ore sono
+comandi-088	che giorno è oggi
+comandi-089	annulla al timer
+comandi-090	che sveglie ho
+comandi-091	metti musica a caso
+comandi-092	salta canzone
+comandi-093	apri la meteo
+comandi-094	meteo Reggio Calabria la prossima settimana
+comandi-095	ho appuntamenti questa settimana
+comandi-096	quanto manca al timer
+comandi-097	stop al timer
+comandi-098	a che ora è la sveglia
+comandi-099	metti delle canzoni a caso
+comandi-100	fammi sentire un po' di musica a caso

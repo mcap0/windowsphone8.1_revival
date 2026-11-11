@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="DumbPhone.ProvaVoip" Publisher="CN=DumbPhone" Version="1.5.2.0" />
+  <mp:PhoneIdentity PhoneProductId="751052db-3f2f-43c6-9428-facae48dda48" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Prova VoIP</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\ApplicationIcon.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it-IT" />
+  </Resources>
+  <Applications>
+    <Application Id="x751052dby3f2fy43c6y9428yfacae48dda48x" Executable="AGHost.exe" EntryPoint="MainPage.xaml">
+      <m3:VisualElements DisplayName="Prova VoIP" Square150x150Logo="Assets\ApplicationIcon.png" Square44x44Logo="Assets\Square44.png" Description="Prove VoIP" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
+        <m3:DefaultTile Square71x71Logo="Assets\Tile.png" />
+      </m3:VisualElements>
+      <!-- PLAN §69.8: a Silverlight 8.1 app's agents run through AgHost background tasks declared here. The broker
+           (PhoneBrokerClient.dll) maps agent types 5-7 to AgHost.BackgroundTask, 8-10 (VoIP) to
+           AgHost.BackgroundVoipTask, 11 to AgHost.BackgroundAudioTask. The VoIP one is a controlChannel task hosted in
+           our out-of-process server ProvaVoip.VoipHost.exe (as Telegram WP 8.1 does with its BackEnd.ServerHost). -->
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="AgHost.BackgroundTask">
+          <BackgroundTasks>
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+        <Extension Category="windows.backgroundTasks" EntryPoint="AgHost.BackgroundVoipTask">
+          <BackgroundTasks ServerName="ProvaVoip.VoipHost">
+            <Task Type="controlChannel" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="privateNetworkClientServer" />
+    <Capability Name="internetClientServer" />
+    <DeviceCapability Name="microphone" />
+  </Capabilities>
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>AgHostSvcs.dll</Path>
+        <ActivatableClass ActivatableClassId="AgHost.BackgroundVoipTask" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+    <Extension Category="windows.activatableClass.outOfProcessServer">
+      <OutOfProcessServer ServerName="ProvaVoip.VoipHost">
+        <Path>ProvaVoip.VoipHost.exe</Path>
+        <Instancing>singleInstance</Instancing>
+        <ActivatableClass ActivatableClassId="ProvaVoip.VoipHost.Server" />
+      </OutOfProcessServer>
+    </Extension>
+  </Extensions>
+</Package>

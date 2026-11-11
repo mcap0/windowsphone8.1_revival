@@ -1,0 +1,1002 @@
+# Cortesi set A (giro 10, 2026-11-03 notte): richieste gentili e indirette come nelle prove sul telefono
+# delle 22:00-22:25, da cortesi.py (pezzi scritti a mano prima di misurare). "now" = mar 2026-11-03 10:00.
+ciao amico mio assistente metteresti una sveglia per le diciassette per favore	imposta_sveglia	ora=17:00;etichetta=
+il mio agente dovresti farmi il favore di svegliarmi domani alle sette grazie mille	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro assistente mi piacerebbe molto se tu mi dicessi che tempo fa a catania per favore	meteo	luogo=catania;giorno=
+mi piacerebbe se tu adesso mi dicessi come funziona la fotosintesi grazie mille	online
+potresti certi dirmi se domani piove a roma gentilmente	meteo	luogo=roma;giorno=2026-11-04
+mio caro assistente mi faresti una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+ciao amico assistente mi piacerebbe se tu riuscissi a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro mio assistente mi potresti per favore dirmi che ore sono	ora
+potresti dirmi a che punto è il timer	stato_timer
+caro assistente mi piacerebbe be se tu riuscissi a impostare un timer di venti minuti gentilmente	imposta_timer	secondi=1200
+adesso riprodurresti qualcosa dei queen se puoi per favore	riproduci_musica	richiesta=queen
+mio caro assistente metti una sveglia domani alle sei gentilmente	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mi potresti adesso dirmi a che ora c'è natale nel duemilaventisette	online
+il mio agente potresti in questo momento scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+metti una nota su onenote e scrivere chiamare l'idraulico grazie mille	prendi_nota	testo=chiamare l'idraulico
+caro mio assistente non è che riusciresti a mettere una nota su onenote e scrivere chiamare l'idraulico grazie mille	prendi_nota	testo=chiamare l'idraulico
+un attimo metteresti i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+metteresti un timer di un quarto d'ora se puoi per favore	imposta_timer	secondi=900
+vorrei che tu riuscissi a dirmi come funziona la fotosintesi per favore	online
+mio caro assistente vorrei che tu riuscissi a telefonare a papà	chiama	chi=papà
+caro mio assistente mi faresti il favore di ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+mi potresti gentilmente mettere una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+il mio agente vorrei che tu riuscissi a raccontarmi una barzelletta grazie	online
+ciao amico assistente non è che riusciresti a cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+amico mio assistente metteresti i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+ciao caro adesso mi leggeresti gli impegni di oggi se puoi per favore	leggi_calendario	dal=2026-11-03;giorni=1
+caro assistente a me piacerebbe molto se tu potessi adesso dirmi che tempo fa a catania grazie	meteo	luogo=catania;giorno=
+mi piacerebbe se tu mi dicessi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+caro mio assistente potresti gentilmente telefonare a papà	chiama	chi=papà
+il mio agente dovresti farmi il favore di dirmi che cosa fa la roma la prossima settimana	online
+caro assistente mi piacerebbe se tu in questo momento mi dicessi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+mio caro assistente mi faresti il favore di dirmi che ore sono grazie	ora
+metteresti una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+amico mio assistente dovresti farmi il favore di mettere una sveglia domani alle sei gentilmente	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico assistente riusciresti un attimo a dirmi che cosa fa la roma la prossima settimana grazie mille	online
+a me piacerebbe molto se tu potessi dirmi a che punto è il timer grazie	stato_timer
+caro mio assistente non è che riusciresti a mettere e un timer di dieci secondi grazie	imposta_timer	secondi=10
+gentilissimo assistente vorrei che tu riuscissi a far partire un timer di tre minuti se puoi per favore	imposta_timer	secondi=180
+amico mio assistente mi diresti che tempo fa a catania	meteo	luogo=catania;giorno=
+caro assistente potresti impostare una sveglia per le sette e mezza grazie mille	imposta_sveglia	ora=07:30;etichetta=
+amico mio assistente riproduci qualcosa dei queen	riproduci_musica	richiesta=queen
+metti i pink floyd se puoi per favore	riproduci_musica	richiesta=pink floyd
+ciao amico assistente non è che riusciresti noi a impostare una sveglia per le sette e mezza grazie mille	imposta_sveglia	ora=07:30;etichetta=
+gentilissimo assistente mi potresti dirmi chi ha vinto la partita ieri sera grazie mille	online
+mio caro assistente mi faresti il favore di dirmi se domani piove a roma	meteo	luogo=roma;giorno=2026-11-04
+mio caro assistente mi potresti dirmi come è il tempo a messina per favore	meteo	luogo=messina;giorno=
+metteresti un timer di dieci secondi	imposta_timer	secondi=10
+il mio agente mi piacerebbe molto se tu facessi partire un timer di tre minuti	imposta_timer	secondi=180
+ciao amico mio assistente adesso metteresti i pink floyd	riproduci_musica	richiesta=pink floyd
+mi piacerebbe se tu mi dicessi a che punto è il timer grazie	stato_timer
+gentilissimo assistente metteresti una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+gentilissimo assistente non è che riusciresti a cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+ciao amico mio assistente mi faresti il favore di dirmi come funziona la fotosintesi	online
+caro assistente a me piacerebbe molto se tu potessi adesso svegliarmi alle otto	imposta_sveglia	ora=08:00;etichetta=
+ciao amico assistente non è che riusciresti noi a salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+mi piacerebbe se tu riuscissi a cercare su internet cosa fa la roma la prossima settimana grazie mille	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+ciao amico mio assistente in questo momento metteresti un timer di un quarto d'ora gentilmente	imposta_timer	secondi=900
+mi piacerebbe be se tu riuscissi a ricordarmi alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+gentilissimo assistente dovresti farmi il favore di ricordarmi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+mi piacerebbe se tu riuscissi a chiamare giuseppe per favore	chiama	chi=giuseppe
+ciao caro vorrei che tu riuscissi a dirmi chi ha vinto la partita ieri sera	online
+il mio agente dovresti farmi il favore di mettere e una nota sua notte e scrivere il codice del cancello è quattro due uno grazie mille	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente mi piacerebbe se tu riuscissi a mettere un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+amico mio assistente metteresti i pink floyd in sottofondo gentilmente	riproduci_musica	richiesta=pink floyd
+ciao caro dovresti farmi gentilmente il favore di mettere una sveglia per le diciassette gentilmente	imposta_sveglia	ora=17:00;etichetta=
+amico mio assistente cercheresti su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+ciao caro potresti spiegarmi come si fa la pasta alla norma grazie	online
+caro mio assistente non è che riusciresti a dirmi che giorno è oggi	data
+riusciresti per favore a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+gentilissimo assistente a me piacerebbe molto se tu potessi dirmi come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+amico mio assistente mi potresti certi cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+caro assistente a me piacerebbe molto se tu potessi dirmi a che ora c'è natale nel duemilaventisette	online
+caro mio assistente a me piacerebbe molto se tu potessi gentilmente dirmi che tempo farà domani a palermo grazie	meteo	luogo=palermo;giorno=2026-11-04
+il mio agente spiegami come si fa la pasta alla norma grazie	online
+ciao amico mio assistente non è che riusciresti a mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+riusciresti noi un attimo a svegliarmi domani alle sette se puoi per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente dovresti farmi gentilmente il favore di dirmi che giorno è oggi	data
+spiegami come si fa la pasta alla norma grazie	online
+il mio agente mi potresti certi impostare un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+ciao amico mio assistente faresti partire un timer di tre minuti gentilmente	imposta_timer	secondi=180
+potresti chiamare giuseppe	chiama	chi=giuseppe
+caro assistente mi piacerebbe se tu riuscissi a leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+caro mio assistente vorrei che tu riuscissi a scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+caro mio assistente dovresti farmi il favore di raccontarmi una barzelletta	online
+potresti un attimo riprodurre qualcosa dei queen ti ringrazio	riproduci_musica	richiesta=queen
+gentilissimo assistente non è che riusciresti a chiamare mamma se puoi per favore	chiama	chi=mamma
+ciao caro riusciresti a dirmi a che ora c'è natale nel duemilaventisette per favore	online
+caro mio assistente a me piacerebbe be molto se tu potessi mettere una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+mi diresti se domani piove a roma per favore	meteo	luogo=roma;giorno=2026-11-04
+mi potresti cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+il mio agente mi faresti il favore di dirmi cosa ho in agenda domani ti ringrazio	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente mi potresti svegliarmi domani alle sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+amico mio assistente mi potresti mettere una nota su onenote e scrivere chiamare l'idraulico per favore	prendi_nota	testo=chiamare l'idraulico
+gentilissimo assistente dimmi quanto manca al timer gentilmente	stato_timer
+mi racconteresti una barzelletta	online
+caro assistente vorrei che tu riuscissi a impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+caro assistente mi potresti gentilmente ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao amico mio assistente mi diresti che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+gentilissimo assistente vorrei che tu riuscissi a cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente ricordami domani alle nove di pagare la bolletta grazie	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro assistente un attimo metteresti una sveglia domani alle sei grazie mille	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mi piacerebbe be molto se tu cercassi qualche canzone di vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+mi faresti il favore di ricordarmi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+il mio agente mi piacerebbe molto se tu mi dicessi che cosa fa la roma la prossima settimana grazie	online
+gentilissimo assistente vorrei che tu riuscissi a chiamare giuseppe	chiama	chi=giuseppe
+mi potresti un attimo dirmi chi ha vinto la partita ieri sera grazie mille	online
+il mio agente mi piacerebbe be se tu riuscissi a cercare su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+gentilissimo assistente mi potresti cercare qualche canzone di vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+caro mio assistente metteresti una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+mi piacerebbe molto se tu cercassi qualche canzone di vasco rossi per favore	riproduci_musica	richiesta=vasco rossi
+mio caro assistente dovresti farmi gentilmente il favore di dirmi quanto manca al timer se puoi per favore	stato_timer
+ciao amico assistente mi piacerebbe se tu riuscissi a dirmi che ore sono grazie mille	ora
+ciao amico mio assistente mi piacerebbe molto se tu mettessi un timer di un quarto d'ora grazie mille	imposta_timer	secondi=900
+ciao amico mio assistente a me piacerebbe be molto se tu potessi in questo momento mettere un timer di cinque minuti grazie mille	imposta_timer	secondi=300
+amico mio assistente adesso salveresti una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+amico mio assistente mi faresti il favore di salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+caro mio assistente chiama mamma per favore	chiama	chi=mamma
+amico mio assistente mi piacerebbe molto se tu chiamassi mamma se puoi per favore	chiama	chi=mamma
+caro assistente mi piacerebbe molto se tu telefonassi a papà grazie	chiama	chi=papà
+caro mio assistente un attimo metteresti un timer di dieci secondi gentilmente	imposta_timer	secondi=10
+vorrei che tu riuscissi a dirmi come è il tempo a messina grazie	meteo	luogo=messina;giorno=
+mio caro assistente vorrei che tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+gentilissimo assistente metteresti una nota sua notte e scrivere il codice del cancello è quattro due uno grazie	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente mi faresti il favore di impostare un timer di venti minuti	imposta_timer	secondi=1200
+caro assistente mi potresti certi dirmi che giorno è oggi	data
+caro assistente vorrei che tu riuscissi a svegliarmi alle otto grazie mille	imposta_sveglia	ora=08:00;etichetta=
+caro assistente potresti per favore dirmi quanto manca al timer gentilmente	stato_timer
+ciao amico assistente mi leggeresti gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+amico mio assistente mi potresti svegliarmi alle otto	imposta_sveglia	ora=08:00;etichetta=
+riusciresti a mettere un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+caro mio assistente riusciresti un attimo a dirmi cosa ho in agenda domani gentilmente	leggi_calendario	dal=2026-11-04;giorni=1
+ciao amico mio assistente potresti adesso cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+il mio agente vorrei che tu riuscissi a impostare un timer di venti minuti gentilmente	imposta_timer	secondi=1200
+ciao amico mio assistente mi potresti in questo momento dirmi a che punto è il timer	stato_timer
+ciao amico assistente metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao caro cerca qualche canzone di vasco rossi grazie mille	riproduci_musica	richiesta=vasco rossi
+gentilissimo assistente mi piacerebbe se tu riuscissi a dirmi come è il tempo a messina grazie mille	meteo	luogo=messina;giorno=
+ciao amico mio assistente a me piacerebbe be molto se tu potessi mettere una sveglia alle quindici per favore	imposta_sveglia	ora=15:00;etichetta=
+ciao amico mio assistente riusciresti noi gentilmente a chiamare mamma ti ringrazio	chiama	chi=mamma
+riprodurresti qualcosa dei queen	riproduci_musica	richiesta=queen
+caro assistente mi faresti il favore di svegliarmi alle otto ti ringrazio	imposta_sveglia	ora=08:00;etichetta=
+ciao amico mio assistente a me piacerebbe molto se tu potessi riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+mi diresti che ore sono gentilmente	ora
+potresti svegliarmi domani alle sette gentilmente	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente a me piacerebbe molto se tu potessi dirmi che cosa fa la roma la prossima settimana per favore	online
+ciao amico mio assistente adesso metteresti i pink floyd per favore	riproduci_musica	richiesta=pink floyd
+mio caro assistente riusciresti a ricordarmi domani alle nove di pagare la bolletta per favore	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao caro mi piacerebbe molto se tu facessi partire un timer di tre minuti per favore	imposta_timer	secondi=180
+mi piacerebbe se tu impostassi una sveglia per le sette e mezza per favore	imposta_sveglia	ora=07:30;etichetta=
+gentilissimo assistente mi piacerebbe se tu riuscissi a ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao caro mi piacerebbe be se tu mettessi i pink floyd in sottofondo se puoi per favore	riproduci_musica	richiesta=pink floyd
+il mio agente mi potresti dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+mi diresti che cosa fa la roma la prossima settimana	online
+caro mio assistente mi faresti il favore di cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+amico mio assistente a me piacerebbe molto se tu potessi leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+caro mio assistente mi potresti riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+caro mio assistente mi piacerebbe se tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+ciao amico mio assistente mi piacerebbe be se tu un attimo mi facessi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+mio caro assistente potresti spiegarmi come si fa la pasta alla norma grazie mille	online
+dimmi come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+amico mio assistente mi piacerebbe se tu gentilmente mi dicessi quanto manca al timer	stato_timer
+gentilissimo assistente imposta una sveglia per le sette e mezza gentilmente	imposta_sveglia	ora=07:30;etichetta=
+gentilissimo assistente per favore telefoneresti a papà	chiama	chi=papà
+caro mio assistente mi faresti il favore di leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+ciao amico assistente non è che riusciresti noi a mettere una sveglia per le diciassette grazie mille	imposta_sveglia	ora=17:00;etichetta=
+caro assistente dimmi se domani piove a roma per favore	meteo	luogo=roma;giorno=2026-11-04
+riusciresti noi a svegliarmi alle otto	imposta_sveglia	ora=08:00;etichetta=
+ciao caro mi faresti il favore di raccontarmi una barzelletta	online
+ciao caro mi faresti il favore di mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+amico mio assistente mi piacerebbe se tu riuscissi a dirmi che giorno è oggi	data
+caro mio assistente metti una sveglia per le diciassette ti ringrazio	imposta_sveglia	ora=17:00;etichetta=
+caro assistente non è che riusciresti a mettere una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+il mio agente dimmi come è il tempo a messina	meteo	luogo=messina;giorno=
+potresti adesso dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao amico mio assistente imposta una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+ciao amico mio assistente mi piacerebbe be se tu gentilmente mi svegliassi domani alle sette se puoi per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+mi piacerebbe se tu riuscissi a impostare un timer di venti minuti	imposta_timer	secondi=1200
+il mio agente vorrei che tu riuscissi a svegliarmi domani alle sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+non è che riusciresti noi a farmi una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+ciao amico assistente potresti mettere e una sveglia domani alle sei grazie	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+amico mio assistente a me piacerebbe molto se tu potessi per favore mettere un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+gentilissimo assistente a me piacerebbe be molto se tu potessi adesso dirmi come funziona la fotosintesi per favore	online
+ciao amico mio assistente mi diresti cosa ho in agenda domani per favore	leggi_calendario	dal=2026-11-04;giorni=1
+caro mio assistente potresti adesso ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro mio assistente mi piacerebbe be se tu in questo momento mi dicessi come è il tempo a messina ti ringrazio	meteo	luogo=messina;giorno=
+ciao amico mio assistente a me piacerebbe be molto se tu potessi chiamare giuseppe ti ringrazio	chiama	chi=giuseppe
+ciao amico assistente mi piacerebbe se tu riuscissi a impostare una sveglia per le sette e mezza se puoi per favore	imposta_sveglia	ora=07:30;etichetta=
+dimmi a che punto è il timer se puoi per favore	stato_timer
+mio caro assistente dovresti farmi il favore di salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+il mio agente potresti gentilmente impostare una sveglia per le sette e mezza per favore	imposta_sveglia	ora=07:30;etichetta=
+ciao amico mio assistente vorrei che tu riuscissi a cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+caro mio assistente a me piacerebbe molto se tu potessi impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+il mio agente dovresti farmi per favore il favore di dirmi chi ha vinto la partita ieri sera grazie mille	online
+amico mio assistente cercheresti su google gli orari dei treni per messina per favore	cerca_sul_web	domanda=gli orari dei treni per messina
+un attimo riprodurresti qualcosa dei queen	riproduci_musica	richiesta=queen
+caro assistente a me piacerebbe molto se tu potessi dirmi come è il tempo a messina gentilmente	meteo	luogo=messina;giorno=
+caro mio assistente riusciresti a riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+amico mio assistente cercheresti su internet cosa fa la roma la prossima settimana per favore	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+mi piacerebbe se tu riuscissi a spiegarmi come si fa la pasta alla norma	online
+caro assistente mi piacerebbe molto se tu mettessi una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+mio caro assistente mi piacerebbe be se tu gentilmente mettessi una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+mi piacerebbe molto se tu mi dicessi quanto manca al timer	stato_timer
+caro mio assistente mi piacerebbe se tu riuscissi a leggermi gli impegni di oggi ti ringrazio	leggi_calendario	dal=2026-11-03;giorni=1
+amico mio assistente mi potresti certi in questo momento dirmi se domani piove a roma se puoi per favore	meteo	luogo=roma;giorno=2026-11-04
+gentilissimo assistente mi potresti un attimo mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+mio caro assistente mi piacerebbe se tu riuscissi a mettere una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+il mio agente mi piacerebbe molto se tu mettessi i pink floyd	riproduci_musica	richiesta=pink floyd
+caro mio assistente potresti per favore mettere un timer di un quarto d'ora gentilmente	imposta_timer	secondi=900
+riusciresti noi a dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+ciao caro non è che riusciresti noi a dirmi se domani piove a roma gentilmente	meteo	luogo=roma;giorno=2026-11-04
+il mio agente dovresti farmi per favore il favore di farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+potresti in questo momento riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+ciao amico assistente dovresti farmi gentilmente il favore di dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+ciao caro potresti certi mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+amico mio assistente mi diresti quanto manca al timer	stato_timer
+a me piacerebbe molto se tu potessi impostare un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+ciao amico assistente vorrei che tu riuscissi a salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+mi diresti come funziona la fotosintesi grazie mille	online
+ciao amico assistente mi potresti gentilmente mettere e una sveglia domani alle sei se puoi per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+dovresti farmi per favore il favore di mettere e una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico assistente mi piacerebbe se tu gentilmente mi facessi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro mio assistente a me piacerebbe molto se tu potessi mettere una nota sua notte e scrivere il codice del cancello è quattro due uno per favore	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente mi potresti certi mettere una sveglia domani alle sei per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro mio assistente non è che riusciresti a chiamare mamma se puoi per favore	chiama	chi=mamma
+caro mio assistente non è che riusciresti a riprodurre qualcosa dei queen grazie	riproduci_musica	richiesta=queen
+ciao caro mi faresti il favore di dirmi come è il tempo a messina	meteo	luogo=messina;giorno=
+ciao caro riusciresti noi un attimo a dirmi come funziona la fotosintesi	online
+gentilissimo assistente non è che riusciresti a cercare qualche canzone di vasco rossi gentilmente	riproduci_musica	richiesta=vasco rossi
+non è che riusciresti a far partire un timer di tre minuti grazie	imposta_timer	secondi=180
+amico mio assistente cercheresti su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+ciao amico assistente dimmi come è il tempo a messina gentilmente	meteo	luogo=messina;giorno=
+ciao amico assistente mi piacerebbe se tu mi dicessi che cosa fa la roma la prossima settimana grazie	online
+caro mio assistente dimmi chi ha vinto la partita ieri sera grazie	online
+dimmi che tempo farà domani a palermo grazie mille	meteo	luogo=palermo;giorno=2026-11-04
+ciao caro mi piacerebbe be se tu scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+amico mio assistente a me piacerebbe molto se tu potessi dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+cerca qualche canzone di vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+gentilissimo assistente non è che riusciresti noi a chiamare giuseppe	chiama	chi=giuseppe
+mi piacerebbe molto se tu mi raccontassi una barzelletta	online
+il mio agente mi faresti il favore di mettere e una sveglia per le diciassette gentilmente	imposta_sveglia	ora=17:00;etichetta=
+riusciresti gentilmente a mettere una sveglia per le diciassette per favore	imposta_sveglia	ora=17:00;etichetta=
+il mio agente mi faresti il favore di dirmi che tempo fa a catania	meteo	luogo=catania;giorno=
+amico mio assistente mi piacerebbe molto se tu scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+il mio agente mi diresti a che ora c'è natale nel duemilaventisette grazie	online
+amico mio assistente mi faresti il favore di mettere e i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+non è che riusciresti a dirmi chi ha vinto la partita ieri sera	online
+ciao caro potresti un attimo chiamare mamma	chiama	chi=mamma
+ciao amico mio assistente riusciresti per favore a cercare su google gli orari dei treni per messina per favore	cerca_sul_web	domanda=gli orari dei treni per messina
+mio caro assistente dovresti farmi il favore di dirmi se domani piove a roma gentilmente	meteo	luogo=roma;giorno=2026-11-04
+riusciresti noi a dirmi che ore sono se puoi per favore	ora
+ciao amico mio assistente mi piacerebbe se tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+mi faresti il favore di far partire un timer di tre minuti grazie	imposta_timer	secondi=180
+ciao amico mio assistente potresti dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+amico mio assistente mi piacerebbe be molto se tu mi dicessi se domani piove a roma se puoi per favore	meteo	luogo=roma;giorno=2026-11-04
+mi piacerebbe se tu riuscissi a dirmi che cosa fa la roma la prossima settimana	online
+riusciresti adesso a dirmi che cosa fa la roma la prossima settimana grazie mille	online
+amico mio assistente non è che riusciresti a impostare una sveglia per le sette e mezza ti ringrazio	imposta_sveglia	ora=07:30;etichetta=
+mi faresti il favore di ricordarmi domani alle nove di pagare la bolletta per favore	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+vorrei che tu riuscissi a mettere una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+ciao amico mio assistente metti una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao caro mi piacerebbe molto se tu impostassi un timer di venti minuti	imposta_timer	secondi=1200
+dimmi che cosa fa la roma la prossima settimana	online
+gentilissimo assistente riusciresti noi gentilmente a leggermi gli impegni di oggi se puoi per favore	leggi_calendario	dal=2026-11-03;giorni=1
+mi piacerebbe be se tu gentilmente cercassi qualche canzone di vasco rossi per favore	riproduci_musica	richiesta=vasco rossi
+ciao amico assistente dimmi come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+ciao amico mio assistente a me piacerebbe molto se tu potessi in questo momento spiegarmi come si fa la pasta alla norma grazie mille	online
+ciao amico mio assistente mi piacerebbe se tu riuscissi a mettere un timer di un quarto d'ora	imposta_timer	secondi=900
+ciao amico assistente mi faresti il favore di dirmi come funziona la fotosintesi per favore	online
+potresti mettere una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+amico mio assistente mi piacerebbe be molto se tu mettessi una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+ciao caro mi piacerebbe molto se tu cercassi su google gli orari dei treni per messina grazie mille	cerca_sul_web	domanda=gli orari dei treni per messina
+mio caro assistente mi ricorderesti alle cinque di chiamare il dottore grazie mille	promemoria	ora=17:00;testo=chiamare il dottore
+riusciresti noi un attimo a mettere un timer di un quarto d'ora gentilmente	imposta_timer	secondi=900
+il mio agente dovresti farmi in questo momento il favore di dirmi come è il tempo a messina	meteo	luogo=messina;giorno=
+caro assistente spiegami come si fa la pasta alla norma per favore	online
+gentilmente mi diresti come funziona la fotosintesi per favore	online
+ciao caro mi piacerebbe se tu riuscissi a spiegarmi come si fa la pasta alla norma	online
+gentilissimo assistente vorrei che tu riuscissi a dirmi a che ora c'è natale nel duemilaventisette grazie mille	online
+amico mio assistente potresti in questo momento scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+ciao amico mio assistente potresti un attimo mettere un timer di dieci secondi	imposta_timer	secondi=10
+caro mio assistente faresti partire un timer di tre minuti ti ringrazio	imposta_timer	secondi=180
+mio caro assistente vorrei che tu riuscissi a raccontarmi una barzelletta	online
+mio caro assistente adesso mi faresti una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+ciao amico mio assistente mi faresti il favore di riprodurre qualcosa dei queen ti ringrazio	riproduci_musica	richiesta=queen
+potresti scrivere nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+ciao amico assistente metteresti un timer di cinque minuti se puoi per favore	imposta_timer	secondi=300
+amico mio assistente dovresti farmi adesso il favore di dirmi che tempo fa a catania per favore	meteo	luogo=catania;giorno=
+dovresti farmi gentilmente il favore di mettere e una sveglia alle quindici se puoi per favore	imposta_sveglia	ora=15:00;etichetta=
+mio caro assistente mi sveglieresti domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+mi potresti mettere una nota sua notte e scrivere il codice del cancello è quattro due uno per favore	prendi_nota	testo=il codice del cancello è quattro due uno
+ciao amico mio assistente vorrei che tu riuscissi a impostare una sveglia per le sette e mezza grazie	imposta_sveglia	ora=07:30;etichetta=
+caro assistente mi piacerebbe se tu riuscissi a riprodurre qualcosa dei queen gentilmente	riproduci_musica	richiesta=queen
+caro mio assistente riusciresti noi a mettere una nota su onenote e scrivere chiamare l'idraulico grazie mille	prendi_nota	testo=chiamare l'idraulico
+potresti salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+il mio agente riusciresti per favore a impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+ciao caro vorrei che tu riuscissi a mettere e una nota su onenote e scrivere chiamare l'idraulico grazie	prendi_nota	testo=chiamare l'idraulico
+mio caro assistente metteresti i pink floyd	riproduci_musica	richiesta=pink floyd
+ciao caro salva una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+ciao caro imposta un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+il mio agente gentilmente mi diresti resti che ore sono ti ringrazio	ora
+ciao amico mio assistente a me piacerebbe molto se tu potessi leggermi gli impegni di oggi gentilmente	leggi_calendario	dal=2026-11-03;giorni=1
+mio caro assistente mi potresti per favore mettere e un timer di un quarto d'ora ti ringrazio	imposta_timer	secondi=900
+caro mio assistente mi potresti per favore mettere un timer di dieci secondi grazie mille	imposta_timer	secondi=10
+mio caro assistente mi diresti come funziona la fotosintesi	online
+ciao amico mio assistente metti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+il mio agente mi piacerebbe be se tu riuscissi a cercare qualche canzone di vasco rossi grazie mille	riproduci_musica	richiesta=vasco rossi
+caro assistente chiama mamma grazie mille	chiama	chi=mamma
+faresti partire un timer di tre minuti	imposta_timer	secondi=180
+gentilissimo assistente metteresti una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mi piacerebbe molto se tu scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+caro assistente mi faresti il favore di mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+caro assistente riusciresti gentilmente a dirmi quanto manca al timer grazie mille	stato_timer
+ciao caro mi piacerebbe molto se tu mi dicessi quanto manca al timer grazie	stato_timer
+amico mio assistente potresti certi riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+in questo momento metteresti una nota sua notte e scrivere il codice del cancello è quattro due uno grazie mille	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente dovresti farmi il favore di cercare qualche canzone di vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+mi diresti che giorno è oggi grazie mille	data
+caro assistente dovresti farmi adesso il favore di leggermi gli impegni di oggi se puoi per favore	leggi_calendario	dal=2026-11-03;giorni=1
+gentilissimo assistente mi diresti come funziona la fotosintesi grazie mille	online
+ciao amico mio assistente mi piacerebbe se tu telefonassi a papà	chiama	chi=papà
+amico mio assistente vorrei che tu riuscissi a impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+ciao amico mio assistente dovresti farmi il favore di farmi una ricerca su internet su come si fa un foglio excel per favore	cerca_sul_web	domanda=come si fa un foglio excel
+mio caro assistente vorrei che tu riuscissi a svegliarmi domani alle sette ti ringrazio	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente mi piacerebbe se tu un attimo mi ricordassi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao amico assistente mi piacerebbe be molto se tu mettessi una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente mi spiegheresti come si fa la pasta alla norma grazie	online
+gentilissimo assistente gentilmente cercheresti qualche canzone di vasco rossi	riproduci_musica	richiesta=vasco rossi
+ciao caro mi piacerebbe se tu in questo momento mi facessi una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+caro mio assistente mi piacerebbe be se tu cercassi su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+mi piacerebbe molto se tu mi dicessi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+caro assistente a me piacerebbe molto se tu potessi cercare su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+amico mio assistente potresti in questo momento dirmi come è il tempo a messina per favore	meteo	luogo=messina;giorno=
+gentilissimo assistente non è che riusciresti a ricordarmi alle cinque di chiamare il dottore grazie	promemoria	ora=17:00;testo=chiamare il dottore
+ciao amico assistente dovresti farmi il favore di mettere e i pink floyd gentilmente	riproduci_musica	richiesta=pink floyd
+ciao amico assistente mi piacerebbe se tu riuscissi a dirmi chi ha vinto la partita ieri sera grazie mille	online
+ciao amico mio assistente non è che riusciresti a ricordarmi domani alle nove di pagare la bolletta grazie	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+gentilissimo assistente mi potresti gentilmente cercare su internet a che ora c'è l'eclissi domani grazie	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+il mio agente a me piacerebbe be molto se tu potessi ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro mio assistente mi piacerebbe se tu cercassi su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+il mio agente chiameresti giuseppe	chiama	chi=giuseppe
+gentilissimo assistente mi piacerebbe molto se tu chiamassi mamma	chiama	chi=mamma
+ciao amico mio assistente in questo momento mi diresti che cosa fa la roma la prossima settimana per favore	online
+gentilissimo assistente adesso metteresti i pink floyd in sottofondo se puoi per favore	riproduci_musica	richiesta=pink floyd
+ciao caro mi faresti il favore di dirmi che tempo farà domani a palermo per favore	meteo	luogo=palermo;giorno=2026-11-04
+ciao amico mio assistente metteresti un timer di dieci secondi per favore	imposta_timer	secondi=10
+gentilissimo assistente metteresti una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+ciao amico assistente potresti in questo momento mettere una nota su onenote e scrivere chiamare l'idraulico grazie	prendi_nota	testo=chiamare l'idraulico
+il mio agente vorrei che tu riuscissi a ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+mio caro assistente a me piacerebbe molto se tu potessi cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+caro mio assistente a me piacerebbe molto se tu potessi gentilmente far partire un timer di tre minuti ti ringrazio	imposta_timer	secondi=180
+mio caro assistente mi piacerebbe se tu mettessi un timer di cinque minuti gentilmente	imposta_timer	secondi=300
+caro assistente potresti raccontarmi una barzelletta grazie mille	online
+mi piacerebbe se tu adesso mi ricordassi domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+mio caro assistente in questo momento chiameresti mamma ti ringrazio	chiama	chi=mamma
+riusciresti adesso a dirmi che tempo farà domani a palermo per favore	meteo	luogo=palermo;giorno=2026-11-04
+amico mio assistente cerca su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+ciao amico mio assistente riusciresti noi per favore a mettere i pink floyd in sottofondo se puoi per favore	riproduci_musica	richiesta=pink floyd
+vorrei che tu riuscissi a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro assistente mi faresti il favore di dirmi che giorno è oggi ti ringrazio	data
+mi faresti il favore di mettere una sveglia domani alle sei per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+amico mio assistente mi faresti il favore di mettere i pink floyd in sottofondo gentilmente	riproduci_musica	richiesta=pink floyd
+ciao amico mio assistente mi faresti il favore di ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro assistente mi diresti come funziona la fotosintesi	online
+mio caro assistente adesso mi ricorderesti domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+mio caro assistente vorrei che tu riuscissi a cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+amico mio assistente mi faresti il favore di mettere i pink floyd ti ringrazio	riproduci_musica	richiesta=pink floyd
+mi piacerebbe be se tu per favore scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+ciao amico assistente cerca su internet cosa fa la roma la prossima settimana grazie mille	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+gentilissimo assistente metteresti una sveglia alle quindici grazie mille	imposta_sveglia	ora=15:00;etichetta=
+il mio agente vorrei che tu riuscissi a dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+caro assistente cercheresti su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente svegliami domani alle sette grazie mille	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+il mio agente adesso metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao amico assistente mi piacerebbe se tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+il mio agente mi ricorderesti domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+a me piacerebbe molto se tu potessi gentilmente far partire un timer di tre minuti grazie	imposta_timer	secondi=180
+caro assistente mi piacerebbe molto se tu mi dicessi che tempo fa a catania	meteo	luogo=catania;giorno=
+mio caro assistente mi piacerebbe se tu gentilmente mi dicessi quanto manca al timer grazie	stato_timer
+vorrei che tu riuscissi a dirmi cosa ho in agenda domani grazie	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente vorrei che tu riuscissi a mettere una sveglia domani alle sei se puoi per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao caro mi piacerebbe be se tu riuscissi a chiamare giuseppe grazie mille	chiama	chi=giuseppe
+caro mio assistente mi faresti il favore di mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+potresti farmi una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+caro mio assistente metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao amico assistente non è che riusciresti a mettere i pink floyd in sottofondo gentilmente	riproduci_musica	richiesta=pink floyd
+ciao caro vorrei che tu riuscissi a chiamare giuseppe se puoi per favore	chiama	chi=giuseppe
+mi faresti il favore di spiegarmi come si fa la pasta alla norma	online
+caro mio assistente mi piacerebbe be se tu gentilmente mi dicessi quanto manca al timer	stato_timer
+il mio agente mi piacerebbe se tu mi raccontassi una barzelletta	online
+ciao amico mio assistente riusciresti in questo momento a dirmi se domani piove a roma se puoi per favore	meteo	luogo=roma;giorno=2026-11-04
+amico mio assistente mi piacerebbe be molto se tu mi dicessi che ore sono grazie mille	ora
+mio caro assistente mi potresti certi adesso dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+caro mio assistente mi piacerebbe be se tu mi dicessi che cosa fa la roma la prossima settimana per favore	online
+ciao amico assistente mi faresti il favore di telefonare a papà se puoi per favore	chiama	chi=papà
+gentilissimo assistente potresti certi dirmi che tempo fa a catania grazie	meteo	luogo=catania;giorno=
+vorrei che tu riuscissi a dirmi che giorno è oggi grazie mille	data
+ciao amico mio assistente mi diresti resti chi ha vinto la partita ieri sera	online
+il mio agente dovresti farmi gentilmente il favore di scrivere nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+mi potresti gentilmente cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+amico mio assistente mi piacerebbe molto se tu chiamassi mamma grazie mille	chiama	chi=mamma
+caro assistente riusciresti a raccontarmi una barzelletta	online
+riusciresti a mettere un timer di dieci secondi gentilmente	imposta_timer	secondi=10
+mio caro assistente vorrei che tu riuscissi a mettere un timer di un quarto d'ora gentilmente	imposta_timer	secondi=900
+caro assistente dovresti farmi il favore di chiamare mamma se puoi per favore	chiama	chi=mamma
+il mio agente riusciresti un attimo a dirmi a che punto è il timer ti ringrazio	stato_timer
+caro assistente mi piacerebbe molto se tu cercassi su google gli orari dei treni per messina grazie	cerca_sul_web	domanda=gli orari dei treni per messina
+caro mio assistente mi potresti svegliarmi domani alle sette per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro mio assistente mi spiegheresti come si fa la pasta alla norma per favore	online
+gentilissimo assistente metti un timer di cinque minuti grazie mille	imposta_timer	secondi=300
+caro mio assistente a me piacerebbe molto se tu potessi riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+ciao amico mio assistente per favore metteresti un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+riusciresti noi a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro assistente vorrei che tu riuscissi a impostare un timer di venti minuti ti ringrazio	imposta_timer	secondi=1200
+ciao amico assistente non è che riusciresti a mettere una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+il mio agente riusciresti noi in questo momento a mettere un timer di cinque minuti	imposta_timer	secondi=300
+il mio agente mi piacerebbe se tu cercassi su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+mio caro assistente non è che riusciresti a chiamare giuseppe grazie	chiama	chi=giuseppe
+caro assistente mi potresti adesso scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+amico mio assistente mi piacerebbe se tu cercassi qualche canzone di vasco rossi grazie	riproduci_musica	richiesta=vasco rossi
+caro mio assistente dovresti farmi per favore il favore di ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro mio assistente mi piacerebbe be se tu riuscissi a dirmi che tempo fa a catania	meteo	luogo=catania;giorno=
+gentilissimo assistente chiameresti giuseppe	chiama	chi=giuseppe
+il mio agente mi piacerebbe be se tu gentilmente mi dicessi a che punto è il timer ti ringrazio	stato_timer
+caro mio assistente potresti per favore mettere i pink floyd in sottofondo gentilmente	riproduci_musica	richiesta=pink floyd
+vorrei che tu riuscissi a ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+potresti mettere e una sveglia domani alle sei ti ringrazio	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+dovresti farmi gentilmente il favore di mettere un timer di dieci secondi grazie mille	imposta_timer	secondi=10
+vorrei che tu riuscissi a cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+mio caro assistente potresti raccontarmi una barzelletta grazie mille	online
+caro mio assistente mi diresti a che punto è il timer grazie	stato_timer
+mio caro assistente potresti certi per favore dirmi che tempo farà domani a palermo gentilmente	meteo	luogo=palermo;giorno=2026-11-04
+gentilissimo assistente dovresti farmi per favore il favore di salvare una nota con scritto domani devo comprare il latte per favore	prendi_nota	testo=domani devo comprare il latte
+ciao amico assistente dimmi che tempo fa a catania se puoi per favore	meteo	luogo=catania;giorno=
+amico mio assistente vorrei che tu riuscissi a mettere e una sveglia alle quindici per favore	imposta_sveglia	ora=15:00;etichetta=
+mi faresti il favore di dirmi se domani piove a roma grazie mille	meteo	luogo=roma;giorno=2026-11-04
+ciao amico mio assistente non è che riusciresti a ricordarmi domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+amico mio assistente mi faresti il favore di mettere e i pink floyd in sottofondo per favore	riproduci_musica	richiesta=pink floyd
+caro mio assistente mi faresti il favore di mettere un timer di un quarto d'ora	imposta_timer	secondi=900
+ciao amico mio assistente mi potresti per favore dirmi a che punto è il timer se puoi per favore	stato_timer
+gentilissimo assistente mi piacerebbe se tu un attimo mi dicessi chi ha vinto la partita ieri sera grazie	online
+caro assistente riusciresti noi per favore a dirmi chi ha vinto la partita ieri sera	online
+caro mio assistente a me piacerebbe be molto se tu potessi adesso svegliarmi domani alle sette grazie	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+mio caro assistente mi piacerebbe se tu salvassi una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+dovresti farmi gentilmente il favore di scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+il mio agente dovresti farmi per favore il favore di mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+caro mio assistente mi piacerebbe molto se tu mettessi una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+caro mio assistente vorrei che tu riuscissi a ricordarmi alle cinque di chiamare il dottore grazie mille	promemoria	ora=17:00;testo=chiamare il dottore
+caro mio assistente mi piacerebbe se tu riuscissi a impostare un timer di venti minuti ti ringrazio	imposta_timer	secondi=1200
+caro assistente dimmi che giorno è oggi ti ringrazio	data
+amico mio assistente leggimi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+mio caro assistente mi piacerebbe molto se tu mi dicessi a che ora c'è natale nel duemilaventisette grazie	online
+mi piacerebbe molto se tu mettessi una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+mio caro assistente potresti dirmi se domani piove a roma ti ringrazio	meteo	luogo=roma;giorno=2026-11-04
+mi potresti in questo momento cercare su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+gentilissimo assistente mi faresti il favore di telefonare a papà	chiama	chi=papà
+amico mio assistente mi piacerebbe se tu per favore scrivessi nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+mio caro assistente adesso mi sveglieresti alle otto se puoi per favore	imposta_sveglia	ora=08:00;etichetta=
+mi piacerebbe se tu riuscissi a dirmi a che ora c'è natale nel duemilaventisette grazie	online
+ciao amico mio assistente metti una sveglia per le diciassette se puoi per favore	imposta_sveglia	ora=17:00;etichetta=
+ciao amico assistente mi faresti il favore di mettere una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mio caro assistente mi piacerebbe se tu mi spiegassi come si fa la pasta alla norma	online
+dovresti farmi gentilmente il favore di mettere una sveglia alle quindici grazie	imposta_sveglia	ora=15:00;etichetta=
+mio caro assistente mi potresti un attimo dirmi se domani piove a roma	meteo	luogo=roma;giorno=2026-11-04
+il mio agente mi potresti certi un attimo dirmi a che ora c'è natale nel duemilaventisette grazie mille	online
+mi piacerebbe be se tu riuscissi a dirmi se domani piove a roma	meteo	luogo=roma;giorno=2026-11-04
+caro mio assistente mi piacerebbe se tu salvassi una nota con scritto domani devo comprare il latte per favore	prendi_nota	testo=domani devo comprare il latte
+il mio agente mi piacerebbe be molto se tu riproducessi qualcosa dei queen se puoi per favore	riproduci_musica	richiesta=queen
+mio caro assistente mi piacerebbe be se tu adesso mettessi una sveglia alle quindici grazie	imposta_sveglia	ora=15:00;etichetta=
+gentilissimo assistente potresti certi mettere i pink floyd se puoi per favore	riproduci_musica	richiesta=pink floyd
+il mio agente vorrei che tu riuscissi a ricordarmi alle cinque di chiamare il dottore grazie mille	promemoria	ora=17:00;testo=chiamare il dottore
+dimmi che giorno è oggi	data
+non è che riusciresti a mettere una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro mio assistente vorrei che tu riuscissi a impostare un timer di venti minuti	imposta_timer	secondi=1200
+caro mio assistente mi faresti una ricerca su internet su come si fa un foglio excel per favore	cerca_sul_web	domanda=come si fa un foglio excel
+vorrei che tu riuscissi a impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+il mio agente a me piacerebbe be molto se tu potessi in questo momento ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao caro mi piacerebbe se tu adesso cercassi su internet a che ora c'è l'eclissi domani grazie mille	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+dovresti farmi gentilmente il favore di dirmi che tempo farà domani a palermo grazie mille	meteo	luogo=palermo;giorno=2026-11-04
+mi piacerebbe be molto se tu mi dicessi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao caro mi faresti il favore di dirmi che ore sono grazie mille	ora
+ciao amico mio assistente potresti certi un attimo scrivere nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+mio caro assistente mi piacerebbe se tu riuscissi a cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+mio caro assistente non è che riusciresti a riprodurre qualcosa dei queen grazie	riproduci_musica	richiesta=queen
+amico mio assistente mi potresti certi svegliarmi domani alle sette grazie mille	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro assistente mi potresti dirmi che tempo farà domani a palermo gentilmente	meteo	luogo=palermo;giorno=2026-11-04
+mio caro assistente mi potresti un attimo dirmi che tempo farà domani a palermo per favore	meteo	luogo=palermo;giorno=2026-11-04
+a me piacerebbe be molto se tu potessi svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro assistente mi piacerebbe molto se tu mi svegliassi domani alle sette se puoi per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+mio caro assistente un attimo metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+gentilissimo assistente mi potresti in questo momento svegliarmi alle otto grazie	imposta_sveglia	ora=08:00;etichetta=
+a me piacerebbe molto se tu potessi cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente dovresti farmi gentilmente il favore di spiegarmi come si fa la pasta alla norma per favore	online
+gentilissimo assistente mi faresti una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+gentilissimo assistente non è che riusciresti a impostare un timer di venti minuti	imposta_timer	secondi=1200
+gentilissimo assistente vorrei che tu riuscissi a dirmi come è il tempo a messina gentilmente	meteo	luogo=messina;giorno=
+mi piacerebbe molto se tu mi raccontassi una barzelletta grazie mille	online
+ciao caro cerca qualche canzone di vasco rossi gentilmente	riproduci_musica	richiesta=vasco rossi
+riusciresti gentilmente a ricordarmi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+ciao amico assistente faresti partire un timer di tre minuti	imposta_timer	secondi=180
+ciao amico assistente mi faresti il favore di scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+mio caro assistente dimmi che tempo fa a catania per favore	meteo	luogo=catania;giorno=
+mio caro assistente non è che riusciresti a mettere una sveglia alle quindici grazie mille	imposta_sveglia	ora=15:00;etichetta=
+ciao caro dovresti farmi in questo momento il favore di dirmi a che ora c'è natale nel duemilaventisette per favore	online
+caro assistente mi piacerebbe molto se tu mettessi i pink floyd in sottofondo grazie	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente mi piacerebbe se tu mi dicessi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+caro mio assistente mi potresti farmi una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+ciao caro dovresti farmi adesso il favore di svegliarmi alle otto se puoi per favore	imposta_sveglia	ora=08:00;etichetta=
+salva una nota con scritto domani devo comprare il latte grazie	prendi_nota	testo=domani devo comprare il latte
+ciao amico mio assistente riusciresti in questo momento a dirmi che ore sono ti ringrazio	ora
+caro mio assistente dimmi chi ha vinto la partita ieri sera	online
+ciao amico assistente potresti per favore dirmi quanto manca al timer grazie	stato_timer
+caro assistente a me piacerebbe molto se tu potessi per favore cercare su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+caro mio assistente salva una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+ciao amico assistente dovresti farmi il favore di mettere una nota su onenote e scrivere chiamare l'idraulico per favore	prendi_nota	testo=chiamare l'idraulico
+caro assistente dovresti farmi il favore di salvare una nota con scritto domani devo comprare il latte grazie	prendi_nota	testo=domani devo comprare il latte
+ciao caro dovresti farmi un attimo il favore di scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+ciao amico assistente mi piacerebbe se tu riuscissi a dirmi a che ora c'è natale nel duemilaventisette grazie mille	online
+gentilissimo assistente mi piacerebbe be se tu riuscissi a scrivere nelle note comprare le lampadine grazie mille	prendi_nota	testo=comprare le lampadine
+ciao amico assistente mi potresti adesso mettere e una nota sua notte e scrivere il codice del cancello è quattro due uno grazie	prendi_nota	testo=il codice del cancello è quattro due uno
+caro mio assistente imposteresti una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+il mio agente a me piacerebbe molto se tu potessi mettere una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico assistente mi piacerebbe se tu per favore mi dicessi che tempo farà domani a palermo grazie	meteo	luogo=palermo;giorno=2026-11-04
+ciao caro a me piacerebbe molto se tu potessi cercare qualche canzone di vasco rossi ti ringrazio	riproduci_musica	richiesta=vasco rossi
+ciao amico assistente metti una sveglia alle quindici gentilmente	imposta_sveglia	ora=15:00;etichetta=
+ciao amico assistente dovresti farmi il favore di svegliarmi domani alle sette per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+gentilissimo assistente mi piacerebbe molto se tu scrivessi nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+mio caro assistente vorrei che tu riuscissi a riprodurre qualcosa dei queen	riproduci_musica	richiesta=queen
+il mio agente non è che riusciresti a leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+ciao caro mi faresti il favore di mettere i pink floyd in sottofondo ti ringrazio	riproduci_musica	richiesta=pink floyd
+cercheresti su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+caro assistente mi faresti il favore di raccontarmi una barzelletta	online
+ciao amico assistente mi piacerebbe se tu riuscissi a cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente mi piacerebbe be molto se tu mi dicessi che cosa fa la roma la prossima settimana	online
+ciao amico assistente riusciresti un attimo a farmi una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+amico mio assistente potresti per favore dirmi che tempo farà domani a palermo gentilmente	meteo	luogo=palermo;giorno=2026-11-04
+caro mio assistente mi diresti resti che tempo farà domani a palermo per favore	meteo	luogo=palermo;giorno=2026-11-04
+gentilissimo assistente gentilmente mi diresti che cosa fa la roma la prossima settimana per favore	online
+il mio agente mi piacerebbe molto se tu mettessi una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao amico mio assistente mi piacerebbe se tu riuscissi a ricordarmi alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+gentilissimo assistente non è che riusciresti a dirmi che tempo farà domani a palermo se puoi per favore	meteo	luogo=palermo;giorno=2026-11-04
+ciao caro metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+mio caro assistente mi piacerebbe se tu riuscissi a mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+mi faresti il favore di cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+mi faresti il favore di impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+amico mio assistente riusciresti a mettere i pink floyd in sottofondo ti ringrazio	riproduci_musica	richiesta=pink floyd
+ciao amico assistente mi piacerebbe molto se tu mettessi un timer di dieci secondi gentilmente	imposta_timer	secondi=10
+caro mio assistente riusciresti gentilmente a mettere una nota sua notte e scrivere il codice del cancello è quattro due uno grazie mille	prendi_nota	testo=il codice del cancello è quattro due uno
+amico mio assistente non è che riusciresti a dirmi cosa ho in agenda domani per favore	leggi_calendario	dal=2026-11-04;giorni=1
+caro assistente faresti partire un timer di tre minuti se puoi per favore	imposta_timer	secondi=180
+mio caro assistente dovresti farmi adesso il favore di chiamare mamma	chiama	chi=mamma
+ciao caro potresti certi raccontarmi una barzelletta grazie	online
+potresti un attimo farmi una ricerca su internet su come si fa un foglio excel per favore	cerca_sul_web	domanda=come si fa un foglio excel
+svegliami domani alle sette grazie	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico assistente dovresti farmi il favore di cercare su google gli orari dei treni per messina grazie	cerca_sul_web	domanda=gli orari dei treni per messina
+caro assistente telefona a papà	chiama	chi=papà
+mio caro assistente potresti gentilmente chiamare mamma grazie mille	chiama	chi=mamma
+ciao amico mio assistente vorrei che tu riuscissi a mettere e una sveglia per le diciassette ti ringrazio	imposta_sveglia	ora=17:00;etichetta=
+ciao amico assistente mi faresti il favore di scrivere nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+ciao caro non è che riusciresti noi a mettere una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+riusciresti adesso a dirmi che cosa fa la roma la prossima settimana per favore	online
+caro assistente a me piacerebbe molto se tu potessi svegliarmi domani alle sette se puoi per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+il mio agente per favore metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+mi diresti resti come funziona la fotosintesi per favore	online
+ciao caro mi diresti come funziona la fotosintesi per favore	online
+mi piacerebbe molto se tu mettessi una sveglia per le diciassette gentilmente	imposta_sveglia	ora=17:00;etichetta=
+caro assistente dovresti farmi il favore di impostare un timer di venti minuti	imposta_timer	secondi=1200
+a me piacerebbe molto se tu potessi un attimo ricordarmi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+il mio agente mi piacerebbe se tu riuscissi a mettere una sveglia domani alle sei grazie mille	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente dovresti farmi adesso il favore di farmi una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+il mio agente per favore metteresti i pink floyd	riproduci_musica	richiesta=pink floyd
+caro assistente mi piacerebbe molto se tu mi dicessi a che punto è il timer grazie	stato_timer
+caro mio assistente mi diresti resti a che punto è il timer	stato_timer
+riusciresti noi in questo momento a mettere i pink floyd in sottofondo ti ringrazio	riproduci_musica	richiesta=pink floyd
+dovresti farmi il favore di dirmi che ore sono	ora
+ciao amico assistente mi faresti il favore di cercare su internet a che ora c'è l'eclissi domani grazie	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+amico mio assistente per favore metteresti una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+ciao amico mio assistente metti i pink floyd in sottofondo grazie mille	riproduci_musica	richiesta=pink floyd
+caro assistente mi piacerebbe se tu cercassi su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+il mio agente riusciresti gentilmente a cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+gentilissimo assistente potresti certi gentilmente cercare qualche canzone di vasco rossi gentilmente	riproduci_musica	richiesta=vasco rossi
+caro assistente mi piacerebbe molto se tu mi dicessi come funziona la fotosintesi per favore	online
+mi piacerebbe se tu gentilmente mettessi una nota su onenote e scrivere chiamare l'idraulico grazie	prendi_nota	testo=chiamare l'idraulico
+il mio agente adesso salveresti una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+il mio agente dovresti farmi gentilmente il favore di leggermi gli impegni di oggi gentilmente	leggi_calendario	dal=2026-11-03;giorni=1
+il mio agente mi faresti il favore di dirmi che giorno è oggi ti ringrazio	data
+ciao amico assistente mi ricorderesti alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+gentilissimo assistente mi piacerebbe se tu in questo momento mettessi un timer di un quarto d'ora	imposta_timer	secondi=900
+il mio agente mi potresti impostare un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+ciao caro dovresti farmi un attimo il favore di dirmi come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+mio caro assistente non è che riusciresti a mettere una sveglia domani alle sei grazie	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro assistente cercheresti su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+ciao amico mio assistente mi piacerebbe molto se tu impostassi una sveglia per le sette e mezza grazie	imposta_sveglia	ora=07:30;etichetta=
+mio caro assistente metteresti una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+caro assistente riusciresti noi per favore a dirmi che tempo farà domani a palermo se puoi per favore	meteo	luogo=palermo;giorno=2026-11-04
+non è che riusciresti a cercare su internet cosa fa la roma la prossima settimana grazie mille	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+amico mio assistente mi potresti dirmi quanto manca al timer	stato_timer
+caro mio assistente non è che riusciresti a mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+ciao amico mio assistente riusciresti per favore a far partire un timer di tre minuti grazie mille	imposta_timer	secondi=180
+mio caro assistente fammi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+mi piacerebbe molto se tu mettessi i pink floyd in sottofondo ti ringrazio	riproduci_musica	richiesta=pink floyd
+caro mio assistente mi faresti il favore di cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+ciao caro vorrei che tu riuscissi a riprodurre qualcosa dei queen gentilmente	riproduci_musica	richiesta=queen
+ciao amico mio assistente non è che riusciresti noi a dirmi come è il tempo a messina grazie mille	meteo	luogo=messina;giorno=
+il mio agente potresti certi in questo momento impostare un timer di venti minuti ti ringrazio	imposta_timer	secondi=1200
+ciao amico mio assistente mi piacerebbe se tu riuscissi a dirmi chi ha vinto la partita ieri sera per favore	online
+vorrei che tu riuscissi a impostare una sveglia per le sette e mezza grazie	imposta_sveglia	ora=07:30;etichetta=
+ciao amico mio assistente vorrei che tu riuscissi a cercare su internet a che ora c'è l'eclissi domani grazie mille	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+caro assistente metteresti una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+mi faresti il favore di impostare un timer di venti minuti	imposta_timer	secondi=1200
+mio caro assistente in questo momento mi diresti come è il tempo a messina grazie	meteo	luogo=messina;giorno=
+ciao amico mio assistente gentilmente telefoneresti a papà per favore	chiama	chi=papà
+caro assistente non è che riusciresti noi a ricordarmi domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro mio assistente mi piacerebbe molto se tu mi ricordassi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao amico assistente mi diresti resti chi ha vinto la partita ieri sera grazie mille	online
+gentilissimo assistente vorrei che tu riuscissi a ricordarmi domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro mio assistente mi piacerebbe se tu in questo momento mi dicessi come è il tempo a messina	meteo	luogo=messina;giorno=
+mi faresti il favore di mettere i pink floyd in sottofondo per favore	riproduci_musica	richiesta=pink floyd
+ciao caro mi diresti a che ora c'è natale nel duemilaventisette	online
+il mio agente dovresti farmi in questo momento il favore di mettere i pink floyd grazie	riproduci_musica	richiesta=pink floyd
+mio caro assistente mi potresti svegliarmi alle otto ti ringrazio	imposta_sveglia	ora=08:00;etichetta=
+caro mio assistente non è che riusciresti a mettere un timer di cinque minuti	imposta_timer	secondi=300
+mio caro assistente mi piacerebbe molto se tu mi dicessi come funziona la fotosintesi grazie	online
+amico mio assistente metteresti i pink floyd grazie mille	riproduci_musica	richiesta=pink floyd
+caro mio assistente mi piacerebbe be se tu per favore mi dicessi a che punto è il timer se puoi per favore	stato_timer
+riusciresti a telefonare a papà grazie	chiama	chi=papà
+caro assistente dovresti farmi un attimo il favore di farmi una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+il mio agente non è che riusciresti noi a dirmi che ore sono per favore	ora
+ciao amico mio assistente mi piacerebbe se tu adesso mi svegliassi alle otto grazie mille	imposta_sveglia	ora=08:00;etichetta=
+ciao caro mi potresti mettere una sveglia per le diciassette gentilmente	imposta_sveglia	ora=17:00;etichetta=
+il mio agente riusciresti adesso a mettere una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mio caro assistente dovresti farmi gentilmente il favore di cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+potresti telefonare a papà grazie mille	chiama	chi=papà
+ciao amico assistente mi piacerebbe se tu chiamassi mamma se puoi per favore	chiama	chi=mamma
+mi piacerebbe se tu gentilmente riproducessi qualcosa dei queen	riproduci_musica	richiesta=queen
+ciao caro adesso mi diresti a che punto è il timer	stato_timer
+mi piacerebbe se tu riuscissi a dirmi a che punto è il timer grazie	stato_timer
+amico mio assistente gentilmente metteresti un timer di dieci secondi se puoi per favore	imposta_timer	secondi=10
+caro assistente mi piacerebbe molto se tu mettessi un timer di un quarto d'ora	imposta_timer	secondi=900
+amico mio assistente metteresti un timer di cinque minuti grazie mille	imposta_timer	secondi=300
+non è che riusciresti noi a chiamare giuseppe	chiama	chi=giuseppe
+ciao amico mio assistente vorrei che tu riuscissi a dirmi che cosa fa la roma la prossima settimana grazie mille	online
+mi piacerebbe molto se tu chiamassi mamma ti ringrazio	chiama	chi=mamma
+il mio agente mi piacerebbe se tu riuscissi a spiegarmi come si fa la pasta alla norma	online
+dovresti farmi il favore di dirmi come funziona la fotosintesi per favore	online
+amico mio assistente mi diresti che tempo fa a catania ti ringrazio	meteo	luogo=catania;giorno=
+caro assistente spiegami come si fa la pasta alla norma	online
+il mio agente a me piacerebbe molto se tu potessi dirmi che ore sono gentilmente	ora
+potresti gentilmente impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+ciao caro vorrei che tu riuscissi a mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+riusciresti a cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+caro mio assistente potresti certi per favore far partire un timer di tre minuti gentilmente	imposta_timer	secondi=180
+il mio agente non è che riusciresti a dirmi come è il tempo a messina grazie	meteo	luogo=messina;giorno=
+ciao amico assistente cercheresti qualche canzone di vasco rossi ti ringrazio	riproduci_musica	richiesta=vasco rossi
+mio caro assistente mi piacerebbe molto se tu mi dicessi a che punto è il timer ti ringrazio	stato_timer
+gentilissimo assistente mi ricorderesti domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+il mio agente mi faresti il favore di dirmi quanto manca al timer gentilmente	stato_timer
+il mio agente mi piacerebbe be molto se tu chiamassi mamma	chiama	chi=mamma
+mio caro assistente mi faresti il favore di scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+potresti adesso cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+gentilissimo assistente mi piacerebbe molto se tu mi dicessi che tempo farà domani a palermo grazie	meteo	luogo=palermo;giorno=2026-11-04
+gentilissimo assistente mi potresti certi gentilmente dirmi cosa ho in agenda domani grazie	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente mi potresti certi raccontarmi una barzelletta	online
+gentilissimo assistente mi piacerebbe be se tu riuscissi a scrivere nelle note comprare le lampadine per favore	prendi_nota	testo=comprare le lampadine
+ciao amico mio assistente non è che riusciresti a dirmi come funziona la fotosintesi per favore	online
+il mio agente dovresti farmi il favore di riprodurre qualcosa dei queen grazie	riproduci_musica	richiesta=queen
+il mio agente mi faresti il favore di dirmi a che punto è il timer per favore	stato_timer
+il mio agente dovresti farmi adesso il favore di dirmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+amico mio assistente potresti telefonare a papà gentilmente	chiama	chi=papà
+ciao amico assistente dovresti farmi il favore di scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+ciao amico assistente mi piacerebbe be se tu mi dicessi come è il tempo a messina	meteo	luogo=messina;giorno=
+il mio agente riusciresti a svegliarmi alle otto per favore	imposta_sveglia	ora=08:00;etichetta=
+il mio agente potresti mettere una nota sua notte e scrivere il codice del cancello è quattro due uno per favore	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente potresti mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+gentilissimo assistente mi faresti il favore di dirmi cosa ho in agenda domani grazie	leggi_calendario	dal=2026-11-04;giorni=1
+ciao amico mio assistente metteresti i pink floyd in sottofondo grazie mille	riproduci_musica	richiesta=pink floyd
+caro mio assistente mi piacerebbe molto se tu mi dicessi che cosa fa la roma la prossima settimana	online
+per favore imposteresti una sveglia per le sette e mezza grazie mille	imposta_sveglia	ora=07:30;etichetta=
+mio caro assistente mi faresti il favore di telefonare a papà ti ringrazio	chiama	chi=papà
+caro mio assistente mi piacerebbe se tu riuscissi a dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+potresti svegliarmi alle otto se puoi per favore	imposta_sveglia	ora=08:00;etichetta=
+metteresti i pink floyd per favore	riproduci_musica	richiesta=pink floyd
+caro assistente adesso metteresti i pink floyd ti ringrazio	riproduci_musica	richiesta=pink floyd
+riusciresti a telefonare a papà	chiama	chi=papà
+mio caro assistente mi piacerebbe molto se tu mi spiegassi come si fa la pasta alla norma grazie	online
+gentilissimo assistente vorrei che tu riuscissi a dirmi a che ora c'è natale nel duemilaventisette	online
+ciao amico mio assistente a me piacerebbe be molto se tu potessi adesso dirmi a che punto è il timer	stato_timer
+ciao amico assistente mi piacerebbe se tu riuscissi a ricordarmi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+mio caro assistente mi faresti il favore di mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+mio caro assistente potresti impostare un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+ciao caro mi piacerebbe se tu un attimo cercassi su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+amico mio assistente mi piacerebbe molto se tu impostassi una sveglia per le sette e mezza grazie	imposta_sveglia	ora=07:30;etichetta=
+caro mio assistente dovresti farmi il favore di mettere una sveglia alle quindici ti ringrazio	imposta_sveglia	ora=15:00;etichetta=
+amico mio assistente mi potresti dirmi come funziona la fotosintesi per favore	online
+amico mio assistente mi leggeresti gli impegni di oggi grazie	leggi_calendario	dal=2026-11-03;giorni=1
+ciao amico mio assistente a me piacerebbe molto se tu potessi per favore mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente mi diresti chi ha vinto la partita ieri sera grazie mille	online
+gentilmente telefoneresti a papà grazie mille	chiama	chi=papà
+cercheresti su google gli orari dei treni per messina per favore	cerca_sul_web	domanda=gli orari dei treni per messina
+gentilissimo assistente mi potresti adesso cercare qualche canzone di vasco rossi gentilmente	riproduci_musica	richiesta=vasco rossi
+ciao caro a me piacerebbe molto se tu potessi per favore salvare una nota con scritto domani devo comprare il latte grazie	prendi_nota	testo=domani devo comprare il latte
+mio caro assistente dovresti farmi il favore di dirmi che giorno è oggi se puoi per favore	data
+caro mio assistente mi faresti il favore di spiegarmi come si fa la pasta alla norma grazie mille	online
+mi piacerebbe be se tu per favore mettessi i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+caro mio assistente vorrei che tu riuscissi a dirmi che cosa fa la roma la prossima settimana grazie mille	online
+ciao amico mio assistente mi faresti il favore di dirmi cosa ho in agenda domani grazie	leggi_calendario	dal=2026-11-04;giorni=1
+gentilissimo assistente mi piacerebbe molto se tu riproducessi qualcosa dei queen grazie mille	riproduci_musica	richiesta=queen
+ciao amico mio assistente mi piacerebbe se tu riuscissi a mettere un timer di un quarto d'ora ti ringrazio	imposta_timer	secondi=900
+ciao amico mio assistente mi faresti il favore di cercare qualche canzone di vasco rossi	riproduci_musica	richiesta=vasco rossi
+gentilissimo assistente dimmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+vorrei che tu riuscissi a mettere una sveglia per le diciassette se puoi per favore	imposta_sveglia	ora=17:00;etichetta=
+caro assistente mi piacerebbe se tu adesso mi dicessi che giorno è oggi gentilmente	data
+caro mio assistente mi spiegheresti come si fa la pasta alla norma grazie	online
+mi faresti il favore di dirmi che cosa fa la roma la prossima settimana	online
+ciao amico assistente a me piacerebbe molto se tu potessi in questo momento mettere una sveglia domani alle sei gentilmente	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro assistente mi faresti il favore di dirmi come funziona la fotosintesi grazie	online
+ciao caro mi faresti il favore di leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+amico mio assistente mi ricorderesti domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro assistente mi piacerebbe be se tu per favore mettessi una sveglia domani alle sei	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro assistente vorrei che tu riuscissi a dirmi che ore sono	ora
+gentilissimo assistente mi potresti per favore mettere e una sveglia per le diciassette grazie	imposta_sveglia	ora=17:00;etichetta=
+caro mio assistente mi piacerebbe molto se tu mi dicessi come funziona la fotosintesi	online
+mio caro assistente mi potresti salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+caro assistente mi diresti a che ora c'è natale nel duemilaventisette per favore	online
+mi faresti il favore di mettere una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+il mio agente mi piacerebbe be se tu riuscissi a svegliarmi alle otto grazie mille	imposta_sveglia	ora=08:00;etichetta=
+mio caro assistente mi piacerebbe se tu un attimo mettessi un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+ciao caro mi piacerebbe se tu riuscissi a dirmi a che punto è il timer	stato_timer
+gentilissimo assistente non è che riusciresti a mettere un timer di cinque minuti per favore	imposta_timer	secondi=300
+caro assistente vorrei che tu riuscissi a chiamare mamma	chiama	chi=mamma
+amico mio assistente dovresti farmi per favore il favore di mettere e un timer di un quarto d'ora grazie mille	imposta_timer	secondi=900
+mio caro assistente metti una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+mi piacerebbe molto se tu mettessi una sveglia per le diciassette grazie mille	imposta_sveglia	ora=17:00;etichetta=
+caro assistente mi potresti un attimo scrivere nelle note comprare le lampadine grazie mille	prendi_nota	testo=comprare le lampadine
+gentilissimo assistente metteresti un timer di dieci secondi	imposta_timer	secondi=10
+dovresti farmi il favore di dirmi che tempo farà domani a palermo gentilmente	meteo	luogo=palermo;giorno=2026-11-04
+caro assistente non è che riusciresti a mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+mio caro assistente mi piacerebbe be se tu mi dicessi come funziona la fotosintesi grazie	online
+amico mio assistente riusciresti a mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao amico mio assistente vorrei che tu riuscissi a farmi una ricerca su internet su come si fa un foglio excel per favore	cerca_sul_web	domanda=come si fa un foglio excel
+caro assistente potresti certi leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+caro mio assistente dovresti farmi per favore il favore di mettere un timer di dieci secondi	imposta_timer	secondi=10
+ciao amico assistente mi potresti certi chiamare mamma ti ringrazio	chiama	chi=mamma
+ciao caro ricordami domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+riusciresti noi a mettere i pink floyd se puoi per favore	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente mi potresti certi dirmi che giorno è oggi	data
+mio caro assistente a me piacerebbe molto se tu potessi adesso salvare una nota con scritto domani devo comprare il latte grazie mille	prendi_nota	testo=domani devo comprare il latte
+caro assistente riusciresti a dirmi a che ora c'è natale nel duemilaventisette	online
+amico mio assistente non è che riusciresti a dirmi come è il tempo a messina	meteo	luogo=messina;giorno=
+gentilissimo assistente dimmi quanto manca al timer	stato_timer
+mi leggeresti gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+mio caro assistente mi potresti per favore dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+vorrei che tu riuscissi a cercare qualche canzone di vasco rossi ti ringrazio	riproduci_musica	richiesta=vasco rossi
+ciao amico assistente non è che riusciresti a cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+il mio agente vorrei che tu riuscissi a mettere un timer di dieci secondi per favore	imposta_timer	secondi=10
+ciao amico mio assistente chiameresti mamma gentilmente	chiama	chi=mamma
+ciao amico assistente mi piacerebbe be se tu riuscissi a leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+il mio agente mi piacerebbe se tu riuscissi a impostare un timer di venti minuti gentilmente	imposta_timer	secondi=1200
+ciao amico mio assistente dovresti farmi gentilmente il favore di dirmi che tempo farà domani a palermo grazie	meteo	luogo=palermo;giorno=2026-11-04
+mio caro assistente non è che riusciresti noi a dirmi che tempo fa a catania se puoi per favore	meteo	luogo=catania;giorno=
+mi piacerebbe be se tu mi dicessi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+metti i pink floyd	riproduci_musica	richiesta=pink floyd
+mio caro assistente mi faresti il favore di dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+gentilissimo assistente non è che riusciresti a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+ciao caro potresti certi per favore cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente mi faresti il favore di mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+ciao caro ricordami alle cinque di chiamare il dottore grazie	promemoria	ora=17:00;testo=chiamare il dottore
+caro assistente potresti in questo momento riprodurre qualcosa dei queen se puoi per favore	riproduci_musica	richiesta=queen
+ciao caro a me piacerebbe molto se tu potessi in questo momento dirmi come funziona la fotosintesi grazie mille	online
+amico mio assistente riusciresti noi in questo momento a dirmi se domani piove a roma ti ringrazio	meteo	luogo=roma;giorno=2026-11-04
+per favore mi ricorderesti alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+amico mio assistente riusciresti noi gentilmente a mettere un timer di un quarto d'ora se puoi per favore	imposta_timer	secondi=900
+gentilissimo assistente mi piacerebbe se tu riuscissi a dirmi quanto manca al timer gentilmente	stato_timer
+caro mio assistente mi piacerebbe be se tu per favore scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+gentilissimo assistente a me piacerebbe molto se tu potessi cercare su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+il mio agente riusciresti adesso a leggermi gli impegni di oggi gentilmente	leggi_calendario	dal=2026-11-03;giorni=1
+ciao caro mi piacerebbe se tu riuscissi a mettere una sveglia domani alle sei grazie	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao amico mio assistente non è che riusciresti a mettere un timer di cinque minuti	imposta_timer	secondi=300
+ciao amico mio assistente mi potresti salvare una nota con scritto domani devo comprare il latte grazie mille	prendi_nota	testo=domani devo comprare il latte
+caro assistente a me piacerebbe be molto se tu potessi un attimo dirmi a che punto è il timer grazie	stato_timer
+ciao amico mio assistente mi faresti il favore di dirmi quanto manca al timer	stato_timer
+ciao amico mio assistente mi piacerebbe se tu un attimo mettessi un timer di un quarto d'ora	imposta_timer	secondi=900
+gentilissimo assistente non è che riusciresti noi a raccontarmi una barzelletta grazie mille	online
+potresti un attimo cercare su google gli orari dei treni per messina per favore	cerca_sul_web	domanda=gli orari dei treni per messina
+amico mio assistente riusciresti adesso a mettere i pink floyd in sottofondo se puoi per favore	riproduci_musica	richiesta=pink floyd
+ciao amico mio assistente mi piacerebbe se tu riuscissi a ricordarmi alle cinque di chiamare il dottore grazie	promemoria	ora=17:00;testo=chiamare il dottore
+caro assistente non è che riusciresti a mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+il mio agente mi piacerebbe se tu mettessi un timer di un quarto d'ora	imposta_timer	secondi=900
+il mio agente non è che riusciresti a cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+gentilissimo assistente chiameresti mamma gentilmente	chiama	chi=mamma
+ciao caro gentilmente metteresti una sveglia domani alle sei grazie	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mio caro assistente mi piacerebbe molto se tu mi ricordassi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+ciao amico mio assistente mi piacerebbe molto se tu mi dicessi che cosa fa la roma la prossima settimana	online
+il mio agente a me piacerebbe molto se tu potessi dirmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao caro potresti certi ricordarmi domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+gentilissimo assistente imposteresti un timer di venti minuti grazie mille	imposta_timer	secondi=1200
+il mio agente mi piacerebbe molto se tu mi dicessi se domani piove a roma grazie mille	meteo	luogo=roma;giorno=2026-11-04
+ciao amico assistente vorrei che tu riuscissi a cercare su internet a che ora c'è l'eclissi domani grazie	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+ciao amico assistente a me piacerebbe be molto se tu potessi per favore cercare qualche canzone di vasco rossi se puoi per favore	riproduci_musica	richiesta=vasco rossi
+il mio agente spiegami come si fa la pasta alla norma	online
+il mio agente metti un timer di dieci secondi per favore	imposta_timer	secondi=10
+ciao caro riusciresti un attimo a dirmi a che punto è il timer per favore	stato_timer
+ciao caro potresti per favore dirmi se domani piove a roma	meteo	luogo=roma;giorno=2026-11-04
+il mio agente potresti mettere e un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+ciao caro metteresti un timer di un quarto d'ora grazie mille	imposta_timer	secondi=900
+caro mio assistente mi piacerebbe se tu riuscissi a impostare un timer di venti minuti grazie	imposta_timer	secondi=1200
+mi piacerebbe se tu mettessi un timer di dieci secondi gentilmente	imposta_timer	secondi=10
+mio caro assistente mi piacerebbe be se tu riuscissi a spiegarmi come si fa la pasta alla norma	online
+caro mio assistente potresti dirmi che tempo fa a catania per favore	meteo	luogo=catania;giorno=
+ciao amico mio assistente mi diresti a che punto è il timer grazie mille	stato_timer
+vorrei che tu riuscissi a cercare qualche canzone di vasco rossi gentilmente	riproduci_musica	richiesta=vasco rossi
+mio caro assistente mi piacerebbe molto se tu mi dicessi come è il tempo a messina	meteo	luogo=messina;giorno=
+caro assistente vorrei che tu riuscissi a svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+amico mio assistente mi piacerebbe molto se tu impostassi una sveglia per le sette e mezza se puoi per favore	imposta_sveglia	ora=07:30;etichetta=
+mio caro assistente mi piacerebbe be se tu mettessi una sveglia domani alle sei se puoi per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mi sveglieresti domani alle sette gentilmente	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro mio assistente mi piacerebbe se tu riuscissi a cercare su google gli orari dei treni per messina per favore	cerca_sul_web	domanda=gli orari dei treni per messina
+ciao amico mio assistente mi piacerebbe se tu riuscissi a mettere una sveglia domani alle sei per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+mio caro assistente riusciresti in questo momento a dirmi come è il tempo a messina	meteo	luogo=messina;giorno=
+riusciresti noi a far partire un timer di tre minuti gentilmente	imposta_timer	secondi=180
+mio caro assistente mi faresti il favore di dirmi chi ha vinto la partita ieri sera	online
+gentilissimo assistente potresti mettere un timer di dieci secondi	imposta_timer	secondi=10
+mi piacerebbe se tu riproducessi qualcosa dei queen per favore	riproduci_musica	richiesta=queen
+gentilissimo assistente a me piacerebbe molto se tu potessi dirmi quanto manca al timer	stato_timer
+caro mio assistente non è che riusciresti a cercare su internet a che ora c'è l'eclissi domani	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+ciao amico assistente dovresti farmi il favore di riprodurre qualcosa dei queen ti ringrazio	riproduci_musica	richiesta=queen
+caro assistente mi faresti il favore di dirmi che ore sono	ora
+amico mio assistente dimmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente dovresti farmi in questo momento il favore di impostare una sveglia per le sette e mezza gentilmente	imposta_sveglia	ora=07:30;etichetta=
+mio caro assistente a me piacerebbe be molto se tu potessi leggermi gli impegni di oggi	leggi_calendario	dal=2026-11-03;giorni=1
+mio caro assistente mi racconteresti una barzelletta grazie	online
+mio caro assistente mi piacerebbe se tu riuscissi a svegliarmi alle otto grazie	imposta_sveglia	ora=08:00;etichetta=
+ciao amico mio assistente mi piacerebbe se tu gentilmente mettessi un timer di cinque minuti gentilmente	imposta_timer	secondi=300
+a me piacerebbe be molto se tu potessi un attimo svegliarmi alle otto grazie mille	imposta_sveglia	ora=08:00;etichetta=
+ciao amico assistente non è che riusciresti a dirmi come funziona la fotosintesi	online
+gentilissimo assistente mi piacerebbe se tu riuscissi a dirmi come funziona la fotosintesi grazie mille	online
+caro mio assistente mi piacerebbe se tu mettessi una sveglia domani alle sei se puoi per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+caro mio assistente potresti per favore dirmi che tempo fa a catania	meteo	luogo=catania;giorno=
+caro mio assistente dovresti farmi il favore di salvare una nota con scritto domani devo comprare il latte grazie mille	prendi_nota	testo=domani devo comprare il latte
+caro assistente mi piacerebbe molto se tu salvassi una nota con scritto domani devo comprare il latte grazie	prendi_nota	testo=domani devo comprare il latte
+amico mio assistente riusciresti un attimo a impostare un timer di venti minuti	imposta_timer	secondi=1200
+ciao amico mio assistente mi piacerebbe se tu mi dicessi che tempo fa a catania per favore	meteo	luogo=catania;giorno=
+caro assistente mi piacerebbe molto se tu telefonassi a papà	chiama	chi=papà
+mio caro assistente mi piacerebbe be se tu riuscissi a ricordarmi domani alle nove di pagare la bolletta grazie mille	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+caro assistente mi faresti il favore di cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+il mio agente mi sveglieresti domani alle sette grazie mille	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro assistente adesso mi faresti una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro mio assistente fammi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+ciao amico mio assistente riusciresti noi adesso a svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+il mio agente metteresti una nota sua notte e scrivere il codice del cancello è quattro due uno per favore	prendi_nota	testo=il codice del cancello è quattro due uno
+ciao amico assistente potresti certi in questo momento dirmi che ore sono per favore	ora
+caro mio assistente riusciresti adesso a mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+caro assistente mi piacerebbe be molto se tu mettessi una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+mio caro assistente mi piacerebbe se tu mi dicessi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+caro assistente mi faresti il favore di chiamare mamma se puoi per favore	chiama	chi=mamma
+gentilissimo assistente dimmi come è il tempo a messina per favore	meteo	luogo=messina;giorno=
+mi piacerebbe se tu mi dicessi come è il tempo a messina grazie	meteo	luogo=messina;giorno=
+mi potresti certi per favore dirmi quanto manca al timer se puoi per favore	stato_timer
+gentilissimo assistente vorrei che tu riuscissi a dirmi che giorno è oggi ti ringrazio	data
+caro mio assistente vorrei che tu riuscissi a svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+mio caro assistente vorrei che tu riuscissi a dirmi se domani piove a roma se puoi per favore	meteo	luogo=roma;giorno=2026-11-04
+mio caro assistente ricordami alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+il mio agente mi potresti in questo momento dirmi chi ha vinto la partita ieri sera	online
+potresti in questo momento farmi una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+mi faresti il favore di dirmi come è il tempo a messina	meteo	luogo=messina;giorno=
+gentilissimo assistente un attimo metteresti una nota sua notte e scrivere il codice del cancello è quattro due uno	prendi_nota	testo=il codice del cancello è quattro due uno
+il mio agente mi diresti come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+a me piacerebbe molto se tu potessi mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+ciao amico mio assistente mi piacerebbe be se tu riuscissi a svegliarmi alle otto	imposta_sveglia	ora=08:00;etichetta=
+vorrei che tu riuscissi a dirmi che cosa fa la roma la prossima settimana	online
+ciao caro mi piacerebbe se tu riuscissi a svegliarmi domani alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico assistente potresti per favore far partire un timer di tre minuti gentilmente	imposta_timer	secondi=180
+gentilissimo assistente mi piacerebbe se tu mi leggessi gli impegni di oggi grazie	leggi_calendario	dal=2026-11-03;giorni=1
+amico mio assistente vorrei che tu riuscissi a mettere una sveglia per le diciassette ti ringrazio	imposta_sveglia	ora=17:00;etichetta=
+dovresti farmi il favore di mettere un timer di cinque minuti per favore	imposta_timer	secondi=300
+ciao amico mio assistente mi piacerebbe be molto se tu mettessi una nota su onenote e scrivere chiamare l'idraulico grazie mille	prendi_nota	testo=chiamare l'idraulico
+gentilissimo assistente mi potresti in questo momento dirmi che cosa fa la roma la prossima settimana	online
+caro mio assistente mi piacerebbe molto se tu mi dicessi che tempo fa a catania	meteo	luogo=catania;giorno=
+il mio agente mi diresti che tempo farà domani a palermo gentilmente	meteo	luogo=palermo;giorno=2026-11-04
+mio caro assistente mi faresti il favore di dirmi quanto manca al timer	stato_timer
+gentilissimo assistente mi piacerebbe se tu riuscissi a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+gentilissimo assistente non è che riusciresti a dirmi che ore sono	ora
+non è che riusciresti a scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+caro mio assistente non è che riusciresti noi a dirmi chi ha vinto la partita ieri sera grazie	online
+mi piacerebbe molto se tu salvassi una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+caro mio assistente mi faresti il favore di svegliarmi alle otto ti ringrazio	imposta_sveglia	ora=08:00;etichetta=
+ciao caro mi piacerebbe se tu adesso mi dicessi se domani piove a roma per favore	meteo	luogo=roma;giorno=2026-11-04
+il mio agente mi piacerebbe be se tu riuscissi a impostare un timer di venti minuti	imposta_timer	secondi=1200
+ciao amico mio assistente a me piacerebbe molto se tu potessi dirmi come funziona la fotosintesi	online
+caro mio assistente mi piacerebbe se tu riproducessi qualcosa dei queen grazie	riproduci_musica	richiesta=queen
+mi piacerebbe se tu riuscissi a spiegarmi come si fa la pasta alla norma grazie mille	online
+ciao amico assistente a me piacerebbe molto se tu potessi per favore dirmi cosa ho in agenda domani gentilmente	leggi_calendario	dal=2026-11-04;giorni=1
+amico mio assistente non è che riusciresti a spiegarmi come si fa la pasta alla norma grazie	online
+caro assistente dovresti farmi in questo momento il favore di dirmi che ore sono grazie mille	ora
+amico mio assistente a me piacerebbe molto se tu potessi svegliarmi domani alle sette grazie	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+caro mio assistente mi faresti il favore di mettere una nota sua notte e scrivere il codice del cancello è quattro due uno grazie	prendi_nota	testo=il codice del cancello è quattro due uno
+caro mio assistente mi piacerebbe molto se tu mi dicessi che cosa fa la roma la prossima settimana per favore	online
+amico mio assistente un attimo metteresti i pink floyd in sottofondo gentilmente	riproduci_musica	richiesta=pink floyd
+ciao amico mio assistente mi faresti il favore di dirmi come è il tempo a messina se puoi per favore	meteo	luogo=messina;giorno=
+cercheresti su google gli orari dei treni per messina	cerca_sul_web	domanda=gli orari dei treni per messina
+riusciresti adesso a cercare su internet a che ora c'è l'eclissi domani per favore	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+caro mio assistente potresti per favore salvare una nota con scritto domani devo comprare il latte	prendi_nota	testo=domani devo comprare il latte
+ciao caro riusciresti noi per favore a dirmi cosa ho in agenda domani ti ringrazio	leggi_calendario	dal=2026-11-04;giorni=1
+mi piacerebbe molto se tu mettessi un timer di dieci secondi	imposta_timer	secondi=10
+ciao caro non è che riusciresti a mettere una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+ciao amico assistente dimmi che tempo farà domani a palermo	meteo	luogo=palermo;giorno=2026-11-04
+caro mio assistente dimmi che giorno è oggi ti ringrazio	data
+caro assistente mi diresti resti chi ha vinto la partita ieri sera	online
+mi potresti mettere i pink floyd per favore	riproduci_musica	richiesta=pink floyd
+il mio agente vorrei che tu riuscissi a raccontarmi una barzelletta per favore	online
+ciao amico mio assistente potresti mettere una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+amico mio assistente riusciresti per favore a cercare su google gli orari dei treni per messina grazie mille	cerca_sul_web	domanda=gli orari dei treni per messina
+mi piacerebbe molto se tu mettessi i pink floyd per favore	riproduci_musica	richiesta=pink floyd
+ciao caro mi faresti il favore di mettere e una sveglia per le diciassette	imposta_sveglia	ora=17:00;etichetta=
+mi piacerebbe be se tu riuscissi a dirmi che ore sono per favore	ora
+ciao amico mio assistente non è che riusciresti a farmi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+caro assistente mi piacerebbe be se tu scrivessi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+amico mio assistente mi piacerebbe be se tu adesso mettessi i pink floyd	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente potresti chiamare giuseppe	chiama	chi=giuseppe
+caro mio assistente mi piacerebbe se tu riuscissi a cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+ciao amico assistente riusciresti noi in questo momento a dirmi a che punto è il timer	stato_timer
+ciao amico assistente potresti certi un attimo mettere i pink floyd in sottofondo grazie mille	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente mi piacerebbe se tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+caro assistente mi potresti adesso mettere una sveglia per le diciassette se puoi per favore	imposta_sveglia	ora=17:00;etichetta=
+ciao amico mio assistente telefoneresti a papà gentilmente	chiama	chi=papà
+ciao amico mio assistente riusciresti per favore a chiamare giuseppe se puoi per favore	chiama	chi=giuseppe
+metteresti un timer di cinque minuti per favore	imposta_timer	secondi=300
+mio caro assistente mi piacerebbe be se tu riuscissi a chiamare mamma per favore	chiama	chi=mamma
+ciao caro vorrei che tu riuscissi a scrivere nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+caro assistente mi faresti il favore di mettere una sveglia alle quindici per favore	imposta_sveglia	ora=15:00;etichetta=
+adesso cercheresti qualche canzone di vasco rossi grazie mille	riproduci_musica	richiesta=vasco rossi
+ciao amico assistente riusciresti in questo momento a impostare una sveglia per le sette e mezza	imposta_sveglia	ora=07:30;etichetta=
+caro mio assistente mi faresti il favore di chiamare giuseppe	chiama	chi=giuseppe
+gentilissimo assistente cercheresti su internet cosa fa la roma la prossima settimana	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+caro assistente dovresti farmi adesso il favore di cercare su internet cosa fa la roma la prossima settimana grazie	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+il mio agente dovresti farmi adesso il favore di mettere e una sveglia per le diciassette ti ringrazio	imposta_sveglia	ora=17:00;etichetta=
+ciao amico assistente mi piacerebbe be se tu riuscissi a scrivere nelle note comprare le lampadine grazie mille	prendi_nota	testo=comprare le lampadine
+gentilissimo assistente a me piacerebbe molto se tu potessi mettere un timer di cinque minuti gentilmente	imposta_timer	secondi=300
+caro mio assistente ricordami domani alle nove di pagare la bolletta	promemoria	ora=09:00;giorno=2026-11-04;testo=pagare la bolletta
+ciao caro non è che riusciresti noi a dirmi che ore sono se puoi per favore	ora
+il mio agente riusciresti a mettere un timer di dieci secondi	imposta_timer	secondi=10
+amico mio assistente mi diresti che ore sono grazie	ora
+ciao caro a me piacerebbe be molto se tu potessi svegliarmi domani alle sette grazie	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+gentilissimo assistente mi piacerebbe se tu riuscissi a impostare un timer di venti minuti	imposta_timer	secondi=1200
+non è che riusciresti a mettere un timer di cinque minuti ti ringrazio	imposta_timer	secondi=300
+gentilissimo assistente mi piacerebbe se tu un attimo mettessi i pink floyd grazie	riproduci_musica	richiesta=pink floyd
+gentilissimo assistente riusciresti in questo momento a mettere i pink floyd in sottofondo se puoi per favore	riproduci_musica	richiesta=pink floyd
+ciao amico assistente mi piacerebbe se tu per favore mi ricordassi alle cinque di chiamare il dottore	promemoria	ora=17:00;testo=chiamare il dottore
+gentilissimo assistente mi piacerebbe se tu riuscissi a raccontarmi una barzelletta	online
+ciao amico assistente mi piacerebbe se tu gentilmente mettessi una nota su onenote e scrivere chiamare l'idraulico	prendi_nota	testo=chiamare l'idraulico
+il mio agente mi faresti una ricerca su internet su come si fa un foglio excel per favore	cerca_sul_web	domanda=come si fa un foglio excel
+il mio agente non è che riusciresti a dirmi come funziona la fotosintesi	online
+amico mio assistente non è che riusciresti a impostare un timer di venti minuti se puoi per favore	imposta_timer	secondi=1200
+mio caro assistente gentilmente faresti partire un timer di tre minuti per favore	imposta_timer	secondi=180
+metti un timer di un quarto d'ora grazie mille	imposta_timer	secondi=900
+gentilissimo assistente chiama giuseppe grazie	chiama	chi=giuseppe
+mi faresti il favore di mettere i pink floyd in sottofondo	riproduci_musica	richiesta=pink floyd
+amico mio assistente imposteresti un timer di venti minuti grazie mille	imposta_timer	secondi=1200
+chiama mamma	chiama	chi=mamma
+ciao amico assistente adesso metteresti una sveglia alle quindici se puoi per favore	imposta_sveglia	ora=15:00;etichetta=
+a me piacerebbe molto se tu potessi raccontarmi una barzelletta grazie mille	online
+non è che riusciresti a svegliarmi domani alle sette gentilmente	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+amico mio assistente mi piacerebbe molto se tu mi dicessi come è il tempo a messina ti ringrazio	meteo	luogo=messina;giorno=
+caro assistente gentilmente cercheresti su internet cosa fa la roma la prossima settimana per favore	cerca_sul_web	domanda=cosa fa la roma la prossima settimana
+caro assistente riusciresti a impostare una sveglia per le sette e mezza se puoi per favore	imposta_sveglia	ora=07:30;etichetta=
+ciao caro potresti gentilmente svegliarmi alle otto grazie mille	imposta_sveglia	ora=08:00;etichetta=
+caro mio assistente mi piacerebbe be se tu riuscissi a ricordarmi alle cinque di chiamare il dottore grazie	promemoria	ora=17:00;testo=chiamare il dottore
+scrivi nelle note comprare le lampadine	prendi_nota	testo=comprare le lampadine
+caro mio assistente mi piacerebbe se tu mi svegliassi domani alle sette per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+ciao amico assistente mi piacerebbe se tu riuscissi a dirmi che giorno è oggi gentilmente	data
+ciao amico mio assistente vorrei che tu riuscissi a dirmi che tempo farà domani a palermo grazie	meteo	luogo=palermo;giorno=2026-11-04
+caro mio assistente riusciresti noi per favore a ricordarmi alle cinque di chiamare il dottore per favore	promemoria	ora=17:00;testo=chiamare il dottore
+ciao amico assistente mi sveglieresti domani alle sette se puoi per favore	imposta_sveglia	ora=07:00;giorno=2026-11-04;etichetta=
+potresti certi farmi una ricerca su internet su come si fa un foglio excel grazie	cerca_sul_web	domanda=come si fa un foglio excel
+ciao amico assistente a me piacerebbe molto se tu potessi un attimo cercare su internet a che ora c'è l'eclissi domani grazie	cerca_sul_web	domanda=a che ora c'è l'eclissi domani
+mi piacerebbe se tu per favore mettessi una sveglia alle quindici	imposta_sveglia	ora=15:00;etichetta=
+caro assistente dovresti farmi il favore di far partire un timer di tre minuti ti ringrazio	imposta_timer	secondi=180
+mi piacerebbe molto se tu riproducessi qualcosa dei queen per favore	riproduci_musica	richiesta=queen
+amico mio assistente mi piacerebbe se tu adesso riproducessi qualcosa dei queen grazie	riproduci_musica	richiesta=queen
+caro assistente mi racconteresti una barzelletta	online
+faresti partire un timer di tre minuti gentilmente	imposta_timer	secondi=180
+gentilissimo assistente mi piacerebbe molto se tu mi dicessi come è il tempo a messina gentilmente	meteo	luogo=messina;giorno=
+mi piacerebbe molto se tu mi facessi una ricerca su internet su come si fa un foglio excel	cerca_sul_web	domanda=come si fa un foglio excel
+gentilissimo assistente a me piacerebbe molto se tu potessi mettere una nota sua notte e scrivere il codice del cancello è quattro due uno grazie mille	prendi_nota	testo=il codice del cancello è quattro due uno
+caro assistente un attimo mi diresti cosa ho in agenda domani per favore	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente dovresti farmi il favore di dirmi che giorno è oggi	data
+il mio agente non è che riusciresti noi a scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+caro mio assistente riprodurresti qualcosa dei queen	riproduci_musica	richiesta=queen
+ciao caro metti una sveglia domani alle sei per favore	imposta_sveglia	ora=06:00;giorno=2026-11-04;etichetta=
+ciao caro dovresti farmi un attimo il favore di mettere e un timer di cinque minuti	imposta_timer	secondi=300
+mi potresti svegliarmi alle otto	imposta_sveglia	ora=08:00;etichetta=
+caro assistente mi piacerebbe se tu per favore impostassi una sveglia per le sette e mezza se puoi per favore	imposta_sveglia	ora=07:30;etichetta=
+ciao amico mio assistente dovresti farmi gentilmente il favore di mettere i pink floyd	riproduci_musica	richiesta=pink floyd
+ciao amico assistente dimmi cosa ho in agenda domani	leggi_calendario	dal=2026-11-04;giorni=1
+mio caro assistente mi piacerebbe se tu gentilmente mi dicessi come è il tempo a messina	meteo	luogo=messina;giorno=
+ciao amico assistente potresti mettere e un timer di un quarto d'ora	imposta_timer	secondi=900
+mio caro assistente mi potresti adesso dirmi che giorno è oggi per favore	data
+ciao amico assistente non è che riusciresti a scrivere nelle note comprare le lampadine grazie	prendi_nota	testo=comprare le lampadine
+gentilissimo assistente vorrei che tu riuscissi a dirmi chi ha vinto la partita ieri sera	online
+il mio agente mi piacerebbe be molto se tu mi facessi una ricerca su internet su come si fa un foglio excel grazie mille	cerca_sul_web	domanda=come si fa un foglio excel
+ciao caro mi diresti che ore sono ti ringrazio	ora

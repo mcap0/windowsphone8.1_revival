@@ -1,0 +1,44 @@
+# Parafrasi 5 (giro 5, 2026-11-03): errori di battitura e parole flesse mai viste, scritte prima di misurare.
+# Serve a misurare lo strato dei trigrammi. "now" = mar 2026-11-03 10:00.
+mettti un timer di 5 minuti	imposta_timer	secondi=300
+imposa un timer di 10 minuti	imposta_timer	secondi=600
+timerr 3 minuti	imposta_timer	secondi=180
+metti un timer di cinqe minuti	imposta_timer	secondi=300
+annula il timer	annulla_timer
+cancela il timer	annulla_timer
+svegliammi alle 7	imposta_sveglia	ora=07:00
+metti la svegli alle 6	imposta_sveglia	ora=06:00
+sveglai alle sette	imposta_sveglia	ora=07:00
+impostami la sveglia alle 8	imposta_sveglia	ora=08:00
+cancellamela la sveglia delle 7	cancella_sveglia	ora=07:00
+chiamma mamma	chiama	chi=mamma
+telefonna a Luca	chiama	chi=luca
+chiamala Giulia	chiama	chi=giulia
+ripproduci Battiato	riproduci_musica	richiesta=battiato
+metimi i Queen	riproduci_musica	richiesta=queen
+mettimelo un po' di jazz	riproduci_musica	richiesta=jazz
+fermala la musica	controlla_musica	azione=pausa
+pausaa	controlla_musica	azione=pausa
+prosima canzone	controlla_musica	azione=avanti
+aprimelo telegram	apri	cosa=telegram
+apri telegramm	apri	cosa=telegram
+apri il bluetoot	apri	cosa=bluetooth
+apri le impostazzioni del wifi	apri	cosa=wi-fi
+apri il calendaro	apri	cosa=calendario
+che tenpo fa domani	meteo	giorno=2026-11-04
+meteoo a Roma	meteo	luogo=roma
+previsoni per domani	meteo	giorno=2026-11-04
+cosa ho in agneda domani	leggi_calendario	dal=2026-11-04
+impegnii di oggi	leggi_calendario	dal=2026-11-03
+che ore sonno	ora
+ricordamelo alle 6 di comprare il pane	promemoria	testo=comprare il pane;ora=18:00
+ricordami di chiamre il medico alle 9	promemoria	testo=chiamre il medico;ora=21:00
+annotamelo: pagare il condominio	prendi_nota	testo=pagare il condominio
+scrivilo nelle note: chiamare zio	prendi_nota	testo=chiamare zio
+cercami la ricetta del ragù	cerca_sul_web	domanda=la ricetta del ragù
+# non devono diventare comandi
+la pasta è pronta	online
+il cancello è aperto	online
+mi sveglio sempre tardi	online
+il mio cane si chiama Fido	online
+basta così grazie	online

@@ -1,0 +1,62 @@
+<Page
+    x:Class="Musica.AlbumPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF111111"
+    Foreground="White">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.PrimaryCommands>
+                <AppBarButton x:Name="RenameAlbumButton"
+                              Label="rinomina"
+                              Icon="Rename" />
+                <AppBarButton x:Name="DeleteAlbumButton"
+                              Label="elimina album"
+                              Icon="Delete" />
+            </CommandBar.PrimaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="68" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Margin="18,12">
+                <Image x:Name="AlbumCover" Width="230" Height="230" HorizontalAlignment="Center" Stretch="UniformToFill" />
+                <TextBlock x:Name="AlbumTitle" FontSize="30" Margin="0,16,0,0" TextWrapping="Wrap" />
+                <TextBlock x:Name="AlbumArtist" FontSize="20" Foreground="#FFBBBBBB" />
+                <TextBlock x:Name="AlbumYear" FontSize="16" Foreground="#FFBBBBBB" Margin="0,3,0,12" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="riproduci" Click="OnPlayAlbum" />
+                    <Button Content="casuale" Click="OnShuffleAlbum" Margin="12,0,0,0" />
+                </StackPanel>
+                <ListView x:Name="AlbumTracks" IsItemClickEnabled="True" ItemClick="OnTrackClick" Holding="OnTrackHolding">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,7">
+                                <TextBlock Text="{Binding Title}" FontSize="20" />
+                                <TextBlock Text="{Binding Artist}" FontSize="14" Foreground="#FFBBBBBB" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Row="1" Background="#FF242424" Tapped="OnMiniTapped">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="64" /></Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" Margin="12,0">
+                <TextBlock x:Name="MiniTitle" FontSize="17" TextTrimming="CharacterEllipsis" />
+                <TextBlock x:Name="MiniArtist" FontSize="13" Foreground="#FFBBBBBB" />
+            </StackPanel>
+            <Border Grid.Column="1" Width="64" Height="68" Background="Transparent" Tapped="OnPlayClick">
+                <TextBlock x:Name="MiniButton"
+                           Text="&#x25B6;"
+                           FontFamily="Segoe UI Symbol"
+                           FontSize="23"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

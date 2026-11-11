@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest"
+         xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
+         xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
+         xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
+  <Identity Name="DumbPhone.Avvisi" Publisher="CN=DumbPhone" Version="0.1.1.0" />
+  <mp:PhoneIdentity PhoneProductId="23935f1f-29b5-49e5-958e-016746eb689c" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>Avvisi</DisplayName>
+    <PublisherDisplayName>DumbPhone</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.1</OSMinVersion>
+    <OSMaxVersionTested>6.3.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="it" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Avvisi.App">
+      <m3:VisualElements DisplayName="Avvisi"
+                         Square150x150Logo="Assets\Square150x150Logo.png"
+                         Square44x44Logo="Assets\Square44x44Logo.png"
+                         Description="Avvisi di Telegram e Posta in background"
+                         ForegroundText="light"
+                         BackgroundColor="transparent"
+                         ToastCapable="true">
+        <m3:DefaultTile Square71x71Logo="Assets\Square71x71Logo.png" />
+        <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#BF360C" />
+      </m3:VisualElements>
+      <Extensions>
+        <!-- KeepAlive: silence in a loop keeps this process running with the screen off; it does the checks -->
+        <Extension Category="windows.backgroundTasks" EntryPoint="AvvisiTask.KeepAlive">
+          <BackgroundTasks>
+            <Task Type="audio" />
+          </BackgroundTasks>
+        </Extension>
+        <!-- Watch: every 30 min and when the network comes back, logs and tries to restart KeepAlive -->
+        <Extension Category="windows.backgroundTasks" EntryPoint="AvvisiTask.Watch">
+          <BackgroundTasks>
+            <Task Type="timer" />
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClientServer" />
+    <Capability Name="privateNetworkClientServer" />
+  </Capabilities>
+</Package>

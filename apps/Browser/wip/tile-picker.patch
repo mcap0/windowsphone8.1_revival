@@ -1,0 +1,492 @@
+diff --git a/apps/Browser/Browser/Browser.vcxproj b/apps/Browser/Browser/Browser.vcxproj
+index a68cecd..e4ce975 100644
+--- a/apps/Browser/Browser/Browser.vcxproj
++++ b/apps/Browser/Browser/Browser.vcxproj
+@@ -46,6 +46,7 @@
+   </ItemDefinitionGroup>
+   <ItemGroup>
+     <Image Include="Assets\*.png" />
++    <Image Include="Assets\TileIcons\*.png" />
+   </ItemGroup>
+   <ItemGroup>
+     <!-- Engine built on the PC (engine/out), staged here by tools/browser before the build: webkit.dll and the ANGLE
+diff --git a/apps/Browser/Browser/MainPage.xaml b/apps/Browser/Browser/MainPage.xaml
+index e55962b..19e1adc 100644
+--- a/apps/Browser/Browser/MainPage.xaml
++++ b/apps/Browser/Browser/MainPage.xaml
+@@ -169,6 +169,27 @@
+                 </ScrollViewer>
+             </Grid>
+         </Grid>
++        <!-- "Aggiungi a Start": the site's own icons, in their colours, then our icons on the phone's accent colour. A tap
++             pins the page, or changes the icon of a tile that is already there. Back closes it. -->
++        <Grid x:Name="IconPicker" Grid.RowSpan="2" Background="#1F1F1F" Visibility="Collapsed">
++            <Grid.RowDefinitions>
++                <RowDefinition Height="Auto"/>
++                <RowDefinition Height="*"/>
++                <RowDefinition Height="Auto"/>
++            </Grid.RowDefinitions>
++            <TextBlock x:Name="IconPickerTitle" Margin="16,16,16,8" FontSize="24" Foreground="White" TextTrimming="CharacterEllipsis"/>
++            <ScrollViewer Grid.Row="1" Padding="10,0,10,8" VerticalScrollBarVisibility="Auto">
++                <StackPanel>
++                    <TextBlock x:Name="IconSiteLabel" Margin="6,4" FontSize="15" Foreground="#AAAAAA" Text="icona del sito"/>
++                    <VariableSizedWrapGrid x:Name="IconSiteGrid" Orientation="Horizontal" ItemWidth="118" ItemHeight="118"/>
++                    <TextBlock Margin="6,12,6,4" FontSize="15" Foreground="#AAAAAA" Text="icone con il colore del sistema"/>
++                    <VariableSizedWrapGrid x:Name="IconPresetGrid" Orientation="Horizontal" ItemWidth="118" ItemHeight="118"/>
++                </StackPanel>
++            </ScrollViewer>
++            <Border Grid.Row="2" Background="#444444" Margin="6" Height="56" Tapped="IconPickerClose_Tapped">
++                <TextBlock Text="annulla" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
++            </Border>
++        </Grid>
+         <!-- Text from the page with the system's own selection (handles and the copy button), since WP8.1 apps cannot
+              write the clipboard: the paragraph under a long press, or a link's address. Also renames a favorite. -->
+         <Grid x:Name="Sheet" Grid.RowSpan="2" Background="#1F1F1F" Visibility="Collapsed">
+diff --git a/apps/Browser/Browser/MainPage.xaml.cpp b/apps/Browser/Browser/MainPage.xaml.cpp
+index 3aaa059..aa42fce 100644
+--- a/apps/Browser/Browser/MainPage.xaml.cpp
++++ b/apps/Browser/Browser/MainPage.xaml.cpp
+@@ -3,9 +3,9 @@
+ // (tools/inbox on the PC). The engine is loaded at run time, so a missing DLL or import is reported instead of killing
+ // the app at start.
+ #include "pch.h"
++#include <winsock2.h>
+ #include <cmath>
+ #include "MainPage.xaml.h"
+-#include <winsock2.h>
+ #include <algorithm>
+ #include <atomic>
+ #include <chrono>
+@@ -29,6 +29,8 @@ using namespace Windows::UI::Xaml::Media;
+ using namespace Windows::UI::Xaml::Navigation;
+ using namespace Windows::Web::Http;
+ 
++namespace { std::wstring PinTileId(const std::wstring& url); }
++
+ namespace
+ {
+     const wchar_t* const startPage = L"http://192.168.1.148:8765/browser/";
+@@ -585,7 +587,17 @@ namespace
+             }));
+             return;
+         }
+-        case LW_EVENT_SCRIPT_RESULT: Log(L"script " + std::to_wstring(event->id) + (number ? L" ERRORE: " : L": ") + text); break;
++        case LW_EVENT_SCRIPT_RESULT:
++            if (event->id == 0x1C0) // the page's icons, for its tile (PinToStart)
++            {
++                dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new DispatchedHandler([text]()
++                {
++                    page->OnSiteIconLinks(text);
++                }));
++                return;
++            }
++            Log(L"script " + std::to_wstring(event->id) + (number ? L" ERRORE: " : L": ") + text);
++            break;
+         default: Log(L"evento " + std::to_wstring(type) + L" " + text); break;
+         }
+ 
+@@ -1582,7 +1594,8 @@ void MainPage::More_Tapped(Object^, TappedRoutedEventArgs^ e)
+         AddMenuItem(L"condividi pagina", [this, url]() { Share(url, true); });
+         // The site's own layout for phones, or the one for computers (and back), then the page again.
+         AddMenuItem(IsDesktopSite(url) ? L"versione mobile del sito" : L"versione desktop del sito", [this, url]() { ToggleDesktopSite(url); });
+-        AddMenuItem(L"aggiungi a Start", [this, url, title]() { PinToStart(url, title); });
++        AddMenuItem(Windows::UI::StartScreen::SecondaryTile::Exists(ref new String(PinTileId(url).c_str())) ? L"cambia icona su Start" : L"aggiungi a Start",
++            [this, url, title]() { PinToStart(url, title); });
+         // A site our engine cannot handle yet: the same address in the phone's own browser.
+         AddMenuItem(L"apri in Internet Explorer", [url]()
+         {
+@@ -1654,6 +1667,12 @@ void MainPage::HardwareBack(Object^, Windows::Phone::UI::Input::BackPressedEvent
+         CloseDialog(false);
+         return;
+     }
++    if (IconPicker->Visibility == Windows::UI::Xaml::Visibility::Visible)
++    {
++        e->Handled = true;
++        CloseIconPicker();
++        return;
++    }
+     if (Sheet->Visibility == Windows::UI::Xaml::Visibility::Visible || Menu->Visibility == Windows::UI::Xaml::Visibility::Visible)
+     {
+         e->Handled = true;
+@@ -2190,8 +2209,10 @@ void MainPage::SendFieldEditFor(const std::wstring& now, bool secret)
+ void MainPage::Field_KeyDown(Object^, KeyRoutedEventArgs^ e)
+ {
+     // Diagnostic, and it stays: what the system keyboard really sends is not obvious on WP8.1 (measured: 13 for
+-    // Enter, 8 for backspace, the letters as plain codes).
+-    Log(L"campo: tasto " + std::to_wstring(static_cast<int>(e->Key)));
++    // Enter, 8 for backspace, the letters as plain codes). Control keys only: digits and letters are what the user
++    // typed (codes, account numbers) and the log is plain text sent to the PC.
++    if (static_cast<int>(e->Key) < 32)
++        Log(L"campo: tasto " + std::to_wstring(static_cast<int>(e->Key)));
+     if (e->Key != Windows::System::VirtualKey::Enter)
+         return;
+     // Enter belongs to the app. Left to the control it inserts the newline at its own caret index, which counts
+@@ -2220,7 +2241,6 @@ void MainPage::Field_LostFocus(Object^, RoutedEventArgs^)
+ 
+ void MainPage::Secret_KeyDown(Object^, KeyRoutedEventArgs^ e)
+ {
+-    Log(L"campo: tasto " + std::to_wstring(static_cast<int>(e->Key)));
+     if (e->Key != Windows::System::VirtualKey::Enter || !m_view)
+         return;
+     e->Handled = true;
+@@ -3644,30 +3664,299 @@ void MainPage::ToggleDesktopSite(const std::wstring& url)
+ 
+ // ---- tiles ----
+ 
+-// A tile on Start for this page: its address is the tile's argument, which the app opens when launched from it.
++// A tile on Start for this page: its address is the tile's argument, which the app opens when launched from it. The icon
++// is chosen here. A site's icon keeps its own colours on a background of its own; our icons are white on a transparent
++// tile, which the phone paints in the accent colour. On a page that already has its tile, the choice changes that tile.
++namespace
++{
++    const int iconScriptId = 0x1C0;
++    const unsigned int tileIconSize = 360;     // 150 at the 1020's scale 240
++    const unsigned int siteIconSize = 216;     // inside the tile; a glyph of ours is 144
++    const size_t maxSiteIcons = 4;
++
++    // tools/icons, TILE_ICONS.
++    const wchar_t* const TileIcons[] = { L"globe", L"mail-unread", L"chat-message-new", L"x-office-calendar", L"x-office-document",
++        L"document-edit", L"folder", L"image-x-generic", L"camera-photo", L"video-x-generic", L"audio-x-generic",
++        L"media-playback-start", L"tv", L"weather-few-clouds", L"emoji-travel", L"emoji-food", L"emoji-nature", L"emoji-people",
++        L"user-available", L"starred", L"channel-secure", L"dialog-password", L"phone", L"printer", L"network-wireless",
++        L"system-search", L"applications-games", L"applications-science", L"utilities-terminal" };
++
++    // The page's icons, biggest declared first, then the two places every browser tries.
++    const wchar_t* const iconLinksScript =
++        L"(function(){var l=[].slice.call(document.querySelectorAll('link[rel~=\"icon\"],link[rel=\"apple-touch-icon\"],"
++        L"link[rel=\"apple-touch-icon-precomposed\"]'));"
++        L"function s(e){var m=/(\\d+)x\\d+/.exec(e.getAttribute('sizes')||'');return m?+m[1]:(/apple/.test(e.rel)?180:16)}"
++        L"l.sort(function(a,b){return s(b)-s(a)});"
++        L"var u=l.map(function(e){return e.href});u.push(location.origin+'/apple-touch-icon.png',location.origin+'/favicon.ico');"
++        L"return u.join('\\n')})()";
++
++    std::wstring PinTileId(const std::wstring& url)
++    {
++        unsigned int hash = 2166136261u;
++        for (wchar_t c : url)
++        {
++            hash ^= static_cast<unsigned int>(c);
++            hash *= 16777619u;
++        }
++        return L"pagina" + std::to_wstring(hash);
++    }
++
++    Brush^ AccentBrush()
++    {
++        auto resources = Application::Current->Resources;
++        if (resources->HasKey(L"PhoneAccentBrush"))
++            return safe_cast<Brush^>(resources->Lookup(L"PhoneAccentBrush"));
++        return ref new SolidColorBrush(Windows::UI::ColorHelper::FromArgb(255, 0x19, 0x76, 0xD2));
++    }
++
++    Border^ IconChoice(Brush^ background, Uri^ image)
++    {
++        auto choice = ref new Border();
++        choice->Background = background;
++        choice->Width = 110;
++        choice->Height = 110;
++        auto picture = ref new Image();
++        picture->Source = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(image);
++        picture->Stretch = Stretch::Uniform;
++        choice->Child = picture;
++        return choice;
++    }
++
++    // The tile's picture: the icon centred on a background of its own, the colour of its corners if it fills them, else
++    // white (a logo with a transparent background is drawn for a light page).
++    Windows::UI::Color ComposeSiteIcon(const uint8_t* source, unsigned int width, unsigned int height, std::vector<uint8_t>& tile)
++    {
++        unsigned int red = 0, green = 0, blue = 0, opaque = 0;
++        const unsigned int cornersX[] = { 0, width - 1, 0, width - 1 };
++        const unsigned int cornersY[] = { 0, 0, height - 1, height - 1 };
++        for (int i = 0; i < 4; ++i)
++        {
++            const uint8_t* pixel = source + (cornersY[i] * width + cornersX[i]) * 4;
++            if (pixel[3] >= 200)
++            {
++                blue += pixel[0];
++                green += pixel[1];
++                red += pixel[2];
++                opaque++;
++            }
++        }
++        Windows::UI::Color background = opaque == 4
++            ? Windows::UI::ColorHelper::FromArgb(255, static_cast<uint8_t>(red / 4), static_cast<uint8_t>(green / 4), static_cast<uint8_t>(blue / 4))
++            : Windows::UI::Colors::White;
++        tile.resize(tileIconSize * tileIconSize * 4);
++        for (size_t i = 0; i < tile.size(); i += 4)
++        {
++            tile[i] = background.B;
++            tile[i + 1] = background.G;
++            tile[i + 2] = background.R;
++            tile[i + 3] = 255;
++        }
++        unsigned int left = (tileIconSize - width) / 2, top = (tileIconSize - height) / 2;
++        for (unsigned int y = 0; y < height; ++y)
++        {
++            for (unsigned int x = 0; x < width; ++x)
++            {
++                const uint8_t* from = source + (y * width + x) * 4;
++                uint8_t* to = tile.data() + ((y + top) * tileIconSize + x + left) * 4;
++                unsigned int alpha = from[3];
++                for (int c = 0; c < 3; ++c)
++                    to[c] = static_cast<uint8_t>((from[c] * alpha + to[c] * (255 - alpha)) / 255);
++            }
++        }
++        return background;
++    }
++}
++
+ void MainPage::PinToStart(const std::wstring& url, const std::wstring& title)
+ {
+-    unsigned int hash = 2166136261u;
+-    for (wchar_t c : url)
++    m_pinURL = url;
++    m_pinId = PinTileId(url);
++    m_pinName = title.empty() || title == url ? HostOf(url) : title;
++    if (m_pinName.size() > 40)
++        m_pinName = m_pinName.substr(0, 40);
++    ++m_iconGeneration;
++    m_siteIcons = 0;
++    IconPickerTitle->Text = ref new String(m_pinName.c_str());
++    IconSiteLabel->Text = L"cerco l'icona del sito...";
++    IconSiteGrid->Children->Clear();
++    if (IconPresetGrid->Children->Size == 0)
++    {
++        for (auto name : TileIcons)
++        {
++            std::wstring logo = std::wstring(L"ms-appx:///Assets/TileIcons/") + name + L".png";
++            auto choice = IconChoice(AccentBrush(), ref new Uri(ref new String(logo.c_str())));
++            choice->Tapped += ref new TappedEventHandler([this, logo](Object^, TappedRoutedEventArgs^)
++            {
++                ApplyTile(logo, 0);
++            });
++            IconPresetGrid->Children->Append(choice);
++        }
++    }
++    IconPicker->Visibility = Windows::UI::Xaml::Visibility::Visible;
++    if (m_view && engine.runScript)
++        engine.runScript(m_view, iconScriptId, iconLinksScript);
++    else
++        IconSiteLabel->Text = L"icona del sito non trovata";
++}
++
++void MainPage::OnSiteIconLinks(const std::wstring& text)
++{
++    auto links = std::make_shared<std::vector<std::wstring>>();
++    size_t start = 0;
++    while (start <= text.size())
++    {
++        size_t end = text.find(L'\n', start);
++        if (end == std::wstring::npos)
++            end = text.size();
++        std::wstring link = text.substr(start, end - start);
++        if (link.compare(0, 4, L"http") == 0 && std::find(links->begin(), links->end(), link) == links->end())
++            links->push_back(link);
++        start = end + 1;
++    }
++    Log(L"tile: " + std::to_wstring(links->size()) + L" icone candidate");
++    LoadSiteIcons(links, 0, m_iconGeneration);
++}
++
++// One link at a time: fetched, decoded (the biggest image of an .ico), scaled and composed into the tile's PNG. What
++// WIC cannot read (SVG) or the server refuses is skipped.
++void MainPage::LoadSiteIcons(std::shared_ptr<std::vector<std::wstring>> links, size_t next, int generation)
++{
++    using namespace Windows::Graphics::Imaging;
++    using namespace Windows::Storage::Streams;
++    if (generation != m_iconGeneration)
++        return;
++    if (next >= links->size() || m_siteIcons >= static_cast<int>(maxSiteIcons))
+     {
+-        hash ^= static_cast<unsigned int>(c);
+-        hash *= 16777619u;
++        IconSiteLabel->Text = m_siteIcons ? L"icona del sito" : L"icona del sito non trovata";
++        return;
+     }
+-    std::wstring id = L"pagina" + std::to_wstring(hash);
+-    std::wstring name = title.empty() || title == url ? HostOf(url) : title;
+-    if (name.size() > 40)
+-        name = name.substr(0, 40);
++    auto client = ref new HttpClient();
++    auto stream = ref new InMemoryRandomAccessStream();
++    auto decoded = std::make_shared<BitmapDecoder^>(nullptr);
++    auto background = std::make_shared<Windows::UI::Color>();
++    auto id = m_pinId;
++    auto index = next;
++    std::wstring name = id + L"-" + std::to_wstring(GetTickCount64()) + L"-" + std::to_wstring(next) + L".png";
++    create_task(client->GetBufferAsync(ref new Uri(ref new String((*links)[next].c_str()))))
++        .then([stream](IBuffer^ body)
++    {
++        return create_task(stream->WriteAsync(body));
++    }).then([stream](unsigned int)
++    {
++        stream->Seek(0);
++        return create_task(BitmapDecoder::CreateAsync(stream));
++    }).then([decoded](BitmapDecoder^ decoder)
++    {
++        *decoded = decoder;
++        // An .ico holds several sizes: the biggest.
++        std::vector<task<BitmapFrame^>> frames;
++        for (unsigned int i = 0; i < decoder->FrameCount; ++i)
++            frames.push_back(create_task(decoder->GetFrameAsync(i)));
++        return when_all(frames.begin(), frames.end());
++    }).then([](std::vector<BitmapFrame^> frames)
++    {
++        BitmapFrame^ best = frames.at(0);
++        for (auto frame : frames)
++        {
++            if (frame->PixelWidth > best->PixelWidth)
++                best = frame;
++        }
++        if (best->PixelWidth < 32)
++            throw Exception::CreateException(E_FAIL);
++        unsigned int longest = std::max(best->PixelWidth, best->PixelHeight);
++        unsigned int target = siteIconSize;
++        auto transform = ref new BitmapTransform();
++        transform->ScaledWidth = best->PixelWidth * target / longest;
++        transform->ScaledHeight = best->PixelHeight * target / longest;
++        transform->InterpolationMode = BitmapInterpolationMode::Fant;
++        auto width = transform->ScaledWidth, height = transform->ScaledHeight;
++        return create_task(best->GetPixelDataAsync(BitmapPixelFormat::Bgra8, BitmapAlphaMode::Straight, transform,
++            ExifOrientationMode::IgnoreExifOrientation, ColorManagementMode::DoNotColorManage))
++            .then([width, height](PixelDataProvider^ pixels)
++        {
++            auto data = pixels->DetachPixelData();
++            auto tile = std::make_shared<std::vector<uint8_t>>();
++            Windows::UI::Color color = ComposeSiteIcon(data->Data, width, height, *tile);
++            return std::make_pair(tile, color);
++        });
++    }).then([background, name](std::pair<std::shared_ptr<std::vector<uint8_t>>, Windows::UI::Color> composed)
++    {
++        *background = composed.second;
++        auto tile = composed.first;
++        return create_task(ApplicationData::Current->LocalFolder->CreateFolderAsync(L"Tiles", CreationCollisionOption::OpenIfExists))
++            .then([name](StorageFolder^ folder)
++        {
++            return create_task(folder->CreateFileAsync(ref new String(name.c_str()), CreationCollisionOption::ReplaceExisting));
++        }).then([](StorageFile^ file)
++        {
++            return create_task(file->OpenAsync(FileAccessMode::ReadWrite));
++        }).then([tile](IRandomAccessStream^ output)
++        {
++            return create_task(BitmapEncoder::CreateAsync(BitmapEncoder::PngEncoderId, output)).then([tile, output](BitmapEncoder^ encoder)
++            {
++                encoder->SetPixelData(BitmapPixelFormat::Bgra8, BitmapAlphaMode::Ignore, tileIconSize, tileIconSize, 96, 96,
++                    ArrayReference<uint8_t>(tile->data(), static_cast<unsigned int>(tile->size())));
++                return create_task(encoder->FlushAsync());
++            });
++        });
++    }).then([this, links, index, generation, name, background](task<void> finished)
++    {
++        try
++        {
++            finished.get();
++            if (generation == m_iconGeneration)
++                AddSiteIconChoice(name, (255u << 24) | (background->R << 16) | (background->G << 8) | background->B);
++        }
++        catch (Exception^ e)
++        {
++            Log(L"tile: icona " + std::to_wstring(index) + L" scartata: 0x" + std::to_wstring(static_cast<unsigned>(e->HResult)));
++        }
++        catch (std::exception&)
++        {
++            Log(L"tile: icona " + std::to_wstring(index) + L" scartata");
++        }
++        LoadSiteIcons(links, index + 1, generation);
++    }, task_continuation_context::use_current());
++}
++
++void MainPage::AddSiteIconChoice(const std::wstring& file, unsigned int background)
++{
++    std::wstring logo = L"ms-appdata:///local/Tiles/" + file;
++    auto color = Windows::UI::ColorHelper::FromArgb(255, (background >> 16) & 255, (background >> 8) & 255, background & 255);
++    auto choice = IconChoice(ref new SolidColorBrush(color), ref new Uri(ref new String(logo.c_str())));
++    choice->Tapped += ref new TappedEventHandler([this, logo, background](Object^, TappedRoutedEventArgs^)
++    {
++        ApplyTile(logo, background);
++    });
++    IconSiteGrid->Children->Append(choice);
++    m_siteIcons++;
++}
++
++void MainPage::ApplyTile(const std::wstring& logoPath, unsigned int argb)
++{
++    using namespace Windows::UI::StartScreen;
++    CloseIconPicker();
+     try
+     {
+-        auto tile = ref new Windows::UI::StartScreen::SecondaryTile(ref new String(id.c_str()), ref new String(name.c_str()),
+-            ref new String(url.c_str()), ref new Uri(L"ms-appx:///Assets/Square150x150Logo.png"),
+-            Windows::UI::StartScreen::TileSize::Square150x150);
++        auto logo = ref new Uri(ref new String(logoPath.c_str()));
++        auto background = Windows::UI::ColorHelper::FromArgb(argb >> 24, (argb >> 16) & 255, (argb >> 8) & 255, argb & 255);
++        auto id = ref new String(m_pinId.c_str());
++        bool exists = SecondaryTile::Exists(id);
++        auto tile = exists ? ref new SecondaryTile(id)
++            : ref new SecondaryTile(id, ref new String(m_pinName.c_str()), ref new String(m_pinURL.c_str()), logo, TileSize::Square150x150);
++        tile->VisualElements->Square150x150Logo = logo;
++        tile->VisualElements->Square71x71Logo = logo;
++        tile->VisualElements->BackgroundColor = background;
+         tile->VisualElements->ShowNameOnSquare150x150Logo = true;
+-        create_task(tile->RequestCreateAsync()).then([](task<bool> t)
++        // Words over the site's colour stay readable; a transparent tile is the accent colour, as the system's.
++        bool lightTile = background.A == 255 && (background.R * 299 + background.G * 587 + background.B * 114) / 1000 > 160;
++        tile->VisualElements->ForegroundText = lightTile ? ForegroundText::Dark : ForegroundText::Light;
++        auto request = exists ? tile->UpdateAsync() : tile->RequestCreateAsync();
++        create_task(request).then([](task<bool> t)
+         {
+             try { t.get(); } catch (Exception^) { }
+         });
+-        Log(L"tile: " + name);
++        Log((exists ? L"tile aggiornato: " : L"tile: ") + m_pinName);
+     }
+     catch (Exception^ e)
+     {
+@@ -3675,6 +3964,17 @@ void MainPage::PinToStart(const std::wstring& url, const std::wstring& title)
+     }
+ }
+ 
++void MainPage::CloseIconPicker()
++{
++    ++m_iconGeneration;
++    IconPicker->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
++}
++
++void MainPage::IconPickerClose_Tapped(Object^, TappedRoutedEventArgs^)
++{
++    CloseIconPicker();
++}
++
+ // ---- downloads ----
+ // The engine writes each file straight into Downloads\Internet (lw_config.download_directory) and reports it
+ // (LW_EVENT_DOWNLOAD, _PROGRESS, _FINISHED, also after its tab is gone). The list page shows this run's downloads and
+diff --git a/apps/Browser/Browser/MainPage.xaml.h b/apps/Browser/Browser/MainPage.xaml.h
+index dc21ad2..dbe97b3 100644
+--- a/apps/Browser/Browser/MainPage.xaml.h
++++ b/apps/Browser/Browser/MainPage.xaml.h
+@@ -76,6 +76,7 @@ namespace Browser
+                                      const std::wstring& text2);
+         // A tile on Start or another app opened an address: a tab for it.
+         void OpenFromLaunch(const std::wstring& url);
++        void OnSiteIconLinks(const std::wstring& links);
+         // The photo picker came back (App::OnActivated, PickFileContinuation): the page's <input type=file> gets them.
+         void OnFilesPicked(Windows::Foundation::Collections::IVectorView<Windows::Storage::StorageFile^>^ files);
+         // A field took/lost the focus or changed: the compose bar follows it. UI thread.
+@@ -177,6 +178,16 @@ namespace Browser
+         void SetSiteIdentity(const std::wstring& url, const std::wstring& name);
+         std::vector<std::pair<std::wstring, std::wstring>> m_siteIdentities;
+         void PinToStart(const std::wstring& url, const std::wstring& title);
++        void AddSiteIconChoice(const std::wstring& file, unsigned int background);
++        void LoadSiteIcons(std::shared_ptr<std::vector<std::wstring>> links, size_t next, int generation);
++        void ApplyTile(const std::wstring& logo, unsigned int background); // background: 0xAARRGGBB
++        void CloseIconPicker();
++        void IconPickerClose_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
++        std::wstring m_pinURL;
++        std::wstring m_pinName;
++        std::wstring m_pinId;
++        int m_iconGeneration = 0;
++        int m_siteIcons = 0;
+ 
+         // Downloads (see the downloads section of MainPage.xaml.cpp).
+         void OnDownloadEvent(int type, long long number, int id, const std::wstring& text, const std::wstring& text2);

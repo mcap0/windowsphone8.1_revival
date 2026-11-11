@@ -1,0 +1,6 @@
+#!/bin/bash
+# perletest [args…] — sync apps/Perle to the VM and run Perle.Tests there
+cd ~/dumbphone/apps || exit 1
+ssh user@192.168.122.21 "if exist C:\\lumia\\src\\Perle rmdir /s /q C:\\lumia\\src\\Perle" >/dev/null 2>&1
+tar --exclude=bin --exclude=obj -cf - Perle | ssh user@192.168.122.21 "tar -xf - -C C:/lumia/src"
+ssh user@192.168.122.21 "set DOTNET_CLI_TELEMETRY_OPTOUT=1&& set DOTNET_NOLOGO=1&& cd /d C:\\lumia\\src\\Perle\\Perle.Tests && C:\\dotnet\\dotnet.exe run -c Release -v q -- $*" 2>&1 | grep -vE '^\s*$'

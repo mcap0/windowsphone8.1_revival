@@ -1,0 +1,61 @@
+<Page x:Class="Claude.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Claude"
+      Background="#262624">
+  <Page.Resources>
+    <DataTemplate x:Key="UserTemplate" x:DataType="local:MessageView">
+      <Border Background="#3A3A37" CornerRadius="10" Padding="10,6" Margin="48,4,0,4" HorizontalAlignment="Right">
+        <TextBlock Text="{x:Bind Text, Mode=OneWay}" TextWrapping="Wrap" IsTextSelectionEnabled="True" FontSize="15" />
+      </Border>
+    </DataTemplate>
+    <DataTemplate x:Key="AssistantTemplate" x:DataType="local:MessageView">
+      <StackPanel Margin="0,4,8,4">
+        <TextBlock Text="{x:Bind Status, Mode=OneWay}" Visibility="{x:Bind StatusVisibility, Mode=OneWay}"
+                   FontSize="12" Foreground="#D97757" TextWrapping="Wrap" />
+        <TextBlock Text="{x:Bind Text, Mode=OneWay}" TextWrapping="Wrap" IsTextSelectionEnabled="True" FontSize="15" />
+      </StackPanel>
+    </DataTemplate>
+    <local:MessageTemplateSelector x:Key="Selector" User="{StaticResource UserTemplate}" Assistant="{StaticResource AssistantTemplate}" />
+  </Page.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock x:Name="TitleText" Text="Claude" FontSize="20" FontWeight="SemiBold" Margin="12,8" TextTrimming="CharacterEllipsis" />
+    <TextBlock x:Name="EmptyText" Grid.Row="1" Margin="24" TextWrapping="Wrap" Opacity="0.6" TextAlignment="Center" VerticalAlignment="Center"
+               Text="Chiedi qualcosa a Claude." />
+    <ListView x:Name="Messages" Grid.Row="1" SelectionMode="None" ItemTemplateSelector="{StaticResource Selector}" Padding="12,0">
+      <ListView.ItemContainerStyle>
+        <Style TargetType="ListViewItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+          <Setter Property="Padding" Value="0" />
+          <Setter Property="MinHeight" Value="0" />
+        </Style>
+      </ListView.ItemContainerStyle>
+    </ListView>
+    <Grid Grid.Row="2" Margin="8,4,8,8">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox x:Name="Input" PlaceholderText="Scrivi a Claude" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="140"
+               InputScope="Chat" KeyDown="OnInputKeyDown" />
+      <Button x:Name="SendButton" Grid.Column="1" Click="OnSend" Margin="6,0,0,0" VerticalAlignment="Bottom" Height="40" Background="#D97757">
+        <SymbolIcon x:Name="SendIcon" Symbol="Send" />
+      </Button>
+    </Grid>
+  </Grid>
+  <Page.BottomAppBar>
+    <CommandBar ClosedDisplayMode="Minimal">
+      <AppBarButton Icon="Add" Label="Nuova chat" Click="OnNewChat" />
+      <AppBarButton Icon="List" Label="Chat" Click="OnChats" />
+      <AppBarButton Icon="Copy" Label="Copia risposta" Click="OnCopyLast" />
+      <CommandBar.SecondaryCommands>
+        <AppBarButton Label="Impostazioni" Click="OnSettings" />
+      </CommandBar.SecondaryCommands>
+    </CommandBar>
+  </Page.BottomAppBar>
+</Page>

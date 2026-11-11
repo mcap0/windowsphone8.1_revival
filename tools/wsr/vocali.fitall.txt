@@ -1,0 +1,16 @@
+# wsr vowel model for speaker (speaker-dependent, user's choice 2026-11-03), hand-editable.
+# MFCC c1..c12, utterance mean removed, averaged over 5 frames. Fit: fit.dataset("fit") = 182 takes (reading,
+# odd commands, first-session takes 8-50), Lumia. Test: the 50 even command takes. Hand edits below their line.
+#
+# centres: vowel  c1 .. c12
+centre i  -10.9   10.6   24.2   -0.9   -4.9   -1.0   -3.5   -0.6   -6.1   -4.1    5.1   -1.6
+centre e   -2.3  -15.4    9.8   -2.0   -9.8   -5.9    2.4    6.9   -1.4    1.6    3.0    1.5
+centre ɛ    0.8  -21.6    6.0   -3.7   -7.6   -7.7    5.2   11.4   -1.5   -0.5   -1.6   -0.4
+centre a    7.2  -19.3  -12.5   -6.7    7.3    6.3    1.2    2.5    3.4    3.8   -5.2   -5.9
+centre ɔ   22.5   -1.6  -12.7  -21.7   -1.4   10.8    1.8   -1.7    0.5    0.4    3.6    0.3
+centre o   12.7    2.6   -8.6  -11.7   -1.0    7.2    0.6   -3.9    2.0    0.6    2.1    2.6
+centre u   17.5   17.8   -4.9   -0.4   -0.5   -1.2   -0.2   -5.4   -1.7   -3.9   -2.2    3.8
+# widths (one per dimension, the same for all vowels: edit A)
+width   21.7   14.2   12.4   11.7    8.4    7.4    7.4    6.3    5.5    4.9    5.6    5.4
+# log prior per vowel (Italian letter frequencies: edit C)
+prior i=-1.44 e=-1.62 ɛ=-3.00 a=-1.40 ɔ=-3.19 o=-1.80 u=-2.76

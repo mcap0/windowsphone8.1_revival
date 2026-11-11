@@ -1,0 +1,20 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapperTiledBackingStore.cpp
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapperTiledBackingStore.cpp
+@@ -51,8 +51,16 @@
+ {
+     updateContentsFromImageIfNeeded(textureMapper);
+     TransformationMatrix adjustedTransform = transform * adjustedTransformForRect(targetRect);
+-    for (auto& tile : m_tiles)
++#if defined(WP81)
++    auto cullRect = textureMapper.windowCullRect();
++#endif
++    for (auto& tile : m_tiles) {
++#if defined(WP81)
++        if (TextureMapper::isOutside(cullRect, adjustedTransform, tile.rect()))
++            continue;
++#endif
+         tile.paint(textureMapper, adjustedTransform, opacity, allTileEdgesExposed(rect(), tile.rect()));
++    }
+ }
+ 
+ void TextureMapperTiledBackingStore::drawBorder(TextureMapper& textureMapper, const Color& borderColor, float borderWidth, const FloatRect& targetRect, const TransformationMatrix& transform)

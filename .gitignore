@@ -1,0 +1,57 @@
+# secrets: never commit
+.env
+secrets/
+*.key
+*.pfx
+*token*.txt
+ApiKeys.h
+GeminiKey.h
+share/google-auth.json
+ponte/app/assets/adbkey.der
+ponte/app/assets/adbcert.der
+
+# build output
+bin/
+obj/
+build/
+ARM/
+Debug/
+Release/
+Generated Files/
+packages/
+AppPackages/
+BundleArtifacts/
+__pycache__/
+*.appx
+*.appxbundle
+*.dll
+*.exe
+*.lib
+*.obj
+*.pdb
+*.a
+*.so
+*.user
+.vs/
+releases/
+engine/out/
+engine/sysroot/
+engine/deps/
+engine/logs/
+engine/pgo/raw/
+*.profdata
+vosk/deps/src/
+vosk/out/
+tools/.cache/
+
+# fetched at build time (our changes are patches)
+engine/webkit/
+
+# material pulled from the phone or downloaded
+share/inbox/
+share/screens/
+share/onenote/
+ref/
+data/
+backup/
+backups/

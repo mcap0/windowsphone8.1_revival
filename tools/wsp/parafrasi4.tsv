@@ -1,0 +1,66 @@
+# Parafrasi 4 (giro 4, 2026-11-03): frasi trabocchetto (sembrano comandi ma non lo sono) e comandi in forme nuove.
+# Scritte prima di correggere. "now" = mar 2026-11-03 10:00.
+# --- trabocchetti: devono andare online (o fare quello indicato)
+come si imposta una sveglia?	online
+che cos'è un timer	online
+come faccio a chiamare all'estero	online
+quanto costa chiamare in Germania	online
+la sveglia di ieri non ha suonato, perché?	online
+che canzone è questa	online
+chi canta la canzone del sole	online
+cosa significa pausa in inglese	online
+qual è il prefisso di Roma	online
+quanto tempo ci vuole per cuocere la pasta	online
+che tempo era ieri a Milano	online
+perché il timer fa rumore	online
+il meteo dice che piove sempre	online
+chiamata persa da chi?	online
+mio fratello si chiama Marco	online
+mia madre ha chiamato?	online
+ho dimenticato di mettere la sveglia	online
+la musica di Morricone è bellissima	online
+quante ore dormo se mi sveglio alle 7	online
+che ore erano quando ho chiamato	online
+# --- comandi in forme nuove
+tra 10 minuti fammi suonare un allarme	imposta_timer	secondi=600
+un timer, 4 minuti	imposta_timer	secondi=240
+cronometro di 30 secondi	imposta_timer	secondi=30
+fammi sapere quando passano 25 minuti	imposta_timer	secondi=1500
+devo svegliarmi alle 6 domani	imposta_sveglia	ora=06:00;giorno=2026-11-04
+ho bisogno della sveglia alle 7	imposta_sveglia	ora=07:00
+sveglia per le 18:30	imposta_sveglia	ora=18:30
+svegliami a mezzanotte	imposta_sveglia	ora=00:00
+metti la sveglia alle 7 meno 10	imposta_sveglia	ora=06:50
+elimina tutte le sveglie	online
+le mie sveglie	elenca_sveglie
+contatta la mamma	chiama	chi=la mamma
+richiama Giulia	chiama	chi=giulia
+chiama il 112	chiama	chi=112
+voglio parlare con papà	chiama	chi=papà
+metti un po' di jazz	riproduci_musica	richiesta=jazz
+fammi sentire qualcosa di allegro	riproduci_musica	richiesta=allegro
+canzoni di Mina	riproduci_musica	richiesta=mina
+alza il volume	online
+zitto	controlla_musica	azione=pausa
+silenzio	controlla_musica	azione=pausa
+prossima	controlla_musica	azione=avanti
+apri la fotocamera	online
+fammi vedere le impostazioni del bluetooth	apri	cosa=bluetooth
+dove sono le impostazioni wifi	apri	cosa=wi-fi
+accendi il wi-fi	apri	cosa=wi-fi
+serve l'ombrello domani?	meteo	giorno=2026-11-04
+com'è il meteo a Napoli	meteo	luogo=napoli
+farà bel tempo nel weekend?	meteo
+che tempo fa fuori	meteo
+ho impegni stasera?	leggi_calendario	dal=2026-11-03
+cosa c'è sul calendario domani	leggi_calendario	dal=2026-11-04
+la mia agenda di oggi	leggi_calendario	dal=2026-11-03
+che giorno è domani	data	giorno=2026-11-04
+quanti ne abbiamo	data
+mi dici che ore sono per favore	ora
+annotami: telefonare al notaio	prendi_nota	testo=telefonare al notaio
+salvami una nota: la password del wifi è gatto123	prendi_nota	testo=la password del wifi è gatto123
+ricordami di innaffiare le piante domani alle 8	promemoria	testo=innaffiare le piante;ora=08:00;giorno=2026-11-04
+ricordami fra un'ora di richiamare Luca	promemoria	testo=richiamare luca;ora=11:00
+cerca su internet il numero della pizzeria	cerca_sul_web	domanda=il numero della pizzeria
+googla i risultati di ieri	cerca_sul_web	domanda=i risultati di ieri

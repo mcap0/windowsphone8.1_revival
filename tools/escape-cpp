@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""escape-cpp FILE... — VS2013 reads sources as cp1252: turn non-ASCII characters in C/C++ string literals into
+escapes (\\uXXXX / \\U0001XXXX in L"" literals, \\xNN UTF-8 bytes in narrow ones). Comments are left alone."""
+import re, sys
+
+LIT = re.compile(r'(L?)"((?:[^"\\\n]|\\.)*)"')
+
+def esc(m):
+    wide, body = m.group(1), m.group(2)
+    if all(ord(c) < 128 for c in body): return m.group(0)
+    out, prev_hex = '', False
+    for c in body:
+        if ord(c) < 128:
+            if prev_hex and c in '0123456789abcdefABCDEF': out += '" ' + wide + '"'
+            out += c; prev_hex = False
+        elif wide:
+            out += ('\\u%04x' % ord(c)) if ord(c) < 0x10000 else ('\\U%08x' % ord(c)); prev_hex = False
+        else:
+            out += ''.join('\\x%02x' % b for b in c.encode('utf-8')); prev_hex = True
+    return wide + '"' + out + '"'
+
+for path in sys.argv[1:]:
+    s = open(path, encoding='utf-8').read()
+    lines = []
+    for line in s.split('\n'):
+        code, sep, comment = line.partition('//') if '"' not in line.split('//')[0][-1:] else (line, '', '')
+        lines.append(LIT.sub(esc, line) if not line.lstrip().startswith('//') else line)
+    t = '\n'.join(lines)
+    if t != s:
+        open(path, 'w', encoding='utf-8').write(t); print('escaped', path)

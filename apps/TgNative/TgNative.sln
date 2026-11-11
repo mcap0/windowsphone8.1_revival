@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TgNativeMbedtls", "TgNativeMbedtls.vcxproj", "{C87B57DA-278C-4CC1-AF38-1B49C62E5271}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TgNativeOpus", "TgNativeOpus.vcxproj", "{5B1E7C2A-3D4F-4A6B-9C8D-0E1F2A3B4C5D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TgNativeCore", "TgNativeCore.vcxproj", "{A34E6B29-81D7-4D8D-9C27-52A813F0B64A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C87B57DA-278C-4CC1-AF38-1B49C62E5271}.Release|ARM.ActiveCfg = Release|ARM
+		{C87B57DA-278C-4CC1-AF38-1B49C62E5271}.Release|ARM.Build.0 = Release|ARM
+		{5B1E7C2A-3D4F-4A6B-9C8D-0E1F2A3B4C5D}.Release|ARM.ActiveCfg = Release|ARM
+		{5B1E7C2A-3D4F-4A6B-9C8D-0E1F2A3B4C5D}.Release|ARM.Build.0 = Release|ARM
+		{A34E6B29-81D7-4D8D-9C27-52A813F0B64A}.Release|ARM.ActiveCfg = Release|ARM
+		{A34E6B29-81D7-4D8D-9C27-52A813F0B64A}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+EndGlobal

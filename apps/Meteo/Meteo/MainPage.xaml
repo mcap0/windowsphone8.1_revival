@@ -1,0 +1,19 @@
+<Page
+    x:Class="Meteo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Black"
+    Foreground="White">
+  <Grid>
+    <!-- adesso / prossime 12 ore / prossimi 7 giorni, filled in code -->
+    <Pivot x:Name="Sections" Title="METEO" Background="Black" />
+  </Grid>
+  <Page.BottomAppBar>
+    <CommandBar>
+      <AppBarButton Icon="Globe" Label="luoghi" Click="Places_Click" />
+      <AppBarButton Icon="Refresh" Label="aggiorna" Click="Refresh_Click" />
+      <AppBarButton x:Name="HomeButton" Icon="Home" Label="casa" Click="Home_Click" />
+      <AppBarButton x:Name="PinButton" Icon="Pin" Label="aggiungi a Start" Click="Pin_Click" />
+    </CommandBar>
+  </Page.BottomAppBar>
+</Page>

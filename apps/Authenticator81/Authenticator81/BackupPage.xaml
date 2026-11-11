@@ -1,0 +1,24 @@
+<Page
+    x:Class="Authenticator.BackupPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000">
+    <ScrollViewer>
+        <StackPanel Margin="16,12,16,24">
+            <TextBlock Text="BACKUP" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,12" />
+
+            <TextBlock Text="ESPORTA: genera il testo, copialo e conservalo al sicuro (contiene i segreti)." TextWrapping="Wrap" Opacity="0.7" />
+            <Button Content="genera testo" HorizontalAlignment="Stretch" Click="OnExport" Margin="0,8,0,0" />
+            <TextBox x:Name="ExportBox" AcceptsReturn="True" TextWrapping="Wrap" Height="140" Margin="0,8,0,0" />
+
+            <TextBlock Text="IMPORTA: incolla un link otpauth:// per riga." TextWrapping="Wrap" Opacity="0.7" Margin="0,24,0,0" />
+            <TextBox x:Name="ImportBox" AcceptsReturn="True" TextWrapping="Wrap" Height="140" Margin="0,8,0,0"
+                     PlaceholderText="otpauth://totp/..." />
+            <Button Content="importa testo" HorizontalAlignment="Stretch" Click="OnImportText" Margin="0,8,0,0" />
+            <Button Content="importa dal PC" HorizontalAlignment="Stretch" Click="OnImportPc" Margin="0,8,0,0" />
+
+            <TextBlock x:Name="StatusText" TextWrapping="Wrap" Margin="0,12,0,0" />
+            <TextBlock x:Name="ErrorText" Foreground="#FFFF6B6B" TextWrapping="Wrap" Margin="0,8,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

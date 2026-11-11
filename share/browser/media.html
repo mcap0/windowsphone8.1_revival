@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>media</title><style>
+body{font:15px sans-serif;background:#000;color:#fff;margin:12px}
+.no{color:#ff8a80}.si{color:#b9f6ca}div.r{font:13px monospace;margin:2px 0}
+video{width:100%;background:#222;margin:8px 0}button{font-size:18px;padding:10px;margin:6px 0;display:block;width:100%}
+</style></head><body>
+<h2>Audio e video</h2><div id="sum">in corso...</div><div id="out"></div>
+<p>A mano: i comandi del video qui sotto (play, pausa, barra, schermo intero) e l'audio con lo schermo spento.</p>
+<video id="manual" controls playsinline preload="metadata" src="media/h264-aac.mp4"></video>
+<audio id="manualAudio" controls preload="metadata" src="media/tone.mp3"></audio>
+<script src="common.js"></script><script>
+// Each case: a muted element (no gesture needed) is asked to play; the case passes if currentTime moves past 1 s within
+// 15 s. The line says how far it got: metadata, size, duration, first frame, time reached, or the error.
+(function () {
+  var cases = [
+    ["mp4 H.264+AAC", "video", "media/h264-aac.mp4"], ["mp4 frammentato", "video", "media/frag.mp4"],
+    ["mp3", "audio", "media/tone.mp3"], ["m4a AAC", "audio", "media/tone.m4a"], ["ogg Opus", "audio", "media/tone.ogg"],
+    ["webm VP9+Opus", "video", "media/vp9-opus.webm"], ["HLS", "video", "media/hls.m3u8"],
+    ["MSE mp4 frammentato", "mse", "media/frag.mp4", 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"']
+  ];
+  var out = T.$("out"), lines = [], passed = 0, index = 0;
+  function line(ok, text) {
+    var d = document.createElement("div"); d.className = "r " + (ok ? "si" : "no"); d.textContent = (ok ? "si  " : "NO  ") + text;
+    out.appendChild(d); lines.push((ok ? "si " : "NO ") + text);
+  }
+  function next() {
+    if (index >= cases.length) {
+      T.$("sum").textContent = passed + " su " + cases.length + " riprodotti";
+      lines.unshift("totale " + passed + "/" + cases.length);
+      T.send("media", lines, function (sent) { T.$("sum").textContent += sent ? " (inviato)" : " (invio fallito)"; });
+      return;
+    }
+    var c = cases[index++], el = document.createElement(c[1] === "audio" ? "audio" : "video"), got = [], done = false, start = T.now();
+    el.muted = true; el.playsInline = true; el.preload = "auto";
+    el.style.cssText = "width:160px;height:90px";
+    document.body.appendChild(el);
+    function finish(ok, why) {
+      if (done) return; done = true;
+      if (ok) passed++;
+      line(ok, c[0] + ": " + got.join(", ") + (why ? ", " + why : "") + " (" + Math.round(T.now() - start) + " ms)");
+      try { el.pause(); el.removeAttribute("src"); el.load(); } catch (e) {}
+      document.body.removeChild(el);
+      setTimeout(next, 300);
+    }
+    el.addEventListener("loadedmetadata", function () { got.push("metadata " + el.videoWidth + "x" + el.videoHeight + " " + (isFinite(el.duration) ? el.duration.toFixed(1) : el.duration) + " s"); });
+    el.addEventListener("loadeddata", function () { got.push("primo fotogramma"); });
+    el.addEventListener("playing", function () { got.push("playing"); });
+    el.addEventListener("error", function () { finish(false, "errore " + (el.error ? el.error.code + " " + (el.error.message || "") : "?")); });
+    el.addEventListener("timeupdate", function () { if (el.currentTime > 1) finish(true, "tempo " + el.currentTime.toFixed(2)); });
+    setTimeout(function () { finish(false, "fermo a " + el.currentTime.toFixed(2) + ", readyState " + el.readyState + ", networkState " + el.networkState); }, 15000);
+    try {
+      if (c[1] === "mse") {
+        if (!window.MediaSource && !window.ManagedMediaSource) return finish(false, "MediaSource assente");
+        var MS = window.MediaSource || window.ManagedMediaSource;
+        if (!MS.isTypeSupported(c[3])) return finish(false, "tipo non supportato");
+        var ms = new MS();
+        el.disableRemotePlayback = true;
+        el.src = URL.createObjectURL(ms);
+        ms.addEventListener("sourceopen", function () {
+          got.push("sourceopen");
+          var sb = ms.addSourceBuffer(c[3]), x = new XMLHttpRequest();
+          x.open("GET", c[2]); x.responseType = "arraybuffer";
+          x.onload = function () { sb.addEventListener("updateend", function () { got.push("append ok"); try { ms.endOfStream(); } catch (e) {} }); sb.appendBuffer(x.response); };
+          x.send();
+        });
+      } else {
+        var can = el.canPlayType(c[2].indexOf(".m3u8") > 0 ? "application/vnd.apple.mpegurl" : "");
+        el.src = c[2];
+      }
+      var p = el.play();
+      if (p && p["catch"]) p["catch"](function (e) { got.push("play rifiutato: " + e.name); });
+    } catch (e) { finish(false, "eccezione " + e.message); }
+  }
+  window.addEventListener("load", next, false);
+})();
+</script></body></html>

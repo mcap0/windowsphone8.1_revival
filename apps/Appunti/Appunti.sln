@@ -1,0 +1,22 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appunti", "Appunti\Appunti.csproj", "{F5BC2E95-D0BD-4A53-96D9-EF5044E0A874}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5BC2E95-D0BD-4A53-96D9-EF5044E0A874}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F5BC2E95-D0BD-4A53-96D9-EF5044E0A874}.Debug|ARM.Build.0 = Debug|ARM
+		{F5BC2E95-D0BD-4A53-96D9-EF5044E0A874}.Release|ARM.ActiveCfg = Release|ARM
+		{F5BC2E95-D0BD-4A53-96D9-EF5044E0A874}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

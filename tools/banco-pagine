@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""banco-pagine — fixed copies of real pages for the "banco" bench (PLAN.md §56.5): share/banco/<name>/index.html.
+
+The live pages change between runs (YouTube 2-12 s, Gemini 36-50 s with the same engine), which hides anything under
+10%. Each copy keeps the page's own HTML, scripts, styles and images, served by tools/inbox, and a Content-Security-Policy
+that allows only its own origin (eval included), so nothing it does reaches the network and two runs do the same work.
+Nothing here is run on the PC: the files are only stored and served to the phone.
+
+    tools/banco-pagine            all the pages
+    tools/banco-pagine poste      one of them
+"""
+import hashlib, html, os, re, sys, urllib.error, urllib.parse, urllib.request
+
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "share", "banco")
+UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1"
+PAGES = {
+    "poste": "https://www.poste.it/",
+    "wikipedia": "https://en.wikipedia.org/wiki/Italy",
+    "youtube": "https://m.youtube.com/",
+    "repubblica": "https://www.repubblica.it/",
+}
+CSP = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:"
+MAX_FILE = 8 * 1024 * 1024
+# href only in <link> (style sheets, icons, preloads): the href of an <a> is another page, and Wikipedia's article has
+# two thousand of them.
+HTML_REF = re.compile(r"""(?:(?:\ssrc|\sposter|\sdata-src)|<link\b[^>]*?\shref)\s*=\s*["']([^"'<>]+)["']""", re.I)
+CSS_REF = re.compile(r"""url\(\s*["']?([^"')]+)["']?\s*\)""", re.I)
+CSS_IMPORT = re.compile(r"""@import\s+["']([^"']+)["']""", re.I)
+KEEP = (".js", ".mjs", ".css", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".woff", ".woff2", ".ttf", ".ico")
+
+
+def fetch(url):
+    request = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "it-IT,it;q=0.9,en;q=0.8"})
+    with urllib.request.urlopen(request, timeout=30) as reply:
+        data = reply.read(MAX_FILE + 1)
+        return data, reply.headers.get_content_type(), reply.geturl()
+
+
+class Copy:
+    def __init__(self, name, url):
+        self.dir = os.path.join(ROOT, name)
+        self.done = {}
+        self.failed = 0
+        os.makedirs(self.dir, exist_ok=True)
+        for old in os.listdir(self.dir):
+            os.remove(os.path.join(self.dir, old))
+        data, _, final = fetch(url)
+        text = data.decode("utf-8", "replace")
+        text = self.rewrite(text, final, HTML_REF)
+        text = re.sub(r"""\s(integrity|crossorigin|nonce)\s*=\s*["'][^"']*["']""", "", text, flags=re.I)
+        text = re.sub(r"""<meta[^>]+http-equiv=["']?content-security-policy[^>]*>""", "", text, flags=re.I)
+        head = f'<meta http-equiv="Content-Security-Policy" content="{CSP}">'
+        text = re.sub(r"<head[^>]*>", lambda m: m.group(0) + head, text, count=1, flags=re.I)
+        with open(os.path.join(self.dir, "index.html"), "w", encoding="utf-8") as out:
+            out.write(text)
+        size = sum(os.path.getsize(os.path.join(self.dir, f)) for f in os.listdir(self.dir))
+        print(f"{name}: {len(self.done)} file, {size // 1024} KB, {self.failed} non scaricati")
+
+    def rewrite(self, text, base, pattern):
+        refs = {m.group(1) for m in pattern.finditer(text)}
+        if pattern is CSS_REF:
+            refs |= {m.group(1) for m in CSS_IMPORT.finditer(text)}
+        for ref in sorted(refs, key=len, reverse=True):
+            local = self.resource(html.unescape(ref), base)
+            if local:
+                text = text.replace(ref, local)
+        return text
+
+    def resource(self, ref, base):
+        if ref.startswith(("data:", "blob:", "#", "javascript:", "mailto:", "about:")):
+            return None
+        url = urllib.parse.urljoin(base, ref)
+        if not url.startswith("http"):
+            return None
+        if url in self.done:
+            return self.done[url]
+        path = urllib.parse.urlsplit(url).path.lower()
+        known = path.endswith(KEEP)
+        self.done[url] = None
+        try:
+            data, kind, final = fetch(url)
+        except (urllib.error.URLError, OSError, ValueError):
+            self.failed += 1
+            return None
+        if len(data) > MAX_FILE:
+            self.failed += 1
+            return None
+        extension = {"text/javascript": ".js", "application/javascript": ".js", "application/x-javascript": ".js",
+                     "text/css": ".css", "image/png": ".png", "image/jpeg": ".jpg", "image/gif": ".gif",
+                     "image/webp": ".webp", "image/svg+xml": ".svg", "font/woff2": ".woff2", "font/woff": ".woff"}.get(kind)
+        if not extension:
+            if not known:
+                return None
+            extension = os.path.splitext(path)[1]
+        name = hashlib.sha1(url.encode()).hexdigest()[:16] + extension
+        self.done[url] = name
+        if extension == ".css":
+            data = self.rewrite(data.decode("utf-8", "replace"), final, CSS_REF).encode("utf-8")
+        with open(os.path.join(self.dir, name), "wb") as out:
+            out.write(data)
+        return name
+
+
+for page, address in PAGES.items():
+    if len(sys.argv) < 2 or sys.argv[1] == page:
+        Copy(page, address)

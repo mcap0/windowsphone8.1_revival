@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""proxylog — HTTP proxy for the phone (Wi-Fi proxy 192.168.1.148:8888) that logs every request.
+
+Plain HTTP: method, URL, status. HTTPS: only the host (CONNECT tunnel, not decrypted) and whether the tunnel
+closed early (a TLS failure on the phone shows up as a tunnel with few bytes). Log: share/inbox/proxy.txt
+"""
+import datetime, os, re, select, socket, threading, sys
+
+LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "share", "inbox", "proxy.txt")
+lock = threading.Lock()
+BLOCK = re.compile(r"(^|[/.])(windowsupdate\.com|update\.microsoft\.com)(:|/|$)", re.I)
+
+def log(text):
+    line = "%s %s" % (datetime.datetime.now().strftime("%H:%M:%S"), text)
+    with lock:
+        with open(LOG, "a") as f: f.write(line + "\n")
+    print(line, flush=True)
+
+def pipe(a, b):
+    up = down = 0
+    socks = [a, b]
+    try:
+        while True:
+            r, _, x = select.select(socks, [], socks, 120)
+            if x or not r: break
+            for s in r:
+                data = s.recv(65536)
+                if not data: return up, down
+                (b if s is a else a).sendall(data)
+                if s is a: up += len(data)
+                else: down += len(data)
+    except OSError:
+        pass
+    return up, down
+
+def copy(src, dst):
+    try:
+        while True:
+            data = src.recv(65536)
+            if not data: break
+            dst.sendall(data)
+    except OSError:
+        pass
+    try: dst.shutdown(socket.SHUT_WR)
+    except OSError: pass
+
+def handle(client, addr):
+    first = "?"
+    try:
+        head = b""
+        while b"\r\n\r\n" not in head and len(head) < 65536:
+            chunk = client.recv(4096)
+            if not chunk: return
+            head += chunk
+        first = head.split(b"\r\n", 1)[0].decode("latin1")
+        method, target = first.split(" ")[:2]
+        if BLOCK.search(target):
+            # Windows Update: the phone must stay on 8.1 14226 with our patched system files
+            log("BLOCK %s %s" % (method, target)); client.sendall(b"HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n"); return
+        if method == "CONNECT":
+            host, port = target.rsplit(":", 1)
+            try:
+                server = socket.create_connection((host, int(port)), timeout=15)
+            except OSError as e:
+                log("HTTPS %s  CONNECT FAILED %s" % (target, e)); client.sendall(b"HTTP/1.1 502 Bad Gateway\r\n\r\n"); return
+            client.sendall(b"HTTP/1.1 200 Connection established\r\n\r\n")
+            up, down = pipe(client, server)
+            log("HTTPS %s  sent %d B, received %d B%s" % (target, up, down, "  <-- TLS fallito?" if down < 6000 and up < 2000 else ""))
+            server.close()
+        else:
+            from urllib.parse import urlsplit
+            u = urlsplit(target)
+            host, port = u.hostname, u.port or 80
+            path = (u.path or "/") + ("?" + u.query if u.query else "")
+            rest = head.split(b"\r\n", 1)[1]
+            try:
+                server = socket.create_connection((host, port), timeout=15)
+            except OSError as e:
+                log("HTTP  %s %s  CONNECT FAILED %s" % (method, target, e)); client.sendall(b"HTTP/1.1 502 Bad Gateway\r\n\r\n"); return
+            server.sendall(("%s %s %s\r\n" % (method, path, first.split(" ")[2])).encode("latin1") + rest)
+            # the rest of a request body (big POSTs) must flow while we wait for the reply, or both ends stall
+            threading.Thread(target=copy, args=(client, server), daemon=True).start()
+            reply = server.recv(65536)
+            status = reply.split(b"\r\n", 1)[0].decode("latin1", "replace")
+            loc = [l for l in reply.split(b"\r\n") if l.lower().startswith(b"location:")]
+            log("HTTP  %s %s  -> %s%s" % (method, target, status, ("  " + loc[0].decode("latin1")) if loc else ""))
+            client.sendall(reply)
+            copy(server, client)
+            server.close()
+    except Exception as e:
+        log("error %s  (%s)" % (e, first))
+    finally:
+        client.close()
+
+def main():
+    srv = socket.socket(); srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(("192.168.1.148", int(sys.argv[1]) if len(sys.argv) > 1 else 8888)); srv.listen(50)
+    log("proxy listening on %s:%d" % srv.getsockname())
+    while True:
+        c, a = srv.accept()
+        threading.Thread(target=handle, args=(c, a), daemon=True).start()
+
+main()

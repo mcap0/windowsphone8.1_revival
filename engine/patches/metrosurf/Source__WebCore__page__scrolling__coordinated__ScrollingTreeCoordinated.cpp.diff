@@ -1,0 +1,42 @@
+--- a/Source/WebCore/page/scrolling/coordinated/ScrollingTreeCoordinated.cpp
++++ b/Source/WebCore/page/scrolling/coordinated/ScrollingTreeCoordinated.cpp
+@@ -308,6 +308,39 @@
+ }
+ #endif
+ 
++#if ENABLE(TOUCH_EVENT_REGIONS) && ENABLE(TOUCH_ACTION_REGIONS)
++ScrollingTreeCoordinated::TouchRegionInfo ScrollingTreeCoordinated::touchRegionInfoForPoint(FloatPoint point)
++{
++    RefPtr rootScrollingNode = rootNode();
++    if (!rootScrollingNode)
++        return { };
++
++    point.move(rootScrollingNode->viewToContentsOffset(mainFrameScrollPosition()));
++
++    Locker locker { m_layerHitTestMutex };
++    auto rootContentsLayer = static_cast<ScrollingTreeFrameScrollingNodeCoordinated*>(rootScrollingNode.get())->rootContentsLayer();
++    Vector<LayerAndPoint, 16> layersAtPoint;
++    collectDescendantLayersAtPoint(layersAtPoint, *rootContentsLayer, point, [&] (auto layer, auto transformedPoint) {
++        assertIsHeld(layer->lock());
++        return layerEventRegionContainsPoint(layer, transformedPoint);
++    });
++    if (layersAtPoint.isEmpty())
++        return { };
++
++    auto [hitLayer, transformedPoint] = layersAtPoint.last();
++    Locker hitLayerLocker { hitLayer->lock() };
++    auto& eventRegion = hitLayer->eventRegion();
++    auto layerPoint = roundedIntPoint(transformedPoint - toFloatSize(hitLayer->boundsOrigin()));
++    TouchRegionInfo info;
++    info.touchStart = eventRegion.eventTrackingTypeForPoint(EventTrackingRegionsEventType::Touchstart, layerPoint);
++    info.touchMove = eventRegion.eventTrackingTypeForPoint(EventTrackingRegionsEventType::Touchmove, layerPoint);
++    auto touchActions = eventRegion.touchActionsForPoint(layerPoint);
++    if (!touchActions.isEmpty())
++        info.touchActions = touchActions;
++    return info;
++}
++#endif
++
+ #if ENABLE(WHEEL_EVENT_REGIONS)
+ OptionSet<EventListenerRegionType> ScrollingTreeCoordinated::eventListenerRegionTypesForPoint(FloatPoint point) const
+ {

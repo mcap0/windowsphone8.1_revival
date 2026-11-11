@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Sends photos to the Pixel 2 XL receiver (PLAN.md §58.2) like the Lumia app will: begin, 1 MB chunks with resume, end.
+usage: tools/pixelfoto-send [--host 192.168.1.10] file.jpg ...   (--list prints the receiver's registry)"""
+import hashlib, http.client, json, os, sys, time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TOKEN = open(os.path.join(ROOT, 'secrets/pixelfoto-token')).read().strip()
+CHUNK = 1 << 20
+
+def call(c, method, path, body=None):
+    c.request(method, path, body=body, headers={'X-Token': TOKEN})
+    r = c.getresponse()
+    data = json.loads(r.read() or b'{}')
+    return r.status, data
+
+def send(c, f):
+    raw = open(f, 'rb').read()
+    sha = hashlib.sha256(raw).hexdigest()
+    st, r = call(c, 'POST', '/begin', json.dumps({'name': os.path.basename(f), 'size': len(raw), 'sha256': sha,
+                                                   'taken': int(os.path.getmtime(f) * 1000)}))
+    if r.get('status') == 'done':
+        return 'già ricevuta: ' + r['file']
+    off, t0 = r['offset'], time.time()
+    while off < len(raw):
+        st, r = call(c, 'PUT', f'/chunk?id={sha}&offset={off}', raw[off:off + CHUNK])
+        off = r['offset']
+        print(f'\r  {off * 100 // len(raw)}%', end='', flush=True)
+    st, r = call(c, 'POST', f'/end?id={sha}')
+    print(f'\r  {len(raw) / (time.time() - t0) / 1e6:.1f} MB/s')
+    return json.dumps(r)
+
+args = sys.argv[1:]
+host = '192.168.1.10'
+if args[:1] == ['--host']:
+    host, args = args[1], args[2:]
+c = http.client.HTTPConnection(host, 8792, timeout=60)
+if args == ['--list']:
+    print(json.dumps(call(c, 'GET', '/list')[1], indent=1))
+for f in args if args != ['--list'] else []:
+    print(f, '→', send(c, f))

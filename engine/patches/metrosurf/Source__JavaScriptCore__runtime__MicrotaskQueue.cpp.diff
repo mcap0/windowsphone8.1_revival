@@ -1,0 +1,26 @@
+--- a/Source/JavaScriptCore/runtime/MicrotaskQueue.cpp
++++ b/Source/JavaScriptCore/runtime/MicrotaskQueue.cpp
+@@ -44,6 +44,10 @@
+ 
+ namespace JSC {
+ 
++#if defined(WP81)
++extern std::atomic<bool> g_wp81ScriptsBlocked;
++#endif
++
+ WTF_MAKE_TZONE_ALLOCATED_IMPL(MicrotaskQueue);
+ WTF_MAKE_COMPACT_TZONE_ALLOCATED_IMPL(MicrotaskDispatcher);
+ WTF_MAKE_COMPACT_TZONE_ALLOCATED_IMPL(DebuggableMicrotaskDispatcher);
+@@ -173,6 +177,12 @@
+     MicrotaskCallCache microtaskCallCache;
+ 
+     while (!m_queue.isEmpty()) {
++#if defined(WP81)
++        if (g_wp81ScriptsBlocked.load(std::memory_order_relaxed)) [[unlikely]] {
++            clear();
++            return { nullptr, true };
++        }
++#endif
+         auto& front = m_queue.front();
+ 
+         if (!front.isJSMicrotaskDispatcher()) [[likely]] {

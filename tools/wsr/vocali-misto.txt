@@ -1,0 +1,23 @@
+# wsr vowel model, hand-editable (tools/wsr/mfccmodel.py reads this file when it exists).
+# MFCC c1..c12, utterance mean removed, averaged over 5 frames. Started from the fit on speaker (odd reading
+# takes, Lumia); every hand edit is noted below the line it changes.
+#
+# centres: vowel  c1 .. c12
+centre i  -13.5   12.7   23.0    0.2   -4.8   -0.8   -2.5   -0.6   -5.1   -2.6    5.1   -2.9
+centre e   -2.3  -23.1   13.1    6.8  -11.3  -10.6    4.6    7.6   -4.1    0.8    2.8    4.9
+
+# L: e centre from the hand-read spectrum (spettri-speaker.txt); fitted was: -1.7 -13.2 9.5 -0.6 -8.1 -7.9 2.6 8.8 -2.5 -0.4 0.1 2.3
+# J (tried, reverted): e 10% further from a -> 73.0% (e 76 -> 75)
+centre ɛ    2.6  -29.7    8.6   -4.6   -9.0   -7.3    5.0   14.9   -4.8    1.7   -1.6   -2.0
+centre a    0.7  -17.7   -9.2   -2.1    1.4    3.2    5.0    3.1    2.8    2.7   -4.4   -3.8
+# I (tried, reverted): a 10% further from ɔ -> 72.2% (a 72 -> 69)
+centre ɔ   18.7   -1.6  -15.0  -16.4    0.5    9.2    4.0   -2.6   -0.5    3.3    4.8    0.3
+centre o   12.4    3.9   -7.2  -10.3    0.0    6.9    0.2   -4.5    1.2    1.8    2.4    1.4
+centre u   10.9   25.8   -3.3   -0.7    0.2    1.4   -2.0   -7.6   -1.1   -4.0    0.0    4.2
+
+# L: u centre from the hand-read spectrum (spettri-speaker.txt); fitted was: 11.4 17.9 -1.7 -2.4 -0.9 -0.1 -2.0 -5.3 -1.8 -4.8 1.1 4.3
+# H: u moved 15% further from o (o->u was the top 5-way error, 9 segments): was 11.5 16.1 -2.4 -3.4 -0.8 0.8 -1.7 -5.2 -1.4 -3.9 1.3 3.9
+# widths (one per dimension, the same for all vowels). K (tried, reverted): c1 22.2 -> 17.8, 73.3% unchanged
+width   22.2   14.3   13.2    9.7    9.0    7.5    7.3    6.0    5.2    4.9    4.9    5.7
+# log prior per vowel (Italian letter frequencies)
+prior i=-1.44 e=-1.62 ɛ=-3.00 a=-1.40 ɔ=-3.19 o=-1.80 u=-2.76

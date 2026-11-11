@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""remotobench — the PC plays the Pixel for the Lumia's remote-display client (apps/Remoto, PLAN §64.2): a 768x1280
+H.264 stream like the Pixel's MediaCodec one (constrained baseline, no B-frames, one slice per frame) with a running
+clock drawn in it, over the Remoto protocol, so the phone can measure decode and present time per frame.
+
+  tools/remotobench [--port 8795] [--fps 60] [--bitrate 4M] [--gop 60] [--idle]
+
+--idle sends a frame only every 2 s after the first second (what a still screen on a virtual display does).
+
+Protocol (TCP, the phone connects; little endian):
+  server -> phone  'V' u32 length, u64 server_us, u32 seq, Annex-B access unit
+                   'P' u64 server_us, u64 echoed phone_us            (answer to a ping)
+  phone -> server  'p' u64 phone_us                                  (ping: clock offset and round trip)
+                   'S' u32 length, UTF-8 text                        (stats line, printed here)
+                   'K'                                               (send a key frame now)
+                   'A' auth answer, 'T' touch, 'B' key, 'X' text, 'L' launch, 'Q' app list: read and ignored here
+  The Pixel's full protocol (auth, input, apps) is in ponte/agent/src/dumbphone/ponte/Remoto.java.
+"""
+import argparse, socket, struct, subprocess, sys, threading, time
+
+
+def now_us():
+    return time.monotonic_ns() // 1000
+
+
+def access_units(stream):
+    """Annex-B NAL units from ffmpeg, grouped into access units: parameter sets go with the next slice."""
+    buffer = b""
+    pending = b""
+    while True:
+        chunk = stream.read(65536)
+        if not chunk:
+            return
+        buffer += chunk
+        while True:
+            start = buffer.find(b"\x00\x00\x01", 0)
+            nxt = buffer.find(b"\x00\x00\x01", start + 3) if start >= 0 else -1
+            if start < 0 or nxt < 0:
+                break
+            end = nxt - 1 if buffer[nxt - 1] == 0 else nxt
+            nal = buffer[:end]
+            buffer = buffer[end:]
+            body = nal.lstrip(b"\x00")[1:] if nal.startswith(b"\x00") else nal[3:]
+            if not body:
+                continue
+            kind = body[0] & 0x1F
+            pending += b"\x00\x00\x00\x01" + body
+            if kind in (1, 5):
+                yield pending
+                pending = b""
+
+
+def serve(conn, args):
+    conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    lock = threading.Lock()
+    alive = [True]
+    want_key = [False]
+
+    def reader():
+        try:
+            while alive[0]:
+                kind = conn.recv(1)
+                if not kind:
+                    break
+                if kind == b"p":
+                    (phone,) = struct.unpack("<Q", recv_all(conn, 8))
+                    with lock:
+                        conn.sendall(b"P" + struct.pack("<QQ", now_us(), phone))
+                elif kind == b"K":
+                    print("telefono: chiede un fotogramma chiave", flush=True)
+                    want_key[0] = True
+                elif kind == b"A":
+                    recv_all(conn, 32)   # the Pixel checks it against the ponte key; the bench does not
+                elif kind in (b"T", b"B"):
+                    recv_all(conn, 6 if kind == b"T" else 2)
+                elif kind in (b"X", b"L"):
+                    (n,) = struct.unpack("<I", recv_all(conn, 4))
+                    recv_all(conn, n)
+                elif kind == b"Q":
+                    with lock:
+                        conn.sendall(b"a" + struct.pack("<I", 2) + b"[]")
+                elif kind == b"S":
+                    (n,) = struct.unpack("<I", recv_all(conn, 4))
+                    print("telefono:", recv_all(conn, n).decode("utf-8", "replace"), flush=True)
+                else:
+                    print("tipo sconosciuto", kind, flush=True)
+                    break
+        except OSError:
+            pass
+        alive[0] = False
+
+    conn.sendall(b"C" + bytes(16))   # auth challenge, as the Pixel (Remoto.java)
+    threading.Thread(target=reader, daemon=True).start()
+    # Source: raw frames with the clock drawn in. Encoder: a second ffmpeg fed those frames; a warm spare encoder
+    # waits so that 'K' switches to it at once and its first frame is a key frame (the Pixel's
+    # PARAMETER_KEY_REQUEST_SYNC_FRAME). libopenh264 cannot be told "key frame now" through a pipe.
+    clock = ("drawtext=fontfile=/usr/share/fonts/google-noto/NotoSansMono-Bold.ttf:fontsize=72:fontcolor=white:box=1:"
+             "boxcolor=black:x=40:y=560:text='%{pts\\:hms}'")
+    width, height = 768, 1280
+    frame_size = width * height * 3 // 2
+    source = subprocess.Popen(
+        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-re", "-f", "lavfi", "-i",
+         "testsrc2=size=%dx%d:rate=%d" % (width, height, args.fps), "-vf", clock,
+         "-pix_fmt", "yuv420p", "-f", "rawvideo", "-"], stdout=subprocess.PIPE)
+
+    def encoder():
+        return subprocess.Popen(
+            ["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "yuv420p",
+             "-s", "%dx%d" % (width, height), "-r", str(args.fps), "-i", "-",
+             "-c:v", "libopenh264", "-profile:v", "constrained_baseline", "-b:v", args.bitrate,
+             "-g", str(args.gop * args.fps), "-slices", "1", "-flush_packets", "1", "-f", "h264", "-"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, bufsize=0)
+
+    sent = [0]
+    started = time.monotonic()
+    last_sent = [0.0]
+
+    def pump(enc):
+        """Access units of one encoder -> phone, until that encoder is replaced."""
+        try:
+            for unit in access_units(enc.stdout):
+                if not alive[0] or enc is not current[0]:
+                    break
+                key = unit[4] & 0x1F == 7
+                if args.idle and time.monotonic() - started > 1 and not key and time.monotonic() - last_sent[0] < 2:
+                    continue  # NOTE: P-frames dropped here are references; the image tears until the next IDR (bench only)
+                with lock:
+                    conn.sendall(b"V" + struct.pack("<IQI", len(unit), now_us(), sent[0]) + unit)
+                last_sent[0] = time.monotonic()
+                sent[0] += 1
+        except OSError:
+            alive[0] = False
+
+    current = [encoder()]
+    spare = encoder()
+    threading.Thread(target=pump, args=(current[0],), daemon=True).start()
+    try:
+        while alive[0]:
+            frame = source.stdout.read(frame_size)
+            if len(frame) < frame_size:
+                break
+            if want_key[0]:
+                want_key[0] = False
+                old, current[0] = current[0], spare
+                spare = encoder()
+                old.kill()
+                threading.Thread(target=pump, args=(current[0],), daemon=True).start()
+                print("fotogramma chiave su richiesta (encoder di scorta)", flush=True)
+            current[0].stdin.write(frame)
+    except OSError:
+        pass
+    alive[0] = False
+    for proc in (source, current[0], spare):
+        proc.kill()
+    print("collegamento chiuso dopo", sent[0], "frame", flush=True)
+
+
+def recv_all(conn, n):
+    data = b""
+    while len(data) < n:
+        chunk = conn.recv(n - len(data))
+        if not chunk:
+            raise OSError("closed")
+        data += chunk
+    return data
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, default=8795)
+    parser.add_argument("--fps", type=int, default=60)
+    parser.add_argument("--bitrate", default="4M")
+    parser.add_argument("--idle", action="store_true")
+    parser.add_argument("--gop", type=int, default=60, help="seconds between unrequested key frames (Pixel: 60)")
+    args = parser.parse_args()
+    server = socket.socket()
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind(("0.0.0.0", args.port))
+    server.listen(1)
+    print("remotobench in ascolto su", args.port, flush=True)
+    while True:
+        conn, address = server.accept()
+        print("telefono collegato da", address[0], flush=True)
+        serve(conn, args)
+        conn.close()
+
+
+if __name__ == "__main__":
+    main()

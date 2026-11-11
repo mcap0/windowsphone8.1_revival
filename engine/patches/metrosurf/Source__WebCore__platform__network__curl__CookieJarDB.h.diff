@@ -1,0 +1,18 @@
+--- a/Source/WebCore/platform/network/curl/CookieJarDB.h
++++ b/Source/WebCore/platform/network/curl/CookieJarDB.h
+@@ -53,6 +53,7 @@
+     };
+ 
+     WEBCORE_EXPORT void open();
++    void setKeepSessionCookies(bool keep) { m_keepSessionCookies = keep; }
+     bool isEnabled() const;
+ 
+     void setAcceptPolicy(CookieAcceptPolicy policy) { m_acceptPolicy = policy; }
+@@ -77,6 +78,7 @@
+     String m_databasePath;
+ 
+     bool m_detectedDatabaseCorruption { false };
++    bool m_keepSessionCookies { false };
+ 
+     bool isOnMemory() const { return m_databasePath == ":memory:"_s; };
+ 

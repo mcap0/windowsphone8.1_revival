@@ -1,0 +1,4 @@
+LIBRARY CFGMGR32.DLL
+EXPORTS
+    CM_Get_Device_Interface_ListW
+    CM_Get_Device_Interface_List_SizeW

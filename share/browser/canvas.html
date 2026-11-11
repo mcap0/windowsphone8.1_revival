@@ -1,0 +1,49 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Canvas e storage</title>
+<style>body{font:18px sans-serif;margin:12px;background:#fff}h2{font-size:20px}iframe{width:100%;height:340px;border:1px solid #888}
+canvas{width:100%;border:1px solid #888}p{margin:6px 0}</style>
+<h2>1. Canvas animato nella pagina</h2>
+<p>Deve girare liscio, senza lampeggiare n&eacute; parti vuote.</p>
+<canvas id="c" width="400" height="200"></canvas>
+<h2>2. Canvas animato dentro un iframe (come il captcha)</h2>
+<iframe src="canvas-frame.html"></iframe>
+<h2>3. Storage che deve restare dopo aver chiuso l'app</h2>
+<p id="ls">localStorage: ...</p>
+<p id="idb">IndexedDB: ...</p>
+<p>Ogni apertura aggiunge 1. Chiudi l'app, riaprila, torna qui: i numeri devono salire, non ripartire da 1.
+"Cancella dati del sito" li riporta a 1.</p>
+<script src="common.js"></script><script>
+var c = document.getElementById('c'), g = c.getContext('2d'), t = 0;
+(function frame() {
+  t++; g.fillStyle = '#fff'; g.fillRect(0, 0, 400, 200);
+  g.fillStyle = 'hsl(' + (t * 3 % 360) + ',70%,50%)'; g.fillRect((t * 4) % 440 - 40, 60, 40, 80);
+  g.fillStyle = '#000'; g.font = '18px sans-serif'; g.fillText('fotogramma ' + t, 10, 190);
+  requestAnimationFrame(frame);
+})();
+// Both counters go to the PC in one report (share/inbox/browser.txt) once both are known.
+var results = [];
+function report(line) {
+  results.push(line);
+  if (results.length === 2) T.send('storage', [results.join('; ')]);
+}
+try {
+  var n = (+localStorage.getItem('aperture') || 0) + 1; localStorage.setItem('aperture', n);
+  var ns = (+sessionStorage.getItem('aperture') || 0) + 1; sessionStorage.setItem('aperture', ns);
+  document.getElementById('ls').textContent = 'localStorage: apertura numero ' + n + ' (sessionStorage ' + ns + ')';
+  report('localStorage ' + n + ', sessionStorage ' + ns);
+} catch (e) { document.getElementById('ls').textContent = 'localStorage: errore ' + e; report('localStorage errore ' + e); }
+try {
+  var open = indexedDB.open('prova', 1);
+  open.onupgradeneeded = function () { open.result.createObjectStore('s'); };
+  open.onerror = function () { document.getElementById('idb').textContent = 'IndexedDB: errore ' + open.error; report('IndexedDB errore ' + open.error); };
+  open.onsuccess = function () {
+    var tx = open.result.transaction('s', 'readwrite'), s = tx.objectStore('s'), get = s.get('aperture');
+    get.onsuccess = function () {
+      var n = (get.result || 0) + 1; s.put(n, 'aperture');
+      tx.oncomplete = function () { document.getElementById('idb').textContent = 'IndexedDB: apertura numero ' + n; report('IndexedDB ' + n); };
+    };
+  };
+} catch (e) { document.getElementById('idb').textContent = 'IndexedDB: errore ' + e; report('IndexedDB errore ' + e); }
+</script>

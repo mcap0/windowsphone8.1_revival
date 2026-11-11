@@ -1,0 +1,14 @@
+--- a/Source/JavaScriptCore/assembler/MacroAssemblerARMv7.cpp
++++ b/Source/JavaScriptCore/assembler/MacroAssemblerARMv7.cpp
+@@ -366,7 +366,11 @@
+     // Restore the sp and pc.
+     "ldr       sp, [sp, #" STRINGIZE_VALUE_OF(PROBE_CPU_SP_OFFSET) "]" "\n"
+     "pop       { pc }" "\n"
++#if OS(WINDOWS)
++    ".text" "\n"
++#else
+     ".previous" "\n"
++#endif
+ );
+ 
+ void MacroAssembler::probe(Probe::Function function, void* arg)

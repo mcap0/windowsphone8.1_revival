@@ -1,0 +1,18 @@
+# shuffle on request: the request stays, casuale=si
+metti la canzone albachiara	riproduci_musica	richiesta=albachiara;tipo=brano
+metti albachiara	riproduci_musica	richiesta=albachiara
+metti albachiara di vasco rossi	riproduci_musica	richiesta=albachiara di vasco rossi
+metti la canzone albachiara di vasco rossi	riproduci_musica	richiesta=albachiara di vasco rossi;tipo=brano
+metti comfortably numb	riproduci_musica	richiesta=comfortably numb
+riproduci il brano time dei pink floyd	riproduci_musica	richiesta=time dei pink floyd;tipo=brano
+fammi sentire wish you were here	riproduci_musica	richiesta=wish you were here
+metti money dei pink floyd	riproduci_musica	richiesta=money dei pink floyd
+metti i pink floyd a caso	riproduci_musica	richiesta=pink floyd;casuale=si
+metti i pink floyd in ordine casuale	riproduci_musica	richiesta=pink floyd;casuale=si
+metti pink floyd in riproduzione casuale	riproduci_musica	richiesta=pink floyd;casuale=si
+metti l'album the wall in casuale	riproduci_musica	richiesta=the wall;casuale=si
+riproduzione casuale	riproduci_musica	tipo=casuale
+metti le canzoni dei queen mischiate	riproduci_musica	richiesta=queen;casuale=si
+metti l'album the wall in casuale	riproduci_musica	richiesta=the wall;tipo=album;casuale=si
+metti a caso i queen	riproduci_musica	richiesta=queen;casuale=si
+attiva la riproduzione casuale	riproduci_musica	tipo=casuale

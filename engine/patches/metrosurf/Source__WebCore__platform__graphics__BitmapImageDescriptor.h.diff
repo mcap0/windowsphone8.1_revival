@@ -1,0 +1,18 @@
+--- a/Source/WebCore/platform/graphics/BitmapImageDescriptor.h
++++ b/Source/WebCore/platform/graphics/BitmapImageDescriptor.h
+@@ -105,13 +105,13 @@
+     };
+ 
+     template<typename MetadataType>
+-    MetadataType imageMetadata(MetadataType& cachedValue, const MetadataType& defaultValue, CachedFlag, MetadataType (ImageDecoder::*functor)() const) const;
++    MetadataType imageMetadata(MetadataType& cachedValue, const MetadataType& defaultValue, CachedFlag, std::type_identity_t<MetadataType (*)(const ImageDecoder&)> functor) const;
+ 
+     template<typename MetadataType>
+     MetadataType primaryImageFrameMetadata(MetadataType& cachedValue, CachedFlag, MetadataType (ImageFrame::*functor)() const, const std::optional<SubsamplingLevel>& = std::nullopt) const;
+ 
+     template<typename MetadataType>
+-    MetadataType primaryNativeImageMetadata(MetadataType& cachedValue, const MetadataType& defaultValue, CachedFlag, MetadataType (NativeImage::*functor)() const) const;
++    MetadataType primaryNativeImageMetadata(MetadataType& cachedValue, const MetadataType& defaultValue, CachedFlag, std::type_identity_t<MetadataType (*)(const NativeImage&)> functor) const;
+ 
+     mutable OptionSet<CachedFlag> m_cachedFlags;
+ 

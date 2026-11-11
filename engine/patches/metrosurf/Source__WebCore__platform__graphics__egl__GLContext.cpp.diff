@@ -1,0 +1,23 @@
+--- a/Source/WebCore/platform/graphics/egl/GLContext.cpp
++++ b/Source/WebCore/platform/graphics/egl/GLContext.cpp
+@@ -168,6 +168,11 @@
+         // EGLNativeWindowType changes depending on the EGL implementation, reinterpret_cast
+         // would work for pointers, and static_cast for numeric types only; so use a plain
+         // C cast expression which works in all possible cases.
++#if defined(WP81)
++        static const EGLint surfaceAttributes[] = { EGL_POST_SUB_BUFFER_SUPPORTED_NV, EGL_TRUE, EGL_NONE };
++        surface = eglCreateWindowSurface(eglDisplay, config, (EGLNativeWindowType) window, surfaceAttributes);
++        if (surface == EGL_NO_SURFACE)
++#endif
+         surface = eglCreateWindowSurface(eglDisplay, config, (EGLNativeWindowType) window, nullptr);
+     }
+ 
+@@ -312,7 +317,7 @@
+ }
+ 
+ #if !RELEASE_LOG_DISABLED
+-static void logGLDebugMessage(GLenum source, GLenum type, GLuint identifier, GLenum severity, GLsizei, const GLchar* message, const void*)
++static void GL_APIENTRY logGLDebugMessage(GLenum source, GLenum type, GLuint identifier, GLenum severity, GLsizei, const GLchar* message, const void*)
+ {
+     static constexpr auto sourceName = [](GLenum source) -> const char* {
+         switch (source) {

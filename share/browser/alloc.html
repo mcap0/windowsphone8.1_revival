@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>alloc</title><style>
+body{font:16px sans-serif;background:#000;color:#fff;margin:12px}
+button{font-size:18px;padding:12px;background:#1976d2;color:#fff;border:0}
+#out{font:13px monospace;white-space:pre-wrap;margin-top:10px}#box{height:1px;overflow:hidden}
+</style></head><body>
+<div>Lavoro tipico delle app web pesanti: oggetti, GC, JSON, DOM, stile, layout. Ogni prova 5 volte.</div>
+<button id="go">Avvia</button>
+<div id="out"></div><div id="box"></div>
+<script src="common.js"></script><script>
+(function () {
+  var box = T.$("box"), out = T.$("out"), lines = [];
+
+  function makeNodes(n) {
+    var f = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) {
+      var d = document.createElement("div");
+      d.className = "n";
+      d.appendChild(document.createTextNode("riga " + i));
+      f.appendChild(d);
+    }
+    return f;
+  }
+
+  var tests = [
+    ["oggetti 300k", function () { var a = []; for (var i = 0; i < 300000; i++) a.push({ x: i, y: i * 2 }); var s = 0; for (var j = 0; j < a.length; j++) s += a[j].y; return s; }],
+    ["array 1M interi", function () { var a = []; for (var i = 0; i < 1000000; i++) a.push(i); return a.length; }],
+    ["closure 200k", function () { var a = []; for (var i = 0; i < 200000; i++) a.push((function (k) { return function () { return k; }; })(i)); return a[199999](); }],
+    ["JSON 1 MB", function () {
+      var a = [];
+      for (var i = 0; i < 12000; i++) a.push({ id: i, nome: "contatto " + i, tel: "+39 333 " + i, letto: i % 2 === 0, tag: ["a", "b", "c"] });
+      var s = JSON.stringify(a); var b = JSON.parse(s); return s.length + b.length;
+    }],
+    ["stringhe 200k + join", function () { var a = []; for (var i = 0; i < 200000; i++) a.push("x" + i); return a.join(",").length; }],
+    ["ordina 200k", function () { var a = []; for (var i = 0; i < 200000; i++) a.push((i * 7919) % 200003); a.sort(function (x, y) { return x - y; }); return a[0]; }],
+    ["Map 100k", function () {
+      if (typeof Map !== "function") return "n/d";
+      var m = new Map(); for (var i = 0; i < 100000; i++) m.set("k" + i, i);
+      var s = 0; for (var j = 0; j < 100000; j++) s += m.get("k" + j); return s;
+    }],
+    ["DOM crea 5000 + layout", function () { box.appendChild(makeNodes(5000)); var h = box.scrollHeight; box.innerHTML = ""; return h; }],
+    ["innerHTML 500 KB", function () {
+      var parts = [];
+      for (var i = 0; i < 6000; i++) parts.push('<div class="m"><span>messaggio ' + i + '</span><a href="#' + i + '">link</a></div>');
+      var html = parts.join(""); box.innerHTML = html; var n = box.getElementsByTagName("a").length; box.innerHTML = ""; return html.length + "/" + n;
+    }],
+    ["stile 5000 nodi + layout", function () {
+      box.appendChild(makeNodes(5000));
+      var nodes = box.getElementsByTagName("div"), h = 0;
+      for (var r = 0; r < 3; r++) {
+        for (var i = 0; i < nodes.length; i++) nodes[i].className = (i + r) % 2 ? "n a" : "n b";
+        h += box.scrollHeight;
+      }
+      box.innerHTML = ""; return h;
+    }],
+    ["querySelectorAll x200", function () {
+      box.appendChild(makeNodes(2000)); var n = 0;
+      for (var i = 0; i < 200; i++) n += box.querySelectorAll("div.n").length;
+      box.innerHTML = ""; return n;
+    }]
+  ];
+
+  function runTest(i, done) {
+    var name = tests[i][0], f = tests[i][1], times = [], result;
+    var k = 0;
+    (function once() {
+      var a = T.now(); result = f(); times.push(T.now() - a);
+      if (++k < 5) setTimeout(once, 30); else done(name + ": " + T.stats(times) + " (" + result + ")");
+    })();
+  }
+
+  function gcPressure(done) {
+    // 200 rounds of short-lived garbage: a slow round far above the median is a GC pause.
+    var times = [], k = 0, keep = [];
+    (function round() {
+      var a = T.now(), tmp = [];
+      for (var i = 0; i < 50000; i++) tmp.push({ v: i, s: "g" + (i & 255) });
+      keep[k % 4] = tmp;
+      times.push(T.now() - a);
+      if (++k < 200) setTimeout(round, 0); else done("GC 200 giri da 50k oggetti: " + T.stats(times));
+    })();
+  }
+
+  T.$("go").onclick = function () {
+    T.$("go").disabled = true;
+    lines = [];
+    var i = 0;
+    (function next() {
+      if (i < tests.length) {
+        out.textContent = lines.join("\n") + "\n" + tests[i][0] + " ...";
+        runTest(i++, function (line) { lines.push(line); setTimeout(next, 100); });
+        return;
+      }
+      out.textContent = lines.join("\n") + "\nGC ...";
+      gcPressure(function (line) {
+        lines.push(line);
+        out.textContent = lines.join("\n");
+        T.send("alloc", lines, function (ok) { out.textContent += ok ? "\ninviato" : "\ninvio fallito"; T.$("go").disabled = false; });
+      });
+    })();
+  };
+})();
+</script></body></html>

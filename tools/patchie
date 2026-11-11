@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+# patchie <in.dll> <out.dll> [old new] — replace a hard-coded UTF-16 string in a system DLL with a shorter one,
+# padded with NULs. Default: the "open in Internet Explorer" prefix
+# app://5B04B775-356B-4AA0-AAF8-6491FFEA5660/_default?StartURL= -> metrosurf:// (MetroSurf accepts metrosurf://https://...).
+# SearchCM.dll (Bing, QR reader): old = "app://5B04B775-356B-4AA0-AAF8-6491FFEA5660/_default?StartUrl=%s&ReferrerUrl=%s&Transition=SlideNone", new = "metrosurf://%s".
+import sys
+old = (sys.argv[3] if len(sys.argv) > 4 else "app://5B04B775-356B-4AA0-AAF8-6491FFEA5660/_default?StartURL=").encode("utf-16-le")
+new = (sys.argv[4] if len(sys.argv) > 4 else "metrosurf://").encode("utf-16-le")
+assert len(new) <= len(old)
+d = bytearray(open(sys.argv[1], "rb").read())
+low = bytes(d).lower(); n = 0; i = 0
+while True:
+    i = low.find(old.lower(), i)
+    if i < 0: break
+    d[i:i + len(old)] = new + b"\0" * (len(old) - len(new)); n += 1; i += len(old)
+open(sys.argv[2], "wb").write(d)
+print("patched", n, "occurrence(s)")

@@ -1,0 +1,76 @@
+--- a/Source/WebCore/page/DOMTimer.cpp
++++ b/Source/WebCore/page/DOMTimer.cpp
+@@ -53,6 +53,24 @@
+ 
+ namespace WebCore {
+ 
++#if defined(WP81)
++}
++namespace JSC {
++extern double g_wp81MainThreadJSSeconds;
++}
++namespace WebCore {
++
++struct WP81LongTimer {
++    double jsSecondsAtSchedule { 0 };
++    Seconds extension;
++};
++static HashMap<const DOMTimer*, WP81LongTimer>& wp81LongTimers()
++{
++    static NeverDestroyed<HashMap<const DOMTimer*, WP81LongTimer>> timers;
++    return timers;
++}
++#endif
++
+ static constexpr Seconds minIntervalForNonUserObservableChangeTimers { 1_s }; // Empirically determined to maximize battery life.
+ static constexpr Seconds minIntervalForOneShotTimers { 0_ms };
+ static constexpr Seconds minIntervalForRepeatingTimers { 1_ms };
+@@ -191,7 +209,13 @@
+     }
+ }
+ 
+-DOMTimer::~DOMTimer() = default;
++DOMTimer::~DOMTimer()
++{
++#if defined(WP81)
++    if (isMainThread())
++        wp81LongTimers().remove(this);
++#endif
++}
+ 
+ int DOMTimer::install(ScriptExecutionContext& context, std::unique_ptr<ScheduledAction> action, Seconds timeout, Type type)
+ {
+@@ -213,6 +237,10 @@
+     } while (!context.addTimeout(timer->m_timeoutId, timer.get()));
+ 
+     InspectorInstrumentation::didInstallTimer(context, timer->m_timeoutId, timeout, type == Type::SingleShot);
++#if defined(WP81)
++    if (type == Type::SingleShot && timeout >= 4_s && is<Document>(context))
++        wp81LongTimers().set(timer.ptr(), WP81LongTimer { JSC::g_wp81MainThreadJSSeconds, 0_s });
++#endif
+ 
+     // Keep track of nested timer installs.
+     if (NestedTimersMap* nestedTimers = NestedTimersMap::instanceForContext(context))
+@@ -312,6 +340,22 @@
+     ASSERT(scriptExecutionContext());
+     Ref context = *scriptExecutionContext();
+ 
++#if defined(WP81)
++    if (auto longTimer = m_oneShot && isMainThread() ? wp81LongTimers().find(this) : wp81LongTimers().end(); longTimer != wp81LongTimers().end()) {
++        double now = JSC::g_wp81MainThreadJSSeconds;
++        Seconds extra = std::min(Seconds(now - longTimer->value.jsSecondsAtSchedule), m_originalInterval - longTimer->value.extension);
++        longTimer->value.jsSecondsAtSchedule = now;
++        if (extra > 250_ms) {
++            longTimer->value.extension += extra;
++            m_timer = protect(context->eventLoop())->scheduleTask(extra, TaskSource::Timer, [weakThis = WeakPtr { *this }] {
++                if (RefPtr protectedThis = weakThis.get())
++                    protectedThis->fired();
++            });
++            return;
++        }
++    }
++#endif
++
+ #if ENABLE(CONTENT_CHANGE_OBSERVER)
+     if (RefPtr document = dynamicDowncast<Document>(context); document && m_oneShot) {
+         if (auto* holdingTank = document->domTimerHoldingTankIfExists(); holdingTank && holdingTank->contains(*this)) {

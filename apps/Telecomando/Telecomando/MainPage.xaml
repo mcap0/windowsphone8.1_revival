@@ -1,0 +1,165 @@
+<Page
+    x:Class="Telecomando.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Black">
+    <Grid x:Name="Root" Margin="18,6,18,4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="TELECOMANDO" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Dim}" />
+            <TextBlock x:Name="TvName" Text="Tele" FontSize="24" FontWeight="Light" />
+            <TextBlock x:Name="Status" Text="" FontSize="14" Foreground="{StaticResource Dim}" Height="20"
+                       TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+
+        <!-- the remote is drawn at 400 x 660 and scaled to the screen: it always fits -->
+        <Viewbox Grid.Row="1" Stretch="Uniform" VerticalAlignment="Top" Margin="0,8,0,0">
+        <Grid Width="400" Height="660">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+        <!-- power, source, home -->
+        <Grid Grid.Row="0" Margin="0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource RemoteButton}" Click="Power_Click">
+                <Path Stroke="#FFF28B82" StrokeThickness="2.4" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Width="24" Height="24" Stretch="Uniform" Data="M8,1 L8,8 M4.2,3.6 A6,6 0 1 0 11.8,3.6" />
+            </Button>
+            <Button Grid.Column="2" Style="{StaticResource RemoteButton}" Tag="KEY_SOURCE" Click="Key_Click">
+                <TextBlock Text="Sorgente" FontSize="17" />
+            </Button>
+            <Button x:Name="HomeButton" Grid.Column="4" Style="{StaticResource RemoteButton}" Tag="KEY_HOME" Click="Key_Click" />
+        </Grid>
+
+        <!-- direction pad -->
+        <Grid Grid.Row="1" Width="300" Height="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Ellipse Fill="{StaticResource Pad}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="120" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="120" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <RepeatButton x:Name="UpButton" Grid.Column="1" Style="{StaticResource RemoteButton}" Background="Transparent"
+                              Delay="450" Interval="150" Tag="KEY_UP" Click="Key_Click" />
+                <RepeatButton x:Name="LeftButton" Grid.Row="1" Style="{StaticResource RemoteButton}" Background="Transparent"
+                              Delay="450" Interval="150" Tag="KEY_LEFT" Click="Key_Click" />
+                <RepeatButton x:Name="RightButton" Grid.Row="1" Grid.Column="2" Style="{StaticResource RemoteButton}" Background="Transparent"
+                              Delay="450" Interval="150" Tag="KEY_RIGHT" Click="Key_Click" />
+                <RepeatButton x:Name="DownButton" Grid.Row="2" Grid.Column="1" Style="{StaticResource RemoteButton}" Background="Transparent"
+                              Delay="450" Interval="150" Tag="KEY_DOWN" Click="Key_Click" />
+                <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource RemoteButton}" Background="#FF3C4048"
+                        Tag="KEY_ENTER" Click="Key_Click">
+                    <TextBlock Text="OK" FontSize="24" FontWeight="SemiBold" />
+                </Button>
+            </Grid>
+        </Grid>
+
+        <!-- back, play/pause, menu -->
+        <Grid Grid.Row="2" Margin="0,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton" Style="{StaticResource RemoteButton}" Tag="KEY_RETURN" Click="Key_Click" />
+            <Button x:Name="PlayButton" Grid.Column="2" Style="{StaticResource RemoteButton}" Click="Play_Click" />
+            <Button x:Name="MenuButton" Grid.Column="4" Style="{StaticResource RemoteButton}" Tag="KEY_MENU" Click="Key_Click" />
+        </Grid>
+
+        <!-- volume, mute / info, channels -->
+        <Grid Grid.Row="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Rectangle Fill="{StaticResource Pad}" RadiusX="34" RadiusY="34" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <RepeatButton Style="{StaticResource RemoteButton}" Background="Transparent" Delay="400" Interval="130"
+                                  Tag="KEY_VOLUP" Click="Key_Click"><TextBlock Text="+" FontSize="30" /></RepeatButton>
+                    <TextBlock x:Name="VolLabel" Grid.Row="1" HorizontalAlignment="Center" FontSize="14" Foreground="{StaticResource Dim}" Text="VOL" />
+                    <RepeatButton Grid.Row="2" Style="{StaticResource RemoteButton}" Background="Transparent" Delay="400" Interval="130"
+                                  Tag="KEY_VOLDOWN" Click="Key_Click"><TextBlock Text="&#x2212;" FontSize="30" /></RepeatButton>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="12" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button x:Name="MuteButton" Style="{StaticResource RemoteButton}" Tag="KEY_MUTE" Click="Key_Click" />
+                <Button Grid.Row="2" Style="{StaticResource RemoteButton}" Tag="KEY_GUIDE" Click="Key_Click">
+                    <TextBlock Text="Guida" FontSize="17" />
+                </Button>
+            </Grid>
+            <Grid Grid.Column="4">
+                <Rectangle Fill="{StaticResource Pad}" RadiusX="34" RadiusY="34" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <RepeatButton Style="{StaticResource RemoteButton}" Background="Transparent" Delay="500" Interval="350"
+                                  Tag="KEY_CHUP" Click="Key_Click"><TextBlock Text="&#x25B2;" FontSize="18" FontFamily="Segoe UI Symbol" /></RepeatButton>
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Center" FontSize="14" Foreground="{StaticResource Dim}" Text="CANALE" />
+                    <RepeatButton Grid.Row="2" Style="{StaticResource RemoteButton}" Background="Transparent" Delay="500" Interval="350"
+                                  Tag="KEY_CHDOWN" Click="Key_Click"><TextBlock Text="&#x25BC;" FontSize="18" FontFamily="Segoe UI Symbol" /></RepeatButton>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        </Grid>
+        </Viewbox>
+
+        <!-- number pad, over everything -->
+        <Grid x:Name="Numbers" Grid.RowSpan="2" Background="Black" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="numeri" FontSize="26" FontWeight="Light" Margin="0,30,0,12" />
+            <Grid x:Name="NumberGrid" Grid.Row="1" Margin="0,0,0,40" />
+        </Grid>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal" Background="#FF1F2125">
+            <AppBarButton x:Name="NumbersCommand" Label="numeri" Click="Numbers_Click" />
+            <AppBarButton x:Name="SettingsCommand" Label="impostazioni" Click="Settings_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="accendi (Wake-on-LAN)" Click="Wake_Click" />
+                <AppBarButton Label="ricollega" Click="Reconnect_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

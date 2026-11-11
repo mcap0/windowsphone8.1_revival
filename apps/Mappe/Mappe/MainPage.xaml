@@ -1,0 +1,77 @@
+<Page
+    x:Class="Mappe.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    Background="#FF101010">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="LocateButton" Icon="Map" Label="La mia posizione" Click="Locate_Click" />
+            <AppBarButton Icon="Find" Label="Cerca" Click="SearchFocus_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Diagnostica" Click="Diag_Click" />
+                <AppBarButton Label="Cambia tile Http/Custom" Click="ToggleTiles_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid>
+        <maps:MapControl x:Name="MapView" MapServiceToken="-" MapHolding="MapView_MapHolding" />
+
+        <!-- Search box and results, top -->
+        <StackPanel VerticalAlignment="Top" Background="#CC101010">
+            <TextBox x:Name="SearchBox" PlaceholderText="Cerca luogo o indirizzo" Margin="8,4,8,0"
+                     Background="#FF202020" Foreground="#FFFFFFFF"
+                     KeyDown="SearchBox_KeyDown" TextChanged="SearchBox_TextChanged" />
+            <TextBlock x:Name="StatusText" Margin="12,4,12,4" FontSize="15" Foreground="#FFFFD54F" TextWrapping="Wrap" Visibility="Collapsed" />
+            <TextBlock x:Name="GeoText" Margin="12,0,12,4" FontSize="15" Foreground="#FF80D8FF" TextWrapping="Wrap" Visibility="Collapsed" />
+            <ListView x:Name="ResultsList" Margin="8,0,8,4" MaxHeight="380" Background="#F2181818"
+                      IsItemClickEnabled="True" SelectionMode="None" ItemClick="ResultsList_ItemClick" Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8,6,8,6">
+                            <TextBlock Text="{Binding Title}" FontSize="18" Foreground="#FFFFFFFF" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Subtitle}" FontSize="14" Foreground="#FFBDBDBD" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <!-- Long-press result, bottom -->
+        <Border x:Name="PressPanel" VerticalAlignment="Bottom" Margin="8,0,8,30" Padding="10" Background="#F2181818" Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock x:Name="AddressText" FontSize="16" Foreground="#FFFFFFFF" TextWrapping="Wrap" />
+                <TextBox x:Name="CoordBox" IsReadOnly="True" FontSize="16" Background="#FF202020" Foreground="#FFFFFFFF" Margin="0,6,0,6" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Copia coordinate" Click="CopyCoords_Click" />
+                    <Button Content="Apri nel browser" Click="OpenBrowser_Click" />
+                    <Button Content="Chiudi" Click="ClosePress_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Attribution, always visible -->
+        <Border VerticalAlignment="Bottom" Background="#AA000000" Padding="6,2,6,2">
+            <TextBlock Text="© OpenStreetMap contributors" FontSize="12" Foreground="#FFFFFFFF" HorizontalAlignment="Center" />
+        </Border>
+
+        <!-- Diagnostics overlay (AppBar > Diagnostica) -->
+        <Border x:Name="DiagPanel" Background="#F5000000" Visibility="Collapsed" Padding="12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ScrollViewer>
+                    <TextBlock x:Name="DiagText" FontFamily="Consolas" FontSize="14" Foreground="#FFFFFFFF" TextWrapping="Wrap" />
+                </ScrollViewer>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Content="Aggiorna" Click="Diag_Refresh_Click" />
+                    <Button Content="Chiudi" Click="Diag_Close_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

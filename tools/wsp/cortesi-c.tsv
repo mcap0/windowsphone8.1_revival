@@ -1,0 +1,1002 @@
+# Cortesi set C (giro 10, 2026-11-03 notte): richieste gentili e indirette come nelle prove sul telefono
+# delle 22:00-22:25, da cortesi.py (pezzi scritti a mano prima di misurare). "now" = mar 2026-11-03 10:00.
+senti amico ho voglia di impostare una sveglia alle undici grazie amico	imposta_sveglia	ora=11:00;etichetta=
+buongiorno caro ce la faresti esti a dirmi quanti abitanti ha palermo grazie infinite	online
+buongiorno caro ti sarei grato se potessi mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+tu mi diresti che giorno è domani grazie infinite	data
+ascolta assistente magari se tu mettessi una sveglia per le sei e mezza grazie infinite	imposta_sveglia	ora=06:30;etichetta=
+se riesci cerca su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+buongiorno caro sapresti giusto un attimo dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+buongiorno caro mi aiuteresti a dirmi chi ha scritto i promessi sposi	online
+dimmi un po' ce la faresti esti a svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+caro il mio assistente ti va di cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+dimmi un po' ho voglia di chiamare francesca	chiama	chi=francesca
+ehi tu mi farebbe piacere che tu riuscissi a spiegarmi come funziona un motore elettrico grazie infinite	online
+dimmi un po' mi andrebbe che tu mi facessi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+senti amico mi aiuteresti a dirmi quanti abitanti ha palermo	online
+ti sarei grato se potessi telefonare a luca quando puoi	chiama	chi=luca
+quando hai un attimo mi sveglieresti domani alle sei e un quarto quando puoi	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+buongiorno caro sapresti spiegarmi come funziona un motore elettrico	online
+ciao assistente gentile magari se tu pure impostassi un timer di due minuti e mezzo	imposta_timer	secondi=150
+caro il mio assistente magari se tu telefonassi a luca grazie amico	chiama	chi=luca
+buongiorno caro quando hai un attimo chiameresti la nonna con calma	chiama	chi=nonna
+sapresti se riesci mettere un po' di de andrè con calma	riproduci_musica	richiesta=de andrè
+ciao assistente gentile ho voglia di far partire un timer di quindici secondi	imposta_timer	secondi=15
+sei in grado di scrivere nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+assistente mio adorato ce la faresti a far partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+ciao assistente gentile sei in grado di scrivere nelle note di pagare l'assicurazione grazie amico	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro mi farebbe piacere che tu riuscissi a dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+caro il mio assistente ce la faresti a se riesci ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+senti amico magari se tu se riesci mettessi una sveglia per venerdì alle sette grazie infinite	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ciao bello mio tu metteresti qualcosa dei coldplay con calma	riproduci_musica	richiesta=coldplay
+magari se tu per gentilezza mettessi una sveglia per le sei e mezza grazie infinite	imposta_sveglia	ora=06:30;etichetta=
+ciao bello mio mi andrebbe che tu mi dicessi che tempo farà sabato a bologna con calma	meteo	luogo=bologna;giorno=2026-11-07
+ciao assistente gentile ti va di impostare una sveglia alle undici ti ringrazio di cuore	imposta_sveglia	ora=11:00;etichetta=
+senti amico ti sarei grato se potessi dirmi che ore sono adesso sei un tesoro	ora
+ti va di cercare su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+ehi tu ce la faresti a dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+senti amico per gentilezza metti un timer di sei minuti con calma	imposta_timer	secondi=360
+ciao bello mio ti va di mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+se riesci metti un po' di de andrè sei un tesoro	riproduci_musica	richiesta=de andrè
+caro il mio assistente tu chiameresti la nonna grazie infinite	chiama	chi=nonna
+ascolta assistente ti va di riprodurre i beatles	riproduci_musica	richiesta=beatles
+dimmi un po' magari se tu cercassi su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+senti amico tu salveresti una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ciao assistente gentile mi aiuteresti a chiamare francesca quando puoi	chiama	chi=francesca
+buongiorno caro ti sarei grato se potessi dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+dimmi un po' sapresti mettere un po' di de andrè quando puoi	riproduci_musica	richiesta=de andrè
+ascolta assistente magari se tu pure mi dicessi che giorno è domani	data
+ascolta assistente ti va di mettere qualcosa dei coldplay grazie amico	riproduci_musica	richiesta=coldplay
+buongiorno caro dimmi se domani fa freddo a enna quando puoi	meteo	luogo=enna;giorno=2026-11-04
+buongiorno caro magari se tu giusto un attimo mi dicessi cosa ho in programma domani sei un tesoro	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile mi farebbe piacere che tu riuscissi a dirmi che ore sono adesso grazie infinite	ora
+ciao assistente gentile svegliami domani alle sei e un quarto ti ringrazio di cuore	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ehi tu quando hai un attimo mi diresti chi ha scritto i promessi sposi	online
+buongiorno caro ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ascolta assistente sei in grado do di salvare una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+senti amico sapresti ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico ho voglia di impostare una sveglia alle undici grazie infinite	imposta_sveglia	ora=11:00;etichetta=
+ciao bello mio potrei chiederti di mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+ciao assistente gentile mi farebbe piacere che tu riuscissi a dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+tu mi racconteresti una storia divertente ti ringrazio di cuore	online
+ho voglia di dirmi quanti abitanti ha palermo grazie infinite	online
+ciao assistente gentile chiama la nonna	chiama	chi=nonna
+ti sarei grato se potessi impostare un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+dimmi un po' potrei chiederti di per piacere farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+caro il mio assistente ho voglia di dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+ciao assistente gentile mi farebbe piacere che tu riuscissi a dirmi quanto tempo manca al timer grazie infinite	stato_timer
+ciao bello mio ti va di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+mi farebbe piacere che tu riuscissi a dirmi se domani fa freddo a enna quando puoi	meteo	luogo=enna;giorno=2026-11-04
+senti amico magari se tu per piacere cercassi su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+ascolta assistente ricordami domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu ti sarei grato se potessi dirmi che ore sono adesso	ora
+assistente mio adorato ho voglia di ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ascolta assistente sapresti pure spiegarmi come funziona un motore elettrico	online
+dimmi un po' magari se tu pure mi raccontassi una storia divertente grazie amico	online
+dimmi un po' mi aiuteresti a dirmi che giorno è domani sei un tesoro	data
+ciao assistente gentile sei in grado di dirmi quanto tempo manca al timer grazie infinite	stato_timer
+sapresti raccontarmi una storia divertente ti ringrazio di cuore	online
+potrei rei chiederti di pure dirmi che tempo fa a trapani sei un tesoro	meteo	luogo=trapani;giorno=
+dimmi un po' quando hai un attimo cercheresti su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente sei in grado do di mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+assistente mio adorato mi aiuteresti teresti a dirmi quanto tempo manca al timer con calma	stato_timer
+senti amico mi andrebbe che tu mi dicessi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+ciao assistente gentile ho voglia di ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+caro il mio assistente mi farebbe piacere che tu riuscissi a riprodurre i beatles sei un tesoro	riproduci_musica	richiesta=beatles
+buongiorno caro ti va di mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+dimmi un po' magari se tu se riesci scrivessi nelle note di pagare l'assicurazione grazie amico	prendi_nota	testo=pagare l'assicurazione
+ehi tu mi farebbe piacere che tu riuscissi a salvare una nota con scritto il wifi di casa è gatto nero ti ringrazio di cuore	prendi_nota	testo=il wifi di casa è gatto nero
+ciao assistente gentile potrei chiederti di mettere un timer di sei minuti grazie amico	imposta_timer	secondi=360
+mi aiuteresti a chiamare francesca	chiama	chi=francesca
+sei in grado do di telefonare a luca ti ringrazio di cuore	chiama	chi=luca
+ciao bello mio ti va di far partire un timer di quindici secondi	imposta_timer	secondi=15
+ti va di riprodurre i beatles	riproduci_musica	richiesta=beatles
+caro il mio assistente ti va di farmi una ricerca su internet sugli orari del museo ti ringrazio di cuore	cerca_sul_web	domanda=gli orari del museo
+quando hai un attimo imposteresti un timer di due minuti e mezzo	imposta_timer	secondi=150
+dimmi un po' sei in grado do di mettere una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ciao assistente gentile sei in grado di chiamare francesca	chiama	chi=francesca
+ciao assistente gentile mi aiuteresti teresti a riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+ciao assistente gentile tu mi racconteresti una storia divertente	online
+ciao assistente gentile ti va di dirmi chi ha scritto i promessi sposi grazie amico	online
+buongiorno caro magari se tu per gentilezza mi dicessi che ore sono adesso con calma	ora
+assistente mio adorato sapresti spiegarmi come funziona un motore elettrico ti ringrazio di cuore	online
+caro il mio assistente mi aiuteresti a salvare una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+buongiorno caro mi farebbe piacere che tu riuscissi a mettere un po' di de andrè ti ringrazio di cuore	riproduci_musica	richiesta=de andrè
+ascolta assistente mi andrebbe che tu mi raccontassi una storia divertente grazie infinite	online
+ehi tu giusto un attimo metti una sveglia per le sei e mezza sei un tesoro	imposta_sveglia	ora=06:30;etichetta=
+ho voglia di spiegarmi come funziona un motore elettrico	online
+dimmi un po' ce la faresti a pure impostare un timer di due minuti e mezzo	imposta_timer	secondi=150
+dimmi un po' ti sarei grato se potessi chiamare la nonna grazie amico	chiama	chi=nonna
+ciao bello mio quando hai un attimo faresti partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+ehi tu sapresti chiamare francesca quando puoi	chiama	chi=francesca
+ehi tu mi farebbe piacere che tu riuscissi a impostare un timer di due minuti e mezzo grazie amico	imposta_timer	secondi=150
+assistente mio adorato tu mi diresti quanti abitanti ha palermo	online
+ehi tu tu mi sveglieresti domani alle sei e un quarto con calma	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ehi tu per gentilezza cerca su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+tu chiameresti la nonna quando puoi	chiama	chi=nonna
+senti amico tu salveresti una nota con scritto il wifi di casa è gatto nero grazie amico	prendi_nota	testo=il wifi di casa è gatto nero
+buongiorno caro ti va di far partire un timer di quindici secondi	imposta_timer	secondi=15
+caro il mio assistente magari se tu per piacere mi svegliassi domani alle sei e un quarto grazie amico	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ascolta assistente ho voglia di riprodurre i beatles grazie amico	riproduci_musica	richiesta=beatles
+ehi tu ti va di chiamare francesca	chiama	chi=francesca
+ciao bello mio quando hai un attimo mi ricorderesti domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ho voglia di telefonare a luca ti ringrazio di cuore	chiama	chi=luca
+assistente mio adorato tu mi diresti che giorno è domani con calma	data
+senti amico tu mi sveglieresti domani alle sei e un quarto ti ringrazio di cuore	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+caro il mio assistente mi andrebbe che tu mettessi un po' di de andrè sei un tesoro	riproduci_musica	richiesta=de andrè
+ce la faresti a impostare una sveglia alle undici sei un tesoro	imposta_sveglia	ora=11:00;etichetta=
+quando hai un attimo chiameresti francesca	chiama	chi=francesca
+assistente mio adorato mi aiuteresti a dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ehi tu ti sarei grato se potessi scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+assistente mio adorato mi farebbe piacere che tu riuscissi a cercare su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+ehi tu mi aiuteresti a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu potrei chiederti di cercare su google come si cucina il cous cous grazie infinite	cerca_sul_web	domanda=come si cucina il cous cous
+dimmi un po' tu salveresti una nota con scritto il wifi di casa è gatto nero grazie amico	prendi_nota	testo=il wifi di casa è gatto nero
+dimmi un po' tu riprodurresti i beatles	riproduci_musica	richiesta=beatles
+tu metteresti qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+dimmi un po' ti va di impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+senti amico ho voglia di mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+assistente mio adorato magari se tu per piacere mi dicessi che giorno è domani con calma	data
+ehi tu mi farebbe piacere che tu riuscissi a riprodurre i beatles	riproduci_musica	richiesta=beatles
+dimmi un po' pure ricordami domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+caro il mio assistente tu mi diresti quanto tempo manca al timer con calma	stato_timer
+magari se tu giusto un attimo chiamassi la nonna grazie infinite	chiama	chi=nonna
+ciao assistente gentile sei in grado do di chiamare francesca	chiama	chi=francesca
+ciao assistente gentile ce la faresti a mettere un po' di de andrè grazie infinite	riproduci_musica	richiesta=de andrè
+senti amico sapresti se riesci mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+ehi tu pure ricordami domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+buongiorno caro tu salveresti una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+assistente mio adorato potrei chiederti di per piacere impostare un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+ciao assistente gentile quando hai un attimo mi diresti che tempo farà sabato a bologna ti ringrazio di cuore	meteo	luogo=bologna;giorno=2026-11-07
+caro il mio assistente ti sarei grato se potessi ricordarmi alle quattro di chiamare l'avvocato ti ringrazio di cuore	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao bello mio sapresti impostare un timer di due minuti e mezzo	imposta_timer	secondi=150
+potrei chiederti di per gentilezza dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+senti amico ti sarei grato se potessi raccontarmi una storia divertente	online
+dimmi un po' potrei rei chiederti di mettere qualcosa dei coldplay ti ringrazio di cuore	riproduci_musica	richiesta=coldplay
+ciao assistente gentile mi farebbe piacere che tu riuscissi a dirmi che ore sono adesso	ora
+ciao bello mio quando hai un attimo mi faresti una ricerca su internet sugli orari del museo grazie infinite	cerca_sul_web	domanda=gli orari del museo
+caro il mio assistente ho voglia di cercare su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+buongiorno caro potrei chiederti di per gentilezza ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu mi aiuteresti a dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+buongiorno caro ti va di telefonare a luca grazie amico	chiama	chi=luca
+ehi tu mi farebbe piacere che tu riuscissi a far partire un timer di quindici secondi	imposta_timer	secondi=15
+senti amico mi farebbe piacere che tu riuscissi a dirmi che tempo fa a trapani sei un tesoro	meteo	luogo=trapani;giorno=
+senti amico ti va di dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+caro il mio assistente sei in grado do di far partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+ehi tu tu metteresti una sveglia per venerdì alle sette grazie infinite	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ciao bello mio ho voglia di chiamare la nonna	chiama	chi=nonna
+ascolta assistente tu mi diresti se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+caro il mio assistente sei in grado di cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+sapresti presti per gentilezza svegliarmi domani alle sei e un quarto ti ringrazio di cuore	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+assistente mio adorato ce la faresti a pure scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile mi andrebbe che tu salvassi una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+ciao bello mio sapresti presti dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile ho voglia di farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+ciao assistente gentile potrei chiederti di per gentilezza dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato ti sarei grato se potessi dirmi chi ha scritto i promessi sposi grazie amico	online
+caro il mio assistente magari se tu per gentilezza chiamassi francesca con calma	chiama	chi=francesca
+senti amico potrei chiederti di dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+caro il mio assistente mi farebbe piacere che tu riuscissi a cercare su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+ciao assistente gentile ce la faresti a mettere un timer di sei minuti	imposta_timer	secondi=360
+ti va di raccontarmi una storia divertente	online
+caro il mio assistente potrei rei chiederti di dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+ciao bello mio ti sarei grato se potessi dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+dimmi un po' magari se tu per gentilezza mettessi una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+potrei chiederti di raccontarmi una storia divertente	online
+ciao bello mio potrei chiederti di giusto un attimo impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+ciao assistente gentile mi andrebbe che tu cercassi su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+dimmi un po' quando hai un attimo mi racconteresti una storia divertente grazie infinite	online
+senti amico quando hai un attimo scriveresti nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+ehi tu magari se tu per gentilezza mettessi un timer di sei minuti ti ringrazio di cuore	imposta_timer	secondi=360
+dimmi un po' sei in grado di dirmi quanti abitanti ha palermo	online
+ascolta assistente sapresti presti farmi una ricerca su internet sugli orari del museo grazie amico	cerca_sul_web	domanda=gli orari del museo
+ciao bello mio per gentilezza ricordami alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+buongiorno caro mi andrebbe che tu mi spiegassi come funziona un motore elettrico grazie infinite	online
+mi farebbe piacere che tu riuscissi a dirmi che giorno è domani	data
+assistente mio adorato tu mi ricorderesti alle quattro di chiamare l'avvocato grazie infinite	promemoria	ora=16:00;testo=chiamare l'avvocato
+ascolta assistente quando hai un attimo mi sveglieresti domani alle sei e un quarto quando puoi	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ascolta assistente sei in grado di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+buongiorno caro mi aiuteresti a mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+ciao bello mio potrei chiederti di dirmi quanto tempo manca al timer con calma	stato_timer
+buongiorno caro giusto un attimo dimmi che ore sono adesso	ora
+senti amico sei in grado di mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+caro il mio assistente sei in grado di dirmi chi ha scritto i promessi sposi grazie amico	online
+ehi tu sapresti mettere un timer di sei minuti	imposta_timer	secondi=360
+ce la faresti a per gentilezza spiegarmi come funziona un motore elettrico	online
+assistente mio adorato ce la faresti a mettere un po' di de andrè grazie amico	riproduci_musica	richiesta=de andrè
+ascolta assistente tu mi diresti cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ti va di dirmi se domani fa freddo a enna grazie amico	meteo	luogo=enna;giorno=2026-11-04
+caro il mio assistente mi andrebbe che tu mettessi un timer di sei minuti ti ringrazio di cuore	imposta_timer	secondi=360
+senti amico mi andrebbe che tu cercassi su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+assistente mio adorato ti sarei grato se potessi dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+per gentilezza scrivi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile ho voglia di dirmi quanti abitanti ha palermo	online
+potrei chiederti di per piacere mettere qualcosa dei coldplay sei un tesoro	riproduci_musica	richiesta=coldplay
+ciao assistente gentile potrei rei chiederti di se riesci ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+assistente mio adorato ti sarei grato se potessi raccontarmi una storia divertente grazie amico	online
+caro il mio assistente mi farebbe piacere che tu riuscissi a mettere un po' di de andrè quando puoi	riproduci_musica	richiesta=de andrè
+senti amico potrei chiederti di se riesci scrivere nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+caro il mio assistente ti sarei grato se potessi dirmi se domani fa freddo a enna con calma	meteo	luogo=enna;giorno=2026-11-04
+mi aiuteresti teresti a scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ehi tu sei in grado do di dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile tu scriveresti nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro ho voglia di dirmi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+ti sarei grato se potessi mettere un timer di sei minuti sei un tesoro	imposta_timer	secondi=360
+caro il mio assistente magari se tu pure impostassi una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+potrei rei chiederti di farmi una ricerca su internet sugli orari del museo ti ringrazio di cuore	cerca_sul_web	domanda=gli orari del museo
+ascolta assistente mi aiuteresti a scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ho voglia di mettere un timer di sei minuti ti ringrazio di cuore	imposta_timer	secondi=360
+sei in grado di dirmi che giorno è domani grazie infinite	data
+caro il mio assistente per gentilezza imposta un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+mi andrebbe che tu mi dicessi chi ha scritto i promessi sposi	online
+buongiorno caro quando hai un attimo scriveresti nelle note di pagare l'assicurazione ti ringrazio di cuore	prendi_nota	testo=pagare l'assicurazione
+ascolta assistente mi andrebbe che tu cercassi su internet il prezzo della benzina oggi grazie infinite	cerca_sul_web	domanda=il prezzo della benzina oggi
+senti amico tu telefoneresti a luca	chiama	chi=luca
+buongiorno caro ti va di mettere una sveglia per le sei e mezza quando puoi	imposta_sveglia	ora=06:30;etichetta=
+potrei chiederti di dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+caro il mio assistente sapresti per piacere dirmi cosa ho in programma domani grazie infinite	leggi_calendario	dal=2026-11-04;giorni=1
+mi farebbe piacere che tu riuscissi a riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+assistente mio adorato sapresti dirmi che giorno è domani	data
+dimmi un po' sei in grado di ricordarmi alle quattro di chiamare l'avvocato ti ringrazio di cuore	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao bello mio sei in grado di dirmi chi ha scritto i promessi sposi	online
+ciao bello mio magari se tu riproducessi i beatles sei un tesoro	riproduci_musica	richiesta=beatles
+dimmi un po' ce la faresti esti a chiamare francesca grazie amico	chiama	chi=francesca
+assistente mio adorato ti sarei grato se potessi mettere una sveglia per le sei e mezza ti ringrazio di cuore	imposta_sveglia	ora=06:30;etichetta=
+ehi tu ti va di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+ciao assistente gentile magari se tu mi dicessi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+sapresti se riesci ricordarmi alle quattro di chiamare l'avvocato ti ringrazio di cuore	promemoria	ora=16:00;testo=chiamare l'avvocato
+senti amico magari se tu riproducessi i beatles	riproduci_musica	richiesta=beatles
+senti amico tu metteresti una sveglia per le sei e mezza grazie amico	imposta_sveglia	ora=06:30;etichetta=
+assistente mio adorato quando hai un attimo mi diresti che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+tu metteresti un po' di de andrè	riproduci_musica	richiesta=de andrè
+ciao assistente gentile ti sarei grato se potessi cercare su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+senti amico mi aiuteresti a mettere un timer di sei minuti grazie infinite	imposta_timer	secondi=360
+dimmi un po' potrei rei chiederti di giusto un attimo mettere una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ascolta assistente ti sarei grato se potessi impostare un timer di due minuti e mezzo	imposta_timer	secondi=150
+ehi tu ti sarei grato se potessi mettere una sveglia per le sei e mezza con calma	imposta_sveglia	ora=06:30;etichetta=
+caro il mio assistente ti sarei grato se potessi telefonare a luca	chiama	chi=luca
+ciao assistente gentile ti va di dirmi chi ha scritto i promessi sposi	online
+caro il mio assistente ti va di dirmi che ore sono adesso con calma	ora
+ascolta assistente mi andrebbe che tu mi dicessi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+ho voglia di chiamare francesca grazie amico	chiama	chi=francesca
+dimmi un po' sapresti se riesci chiamare francesca	chiama	chi=francesca
+dimmi un po' mi andrebbe che tu mi raccontassi una storia divertente	online
+assistente mio adorato per gentilezza imposta un timer di due minuti e mezzo	imposta_timer	secondi=150
+senti amico mi andrebbe che tu mettessi un po' di de andrè	riproduci_musica	richiesta=de andrè
+ciao bello mio ho voglia di farmi una ricerca su internet sugli orari del museo ti ringrazio di cuore	cerca_sul_web	domanda=gli orari del museo
+senti amico mi aiuteresti a far partire un timer di quindici secondi	imposta_timer	secondi=15
+ascolta assistente ti va di dirmi quanti abitanti ha palermo ti ringrazio di cuore	online
+assistente mio adorato ti va di cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ciao assistente gentile tu riprodurresti i beatles con calma	riproduci_musica	richiesta=beatles
+ehi tu potrei chiederti di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+dimmi un po' sapresti dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile quando hai un attimo mi diresti che tempo fa a trapani ti ringrazio di cuore	meteo	luogo=trapani;giorno=
+ascolta assistente scrivi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile mi aiuteresti teresti a cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+senti amico sei in grado di impostare un timer di due minuti e mezzo grazie amico	imposta_timer	secondi=150
+quando hai un attimo mi spiegheresti come funziona un motore elettrico	online
+mi aiuteresti a mettere un timer di sei minuti ti ringrazio di cuore	imposta_timer	secondi=360
+dimmi un po' ti sarei grato se potessi dirmi che tempo farà sabato a bologna grazie amico	meteo	luogo=bologna;giorno=2026-11-07
+ciao bello mio quando hai un attimo metteresti un po' di de andrè grazie amico	riproduci_musica	richiesta=de andrè
+assistente mio adorato quando hai un attimo metteresti una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+dimmi un po' se riesci imposta un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+ascolta assistente sei in grado do di dirmi quanto tempo manca al timer quando puoi	stato_timer
+buongiorno caro ti sarei grato se potessi cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+assistente mio adorato mi andrebbe che tu mi dicessi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+buongiorno caro mi andrebbe che tu impostassi una sveglia alle undici grazie amico	imposta_sveglia	ora=11:00;etichetta=
+buongiorno caro sei in grado do di dirmi chi ha scritto i promessi sposi grazie infinite	online
+buongiorno caro tu mi diresti che ore sono adesso sei un tesoro	ora
+mi andrebbe che tu mettessi un timer di sei minuti	imposta_timer	secondi=360
+ti sarei grato se potessi cercare su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+ascolta assistente ce la faresti a mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+assistente mio adorato sapresti mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+assistente mio adorato giusto un attimo metti un timer di sei minuti	imposta_timer	secondi=360
+ascolta assistente mi farebbe piacere che tu riuscissi a ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao assistente gentile ho voglia di dirmi cosa ho in programma domani ti ringrazio di cuore	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato mi andrebbe che tu impostassi un timer di due minuti e mezzo sei un tesoro	imposta_timer	secondi=150
+tu faresti esti partire un timer di quindici secondi quando puoi	imposta_timer	secondi=15
+ascolta assistente mi farebbe piacere che tu riuscissi a svegliarmi domani alle sei e un quarto ti ringrazio di cuore	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+buongiorno caro quando hai un attimo mi racconteresti una storia divertente grazie amico	online
+mi andrebbe che tu facessi partire un timer di quindici secondi	imposta_timer	secondi=15
+mi aiuteresti a dirmi che giorno è domani grazie amico	data
+senti amico tu mi diresti che ore sono adesso con calma	ora
+caro il mio assistente tu chiameresti la nonna	chiama	chi=nonna
+senti amico ti va di mettere una sveglia per le sei e mezza sei un tesoro	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile magari se tu chiamassi la nonna	chiama	chi=nonna
+ehi tu sapresti presti farmi una ricerca su internet sugli orari del museo grazie amico	cerca_sul_web	domanda=gli orari del museo
+se riesci metti una sveglia per le sei e mezza grazie amico	imposta_sveglia	ora=06:30;etichetta=
+tu mi sveglieresti domani alle sei e un quarto grazie amico	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao assistente gentile ho voglia di mettere una sveglia per venerdì alle sette sei un tesoro	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+assistente mio adorato potrei chiederti di mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile ho voglia di cercare su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+potrei chiederti di dirmi chi ha scritto i promessi sposi	online
+ciao bello mio mi farebbe piacere che tu riuscissi a impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+ciao assistente gentile sapresti se riesci mettere una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+caro il mio assistente mi andrebbe che tu impostassi un timer di due minuti e mezzo	imposta_timer	secondi=150
+dimmi un po' quando hai un attimo mi diresti quanto tempo manca al timer con calma	stato_timer
+ciao bello mio sei in grado do di dirmi che ore sono adesso quando puoi	ora
+ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico ti sarei grato se potessi dirmi chi ha scritto i promessi sposi	online
+ti sarei grato se potessi raccontarmi una storia divertente	online
+dimmi un po' magari se tu per gentilezza mi dicessi che ore sono adesso	ora
+ascolta assistente quando hai un attimo mi diresti se domani fa freddo a enna grazie amico	meteo	luogo=enna;giorno=2026-11-04
+dimmi un po' ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ciao bello mio mi aiuteresti teresti a svegliarmi domani alle sei e un quarto quando puoi	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+quando hai un attimo chiameresti la nonna ti ringrazio di cuore	chiama	chi=nonna
+dimmi un po' magari se tu impostassi un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+ciao bello mio sapresti giusto un attimo dirmi cosa ho in programma domani ti ringrazio di cuore	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico quando hai un attimo metteresti una sveglia per le sei e mezza grazie amico	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile magari se tu mi ricordassi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico ce la faresti a giusto un attimo raccontarmi una storia divertente grazie amico	online
+dimmi un po' ce la faresti a per gentilezza salvare una nota con scritto il wifi di casa è gatto nero grazie amico	prendi_nota	testo=il wifi di casa è gatto nero
+sei in grado di cercare su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+mi andrebbe che tu mi dicessi che giorno è domani grazie amico	data
+ehi tu magari se tu facessi partire un timer di quindici secondi quando puoi	imposta_timer	secondi=15
+ciao assistente gentile mi andrebbe che tu mettessi una sveglia per le sei e mezza ti ringrazio di cuore	imposta_sveglia	ora=06:30;etichetta=
+dimmi un po' tu imposteresti una sveglia alle undici quando puoi	imposta_sveglia	ora=11:00;etichetta=
+assistente mio adorato ti sarei grato se potessi cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+assistente mio adorato mi aiuteresti a riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+magari se tu mi dicessi quanti abitanti ha palermo	online
+caro il mio assistente ho voglia di dirmi quanti abitanti ha palermo grazie infinite	online
+ciao assistente gentile mi aiuteresti a svegliarmi domani alle sei e un quarto grazie amico	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+senti amico ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ciao bello mio ti sarei grato se potessi dirmi che ore sono adesso grazie amico	ora
+dimmi un po' potrei chiederti di se riesci ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ascolta assistente mi aiuteresti a cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente mi farebbe piacere che tu riuscissi a dirmi che tempo farà sabato a bologna sei un tesoro	meteo	luogo=bologna;giorno=2026-11-07
+ti sarei grato se potessi scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ti va di mettere qualcosa dei coldplay con calma	riproduci_musica	richiesta=coldplay
+ti sarei grato se potessi telefonare a luca sei un tesoro	chiama	chi=luca
+ciao assistente gentile ricordami domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+mi farebbe piacere che tu riuscissi a cercare su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+ciao bello mio ce la faresti a dirmi quanti abitanti ha palermo	online
+ascolta assistente tu faresti partire un timer di quindici secondi grazie infinite	imposta_timer	secondi=15
+ciao assistente gentile tu salveresti una nota con scritto il wifi di casa è gatto nero ti ringrazio di cuore	prendi_nota	testo=il wifi di casa è gatto nero
+ciao assistente gentile ti sarei grato se potessi dirmi cosa ho in programma domani grazie infinite	leggi_calendario	dal=2026-11-04;giorni=1
+ciao bello mio ti sarei grato se potessi ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+caro il mio assistente ho voglia di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ascolta assistente ho voglia di dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ciao assistente gentile tu cercheresti su internet il prezzo della benzina oggi grazie infinite	cerca_sul_web	domanda=il prezzo della benzina oggi
+sei in grado do di raccontarmi una storia divertente	online
+ciao bello mio quando hai un attimo metteresti una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ascolta assistente ti sarei grato se potessi cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato telefona a luca grazie infinite	chiama	chi=luca
+buongiorno caro ho voglia di scrivere nelle note di pagare l'assicurazione ti ringrazio di cuore	prendi_nota	testo=pagare l'assicurazione
+assistente mio adorato ti va di impostare una sveglia alle undici con calma	imposta_sveglia	ora=11:00;etichetta=
+ti sarei grato se potessi dirmi chi ha scritto i promessi sposi grazie amico	online
+sapresti scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ascolta assistente ho voglia di riprodurre i beatles	riproduci_musica	richiesta=beatles
+ciao assistente gentile pure fai partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+ciao bello mio ce la faresti a dirmi che giorno è domani grazie amico	data
+magari se tu per gentilezza mi dicessi che ore sono adesso ti ringrazio di cuore	ora
+caro il mio assistente sei in grado di mettere una sveglia per venerdì alle sette con calma	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ti va di ricordarmi domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu quando hai un attimo chiameresti la nonna sei un tesoro	chiama	chi=nonna
+potrei rei chiederti di se riesci cercare su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+sapresti se riesci dirmi quanto tempo manca al timer sei un tesoro	stato_timer
+tu cercheresti su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+senti amico mi aiuteresti a mettere una sveglia per le sei e mezza con calma	imposta_sveglia	ora=06:30;etichetta=
+ascolta assistente quando hai un attimo mi diresti che giorno è domani	data
+mi farebbe piacere che tu riuscissi a dirmi che giorno è domani quando puoi	data
+ascolta assistente potrei chiederti di raccontarmi una storia divertente ti ringrazio di cuore	online
+ehi tu ti va di cercare su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato quando hai un attimo metteresti una sveglia per le sei e mezza sei un tesoro	imposta_sveglia	ora=06:30;etichetta=
+ciao bello mio ho voglia di dirmi che ore sono adesso sei un tesoro	ora
+ascolta assistente sei in grado di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+riproduci i beatles	riproduci_musica	richiesta=beatles
+caro il mio assistente sapresti per piacere mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+ciao bello mio sei in grado di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ciao assistente gentile ti sarei grato se potessi dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+ehi tu ti sarei grato se potessi svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+caro il mio assistente ho voglia di dirmi che tempo fa a trapani ti ringrazio di cuore	meteo	luogo=trapani;giorno=
+caro il mio assistente mi andrebbe che tu mi dicessi quanti abitanti ha palermo grazie amico	online
+ehi tu magari se tu mi dicessi quanto tempo manca al timer sei un tesoro	stato_timer
+scrivi nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile ti va di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+caro il mio assistente sei in grado di mettere una sveglia per le sei e mezza con calma	imposta_sveglia	ora=06:30;etichetta=
+ehi tu ce la faresti a dirmi che ore sono adesso	ora
+caro il mio assistente mi aiuteresti a far partire un timer di quindici secondi grazie infinite	imposta_timer	secondi=15
+pure dimmi cosa ho in programma domani sei un tesoro	leggi_calendario	dal=2026-11-04;giorni=1
+metti un po' di de andrè con calma	riproduci_musica	richiesta=de andrè
+buongiorno caro ho voglia di mettere un timer di sei minuti sei un tesoro	imposta_timer	secondi=360
+magari se tu giusto un attimo mi dicessi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+ehi tu mi aiuteresti teresti a chiamare la nonna con calma	chiama	chi=nonna
+dimmi un po' sapresti ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+assistente mio adorato mi farebbe piacere che tu riuscissi a mettere un timer di sei minuti grazie infinite	imposta_timer	secondi=360
+mi farebbe piacere che tu riuscissi a chiamare la nonna grazie infinite	chiama	chi=nonna
+ciao bello mio ce la faresti a ricordarmi domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+potrei rei chiederti di dirmi che tempo fa a trapani sei un tesoro	meteo	luogo=trapani;giorno=
+assistente mio adorato magari se tu mi dicessi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+ehi tu tu mi ricorderesti domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+mi farebbe piacere che tu riuscissi a farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+senti amico sei in grado do di ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao bello mio mi aiuteresti a mettere qualcosa dei coldplay ti ringrazio di cuore	riproduci_musica	richiesta=coldplay
+caro il mio assistente per piacere dimmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+senti amico sei in grado di far partire un timer di quindici secondi	imposta_timer	secondi=15
+ti sarei grato se potessi riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+caro il mio assistente potrei rei chiederti di spiegarmi come funziona un motore elettrico ti ringrazio di cuore	online
+tu mi diresti che tempo farà sabato a bologna sei un tesoro	meteo	luogo=bologna;giorno=2026-11-07
+ehi tu magari se tu mettessi una sveglia per le sei e mezza con calma	imposta_sveglia	ora=06:30;etichetta=
+caro il mio assistente ti va di impostare un timer di due minuti e mezzo con calma	imposta_timer	secondi=150
+ehi tu ti sarei grato se potessi far partire un timer di quindici secondi ti ringrazio di cuore	imposta_timer	secondi=15
+dimmi un po' ho voglia di riprodurre i beatles quando puoi	riproduci_musica	richiesta=beatles
+potrei rei chiederti di pure dirmi che ore sono adesso con calma	ora
+dimmi un po' mi andrebbe che tu mi dicessi se domani fa freddo a enna ti ringrazio di cuore	meteo	luogo=enna;giorno=2026-11-04
+ehi tu ti sarei grato se potessi mettere una sveglia per le sei e mezza ti ringrazio di cuore	imposta_sveglia	ora=06:30;etichetta=
+senti amico sei in grado di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+dimmi un po' sapresti per gentilezza dirmi che tempo farà sabato a bologna sei un tesoro	meteo	luogo=bologna;giorno=2026-11-07
+caro il mio assistente potrei chiederti di per piacere far partire un timer di quindici secondi	imposta_timer	secondi=15
+senti amico magari se tu per gentilezza mi dicessi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+buongiorno caro potrei chiederti di ricordarmi domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ho voglia di dirmi che giorno è domani con calma	data
+buongiorno caro ti va di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+ascolta assistente magari se tu per gentilezza mi raccontassi una storia divertente ti ringrazio di cuore	online
+ascolta assistente se riesci dimmi che giorno è domani grazie infinite	data
+caro il mio assistente ti va di riprodurre i beatles grazie amico	riproduci_musica	richiesta=beatles
+ho voglia di cercare su internet il prezzo della benzina oggi grazie infinite	cerca_sul_web	domanda=il prezzo della benzina oggi
+ascolta assistente quando hai un attimo telefoneresti a luca ti ringrazio di cuore	chiama	chi=luca
+ciao assistente gentile potrei chiederti di dirmi che giorno è domani con calma	data
+ascolta assistente mi farebbe piacere che tu riuscissi a mettere un timer di sei minuti grazie infinite	imposta_timer	secondi=360
+ti va di dirmi se domani fa freddo a enna sei un tesoro	meteo	luogo=enna;giorno=2026-11-04
+senti amico potrei rei chiederti di dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ascolta assistente tu chiameresti francesca	chiama	chi=francesca
+senti amico mi farebbe piacere che tu riuscissi a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ciao assistente gentile tu mi diresti quanti abitanti ha palermo	online
+tu faresti partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+ce la faresti a se riesci scrivere nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+ascolta assistente ti sarei grato se potessi cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+sei in grado di chiamare francesca	chiama	chi=francesca
+buongiorno caro mi aiuteresti a mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+dimmi un po' mi andrebbe che tu chiamassi la nonna	chiama	chi=nonna
+ciao assistente gentile sei in grado di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+ehi tu ce la faresti a spiegarmi come funziona un motore elettrico ti ringrazio di cuore	online
+assistente mio adorato sei in grado di dirmi se domani fa freddo a enna sei un tesoro	meteo	luogo=enna;giorno=2026-11-04
+dimmi un po' potrei chiederti di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+assistente mio adorato ti sarei grato se potessi riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+mi andrebbe che tu mettessi un timer di sei minuti grazie infinite	imposta_timer	secondi=360
+ascolta assistente per gentilezza ricordami domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico ti sarei grato se potessi riprodurre i beatles grazie amico	riproduci_musica	richiesta=beatles
+senti amico ti va di mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+caro il mio assistente tu mi diresti che ore sono adesso	ora
+caro il mio assistente sapresti pure dirmi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+ehi tu sapresti salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ciao assistente gentile sei in grado do di dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ehi tu ti sarei grato se potessi raccontarmi una storia divertente grazie infinite	online
+dimmi un po' quando hai un attimo metteresti una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+sapresti se riesci telefonare a luca quando puoi	chiama	chi=luca
+tu scriveresti nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+dimmi un po' mi farebbe piacere che tu riuscissi a impostare una sveglia alle undici grazie infinite	imposta_sveglia	ora=11:00;etichetta=
+sei in grado di mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+assistente mio adorato mi andrebbe che tu cercassi su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+buongiorno caro ce la faresti a se riesci dirmi che tempo farà sabato a bologna grazie infinite	meteo	luogo=bologna;giorno=2026-11-07
+ehi tu magari se tu per gentilezza mi dicessi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+ciao bello mio sei in grado di dirmi se domani fa freddo a enna grazie infinite	meteo	luogo=enna;giorno=2026-11-04
+ascolta assistente sapresti impostare una sveglia alle undici quando puoi	imposta_sveglia	ora=11:00;etichetta=
+senti amico ho voglia di dirmi che ore sono adesso sei un tesoro	ora
+ho voglia di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+senti amico ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+buongiorno caro sei in grado di mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+ciao bello mio ti va di mettere una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+magari se tu per piacere facessi partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+ascolta assistente ce la faresti a giusto un attimo ricordarmi alle quattro di chiamare l'avvocato grazie infinite	promemoria	ora=16:00;testo=chiamare l'avvocato
+caro il mio assistente tu mi diresti che tempo farà sabato a bologna grazie amico	meteo	luogo=bologna;giorno=2026-11-07
+ehi tu mi aiuteresti a far partire un timer di quindici secondi	imposta_timer	secondi=15
+dimmi un po' per gentilezza dimmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+ciao bello mio sapresti scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+caro il mio assistente tu mi diresti quanti abitanti ha palermo grazie amico	online
+magari se tu scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ce la faresti a per gentilezza dirmi che ore sono adesso	ora
+ti va di raccontarmi una storia divertente grazie infinite	online
+assistente mio adorato mi aiuteresti a riprodurre i beatles	riproduci_musica	richiesta=beatles
+assistente mio adorato sei in grado di mettere una sveglia per le sei e mezza sei un tesoro	imposta_sveglia	ora=06:30;etichetta=
+mi aiuteresti a dirmi che ore sono adesso con calma	ora
+assistente mio adorato ce la faresti a dirmi quanti abitanti ha palermo grazie infinite	online
+senti amico ti va di mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+ehi tu quando hai un attimo mi racconteresti una storia divertente grazie infinite	online
+senti amico ti va di dirmi quanto tempo manca al timer ti ringrazio di cuore	stato_timer
+ascolta assistente per piacere svegliami domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+buongiorno caro mi andrebbe che tu scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+assistente mio adorato ce la faresti esti a per piacere mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+ehi tu mi aiuteresti a chiamare la nonna grazie infinite	chiama	chi=nonna
+dimmi un po' ce la faresti a cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+senti amico quando hai un attimo mi spiegheresti come funziona un motore elettrico	online
+senti amico magari se tu giusto un attimo cercassi su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+caro il mio assistente magari se tu chiamassi la nonna	chiama	chi=nonna
+potrei chiederti di per gentilezza dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+buongiorno caro ti sarei grato se potessi impostare un timer di due minuti e mezzo	imposta_timer	secondi=150
+ehi tu ce la faresti a per gentilezza mettere una sveglia per le sei e mezza grazie infinite	imposta_sveglia	ora=06:30;etichetta=
+sei in grado do di farmi una ricerca su internet sugli orari del museo grazie infinite	cerca_sul_web	domanda=gli orari del museo
+ciao assistente gentile ho voglia di riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+caro il mio assistente mi andrebbe che tu mi svegliassi domani alle sei e un quarto grazie amico	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ehi tu potrei chiederti di impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+ascolta assistente sapresti cercare su google come si cucina il cous cous grazie infinite	cerca_sul_web	domanda=come si cucina il cous cous
+buongiorno caro metti una sveglia per venerdì alle sette con calma	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+senti amico ti va di chiamare francesca grazie infinite	chiama	chi=francesca
+ascolta assistente mi andrebbe che tu mettessi una sveglia per le sei e mezza grazie infinite	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile magari se tu per gentilezza mi dicessi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile potrei chiederti di farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+sei in grado di far partire un timer di quindici secondi ti ringrazio di cuore	imposta_timer	secondi=15
+ciao bello mio sapresti mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+assistente mio adorato ti sarei grato se potessi dirmi che giorno è domani ti ringrazio di cuore	data
+dimmi un po' magari se tu per gentilezza facessi partire un timer di quindici secondi	imposta_timer	secondi=15
+ciao assistente gentile ti sarei grato se potessi farmi una ricerca su internet sugli orari del museo grazie infinite	cerca_sul_web	domanda=gli orari del museo
+dimmi un po' ti sarei grato se potessi impostare un timer di due minuti e mezzo con calma	imposta_timer	secondi=150
+caro il mio assistente magari se tu per gentilezza mi dicessi se domani fa freddo a enna con calma	meteo	luogo=enna;giorno=2026-11-04
+assistente mio adorato mi andrebbe che tu mi dicessi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+ascolta assistente tu mi diresti se domani fa freddo a enna grazie amico	meteo	luogo=enna;giorno=2026-11-04
+buongiorno caro ce la faresti a riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+ascolta assistente magari se tu pure impostassi una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+ti sarei grato se potessi salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+buongiorno caro ti sarei grato se potessi far partire un timer di quindici secondi	imposta_timer	secondi=15
+caro il mio assistente sei in grado di impostare un timer di due minuti e mezzo ti ringrazio di cuore	imposta_timer	secondi=150
+ciao assistente gentile magari se tu facessi partire un timer di quindici secondi	imposta_timer	secondi=15
+ciao assistente gentile ti va di dirmi che giorno è domani sei un tesoro	data
+senti amico mi andrebbe che tu mi dicessi che ore sono adesso ti ringrazio di cuore	ora
+ciao assistente gentile sei in grado di dirmi cosa ho in programma domani grazie infinite	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico sapresti presti dirmi chi ha scritto i promessi sposi	online
+mi andrebbe che tu mi dicessi che giorno è domani ti ringrazio di cuore	data
+caro il mio assistente potrei chiederti di per gentilezza dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+ehi tu ce la faresti a scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao bello mio telefona a luca	chiama	chi=luca
+dimmi un po' ti sarei grato se potessi chiamare francesca grazie amico	chiama	chi=francesca
+ascolta assistente ce la faresti esti a ricordarmi domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+dimmi un po' ce la faresti esti a per gentilezza chiamare francesca ti ringrazio di cuore	chiama	chi=francesca
+magari se tu mi dicessi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato potrei chiederti di raccontarmi una storia divertente	online
+ti sarei grato se potessi dirmi che giorno è domani	data
+buongiorno caro metti un timer di sei minuti	imposta_timer	secondi=360
+assistente mio adorato ti sarei grato se potessi chiamare francesca grazie amico	chiama	chi=francesca
+senti amico ti va di telefonare a luca ti ringrazio di cuore	chiama	chi=luca
+dimmi un po' sapresti presti pure mettere un timer di sei minuti	imposta_timer	secondi=360
+caro il mio assistente potrei chiederti di telefonare a luca grazie infinite	chiama	chi=luca
+ehi tu quando hai un attimo faresti partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+assistente mio adorato mi aiuteresti teresti a dirmi quanto tempo manca al timer quando puoi	stato_timer
+caro il mio assistente sapresti impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+assistente mio adorato potrei chiederti di dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+dimmi un po' ti sarei grato se potessi mettere un timer di sei minuti sei un tesoro	imposta_timer	secondi=360
+ascolta assistente ti sarei grato se potessi far partire un timer di quindici secondi	imposta_timer	secondi=15
+assistente mio adorato mi aiuteresti a dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+ciao bello mio tu metteresti una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+buongiorno caro tu telefoneresti a luca quando puoi	chiama	chi=luca
+buongiorno caro pure dimmi quanti abitanti ha palermo	online
+ciao bello mio sapresti presti svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+dimmi un po' mi andrebbe che tu impostassi una sveglia alle undici grazie infinite	imposta_sveglia	ora=11:00;etichetta=
+ehi tu ho voglia di riprodurre i beatles grazie amico	riproduci_musica	richiesta=beatles
+ciao bello mio quando hai un attimo telefoneresti a luca quando puoi	chiama	chi=luca
+mi farebbe piacere che tu riuscissi a far partire un timer di quindici secondi grazie amico	imposta_timer	secondi=15
+ascolta assistente ti sarei grato se potessi svegliarmi domani alle sei e un quarto ti ringrazio di cuore	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+assistente mio adorato sei in grado do di mettere qualcosa dei coldplay sei un tesoro	riproduci_musica	richiesta=coldplay
+assistente mio adorato ti sarei grato se potessi dirmi che ore sono adesso con calma	ora
+ti sarei grato se potessi far partire un timer di quindici secondi	imposta_timer	secondi=15
+senti amico sei in grado di dirmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico per gentilezza dimmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ascolta assistente quando hai un attimo salveresti una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+senti amico sei in grado di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+buongiorno caro mi farebbe piacere che tu riuscissi a impostare un timer di due minuti e mezzo grazie amico	imposta_timer	secondi=150
+assistente mio adorato potrei chiederti di dirmi cosa ho in programma domani ti ringrazio di cuore	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato tu telefoneresti a luca grazie amico	chiama	chi=luca
+mi andrebbe che tu impostassi un timer di due minuti e mezzo ti ringrazio di cuore	imposta_timer	secondi=150
+sapresti per gentilezza ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao assistente gentile potrei rei chiederti di impostare un timer di due minuti e mezzo sei un tesoro	imposta_timer	secondi=150
+sei in grado do di spiegarmi come funziona un motore elettrico	online
+caro il mio assistente ti va di farmi una ricerca su internet sugli orari del museo grazie infinite	cerca_sul_web	domanda=gli orari del museo
+assistente mio adorato mi andrebbe che tu mi dicessi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+dimmi un po' sei in grado di mettere una sveglia per le sei e mezza grazie amico	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile ce la faresti a giusto un attimo mettere qualcosa dei coldplay quando puoi	riproduci_musica	richiesta=coldplay
+sapresti se riesci spiegarmi come funziona un motore elettrico	online
+ascolta assistente ti va di far partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+ciao assistente gentile mi aiuteresti a ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+buongiorno caro mi farebbe piacere che tu riuscissi a cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ehi tu magari se tu mettessi un po' di de andrè grazie amico	riproduci_musica	richiesta=de andrè
+dimmi un po' ti va di svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao bello mio mi aiuteresti a chiamare francesca con calma	chiama	chi=francesca
+dimmi un po' dimmi che ore sono adesso sei un tesoro	ora
+buongiorno caro chiama la nonna con calma	chiama	chi=nonna
+ciao assistente gentile tu chiameresti la nonna quando puoi	chiama	chi=nonna
+senti amico potrei chiederti di pure impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+buongiorno caro potrei chiederti di se riesci far partire un timer di quindici secondi grazie infinite	imposta_timer	secondi=15
+buongiorno caro magari se tu pure cercassi su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+ascolta assistente magari se tu per gentilezza mi ricordassi domani alle dieci di portare il pacco grazie infinite	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico ho voglia di dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+potrei rei chiederti di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente mi farebbe piacere che tu riuscissi a spiegarmi come funziona un motore elettrico grazie infinite	online
+caro il mio assistente dimmi quanti abitanti ha palermo	online
+dimmi un po' ti sarei grato se potessi raccontarmi una storia divertente	online
+ascolta assistente ti sarei grato se potessi far partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+ciao bello mio sapresti presti dirmi chi ha scritto i promessi sposi grazie infinite	online
+assistente mio adorato magari se tu giusto un attimo mettessi qualcosa dei coldplay grazie infinite	riproduci_musica	richiesta=coldplay
+mi farebbe piacere che tu riuscissi a mettere una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+sei in grado di farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+dimmi un po' potrei rei chiederti di se riesci dirmi che tempo farà sabato a bologna grazie amico	meteo	luogo=bologna;giorno=2026-11-07
+magari se tu riproducessi i beatles	riproduci_musica	richiesta=beatles
+ascolta assistente magari se tu mi dicessi che tempo farà sabato a bologna sei un tesoro	meteo	luogo=bologna;giorno=2026-11-07
+potrei rei chiederti di per gentilezza mettere un timer di sei minuti sei un tesoro	imposta_timer	secondi=360
+ho voglia di riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+caro il mio assistente mi andrebbe che tu scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro potrei chiederti di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+assistente mio adorato potrei chiederti di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ciao bello mio ce la faresti a se riesci scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+caro il mio assistente ho voglia di mettere un po' di de andrè sei un tesoro	riproduci_musica	richiesta=de andrè
+ascolta assistente potrei chiederti di farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+ehi tu ti va di mettere un po' di de andrè grazie infinite	riproduci_musica	richiesta=de andrè
+ascolta assistente mi farebbe piacere che tu riuscissi a dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+caro il mio assistente quando hai un attimo faresti partire un timer di quindici secondi ti ringrazio di cuore	imposta_timer	secondi=15
+buongiorno caro mi andrebbe che tu impostassi una sveglia alle undici con calma	imposta_sveglia	ora=11:00;etichetta=
+ti sarei grato se potessi svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao bello mio tu chiameresti la nonna	chiama	chi=nonna
+assistente mio adorato ce la faresti a giusto un attimo mettere un po' di de andrè ti ringrazio di cuore	riproduci_musica	richiesta=de andrè
+sei in grado di dirmi se domani fa freddo a enna grazie amico	meteo	luogo=enna;giorno=2026-11-04
+ciao assistente gentile ce la faresti a dirmi quanto tempo manca al timer sei un tesoro	stato_timer
+buongiorno caro mi andrebbe che tu mi raccontassi una storia divertente ti ringrazio di cuore	online
+potrei chiederti di per gentilezza mettere una sveglia per le sei e mezza grazie amico	imposta_sveglia	ora=06:30;etichetta=
+potrei chiederti di dirmi quanti abitanti ha palermo	online
+mi andrebbe che tu salvassi una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+ciao bello mio ti va di dirmi quanto tempo manca al timer grazie infinite	stato_timer
+ehi tu tu scriveresti nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+mi aiuteresti a dirmi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico potrei chiederti di per gentilezza mettere un timer di sei minuti grazie amico	imposta_timer	secondi=360
+assistente mio adorato tu chiameresti la nonna	chiama	chi=nonna
+ciao assistente gentile tu mi diresti che ore sono adesso	ora
+ciao bello mio magari se tu pure mi dicessi cosa ho in programma domani quando puoi	leggi_calendario	dal=2026-11-04;giorni=1
+buongiorno caro mi farebbe piacere che tu riuscissi a svegliarmi domani alle sei e un quarto grazie amico	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+buongiorno caro magari se tu giusto un attimo mi ricordassi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+dimmi un po' ce la faresti esti a cercare su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+ascolta assistente potrei chiederti di pure cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+ehi tu raccontami una storia divertente grazie infinite	online
+ciao assistente gentile mi aiuteresti a riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+dimmi un po' ti sarei grato se potessi raccontarmi una storia divertente grazie amico	online
+dimmi che ore sono adesso	ora
+ehi tu ho voglia di farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+ciao bello mio mi andrebbe che tu mi dicessi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+caro il mio assistente ce la faresti a dirmi che tempo farà sabato a bologna sei un tesoro	meteo	luogo=bologna;giorno=2026-11-07
+dimmi un po' potrei rei chiederti di chiamare francesca grazie amico	chiama	chi=francesca
+quando hai un attimo mi ricorderesti domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+senti amico magari se tu pure mettessi una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+buongiorno caro ti va di raccontarmi una storia divertente	online
+ascolta assistente tu riprodurresti i beatles quando puoi	riproduci_musica	richiesta=beatles
+magari se tu scrivessi nelle note di pagare l'assicurazione grazie amico	prendi_nota	testo=pagare l'assicurazione
+ciao bello mio ti va di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+dimmi un po' mi farebbe piacere che tu riuscissi a cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+dimmi un po' tu scriveresti nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro ho voglia di chiamare francesca quando puoi	chiama	chi=francesca
+caro il mio assistente sei in grado di riprodurre i beatles con calma	riproduci_musica	richiesta=beatles
+caro il mio assistente tu mi diresti se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+buongiorno caro potrei chiederti di per piacere chiamare la nonna	chiama	chi=nonna
+buongiorno caro magari se tu mi dicessi cosa ho in programma domani ti ringrazio di cuore	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato tu mi diresti che ore sono adesso grazie amico	ora
+ciao assistente gentile mi aiuteresti a chiamare francesca	chiama	chi=francesca
+senti amico tu mi diresti che giorno è domani sei un tesoro	data
+caro il mio assistente ce la faresti a giusto un attimo dirmi quanti abitanti ha palermo grazie amico	online
+dimmi un po' magari se tu mi dicessi quanti abitanti ha palermo	online
+ascolta assistente ho voglia di svegliarmi domani alle sei e un quarto sei un tesoro	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao bello mio quando hai un attimo mi sveglieresti domani alle sei e un quarto grazie infinite	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ehi tu tu imposteresti un timer di due minuti e mezzo quando puoi	imposta_timer	secondi=150
+dimmi un po' tu cercheresti su internet il prezzo della benzina oggi grazie infinite	cerca_sul_web	domanda=il prezzo della benzina oggi
+ciao assistente gentile mi aiuteresti teresti a dirmi quanti abitanti ha palermo	online
+assistente mio adorato mi aiuteresti a dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+dimmi un po' tu mi diresti cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+caro il mio assistente mi farebbe piacere che tu riuscissi a dirmi che giorno è domani	data
+caro il mio assistente mi farebbe piacere che tu riuscissi a ricordarmi domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+caro il mio assistente giusto un attimo ricordami alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+caro il mio assistente ti va di chiamare francesca sei un tesoro	chiama	chi=francesca
+buongiorno caro mi andrebbe che tu mi ricordassi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ascolta assistente mi aiuteresti teresti a mettere una sveglia per venerdì alle sette con calma	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+tu mi spiegheresti come funziona un motore elettrico ti ringrazio di cuore	online
+caro il mio assistente potrei rei chiederti di se riesci telefonare a luca quando puoi	chiama	chi=luca
+ehi tu ce la faresti a dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ehi tu ce la faresti a mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+sei in grado di dirmi quanti abitanti ha palermo	online
+ciao bello mio mi farebbe piacere che tu riuscissi a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ciao assistente gentile sei in grado do di mettere una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+caro il mio assistente mi farebbe piacere che tu riuscissi a telefonare a luca	chiama	chi=luca
+senti amico raccontami una storia divertente	online
+potrei rei chiederti di cercare su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+ciao bello mio mi andrebbe che tu scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+mi andrebbe che tu mi dicessi se domani fa freddo a enna quando puoi	meteo	luogo=enna;giorno=2026-11-04
+buongiorno caro ce la faresti a per gentilezza spiegarmi come funziona un motore elettrico grazie amico	online
+ciao bello mio ce la faresti a giusto un attimo dirmi che ore sono adesso	ora
+assistente mio adorato potrei chiederti di spiegarmi come funziona un motore elettrico	online
+buongiorno caro ce la faresti a giusto un attimo chiamare francesca	chiama	chi=francesca
+ehi tu mi farebbe piacere che tu riuscissi a mettere un timer di sei minuti	imposta_timer	secondi=360
+assistente mio adorato mi aiuteresti a dirmi quanti abitanti ha palermo ti ringrazio di cuore	online
+ciao assistente gentile magari se tu se riesci impostassi un timer di due minuti e mezzo	imposta_timer	secondi=150
+dimmi un po' sapresti presti dirmi che giorno è domani ti ringrazio di cuore	data
+assistente mio adorato ti va di dirmi che tempo farà sabato a bologna grazie amico	meteo	luogo=bologna;giorno=2026-11-07
+senti amico quando hai un attimo metteresti un timer di sei minuti con calma	imposta_timer	secondi=360
+buongiorno caro sei in grado di dirmi che giorno è domani sei un tesoro	data
+caro il mio assistente ho voglia di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+ascolta assistente quando hai un attimo metteresti un po' di de andrè quando puoi	riproduci_musica	richiesta=de andrè
+ehi tu ce la faresti a dirmi che ore sono adesso quando puoi	ora
+ascolta assistente potrei rei chiederti di mettere un timer di sei minuti con calma	imposta_timer	secondi=360
+ascolta assistente dimmi quanti abitanti ha palermo	online
+ciao bello mio ti sarei grato se potessi dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+dimmi un po' ce la faresti a giusto un attimo dirmi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+caro il mio assistente quando hai un attimo cercheresti su google come si cucina il cous cous grazie infinite	cerca_sul_web	domanda=come si cucina il cous cous
+dimmi un po' sei in grado do di far partire un timer di quindici secondi	imposta_timer	secondi=15
+buongiorno caro ce la faresti esti a pure raccontarmi una storia divertente	online
+dimmi un po' mi aiuteresti teresti a mettere una sveglia per le sei e mezza quando puoi	imposta_sveglia	ora=06:30;etichetta=
+ehi tu sapresti mettere un timer di sei minuti con calma	imposta_timer	secondi=360
+dimmi un po' potrei rei chiederti di per gentilezza dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao assistente gentile mi andrebbe che tu mi raccontassi una storia divertente	online
+assistente mio adorato dimmi che ore sono adesso grazie infinite	ora
+ehi tu ce la faresti a per gentilezza telefonare a luca ti ringrazio di cuore	chiama	chi=luca
+ciao assistente gentile magari se tu per gentilezza impostassi una sveglia alle undici sei un tesoro	imposta_sveglia	ora=11:00;etichetta=
+ho voglia di mettere una sveglia per venerdì alle sette quando puoi	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+buongiorno caro mi aiuteresti a dirmi che tempo farà sabato a bologna ti ringrazio di cuore	meteo	luogo=bologna;giorno=2026-11-07
+assistente mio adorato pure dimmi chi ha scritto i promessi sposi	online
+ascolta assistente magari se tu per piacere riproducessi i beatles quando puoi	riproduci_musica	richiesta=beatles
+ciao bello mio sapresti giusto un attimo dirmi chi ha scritto i promessi sposi	online
+ascolta assistente sapresti dirmi che ore sono adesso sei un tesoro	ora
+ascolta assistente mi aiuteresti a mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+ti sarei grato se potessi chiamare la nonna grazie amico	chiama	chi=nonna
+assistente mio adorato quando hai un attimo mi diresti che tempo farà sabato a bologna grazie amico	meteo	luogo=bologna;giorno=2026-11-07
+dimmi un po' ce la faresti a far partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+ehi tu ho voglia di dirmi che giorno è domani ti ringrazio di cuore	data
+caro il mio assistente tu mi diresti che tempo fa a trapani grazie amico	meteo	luogo=trapani;giorno=
+senti amico mi andrebbe che tu mettessi qualcosa dei coldplay sei un tesoro	riproduci_musica	richiesta=coldplay
+sei in grado di mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+buongiorno caro ce la faresti a se riesci dirmi quanto tempo manca al timer grazie amico	stato_timer
+senti amico ho voglia di ricordarmi alle quattro di chiamare l'avvocato ti ringrazio di cuore	promemoria	ora=16:00;testo=chiamare l'avvocato
+ti sarei grato se potessi impostare una sveglia alle undici grazie infinite	imposta_sveglia	ora=11:00;etichetta=
+ciao assistente gentile quando hai un attimo mi diresti cosa ho in programma domani sei un tesoro	leggi_calendario	dal=2026-11-04;giorni=1
+ehi tu salva una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+senti amico tu imposteresti una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+senti amico quando hai un attimo imposteresti una sveglia alle undici sei un tesoro	imposta_sveglia	ora=11:00;etichetta=
+ascolta assistente mi aiuteresti a chiamare la nonna	chiama	chi=nonna
+senti amico tu chiameresti la nonna sei un tesoro	chiama	chi=nonna
+ciao assistente gentile ti va di mettere una sveglia per venerdì alle sette ti ringrazio di cuore	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+dimmi un po' ce la faresti a chiamare francesca sei un tesoro	chiama	chi=francesca
+ciao bello mio ce la faresti a dirmi che tempo farà sabato a bologna con calma	meteo	luogo=bologna;giorno=2026-11-07
+ascolta assistente quando hai un attimo chiameresti francesca grazie infinite	chiama	chi=francesca
+quando hai un attimo faresti partire un timer di quindici secondi sei un tesoro	imposta_timer	secondi=15
+sei in grado di dirmi quanti abitanti ha palermo grazie amico	online
+ce la faresti a dirmi quanti abitanti ha palermo	online
+senti amico sei in grado di ricordarmi domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+imposta un timer di due minuti e mezzo	imposta_timer	secondi=150
+assistente mio adorato ti sarei grato se potessi mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+dimmi un po' sapresti mettere un timer di sei minuti grazie amico	imposta_timer	secondi=360
+ciao bello mio ti va di dirmi che ore sono adesso con calma	ora
+caro il mio assistente ti va di dirmi chi ha scritto i promessi sposi	online
+caro il mio assistente ho voglia di impostare una sveglia alle undici grazie amico	imposta_sveglia	ora=11:00;etichetta=
+caro il mio assistente ti sarei grato se potessi dirmi che giorno è domani grazie amico	data
+assistente mio adorato ce la faresti a cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+buongiorno caro tu chiameresti la nonna quando puoi	chiama	chi=nonna
+ciao assistente gentile ce la faresti a giusto un attimo dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+assistente mio adorato ti sarei grato se potessi dirmi quanti abitanti ha palermo	online
+caro il mio assistente mi aiuteresti a dirmi quanti abitanti ha palermo grazie infinite	online
+senti amico sei in grado di mettere una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+mi farebbe piacere che tu riuscissi a telefonare a luca grazie amico	chiama	chi=luca
+buongiorno caro ti sarei grato se potessi mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+ascolta assistente mi aiuteresti a chiamare francesca	chiama	chi=francesca
+ciao assistente gentile mi farebbe piacere che tu riuscissi a svegliarmi domani alle sei e un quarto sei un tesoro	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+dimmi un po' magari se tu cercassi su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+buongiorno caro tu mi diresti cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+dimmi un po' mi farebbe piacere che tu riuscissi a salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ciao bello mio tu mi racconteresti una storia divertente ti ringrazio di cuore	online
+ti sarei grato se potessi cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+dimmi un po' magari se tu impostassi un timer di due minuti e mezzo grazie amico	imposta_timer	secondi=150
+ciao bello mio ti sarei grato se potessi cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+assistente mio adorato ti sarei grato se potessi mettere qualcosa dei coldplay grazie amico	riproduci_musica	richiesta=coldplay
+caro il mio assistente potrei rei chiederti di per gentilezza dirmi chi ha scritto i promessi sposi grazie infinite	online
+dimmi un po' potrei rei chiederti di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+quando hai un attimo mi racconteresti una storia divertente ti ringrazio di cuore	online
+senti amico sapresti se riesci farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+ascolta assistente potrei chiederti di dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+ascolta assistente metti un timer di sei minuti grazie infinite	imposta_timer	secondi=360
+buongiorno caro ti sarei grato se potessi mettere qualcosa dei coldplay con calma	riproduci_musica	richiesta=coldplay
+ciao bello mio mi andrebbe che tu mi ricordassi alle quattro di chiamare l'avvocato grazie infinite	promemoria	ora=16:00;testo=chiamare l'avvocato
+dimmi un po' mi farebbe piacere che tu riuscissi a raccontarmi una storia divertente	online
+ascolta assistente ce la faresti a giusto un attimo mettere una sveglia per venerdì alle sette sei un tesoro	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+assistente mio adorato ti va di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+ciao assistente gentile quando hai un attimo cercheresti su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+per gentilezza metti una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ciao assistente gentile ti sarei grato se potessi cercare su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+assistente mio adorato ce la faresti a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+buongiorno caro mi farebbe piacere che tu riuscissi a dirmi quanti abitanti ha palermo ti ringrazio di cuore	online
+ciao assistente gentile mi aiuteresti a mettere una sveglia per venerdì alle sette con calma	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ascolta assistente magari se tu giusto un attimo chiamassi francesca grazie amico	chiama	chi=francesca
+caro il mio assistente quando hai un attimo mi spiegheresti come funziona un motore elettrico ti ringrazio di cuore	online
+senti amico tu cercheresti su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato mi aiuteresti a dirmi chi ha scritto i promessi sposi grazie amico	online
+dimmi un po' ti sarei grato se potessi spiegarmi come funziona un motore elettrico ti ringrazio di cuore	online
+ehi tu ti sarei grato se potessi spiegarmi come funziona un motore elettrico	online
+senti amico mi aiuteresti a raccontarmi una storia divertente	online
+magari se tu per gentilezza mi ricordassi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu ce la faresti a salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ehi tu sapresti giusto un attimo cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ciao bello mio ce la faresti esti a far partire un timer di quindici secondi grazie amico	imposta_timer	secondi=15
+ehi tu mi andrebbe che tu mi ricordassi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+caro il mio assistente mi andrebbe che tu mettessi una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+pure chiama la nonna quando puoi	chiama	chi=nonna
+buongiorno caro sapresti giusto un attimo mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+assistente mio adorato dimmi cosa ho in programma domani grazie amico	leggi_calendario	dal=2026-11-04;giorni=1
+mi aiuteresti a svegliarmi domani alle sei e un quarto quando puoi	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao bello mio quando hai un attimo scriveresti nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro dimmi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico per gentilezza raccontami una storia divertente grazie infinite	online
+senti amico sei in grado di dirmi che giorno è domani quando puoi	data
+buongiorno caro sapresti salvare una nota con scritto il wifi di casa è gatto nero ti ringrazio di cuore	prendi_nota	testo=il wifi di casa è gatto nero
+buongiorno caro tu mi spiegheresti come funziona un motore elettrico grazie infinite	online
+potrei chiederti di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+mi farebbe piacere che tu riuscissi a dirmi chi ha scritto i promessi sposi grazie amico	online
+caro il mio assistente potrei rei chiederti di per gentilezza dirmi che ore sono adesso	ora
+dimmi un po' mi farebbe piacere che tu riuscissi a farmi una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+caro il mio assistente riproduci i beatles	riproduci_musica	richiesta=beatles
+ehi tu mi farebbe piacere che tu riuscissi a riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+ciao assistente gentile sapresti ricordarmi domani alle dieci di portare il pacco ti ringrazio di cuore	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ciao assistente gentile ti sarei grato se potessi mettere qualcosa dei coldplay ti ringrazio di cuore	riproduci_musica	richiesta=coldplay
+ciao assistente gentile quando hai un attimo mi faresti una ricerca su internet sugli orari del museo grazie amico	cerca_sul_web	domanda=gli orari del museo
+caro il mio assistente ho voglia di mettere una sveglia per le sei e mezza quando puoi	imposta_sveglia	ora=06:30;etichetta=
+assistente mio adorato ti va di ricordarmi alle quattro di chiamare l'avvocato grazie infinite	promemoria	ora=16:00;testo=chiamare l'avvocato
+ehi tu magari se tu mi dicessi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+ti sarei grato se potessi spiegarmi come funziona un motore elettrico	online
+assistente mio adorato sapresti per piacere cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato ti va di riprodurre i beatles sei un tesoro	riproduci_musica	richiesta=beatles
+buongiorno caro mi farebbe piacere che tu riuscissi a farmi una ricerca su internet sugli orari del museo grazie amico	cerca_sul_web	domanda=gli orari del museo
+assistente mio adorato sapresti pure ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao bello mio ce la faresti a dirmi cosa ho in programma domani grazie infinite	leggi_calendario	dal=2026-11-04;giorni=1
+giusto un attimo svegliami domani alle sei e un quarto sei un tesoro	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao assistente gentile mi andrebbe che tu mi ricordassi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+dimmi un po' sapresti pure mettere un timer di sei minuti	imposta_timer	secondi=360
+ciao bello mio mi aiuteresti a mettere una sveglia per le sei e mezza quando puoi	imposta_sveglia	ora=06:30;etichetta=
+dimmi un po' potrei rei chiederti di riprodurre i beatles con calma	riproduci_musica	richiesta=beatles
+senti amico ti va di mettere una sveglia per venerdì alle sette quando puoi	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ti va di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+ehi tu mi aiuteresti a mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ciao assistente gentile ti sarei grato se potessi dirmi che tempo fa a trapani grazie amico	meteo	luogo=trapani;giorno=
+ciao bello mio potrei chiederti di svegliarmi domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ciao bello mio ce la faresti esti a dirmi che giorno è domani grazie amico	data
+potrei rei chiederti di dirmi che giorno è domani ti ringrazio di cuore	data
+ascolta assistente mi andrebbe che tu mi dicessi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+ti va di impostare un timer di due minuti e mezzo	imposta_timer	secondi=150
+assistente mio adorato magari se tu giusto un attimo scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao bello mio ti sarei grato se potessi ricordarmi domani alle dieci di portare il pacco grazie amico	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+assistente mio adorato mi aiuteresti a mettere qualcosa dei coldplay ti ringrazio di cuore	riproduci_musica	richiesta=coldplay
+senti amico mi aiuteresti teresti a riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+ciao assistente gentile potrei chiederti di dirmi che ore sono adesso grazie amico	ora
+ehi tu ce la faresti esti a per gentilezza dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+ciao bello mio potrei chiederti di chiamare la nonna sei un tesoro	chiama	chi=nonna
+assistente mio adorato potrei chiederti di per gentilezza dirmi quanti abitanti ha palermo	online
+ehi tu sei in grado do di dirmi chi ha scritto i promessi sposi grazie amico	online
+ehi tu sei in grado di riprodurre i beatles grazie infinite	riproduci_musica	richiesta=beatles
+ehi tu mi andrebbe che tu chiamassi francesca	chiama	chi=francesca
+quando hai un attimo metteresti un po' di de andrè	riproduci_musica	richiesta=de andrè
+ehi tu tu mi diresti che ore sono adesso grazie amico	ora
+mi aiuteresti a dirmi chi ha scritto i promessi sposi grazie infinite	online
+ascolta assistente mi farebbe piacere che tu riuscissi a salvare una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+caro il mio assistente mi andrebbe che tu mi dicessi che ore sono adesso grazie infinite	ora
+ehi tu potrei chiederti di per gentilezza dirmi che ore sono adesso	ora
+dimmi un po' mi andrebbe che tu mettessi un timer di sei minuti con calma	imposta_timer	secondi=360
+quando hai un attimo metteresti un timer di sei minuti ti ringrazio di cuore	imposta_timer	secondi=360
+buongiorno caro tu scriveresti nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile sapresti cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+buongiorno caro ho voglia di mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+assistente mio adorato sapresti per gentilezza scrivere nelle note di pagare l'assicurazione grazie amico	prendi_nota	testo=pagare l'assicurazione
+buongiorno caro mi farebbe piacere che tu riuscissi a chiamare la nonna grazie amico	chiama	chi=nonna
+ciao bello mio mi aiuteresti a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+dimmi un po' ho voglia di scrivere nelle note di pagare l'assicurazione ti ringrazio di cuore	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile mi aiuteresti a ricordarmi domani alle dieci di portare il pacco	promemoria	ora=10:00;giorno=2026-11-04;testo=portare il pacco
+ehi tu ti va di mettere una sveglia per le sei e mezza quando puoi	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile ce la faresti a spiegarmi come funziona un motore elettrico grazie infinite	online
+ciao bello mio ti sarei grato se potessi far partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+potrei chiederti di per gentilezza mettere un timer di sei minuti quando puoi	imposta_timer	secondi=360
+senti amico mi farebbe piacere che tu riuscissi a mettere una sveglia per le sei e mezza ti ringrazio di cuore	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile mi andrebbe che tu mettessi una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ehi tu potrei chiederti di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+ehi tu mi farebbe piacere che tu riuscissi a impostare una sveglia alle undici grazie infinite	imposta_sveglia	ora=11:00;etichetta=
+senti amico ti va di dirmi quanto tempo manca al timer	stato_timer
+ciao bello mio potrei rei chiederti di per piacere dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+ciao assistente gentile magari se tu mi facessi una ricerca su internet sugli orari del museo ti ringrazio di cuore	cerca_sul_web	domanda=gli orari del museo
+caro il mio assistente sapresti dirmi che tempo fa a trapani grazie infinite	meteo	luogo=trapani;giorno=
+ciao bello mio sapresti dirmi che giorno è domani ti ringrazio di cuore	data
+assistente mio adorato mi farebbe piacere che tu riuscissi a dirmi quanto tempo manca al timer	stato_timer
+ciao bello mio potrei chiederti di ricordarmi alle quattro di chiamare l'avvocato	promemoria	ora=16:00;testo=chiamare l'avvocato
+ascolta assistente per piacere dimmi chi ha scritto i promessi sposi	online
+ascolta assistente mi aiuteresti teresti a dirmi che giorno è domani sei un tesoro	data
+caro il mio assistente ce la faresti a per gentilezza dirmi chi ha scritto i promessi sposi	online
+sapresti presti dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+buongiorno caro sei in grado do di dirmi chi ha scritto i promessi sposi ti ringrazio di cuore	online
+ciao assistente gentile sapresti pure chiamare francesca	chiama	chi=francesca
+sei in grado di cercare su google come si cucina il cous cous ti ringrazio di cuore	cerca_sul_web	domanda=come si cucina il cous cous
+dimmi un po' quando hai un attimo metteresti una sveglia per le sei e mezza con calma	imposta_sveglia	ora=06:30;etichetta=
+senti amico potrei chiederti di chiamare francesca sei un tesoro	chiama	chi=francesca
+dimmi un po' quando hai un attimo mi diresti se domani fa freddo a enna sei un tesoro	meteo	luogo=enna;giorno=2026-11-04
+dimmi un po' ce la faresti esti a impostare una sveglia alle undici ti ringrazio di cuore	imposta_sveglia	ora=11:00;etichetta=
+ho voglia di scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ciao assistente gentile ho voglia di cercare su google come si cucina il cous cous grazie infinite	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato per piacere ricordami alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+ciao bello mio sei in grado do di dirmi che giorno è domani con calma	data
+dimmi un po' sapresti presti per gentilezza spiegarmi come funziona un motore elettrico	online
+tu riprodurresti i beatles	riproduci_musica	richiesta=beatles
+ciao bello mio ho voglia di telefonare a luca quando puoi	chiama	chi=luca
+ciao assistente gentile ce la faresti a mettere una sveglia per le sei e mezza	imposta_sveglia	ora=06:30;etichetta=
+magari se tu pure telefonassi a luca con calma	chiama	chi=luca
+assistente mio adorato sei in grado di dirmi se domani fa freddo a enna grazie amico	meteo	luogo=enna;giorno=2026-11-04
+per gentilezza dimmi che giorno è domani grazie amico	data
+ehi tu mi aiuteresti a cercare su internet il prezzo della benzina oggi grazie infinite	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente sapresti dirmi se domani fa freddo a enna con calma	meteo	luogo=enna;giorno=2026-11-04
+caro il mio assistente mi andrebbe che tu mi dicessi che tempo fa a trapani ti ringrazio di cuore	meteo	luogo=trapani;giorno=
+assistente mio adorato ti sarei grato se potessi salvare una nota con scritto il wifi di casa è gatto nero grazie infinite	prendi_nota	testo=il wifi di casa è gatto nero
+senti amico potrei chiederti di giusto un attimo dirmi quanti abitanti ha palermo	online
+assistente mio adorato sapresti dirmi quanto tempo manca al timer con calma	stato_timer
+senti amico quando hai un attimo mi sveglieresti domani alle sei e un quarto con calma	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+senti amico magari se tu se riesci scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+mi andrebbe che tu telefonassi a luca	chiama	chi=luca
+ciao bello mio quando hai un attimo metteresti qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+ascolta assistente mi aiuteresti a dirmi che ore sono adesso	ora
+caro il mio assistente sapresti giusto un attimo scrivere nelle note di pagare l'assicurazione grazie infinite	prendi_nota	testo=pagare l'assicurazione
+ho voglia di mettere una sveglia per venerdì alle sette grazie amico	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+dimmi un po' magari se tu per gentilezza scrivessi nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+ehi tu potrei chiederti di mettere un timer di sei minuti	imposta_timer	secondi=360
+buongiorno caro mi farebbe piacere che tu riuscissi a mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+buongiorno caro ti va di riprodurre i beatles ti ringrazio di cuore	riproduci_musica	richiesta=beatles
+ascolta assistente tu mi diresti che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+caro il mio assistente magari se tu cercassi su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ciao assistente gentile se riesci metti un timer di sei minuti	imposta_timer	secondi=360
+assistente mio adorato mi farebbe piacere che tu riuscissi a raccontarmi una storia divertente	online
+buongiorno caro per piacere cerca su google come si cucina il cous cous grazie amico	cerca_sul_web	domanda=come si cucina il cous cous
+assistente mio adorato ho voglia di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente mi aiuteresti a impostare una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+ciao assistente gentile ho voglia di far partire un timer di quindici secondi ti ringrazio di cuore	imposta_timer	secondi=15
+buongiorno caro ho voglia di salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+ehi tu potrei chiederti di per piacere dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+ciao assistente gentile sei in grado do di far partire un timer di quindici secondi con calma	imposta_timer	secondi=15
+ascolta assistente magari se tu mi dicessi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+mi andrebbe che tu mi dicessi cosa ho in programma domani con calma	leggi_calendario	dal=2026-11-04;giorni=1
+tu mi spiegheresti come funziona un motore elettrico grazie amico	online
+senti amico magari se tu giusto un attimo mi dicessi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+telefona a luca con calma	chiama	chi=luca
+ciao bello mio sapresti dirmi quanti abitanti ha palermo ti ringrazio di cuore	online
+dimmi un po' mi farebbe piacere che tu riuscissi a dirmi se domani fa freddo a enna	meteo	luogo=enna;giorno=2026-11-04
+per gentilezza dimmi che giorno è domani sei un tesoro	data
+ciao bello mio mi aiuteresti a dirmi che tempo farà sabato a bologna quando puoi	meteo	luogo=bologna;giorno=2026-11-07
+quando hai un attimo mi diresti che tempo farà sabato a bologna con calma	meteo	luogo=bologna;giorno=2026-11-07
+dimmi un po' mi aiuteresti teresti a dirmi quanto tempo manca al timer	stato_timer
+ciao assistente gentile mi farebbe piacere che tu riuscissi a raccontarmi una storia divertente	online
+ti va di mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+senti amico giusto un attimo svegliami domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+senti amico ce la faresti esti a raccontarmi una storia divertente	online
+ciao assistente gentile ti va di cercare su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ehi tu quando hai un attimo salveresti una nota con scritto il wifi di casa è gatto nero ti ringrazio di cuore	prendi_nota	testo=il wifi di casa è gatto nero
+caro il mio assistente sei in grado di mettere un po' di de andrè	riproduci_musica	richiesta=de andrè
+ciao assistente gentile ti sarei grato se potessi chiamare la nonna sei un tesoro	chiama	chi=nonna
+ciao assistente gentile ho voglia di raccontarmi una storia divertente grazie amico	online
+caro il mio assistente sei in grado di chiamare la nonna con calma	chiama	chi=nonna
+ehi tu per piacere dimmi cosa ho in programma domani quando puoi	leggi_calendario	dal=2026-11-04;giorni=1
+senti amico sei in grado di mettere un timer di sei minuti sei un tesoro	imposta_timer	secondi=360
+buongiorno caro quando hai un attimo imposteresti una sveglia alle undici	imposta_sveglia	ora=11:00;etichetta=
+mi andrebbe che tu cercassi su google come si cucina il cous cous	cerca_sul_web	domanda=come si cucina il cous cous
+ciao assistente gentile potrei chiederti di se riesci dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+buongiorno caro potrei chiederti di dirmi che tempo fa a trapani quando puoi	meteo	luogo=trapani;giorno=
+mi farebbe piacere che tu riuscissi a mettere una sveglia per le sei e mezza grazie infinite	imposta_sveglia	ora=06:30;etichetta=
+ascolta assistente sapresti dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+dimmi un po' mi andrebbe che tu chiamassi francesca grazie infinite	chiama	chi=francesca
+ciao bello mio tu mi faresti esti una ricerca su internet sugli orari del museo	cerca_sul_web	domanda=gli orari del museo
+ascolta assistente tu metteresti una sveglia per le sei e mezza ti ringrazio di cuore	imposta_sveglia	ora=06:30;etichetta=
+ciao assistente gentile sei in grado di mettere qualcosa dei coldplay	riproduci_musica	richiesta=coldplay
+assistente mio adorato mi farebbe piacere che tu riuscissi a ricordarmi alle quattro di chiamare l'avvocato grazie amico	promemoria	ora=16:00;testo=chiamare l'avvocato
+buongiorno caro ti sarei grato se potessi raccontarmi una storia divertente grazie amico	online
+buongiorno caro ti sarei grato se potessi scrivere nelle note di pagare l'assicurazione	prendi_nota	testo=pagare l'assicurazione
+sapresti se riesci raccontarmi una storia divertente grazie amico	online
+ehi tu mi farebbe piacere che tu riuscissi a salvare una nota con scritto il wifi di casa è gatto nero	prendi_nota	testo=il wifi di casa è gatto nero
+mi farebbe piacere che tu riuscissi a dirmi che tempo fa a trapani	meteo	luogo=trapani;giorno=
+magari se tu mi facessi una ricerca su internet sugli orari del museo grazie infinite	cerca_sul_web	domanda=gli orari del museo
+ciao bello mio sapresti per piacere svegliarmi domani alle sei e un quarto sei un tesoro	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+assistente mio adorato quando hai un attimo cercheresti su internet il prezzo della benzina oggi grazie amico	cerca_sul_web	domanda=il prezzo della benzina oggi
+caro il mio assistente imposta una sveglia alle undici quando puoi	imposta_sveglia	ora=11:00;etichetta=
+ehi tu ti va di impostare una sveglia alle undici quando puoi	imposta_sveglia	ora=11:00;etichetta=
+assistente mio adorato potrei chiederti di se riesci cercare su google come si cucina il cous cous grazie infinite	cerca_sul_web	domanda=come si cucina il cous cous
+ehi tu quando hai un attimo mi sveglieresti domani alle sei e un quarto	imposta_sveglia	ora=06:15;giorno=2026-11-04;etichetta=
+ehi tu mi aiuteresti a cercare su internet il prezzo della benzina oggi ti ringrazio di cuore	cerca_sul_web	domanda=il prezzo della benzina oggi
+ciao bello mio sei in grado di dirmi chi ha scritto i promessi sposi grazie amico	online
+magari se tu salvassi una nota con scritto il wifi di casa è gatto nero ti ringrazio di cuore	prendi_nota	testo=il wifi di casa è gatto nero
+dimmi un po' mi aiuteresti teresti a cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+mi aiuteresti a dirmi cosa ho in programma domani	leggi_calendario	dal=2026-11-04;giorni=1
+assistente mio adorato tu chiameresti francesca grazie amico	chiama	chi=francesca
+ciao bello mio ti va di dirmi che tempo farà sabato a bologna	meteo	luogo=bologna;giorno=2026-11-07
+assistente mio adorato sei in grado di far partire un timer di quindici secondi ti ringrazio di cuore	imposta_timer	secondi=15
+ciao bello mio sei in grado di cercare su internet il prezzo della benzina oggi	cerca_sul_web	domanda=il prezzo della benzina oggi
+ehi tu ti sarei grato se potessi impostare una sveglia alle undici grazie amico	imposta_sveglia	ora=11:00;etichetta=
+ciao assistente gentile sapresti se riesci dirmi quanto tempo manca al timer	stato_timer
+caro il mio assistente potrei rei chiederti di mettere una sveglia per venerdì alle sette	imposta_sveglia	ora=07:00;giorno=2026-11-06;etichetta=
+ho voglia di dirmi che ore sono adesso	ora

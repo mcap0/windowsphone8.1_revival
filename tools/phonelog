@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# phonelog [product-id] — scarica il run.log di un'app dal telefono e lo stampa (default: "Internet", apps/Browser).
+#
+# L'app scrive ogni riga in LocalState\run.log e la invia al PC ogni 2 s: se il processo muore, le
+# ultime righe (compresa l'eventuale riga ECCEZIONE o ABORT) restano solo nel file sul telefono.
+# ISETool esporta lo spazio isolato dell'app in una cartella del PC Windows, poi la si legge da li'.
+# L'app deve essere chiusa. Altri ID: Internet OC (opencode) cf94e675-c889-489e-940e-bc4a52225fd9.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+product=${1:-afcc45ef-005b-42f6-b2bd-18695a1f8826}
+script=$(mktemp "${TMPDIR:-/tmp}/phonelog.XXXXXX.ps1")
+trap 'rm -f "$script"' EXIT
+
+cat > "$script" <<EOF
+\$isetool = 'C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\IsolatedStorageExplorerTool\ISETool.exe'
+\$out = 'C:\lumia\phonelog-store'
+if (Test-Path \$out) { Remove-Item -Recurse -Force \$out }
+& \$isetool ts de $product \$out 2>&1 | Out-Null
+\$path = Join-Path \$out 'IsolatedStore\run.log'
+if (-not (Test-Path \$path)) { Write-Output 'run.log non trovato (app mai avviata?)'; exit 0 }
+Write-Output ("--- run.log, {0} byte" -f (Get-Item \$path).Length)
+[IO.File]::ReadAllText(\$path, [Text.Encoding]::UTF8)
+EOF
+
+"$root/tools/vps" "$script"

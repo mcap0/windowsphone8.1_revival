@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DCD75123-B4C7-45A8-9D4F-E79DEDE8206C}</ProjectGuid>
+    <Keyword>BlankApp</Keyword>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <RootNamespace>Musica</RootNamespace>
+    <DefaultLanguage>it-IT</DefaultLanguage>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Phone</ApplicationType>
+    <ApplicationTypeRevision>8.1</ApplicationTypeRevision>
+    <PackageCertificateKeyFile>..\..\DumbPhone.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+    <AppxBundle>Never</AppxBundle>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120_wp81</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..;$(ProjectDir)..\..\TsNet;$(ProjectDir)..\..\PerleTV\Perle81.Native;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateMapFile>true</GenerateMapFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Image Include="Assets\*.png" />
+    <ProjectReference Include="..\..\TsNet\TsNet.vcxproj"><Project>{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}</Project></ProjectReference>
+    <ProjectReference Include="..\MusicaAudioTask\MusicaAudioTask.vcxproj">
+      <Project>{FD76FAD3-9F76-4031-A568-D98E402A1FE6}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h"><DependentUpon>App.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="MainPage.xaml.h"><DependentUpon>MainPage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="ArtistPage.xaml.h"><DependentUpon>ArtistPage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="AlbumPage.xaml.h"><DependentUpon>AlbumPage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="PlaylistPage.xaml.h"><DependentUpon>PlaylistPage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="NowPlayingPage.xaml.h"><DependentUpon>NowPlayingPage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="Services.h" />
+    <ClInclude Include="OnlineService.h" />
+    <ClInclude Include="OnlinePage.xaml.h"><DependentUpon>OnlinePage.xaml</DependentUpon></ClInclude>
+    <ClInclude Include="..\Core\Online.h" />
+    <ClInclude Include="Commands.h" />
+    <ClInclude Include="Dialogs.h" />
+    <ClInclude Include="Selection.h" />
+    <ClInclude Include="LetterRail.h" />
+    <ClInclude Include="..\Core\Match.h" />
+    <ClInclude Include="..\Core\Library.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml"><SubType>Designer</SubType></ApplicationDefinition>
+    <Page Include="MainPage.xaml"><SubType>Designer</SubType></Page>
+    <Page Include="ArtistPage.xaml"><SubType>Designer</SubType></Page>
+    <Page Include="AlbumPage.xaml"><SubType>Designer</SubType></Page>
+    <Page Include="PlaylistPage.xaml"><SubType>Designer</SubType></Page>
+    <Page Include="NowPlayingPage.xaml"><SubType>Designer</SubType></Page>
+    <Page Include="OnlinePage.xaml"><SubType>Designer</SubType></Page>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest"><SubType>Designer</SubType></AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp"><PrecompiledHeader>Create</PrecompiledHeader></ClCompile>
+    <ClCompile Include="App.xaml.cpp"><DependentUpon>App.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="MainPage.xaml.cpp"><DependentUpon>MainPage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="ArtistPage.xaml.cpp"><DependentUpon>ArtistPage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="AlbumPage.xaml.cpp"><DependentUpon>AlbumPage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="PlaylistPage.xaml.cpp"><DependentUpon>PlaylistPage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="NowPlayingPage.xaml.cpp"><DependentUpon>NowPlayingPage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="Services.cpp" />
+    <ClCompile Include="OnlineService.cpp" />
+    <ClCompile Include="OnlinePage.xaml.cpp"><DependentUpon>OnlinePage.xaml</DependentUpon></ClCompile>
+    <ClCompile Include="..\Core\Online.cpp"><CompileAsWinRT>false</CompileAsWinRT><PrecompiledHeader>NotUsing</PrecompiledHeader></ClCompile>
+    <ClCompile Include="..\Core\Https.cpp"><CompileAsWinRT>false</CompileAsWinRT><PrecompiledHeader>NotUsing</PrecompiledHeader></ClCompile>
+    <ClCompile Include="..\..\PerleTV\Perle81.Native\Mp4Tags.cpp"><CompileAsWinRT>false</CompileAsWinRT><PrecompiledHeader>NotUsing</PrecompiledHeader></ClCompile>
+    <ClCompile Include="Commands.cpp" />
+    <ClCompile Include="..\Core\Match.cpp"><CompileAsWinRT>false</CompileAsWinRT><PrecompiledHeader>NotUsing</PrecompiledHeader></ClCompile>
+    <ClCompile Include="..\Core\Library.cpp">
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

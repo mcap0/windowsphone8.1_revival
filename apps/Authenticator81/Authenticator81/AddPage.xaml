@@ -1,0 +1,22 @@
+<Page
+    x:Class="Authenticator.AddPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000">
+    <ScrollViewer>
+        <StackPanel Margin="16,12,16,24">
+            <TextBlock Text="AGGIUNGI ACCOUNT" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,12" />
+            <TextBlock Text="incolla un link otpauth://" Opacity="0.7" />
+            <TextBox x:Name="UriBox" PlaceholderText="otpauth://totp/..." InputScope="Url" />
+            <TextBlock Text="oppure inserisci a mano" Margin="0,16,0,4" Opacity="0.7" />
+            <TextBox x:Name="IssuerBox" Header="servizio" PlaceholderText="es. GitHub" />
+            <TextBox x:Name="LabelBox" Header="account" PlaceholderText="es. nome@esempio.it" Margin="0,8,0,0" />
+            <TextBox x:Name="SecretBox" Header="codice segreto" PlaceholderText="JBSWY3DPEHPK3PXP" Margin="0,8,0,0" />
+            <TextBlock x:Name="ErrorText" Foreground="#FFFF6B6B" TextWrapping="Wrap" Margin="0,12,0,0" />
+            <Button Content="salva" HorizontalAlignment="Stretch" Margin="0,16,0,0" Click="OnSave" />
+            <Button Content="Scansiona QR" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="OnScan" />
+            <Button Content="Da foto" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="OnPickPhoto" />
+            <TextBlock x:Name="StatusText" TextWrapping="Wrap" Opacity="0.8" Margin="0,8,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

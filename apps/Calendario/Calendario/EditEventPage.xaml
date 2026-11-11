@@ -1,0 +1,44 @@
+<Page
+    x:Class="Calendario.EditEventPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Save" Label="Salva" Click="Save_Click" />
+            <AppBarButton Icon="Cancel" Label="Annulla" Click="Cancel_Click" />
+            <AppBarButton x:Name="DeleteButton" Icon="Delete" Label="Elimina" Click="Delete_Click" Visibility="Collapsed" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <ScrollViewer>
+        <StackPanel Margin="16,12,16,24">
+            <TextBlock x:Name="PageTitleText" Text="Nuovo evento" FontSize="28" Margin="0,0,0,12" />
+
+            <TextBox x:Name="TitleBox" Header="Titolo" FontSize="18" TextWrapping="Wrap" />
+
+            <DatePicker x:Name="DatePickerControl" Header="Data" />
+
+            <ToggleSwitch x:Name="AllDayToggle" Header="Tutto il giorno" Toggled="AllDayToggle_Toggled" Margin="0,12,0,4" />
+
+            <TimePicker x:Name="StartTimePicker" Header="Ora di inizio" />
+            <TimePicker x:Name="EndTimePicker" Header="Ora di fine" />
+
+            <TextBox x:Name="LocationBox" Header="Luogo" FontSize="18" TextWrapping="Wrap" Margin="0,8,0,0" />
+            <TextBox x:Name="NotesBox" Header="Note" FontSize="18" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="100" />
+
+            <ComboBox x:Name="ReminderBox" Header="Promemoria" Margin="0,8,0,0">
+                <ComboBoxItem Content="Nessuno" />
+                <ComboBoxItem Content="All'ora dell'evento" />
+                <ComboBoxItem Content="5 minuti prima" />
+                <ComboBoxItem Content="15 minuti prima" />
+                <ComboBoxItem Content="30 minuti prima" />
+                <ComboBoxItem Content="1 ora prima" />
+                <ComboBoxItem Content="1 giorno prima" />
+            </ComboBox>
+
+            <TextBlock x:Name="ErrorText" Foreground="#FFE81123" FontSize="15" TextWrapping="Wrap" Margin="0,12,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

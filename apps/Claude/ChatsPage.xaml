@@ -1,0 +1,24 @@
+<Page x:Class="Claude.ChatsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#262624">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="Chat" FontSize="20" FontWeight="SemiBold" Margin="12,8" />
+    <TextBlock x:Name="EmptyText" Grid.Row="1" Margin="12" Opacity="0.6" Text="Nessuna chat" Visibility="Collapsed" />
+    <ListView x:Name="List" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnClick"
+              Holding="OnHolding" RightTapped="OnRightTapped">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Margin="0,6">
+            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontSize="16" />
+            <TextBlock Text="{Binding Details}" FontSize="12" Opacity="0.6" />
+          </StackPanel>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
+</Page>

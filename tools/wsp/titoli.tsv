@@ -1,0 +1,1533 @@
+# the real titles of the phone's library (2026-11-07): a title is never read as a command
+metti heroes	riproduci_musica	richiesta=heroes
+metti la canzone heroes	riproduci_musica	richiesta=heroes;tipo=brano
+riproduci il brano heroes per favore	riproduci_musica	richiesta=heroes;tipo=brano
+fammi sentire heroes di david bowie	riproduci_musica	richiesta=heroes di david bowie
+metti satisfaction	riproduci_musica	richiesta=satisfaction
+metti la canzone satisfaction	riproduci_musica	richiesta=satisfaction;tipo=brano
+riproduci il brano satisfaction per favore	riproduci_musica	richiesta=satisfaction;tipo=brano
+fammi sentire satisfaction di the rolling stones	riproduci_musica	richiesta=satisfaction di the rolling stones
+metti died in your arms	riproduci_musica	richiesta=died in your arms
+metti la canzone died in your arms	riproduci_musica	richiesta=died in your arms;tipo=brano
+riproduci il brano died in your arms per favore	riproduci_musica	richiesta=died in your arms;tipo=brano
+fammi sentire died in your arms di cutting crew	riproduci_musica	richiesta=died in your arms di cutting crew
+metti devil in disguise	riproduci_musica	richiesta=devil in disguise
+metti la canzone devil in disguise	riproduci_musica	richiesta=devil in disguise;tipo=brano
+riproduci il brano devil in disguise per favore	riproduci_musica	richiesta=devil in disguise;tipo=brano
+fammi sentire devil in disguise di elvis presley	riproduci_musica	richiesta=devil in disguise di elvis presley
+metti 1979	riproduci_musica	richiesta=1979
+metti la canzone 1979	riproduci_musica	richiesta=1979;tipo=brano
+riproduci il brano 1979 per favore	riproduci_musica	richiesta=1979;tipo=brano
+fammi sentire 1979 di smashing pumpkins	riproduci_musica	richiesta=1979 di smashing pumpkins
+metti 505	riproduci_musica	richiesta=505
+metti la canzone 505	riproduci_musica	richiesta=505;tipo=brano
+riproduci il brano 505 per favore	riproduci_musica	richiesta=505;tipo=brano
+fammi sentire 505 di arctic monkeys	riproduci_musica	richiesta=505 di arctic monkeys
+metti a girl like you	riproduci_musica	richiesta=a girl like you
+metti la canzone a girl like you	riproduci_musica	richiesta=a girl like you;tipo=brano
+riproduci il brano a girl like you per favore	riproduci_musica	richiesta=a girl like you;tipo=brano
+fammi sentire a girl like you di edwyn collins	riproduci_musica	richiesta=a girl like you di edwyn collins
+metti a great day for freedom	riproduci_musica	richiesta=a great day for freedom
+metti la canzone a great day for freedom	riproduci_musica	richiesta=a great day for freedom;tipo=brano
+riproduci il brano a great day for freedom per favore	riproduci_musica	richiesta=a great day for freedom;tipo=brano
+fammi sentire a great day for freedom di pink floyd	riproduci_musica	richiesta=a great day for freedom di pink floyd
+metti a horse with no name	riproduci_musica	richiesta=a horse with no name
+metti la canzone a horse with no name	riproduci_musica	richiesta=a horse with no name;tipo=brano
+riproduci il brano a horse with no name per favore	riproduci_musica	richiesta=a horse with no name;tipo=brano
+fammi sentire a horse with no name di america	riproduci_musica	richiesta=a horse with no name di america
+metti a kind of magic	riproduci_musica	richiesta=a kind of magic
+metti la canzone a kind of magic	riproduci_musica	richiesta=a kind of magic;tipo=brano
+riproduci il brano a kind of magic per favore	riproduci_musica	richiesta=a kind of magic;tipo=brano
+fammi sentire a kind of magic di queen	riproduci_musica	richiesta=a kind of magic di queen
+metti a little less conversation	riproduci_musica	richiesta=a little less conversation
+metti la canzone a little less conversation	riproduci_musica	richiesta=a little less conversation;tipo=brano
+riproduci il brano a little less conversation per favore	riproduci_musica	richiesta=a little less conversation;tipo=brano
+fammi sentire a little less conversation di elvis presley	riproduci_musica	richiesta=a little less conversation di elvis presley
+metti about a girl	riproduci_musica	richiesta=about a girl
+metti la canzone about a girl	riproduci_musica	richiesta=about a girl;tipo=brano
+riproduci il brano about a girl per favore	riproduci_musica	richiesta=about a girl;tipo=brano
+fammi sentire about a girl di nirvana	riproduci_musica	richiesta=about a girl di nirvana
+metti africa	riproduci_musica	richiesta=africa
+metti la canzone africa	riproduci_musica	richiesta=africa;tipo=brano
+riproduci il brano africa per favore	riproduci_musica	richiesta=africa;tipo=brano
+fammi sentire africa di toto	riproduci_musica	richiesta=africa di toto
+metti ain't no sunshine	riproduci_musica	richiesta=ain't no sunshine
+metti la canzone ain't no sunshine	riproduci_musica	richiesta=ain't no sunshine;tipo=brano
+riproduci il brano ain't no sunshine per favore	riproduci_musica	richiesta=ain't no sunshine;tipo=brano
+fammi sentire ain't no sunshine di bill withers	riproduci_musica	richiesta=ain't no sunshine di bill withers
+metti all along the watchtower	riproduci_musica	richiesta=all along the watchtower
+metti la canzone all along the watchtower	riproduci_musica	richiesta=all along the watchtower;tipo=brano
+riproduci il brano all along the watchtower per favore	riproduci_musica	richiesta=all along the watchtower;tipo=brano
+fammi sentire all along the watchtower di the jimi hendrix experience	riproduci_musica	richiesta=all along the watchtower di the jimi hendrix experience
+metti all day and all of the night	riproduci_musica	richiesta=all day and all of the night
+metti la canzone all day and all of the night	riproduci_musica	richiesta=all day and all of the night;tipo=brano
+riproduci il brano all day and all of the night per favore	riproduci_musica	richiesta=all day and all of the night;tipo=brano
+fammi sentire all day and all of the night di the kinks	riproduci_musica	richiesta=all day and all of the night di the kinks
+metti all that she wants	riproduci_musica	richiesta=all that she wants
+metti la canzone all that she wants	riproduci_musica	richiesta=all that she wants;tipo=brano
+riproduci il brano all that she wants per favore	riproduci_musica	richiesta=all that she wants;tipo=brano
+fammi sentire all that she wants di ace of base	riproduci_musica	richiesta=all that she wants di ace of base
+metti alors on danse	riproduci_musica	richiesta=alors on danse
+metti la canzone alors on danse	riproduci_musica	richiesta=alors on danse;tipo=brano
+riproduci il brano alors on danse per favore	riproduci_musica	richiesta=alors on danse;tipo=brano
+fammi sentire alors on danse di stromae	riproduci_musica	richiesta=alors on danse di stromae
+metti alrighty aphrodite	riproduci_musica	richiesta=alrighty aphrodite
+metti la canzone alrighty aphrodite	riproduci_musica	richiesta=alrighty aphrodite;tipo=brano
+riproduci il brano alrighty aphrodite per favore	riproduci_musica	richiesta=alrighty aphrodite;tipo=brano
+fammi sentire alrighty aphrodite di peach pit	riproduci_musica	richiesta=alrighty aphrodite di peach pit
+metti american boy	riproduci_musica	richiesta=american boy
+metti la canzone american boy	riproduci_musica	richiesta=american boy;tipo=brano
+riproduci il brano american boy per favore	riproduci_musica	richiesta=american boy;tipo=brano
+fammi sentire american boy di estelle	riproduci_musica	richiesta=american boy di estelle
+metti and i love her	riproduci_musica	richiesta=and i love her
+metti la canzone and i love her	riproduci_musica	richiesta=and i love her;tipo=brano
+riproduci il brano and i love her per favore	riproduci_musica	richiesta=and i love her;tipo=brano
+fammi sentire and i love her di the beatles	riproduci_musica	richiesta=and i love her di the beatles
+metti another brick in the wall pt 1	riproduci_musica	richiesta=another brick in the wall pt 1
+metti la canzone another brick in the wall pt 1	riproduci_musica	richiesta=another brick in the wall pt 1;tipo=brano
+riproduci il brano another brick in the wall pt 1 per favore	riproduci_musica	richiesta=another brick in the wall pt 1;tipo=brano
+fammi sentire another brick in the wall pt 1 di pink floyd	riproduci_musica	richiesta=another brick in the wall pt 1 di pink floyd
+metti another brick in the wall pt 2	riproduci_musica	richiesta=another brick in the wall pt 2
+metti la canzone another brick in the wall pt 2	riproduci_musica	richiesta=another brick in the wall pt 2;tipo=brano
+riproduci il brano another brick in the wall pt 2 per favore	riproduci_musica	richiesta=another brick in the wall pt 2;tipo=brano
+fammi sentire another brick in the wall pt 2 di pink floyd	riproduci_musica	richiesta=another brick in the wall pt 2 di pink floyd
+metti appetite for destruction	riproduci_musica	richiesta=appetite for destruction
+metti la canzone appetite for destruction	riproduci_musica	richiesta=appetite for destruction;tipo=brano
+riproduci il brano appetite for destruction per favore	riproduci_musica	richiesta=appetite for destruction;tipo=brano
+fammi sentire appetite for destruction di gu ns n'ro se s	riproduci_musica	richiesta=appetite for destruction di gu ns n'ro se s
+metti are you gonna be my girl	riproduci_musica	richiesta=are you gonna be my girl
+metti la canzone are you gonna be my girl	riproduci_musica	richiesta=are you gonna be my girl;tipo=brano
+riproduci il brano are you gonna be my girl per favore	riproduci_musica	richiesta=are you gonna be my girl;tipo=brano
+fammi sentire are you gonna be my girl di jet	riproduci_musica	richiesta=are you gonna be my girl di jet
+metti arnold layne	riproduci_musica	richiesta=arnold layne
+metti la canzone arnold layne	riproduci_musica	richiesta=arnold layne;tipo=brano
+riproduci il brano arnold layne per favore	riproduci_musica	richiesta=arnold layne;tipo=brano
+fammi sentire arnold layne di pink floyd	riproduci_musica	richiesta=arnold layne di pink floyd
+metti around the world	riproduci_musica	richiesta=around the world
+metti la canzone around the world	riproduci_musica	richiesta=around the world;tipo=brano
+riproduci il brano around the world per favore	riproduci_musica	richiesta=around the world;tipo=brano
+fammi sentire around the world di red hot chili peppers	riproduci_musica	richiesta=around the world di red hot chili peppers
+metti baba o'riley	riproduci_musica	richiesta=baba o'riley
+metti la canzone baba o'riley	riproduci_musica	richiesta=baba o'riley;tipo=brano
+riproduci il brano baba o'riley per favore	riproduci_musica	richiesta=baba o'riley;tipo=brano
+fammi sentire baba o'riley di the who	riproduci_musica	richiesta=baba o'riley di the who
+metti baby you can drive my car	riproduci_musica	richiesta=baby you can drive my car
+metti la canzone baby you can drive my car	riproduci_musica	richiesta=baby you can drive my car;tipo=brano
+riproduci il brano baby you can drive my car per favore	riproduci_musica	richiesta=baby you can drive my car;tipo=brano
+fammi sentire baby you can drive my car di budd bug	riproduci_musica	richiesta=baby you can drive my car di budd bug
+metti baby i love you	riproduci_musica	richiesta=baby i love you
+metti la canzone baby i love you	riproduci_musica	richiesta=baby i love you;tipo=brano
+riproduci il brano baby i love you per favore	riproduci_musica	richiesta=baby i love you;tipo=brano
+fammi sentire baby i love you di ramones	riproduci_musica	richiesta=baby i love you di ramones
+metti babydoll	riproduci_musica	richiesta=babydoll
+metti la canzone babydoll	riproduci_musica	richiesta=babydoll;tipo=brano
+riproduci il brano babydoll per favore	riproduci_musica	richiesta=babydoll;tipo=brano
+fammi sentire babydoll di dominic fike	riproduci_musica	richiesta=babydoll di dominic fike
+metti back to the old house	riproduci_musica	richiesta=back to the old house
+metti la canzone back to the old house	riproduci_musica	richiesta=back to the old house;tipo=brano
+riproduci il brano back to the old house per favore	riproduci_musica	richiesta=back to the old house;tipo=brano
+fammi sentire back to the old house di the smiths	riproduci_musica	richiesta=back to the old house di the smiths
+metti bamboléo	riproduci_musica	richiesta=bamboléo
+metti la canzone bamboléo	riproduci_musica	richiesta=bamboléo;tipo=brano
+riproduci il brano bamboléo per favore	riproduci_musica	richiesta=bamboléo;tipo=brano
+fammi sentire bamboléo di gipsy kings	riproduci_musica	richiesta=bamboléo di gipsy kings
+metti band on the run	riproduci_musica	richiesta=band on the run
+metti la canzone band on the run	riproduci_musica	richiesta=band on the run;tipo=brano
+riproduci il brano band on the run per favore	riproduci_musica	richiesta=band on the run;tipo=brano
+fammi sentire band on the run di paul mccartney e wings	riproduci_musica	richiesta=band on the run di paul mccartney e wings
+metti barbra streisand	riproduci_musica	richiesta=barbra streisand
+metti la canzone barbra streisand	riproduci_musica	richiesta=barbra streisand;tipo=brano
+riproduci il brano barbra streisand per favore	riproduci_musica	richiesta=barbra streisand;tipo=brano
+fammi sentire barbra streisand di duck sauce a trak e armand van helden	riproduci_musica	richiesta=barbra streisand di duck sauce a trak e armand van helden
+metti beast of burden	riproduci_musica	richiesta=beast of burden
+metti la canzone beast of burden	riproduci_musica	richiesta=beast of burden;tipo=brano
+riproduci il brano beast of burden per favore	riproduci_musica	richiesta=beast of burden;tipo=brano
+fammi sentire beast of burden di the rolling stones	riproduci_musica	richiesta=beast of burden di the rolling stones
+metti beautiful boy	riproduci_musica	richiesta=beautiful boy
+metti la canzone beautiful boy	riproduci_musica	richiesta=beautiful boy;tipo=brano
+riproduci il brano beautiful boy per favore	riproduci_musica	richiesta=beautiful boy;tipo=brano
+fammi sentire beautiful boy di john lennon	riproduci_musica	richiesta=beautiful boy di john lennon
+metti billie jean	riproduci_musica	richiesta=billie jean
+metti la canzone billie jean	riproduci_musica	richiesta=billie jean;tipo=brano
+riproduci il brano billie jean per favore	riproduci_musica	richiesta=billie jean;tipo=brano
+fammi sentire billie jean di michael jackson	riproduci_musica	richiesta=billie jean di michael jackson
+metti bitter sweet symphony	riproduci_musica	richiesta=bitter sweet symphony
+metti la canzone bitter sweet symphony	riproduci_musica	richiesta=bitter sweet symphony;tipo=brano
+riproduci il brano bitter sweet symphony per favore	riproduci_musica	richiesta=bitter sweet symphony;tipo=brano
+fammi sentire bitter sweet symphony di the verve	riproduci_musica	richiesta=bitter sweet symphony di the verve
+metti black betty	riproduci_musica	richiesta=black betty
+metti la canzone black betty	riproduci_musica	richiesta=black betty;tipo=brano
+riproduci il brano black betty per favore	riproduci_musica	richiesta=black betty;tipo=brano
+fammi sentire black betty di ram jam	riproduci_musica	richiesta=black betty di ram jam
+metti blackbird	riproduci_musica	richiesta=blackbird
+metti la canzone blackbird	riproduci_musica	richiesta=blackbird;tipo=brano
+riproduci il brano blackbird per favore	riproduci_musica	richiesta=blackbird;tipo=brano
+fammi sentire blackbird di the beatles	riproduci_musica	richiesta=blackbird di the beatles
+metti blister in the sun	riproduci_musica	richiesta=blister in the sun
+metti la canzone blister in the sun	riproduci_musica	richiesta=blister in the sun;tipo=brano
+riproduci il brano blister in the sun per favore	riproduci_musica	richiesta=blister in the sun;tipo=brano
+fammi sentire blister in the sun di violent femmes	riproduci_musica	richiesta=blister in the sun di violent femmes
+metti blue monday	riproduci_musica	richiesta=blue monday
+metti la canzone blue monday	riproduci_musica	richiesta=blue monday;tipo=brano
+riproduci il brano blue monday per favore	riproduci_musica	richiesta=blue monday;tipo=brano
+fammi sentire blue monday di new order	riproduci_musica	richiesta=blue monday di new order
+metti blue suede shoes	riproduci_musica	richiesta=blue suede shoes
+metti la canzone blue suede shoes	riproduci_musica	richiesta=blue suede shoes;tipo=brano
+riproduci il brano blue suede shoes per favore	riproduci_musica	richiesta=blue suede shoes;tipo=brano
+fammi sentire blue suede shoes di elvis presley	riproduci_musica	richiesta=blue suede shoes di elvis presley
+metti bohemian rhapsody	riproduci_musica	richiesta=bohemian rhapsody
+metti la canzone bohemian rhapsody	riproduci_musica	richiesta=bohemian rhapsody;tipo=brano
+riproduci il brano bohemian rhapsody per favore	riproduci_musica	richiesta=bohemian rhapsody;tipo=brano
+fammi sentire bohemian rhapsody di queen	riproduci_musica	richiesta=bohemian rhapsody di queen
+metti bongo bong	riproduci_musica	richiesta=bongo bong
+metti la canzone bongo bong	riproduci_musica	richiesta=bongo bong;tipo=brano
+riproduci il brano bongo bong per favore	riproduci_musica	richiesta=bongo bong;tipo=brano
+fammi sentire bongo bong di manu chao	riproduci_musica	richiesta=bongo bong di manu chao
+metti boom boom	riproduci_musica	richiesta=boom boom
+metti la canzone boom boom	riproduci_musica	richiesta=boom boom;tipo=brano
+riproduci il brano boom boom per favore	riproduci_musica	richiesta=boom boom;tipo=brano
+fammi sentire boom boom di john lee hooker	riproduci_musica	richiesta=boom boom di john lee hooker
+metti boom boom boom boom	riproduci_musica	richiesta=boom boom boom boom
+metti la canzone boom boom boom boom	riproduci_musica	richiesta=boom boom boom boom;tipo=brano
+riproduci il brano boom boom boom boom per favore	riproduci_musica	richiesta=boom boom boom boom;tipo=brano
+fammi sentire boom boom boom boom di vengaboys	riproduci_musica	richiesta=boom boom boom boom di vengaboys
+metti born to be wild	riproduci_musica	richiesta=born to be wild
+metti la canzone born to be wild	riproduci_musica	richiesta=born to be wild;tipo=brano
+riproduci il brano born to be wild per favore	riproduci_musica	richiesta=born to be wild;tipo=brano
+fammi sentire born to be wild di steppenwolf	riproduci_musica	richiesta=born to be wild di steppenwolf
+metti boys don't cry	riproduci_musica	richiesta=boys don't cry
+metti la canzone boys don't cry	riproduci_musica	richiesta=boys don't cry;tipo=brano
+riproduci il brano boys don't cry per favore	riproduci_musica	richiesta=boys don't cry;tipo=brano
+fammi sentire boys don't cry di the cure	riproduci_musica	richiesta=boys don't cry di the cure
+metti brain damage	riproduci_musica	richiesta=brain damage
+metti la canzone brain damage	riproduci_musica	richiesta=brain damage;tipo=brano
+riproduci il brano brain damage per favore	riproduci_musica	richiesta=brain damage;tipo=brano
+fammi sentire brain damage di pink floyd	riproduci_musica	richiesta=brain damage di pink floyd
+metti break on through	riproduci_musica	richiesta=break on through
+metti la canzone break on through	riproduci_musica	richiesta=break on through;tipo=brano
+riproduci il brano break on through per favore	riproduci_musica	richiesta=break on through;tipo=brano
+fammi sentire break on through di the doors	riproduci_musica	richiesta=break on through di the doors
+metti breathe	riproduci_musica	richiesta=breathe
+metti la canzone breathe	riproduci_musica	richiesta=breathe;tipo=brano
+riproduci il brano breathe per favore	riproduci_musica	richiesta=breathe;tipo=brano
+fammi sentire breathe di pink floyd	riproduci_musica	richiesta=breathe di pink floyd
+metti brown eyed girl	riproduci_musica	richiesta=brown eyed girl
+metti la canzone brown eyed girl	riproduci_musica	richiesta=brown eyed girl;tipo=brano
+riproduci il brano brown eyed girl per favore	riproduci_musica	richiesta=brown eyed girl;tipo=brano
+fammi sentire brown eyed girl di van morrison	riproduci_musica	richiesta=brown eyed girl di van morrison
+metti brown sugar	riproduci_musica	richiesta=brown sugar
+metti la canzone brown sugar	riproduci_musica	richiesta=brown sugar;tipo=brano
+riproduci il brano brown sugar per favore	riproduci_musica	richiesta=brown sugar;tipo=brano
+fammi sentire brown sugar di the rolling stones	riproduci_musica	richiesta=brown sugar di the rolling stones
+metti c u girl	riproduci_musica	richiesta=c u girl
+metti la canzone c u girl	riproduci_musica	richiesta=c u girl;tipo=brano
+riproduci il brano c u girl per favore	riproduci_musica	richiesta=c u girl;tipo=brano
+fammi sentire c u girl di steve lacy	riproduci_musica	richiesta=c u girl di steve lacy
+metti c'est la vie	riproduci_musica	richiesta=c'est la vie
+metti la canzone c'est la vie	riproduci_musica	richiesta=c'est la vie;tipo=brano
+riproduci il brano c'est la vie per favore	riproduci_musica	richiesta=c'est la vie;tipo=brano
+fammi sentire c'est la vie di pulp no pulp	riproduci_musica	richiesta=c'est la vie di pulp no pulp
+metti california dreamin'	riproduci_musica	richiesta=california dreamin'
+metti la canzone california dreamin'	riproduci_musica	richiesta=california dreamin';tipo=brano
+riproduci il brano california dreamin' per favore	riproduci_musica	richiesta=california dreamin';tipo=brano
+fammi sentire california dreamin' di the mamas the papas	riproduci_musica	richiesta=california dreamin' di the mamas the papas
+metti can i call you tonight	riproduci_musica	richiesta=can i call you tonight
+metti la canzone can i call you tonight	riproduci_musica	richiesta=can i call you tonight;tipo=brano
+riproduci il brano can i call you tonight per favore	riproduci_musica	richiesta=can i call you tonight;tipo=brano
+fammi sentire can i call you tonight di dayglow	riproduci_musica	richiesta=can i call you tonight di dayglow
+metti can't stop	riproduci_musica	richiesta=can't stop
+metti la canzone can't stop	riproduci_musica	richiesta=can't stop;tipo=brano
+riproduci il brano can't stop per favore	riproduci_musica	richiesta=can't stop;tipo=brano
+fammi sentire can't stop di red hot chili peppers	riproduci_musica	richiesta=can't stop di red hot chili peppers
+metti chelsea dagger	riproduci_musica	richiesta=chelsea dagger
+metti la canzone chelsea dagger	riproduci_musica	richiesta=chelsea dagger;tipo=brano
+riproduci il brano chelsea dagger per favore	riproduci_musica	richiesta=chelsea dagger;tipo=brano
+fammi sentire chelsea dagger di the fratellis	riproduci_musica	richiesta=chelsea dagger di the fratellis
+metti cherry flavoured	riproduci_musica	richiesta=cherry flavoured
+metti la canzone cherry flavoured	riproduci_musica	richiesta=cherry flavoured;tipo=brano
+riproduci il brano cherry flavoured per favore	riproduci_musica	richiesta=cherry flavoured;tipo=brano
+fammi sentire cherry flavoured di the neighbourhood	riproduci_musica	richiesta=cherry flavoured di the neighbourhood
+metti clint eastwood	riproduci_musica	richiesta=clint eastwood
+metti la canzone clint eastwood	riproduci_musica	richiesta=clint eastwood;tipo=brano
+riproduci il brano clint eastwood per favore	riproduci_musica	richiesta=clint eastwood;tipo=brano
+fammi sentire clint eastwood di gorillaz e del the funky homosapien	riproduci_musica	richiesta=clint eastwood di gorillaz e del the funky homosapien
+metti clouds	riproduci_musica	richiesta=clouds
+metti la canzone clouds	riproduci_musica	richiesta=clouds;tipo=brano
+riproduci il brano clouds per favore	riproduci_musica	richiesta=clouds;tipo=brano
+fammi sentire clouds di isaiah dreads	riproduci_musica	richiesta=clouds di isaiah dreads
+metti come and get your love	riproduci_musica	richiesta=come and get your love
+metti la canzone come and get your love	riproduci_musica	richiesta=come and get your love;tipo=brano
+riproduci il brano come and get your love per favore	riproduci_musica	richiesta=come and get your love;tipo=brano
+fammi sentire come and get your love di redbone	riproduci_musica	richiesta=come and get your love di redbone
+metti come together	riproduci_musica	richiesta=come together
+metti la canzone come together	riproduci_musica	richiesta=come together;tipo=brano
+riproduci il brano come together per favore	riproduci_musica	richiesta=come together;tipo=brano
+fammi sentire come together di the beatles	riproduci_musica	richiesta=come together di the beatles
+metti comfortably numb	riproduci_musica	richiesta=comfortably numb
+metti la canzone comfortably numb	riproduci_musica	richiesta=comfortably numb;tipo=brano
+riproduci il brano comfortably numb per favore	riproduci_musica	richiesta=comfortably numb;tipo=brano
+fammi sentire comfortably numb di pink floyd	riproduci_musica	richiesta=comfortably numb di pink floyd
+metti cool cat	riproduci_musica	richiesta=cool cat
+metti la canzone cool cat	riproduci_musica	richiesta=cool cat;tipo=brano
+riproduci il brano cool cat per favore	riproduci_musica	richiesta=cool cat;tipo=brano
+fammi sentire cool cat di queen	riproduci_musica	richiesta=cool cat di queen
+metti cotton eye joe	riproduci_musica	richiesta=cotton eye joe
+metti la canzone cotton eye joe	riproduci_musica	richiesta=cotton eye joe;tipo=brano
+riproduci il brano cotton eye joe per favore	riproduci_musica	richiesta=cotton eye joe;tipo=brano
+fammi sentire cotton eye joe di rednex	riproduci_musica	richiesta=cotton eye joe di rednex
+metti could you be loved	riproduci_musica	richiesta=could you be loved
+metti la canzone could you be loved	riproduci_musica	richiesta=could you be loved;tipo=brano
+riproduci il brano could you be loved per favore	riproduci_musica	richiesta=could you be loved;tipo=brano
+fammi sentire could you be loved di bob marley	riproduci_musica	richiesta=could you be loved di bob marley
+metti crocodile rock	riproduci_musica	richiesta=crocodile rock
+metti la canzone crocodile rock	riproduci_musica	richiesta=crocodile rock;tipo=brano
+riproduci il brano crocodile rock per favore	riproduci_musica	richiesta=crocodile rock;tipo=brano
+fammi sentire crocodile rock di elton john	riproduci_musica	richiesta=crocodile rock di elton john
+metti cry baby	riproduci_musica	richiesta=cry baby
+metti la canzone cry baby	riproduci_musica	richiesta=cry baby;tipo=brano
+riproduci il brano cry baby per favore	riproduci_musica	richiesta=cry baby;tipo=brano
+fammi sentire cry baby di janis joplin	riproduci_musica	richiesta=cry baby di janis joplin
+metti crying lightning	riproduci_musica	richiesta=crying lightning
+metti la canzone crying lightning	riproduci_musica	richiesta=crying lightning;tipo=brano
+riproduci il brano crying lightning per favore	riproduci_musica	richiesta=crying lightning;tipo=brano
+fammi sentire crying lightning di arctic monkeys	riproduci_musica	richiesta=crying lightning di arctic monkeys
+metti daddy cool	riproduci_musica	richiesta=daddy cool
+metti la canzone daddy cool	riproduci_musica	richiesta=daddy cool;tipo=brano
+riproduci il brano daddy cool per favore	riproduci_musica	richiesta=daddy cool;tipo=brano
+fammi sentire daddy cool di boney m	riproduci_musica	richiesta=daddy cool di boney m
+metti dancing with myself	riproduci_musica	richiesta=dancing with myself
+metti la canzone dancing with myself	riproduci_musica	richiesta=dancing with myself;tipo=brano
+riproduci il brano dancing with myself per favore	riproduci_musica	richiesta=dancing with myself;tipo=brano
+fammi sentire dancing with myself di billy idol e generation x	riproduci_musica	richiesta=dancing with myself di billy idol e generation x
+metti dani california	riproduci_musica	richiesta=dani california
+metti la canzone dani california	riproduci_musica	richiesta=dani california;tipo=brano
+riproduci il brano dani california per favore	riproduci_musica	richiesta=dani california;tipo=brano
+fammi sentire dani california di red hot chili peppers	riproduci_musica	richiesta=dani california di red hot chili peppers
+metti dark necessities	riproduci_musica	richiesta=dark necessities
+metti la canzone dark necessities	riproduci_musica	richiesta=dark necessities;tipo=brano
+riproduci il brano dark necessities per favore	riproduci_musica	richiesta=dark necessities;tipo=brano
+fammi sentire dark necessities di red hot chili peppers	riproduci_musica	richiesta=dark necessities di red hot chili peppers
+metti dedicated to the one i love	riproduci_musica	richiesta=dedicated to the one i love
+metti la canzone dedicated to the one i love	riproduci_musica	richiesta=dedicated to the one i love;tipo=brano
+riproduci il brano dedicated to the one i love per favore	riproduci_musica	richiesta=dedicated to the one i love;tipo=brano
+fammi sentire dedicated to the one i love di the mamas the papas	riproduci_musica	richiesta=dedicated to the one i love di the mamas the papas
+metti disco	riproduci_musica	richiesta=disco
+metti la canzone disco	riproduci_musica	richiesta=disco;tipo=brano
+riproduci il brano disco per favore	riproduci_musica	richiesta=disco;tipo=brano
+fammi sentire disco di surf curse	riproduci_musica	richiesta=disco di surf curse
+metti dogs	riproduci_musica	richiesta=dogs
+metti la canzone dogs	riproduci_musica	richiesta=dogs;tipo=brano
+riproduci il brano dogs per favore	riproduci_musica	richiesta=dogs;tipo=brano
+fammi sentire dogs di pink floyd	riproduci_musica	richiesta=dogs di pink floyd
+metti don't dream it's over	riproduci_musica	richiesta=don't dream it's over
+metti la canzone don't dream it's over	riproduci_musica	richiesta=don't dream it's over;tipo=brano
+riproduci il brano don't dream it's over per favore	riproduci_musica	richiesta=don't dream it's over;tipo=brano
+fammi sentire don't dream it's over di crowded house	riproduci_musica	richiesta=don't dream it's over di crowded house
+metti don't go breaking my heart	riproduci_musica	richiesta=don't go breaking my heart
+metti la canzone don't go breaking my heart	riproduci_musica	richiesta=don't go breaking my heart;tipo=brano
+riproduci il brano don't go breaking my heart per favore	riproduci_musica	richiesta=don't go breaking my heart;tipo=brano
+fammi sentire don't go breaking my heart di elton john e kiki dee	riproduci_musica	richiesta=don't go breaking my heart di elton john e kiki dee
+metti don't speak	riproduci_musica	richiesta=don't speak
+metti la canzone don't speak	riproduci_musica	richiesta=don't speak;tipo=brano
+riproduci il brano don't speak per favore	riproduci_musica	richiesta=don't speak;tipo=brano
+fammi sentire don't speak di no doubt	riproduci_musica	richiesta=don't speak di no doubt
+metti don't stop 'til you get enough	riproduci_musica	richiesta=don't stop 'til you get enough
+metti la canzone don't stop 'til you get enough	riproduci_musica	richiesta=don't stop 'til you get enough;tipo=brano
+riproduci il brano don't stop 'til you get enough per favore	riproduci_musica	richiesta=don't stop 'til you get enough;tipo=brano
+fammi sentire don't stop 'til you get enough di michael jackson	riproduci_musica	richiesta=don't stop 'til you get enough di michael jackson
+metti don't stop the music	riproduci_musica	richiesta=don't stop the music
+metti la canzone don't stop the music	riproduci_musica	richiesta=don't stop the music;tipo=brano
+riproduci il brano don't stop the music per favore	riproduci_musica	richiesta=don't stop the music;tipo=brano
+fammi sentire don't stop the music di rihanna	riproduci_musica	richiesta=don't stop the music di rihanna
+metti don't you	riproduci_musica	richiesta=don't you
+metti la canzone don't you	riproduci_musica	richiesta=don't you;tipo=brano
+riproduci il brano don't you per favore	riproduci_musica	richiesta=don't you;tipo=brano
+fammi sentire don't you di simple minds	riproduci_musica	richiesta=don't you di simple minds
+metti dream a little dream of me	riproduci_musica	richiesta=dream a little dream of me
+metti la canzone dream a little dream of me	riproduci_musica	richiesta=dream a little dream of me;tipo=brano
+riproduci il brano dream a little dream of me per favore	riproduci_musica	richiesta=dream a little dream of me;tipo=brano
+fammi sentire dream a little dream of me di the mamas the papas	riproduci_musica	richiesta=dream a little dream of me di the mamas the papas
+metti dream on	riproduci_musica	richiesta=dream on
+metti la canzone dream on	riproduci_musica	richiesta=dream on;tipo=brano
+riproduci il brano dream on per favore	riproduci_musica	richiesta=dream on;tipo=brano
+fammi sentire dream on di aerosmith	riproduci_musica	richiesta=dream on di aerosmith
+metti dreams	riproduci_musica	richiesta=dreams
+metti la canzone dreams	riproduci_musica	richiesta=dreams;tipo=brano
+riproduci il brano dreams per favore	riproduci_musica	richiesta=dreams;tipo=brano
+fammi sentire dreams di fleetwood mac	riproduci_musica	richiesta=dreams di fleetwood mac
+metti dumb	riproduci_musica	richiesta=dumb
+metti la canzone dumb	riproduci_musica	richiesta=dumb;tipo=brano
+riproduci il brano dumb per favore	riproduci_musica	richiesta=dumb;tipo=brano
+fammi sentire dumb di nirvana	riproduci_musica	richiesta=dumb di nirvana
+metti easily	riproduci_musica	richiesta=easily
+metti la canzone easily	riproduci_musica	richiesta=easily;tipo=brano
+riproduci il brano easily per favore	riproduci_musica	richiesta=easily;tipo=brano
+fammi sentire easily di red hot chili peppers	riproduci_musica	richiesta=easily di red hot chili peppers
+metti echoes	riproduci_musica	richiesta=echoes
+metti la canzone echoes	riproduci_musica	richiesta=echoes;tipo=brano
+riproduci il brano echoes per favore	riproduci_musica	richiesta=echoes;tipo=brano
+fammi sentire echoes di pink floyd	riproduci_musica	richiesta=echoes di pink floyd
+metti eclipse	riproduci_musica	richiesta=eclipse
+metti la canzone eclipse	riproduci_musica	richiesta=eclipse;tipo=brano
+riproduci il brano eclipse per favore	riproduci_musica	richiesta=eclipse;tipo=brano
+fammi sentire eclipse di pink floyd	riproduci_musica	richiesta=eclipse di pink floyd
+metti edge of seventeen	riproduci_musica	richiesta=edge of seventeen
+metti la canzone edge of seventeen	riproduci_musica	richiesta=edge of seventeen;tipo=brano
+riproduci il brano edge of seventeen per favore	riproduci_musica	richiesta=edge of seventeen;tipo=brano
+fammi sentire edge of seventeen di stevie nicks	riproduci_musica	richiesta=edge of seventeen di stevie nicks
+metti enjoy the silence	riproduci_musica	richiesta=enjoy the silence
+metti la canzone enjoy the silence	riproduci_musica	richiesta=enjoy the silence;tipo=brano
+riproduci il brano enjoy the silence per favore	riproduci_musica	richiesta=enjoy the silence;tipo=brano
+fammi sentire enjoy the silence di depeche mode	riproduci_musica	richiesta=enjoy the silence di depeche mode
+metti escape	riproduci_musica	richiesta=escape
+metti la canzone escape	riproduci_musica	richiesta=escape;tipo=brano
+riproduci il brano escape per favore	riproduci_musica	richiesta=escape;tipo=brano
+fammi sentire escape di rupert holmes	riproduci_musica	richiesta=escape di rupert holmes
+metti every breath you take	riproduci_musica	richiesta=every breath you take
+metti la canzone every breath you take	riproduci_musica	richiesta=every breath you take;tipo=brano
+riproduci il brano every breath you take per favore	riproduci_musica	richiesta=every breath you take;tipo=brano
+fammi sentire every breath you take di last call	riproduci_musica	richiesta=every breath you take di last call
+metti everybody	riproduci_musica	richiesta=everybody
+metti la canzone everybody	riproduci_musica	richiesta=everybody;tipo=brano
+riproduci il brano everybody per favore	riproduci_musica	richiesta=everybody;tipo=brano
+fammi sentire everybody di backstreet boys	riproduci_musica	richiesta=everybody di backstreet boys
+metti everybody wants to rule the world	riproduci_musica	richiesta=everybody wants to rule the world
+metti la canzone everybody wants to rule the world	riproduci_musica	richiesta=everybody wants to rule the world;tipo=brano
+riproduci il brano everybody wants to rule the world per favore	riproduci_musica	richiesta=everybody wants to rule the world;tipo=brano
+fammi sentire everybody wants to rule the world di tears for fears	riproduci_musica	richiesta=everybody wants to rule the world di tears for fears
+metti evil woman	riproduci_musica	richiesta=evil woman
+metti la canzone evil woman	riproduci_musica	richiesta=evil woman;tipo=brano
+riproduci il brano evil woman per favore	riproduci_musica	richiesta=evil woman;tipo=brano
+fammi sentire evil woman di electric light orchestra	riproduci_musica	richiesta=evil woman di electric light orchestra
+metti eye of the tiger	riproduci_musica	richiesta=eye of the tiger
+metti la canzone eye of the tiger	riproduci_musica	richiesta=eye of the tiger;tipo=brano
+riproduci il brano eye of the tiger per favore	riproduci_musica	richiesta=eye of the tiger;tipo=brano
+fammi sentire eye of the tiger di survivor	riproduci_musica	richiesta=eye of the tiger di survivor
+metti eyes without a face	riproduci_musica	richiesta=eyes without a face
+metti la canzone eyes without a face	riproduci_musica	richiesta=eyes without a face;tipo=brano
+riproduci il brano eyes without a face per favore	riproduci_musica	richiesta=eyes without a face;tipo=brano
+fammi sentire eyes without a face di billy idol	riproduci_musica	richiesta=eyes without a face di billy idol
+metti fade into you	riproduci_musica	richiesta=fade into you
+metti la canzone fade into you	riproduci_musica	richiesta=fade into you;tipo=brano
+riproduci il brano fade into you per favore	riproduci_musica	richiesta=fade into you;tipo=brano
+fammi sentire fade into you di mazzy star	riproduci_musica	richiesta=fade into you di mazzy star
+metti faith	riproduci_musica	richiesta=faith
+metti la canzone faith	riproduci_musica	richiesta=faith;tipo=brano
+riproduci il brano faith per favore	riproduci_musica	richiesta=faith;tipo=brano
+fammi sentire faith di george michael	riproduci_musica	richiesta=faith di george michael
+metti fast car	riproduci_musica	richiesta=fast car
+metti la canzone fast car	riproduci_musica	richiesta=fast car;tipo=brano
+riproduci il brano fast car per favore	riproduci_musica	richiesta=fast car;tipo=brano
+fammi sentire fast car di tracy chapman	riproduci_musica	richiesta=fast car di tracy chapman
+metti feel good inc	riproduci_musica	richiesta=feel good inc
+metti la canzone feel good inc	riproduci_musica	richiesta=feel good inc;tipo=brano
+riproduci il brano feel good inc per favore	riproduci_musica	richiesta=feel good inc;tipo=brano
+fammi sentire feel good inc di gorillaz e de la soul	riproduci_musica	richiesta=feel good inc di gorillaz e de la soul
+metti feeling good	riproduci_musica	richiesta=feeling good
+metti la canzone feeling good	riproduci_musica	richiesta=feeling good;tipo=brano
+riproduci il brano feeling good per favore	riproduci_musica	richiesta=feeling good;tipo=brano
+fammi sentire feeling good di nina simone	riproduci_musica	richiesta=feeling good di nina simone
+metti feels like we only go backwards	riproduci_musica	richiesta=feels like we only go backwards
+metti la canzone feels like we only go backwards	riproduci_musica	richiesta=feels like we only go backwards;tipo=brano
+riproduci il brano feels like we only go backwards per favore	riproduci_musica	richiesta=feels like we only go backwards;tipo=brano
+fammi sentire feels like we only go backwards di tame impala	riproduci_musica	richiesta=feels like we only go backwards di tame impala
+metti fernando	riproduci_musica	richiesta=fernando
+metti la canzone fernando	riproduci_musica	richiesta=fernando;tipo=brano
+riproduci il brano fernando per favore	riproduci_musica	richiesta=fernando;tipo=brano
+fammi sentire fernando di abba	riproduci_musica	richiesta=fernando di abba
+metti figli delle stelle	riproduci_musica	richiesta=figli delle stelle
+metti la canzone figli delle stelle	riproduci_musica	richiesta=figli delle stelle;tipo=brano
+riproduci il brano figli delle stelle per favore	riproduci_musica	richiesta=figli delle stelle;tipo=brano
+fammi sentire figli delle stelle di alan sorrenti	riproduci_musica	richiesta=figli delle stelle di alan sorrenti
+metti flotando	riproduci_musica	richiesta=flotando
+metti la canzone flotando	riproduci_musica	richiesta=flotando;tipo=brano
+riproduci il brano flotando per favore	riproduci_musica	richiesta=flotando;tipo=brano
+fammi sentire flotando di osmani garcia la voz	riproduci_musica	richiesta=flotando di osmani garcia la voz
+metti for what it's worth	riproduci_musica	richiesta=for what it's worth
+metti la canzone for what it's worth	riproduci_musica	richiesta=for what it's worth;tipo=brano
+riproduci il brano for what it's worth per favore	riproduci_musica	richiesta=for what it's worth;tipo=brano
+fammi sentire for what it's worth di buffalo springfield	riproduci_musica	richiesta=for what it's worth di buffalo springfield
+metti friday i'm in love	riproduci_musica	richiesta=friday i'm in love
+metti la canzone friday i'm in love	riproduci_musica	richiesta=friday i'm in love;tipo=brano
+riproduci il brano friday i'm in love per favore	riproduci_musica	richiesta=friday i'm in love;tipo=brano
+fammi sentire friday i'm in love di the cure	riproduci_musica	richiesta=friday i'm in love di the cure
+metti funkytown	riproduci_musica	richiesta=funkytown
+metti la canzone funkytown	riproduci_musica	richiesta=funkytown;tipo=brano
+riproduci il brano funkytown per favore	riproduci_musica	richiesta=funkytown;tipo=brano
+fammi sentire funkytown di 80's disco band	riproduci_musica	richiesta=funkytown di 80's disco band
+metti get down on it	riproduci_musica	richiesta=get down on it
+metti la canzone get down on it	riproduci_musica	richiesta=get down on it;tipo=brano
+riproduci il brano get down on it per favore	riproduci_musica	richiesta=get down on it;tipo=brano
+fammi sentire get down on it di kool the gang	riproduci_musica	richiesta=get down on it di kool the gang
+metti get it on	riproduci_musica	richiesta=get it on
+metti la canzone get it on	riproduci_musica	richiesta=get it on;tipo=brano
+riproduci il brano get it on per favore	riproduci_musica	richiesta=get it on;tipo=brano
+fammi sentire get it on di t rex	riproduci_musica	richiesta=get it on di t rex
+metti get on top	riproduci_musica	richiesta=get on top
+metti la canzone get on top	riproduci_musica	richiesta=get on top;tipo=brano
+riproduci il brano get on top per favore	riproduci_musica	richiesta=get on top;tipo=brano
+fammi sentire get on top di red hot chili peppers	riproduci_musica	richiesta=get on top di red hot chili peppers
+metti gimme shelter	riproduci_musica	richiesta=gimme shelter
+metti la canzone gimme shelter	riproduci_musica	richiesta=gimme shelter;tipo=brano
+riproduci il brano gimme shelter per favore	riproduci_musica	richiesta=gimme shelter;tipo=brano
+fammi sentire gimme shelter di the rolling stones	riproduci_musica	richiesta=gimme shelter di the rolling stones
+metti gimme gimme gimme	riproduci_musica	richiesta=gimme gimme gimme
+metti la canzone gimme gimme gimme	riproduci_musica	richiesta=gimme gimme gimme;tipo=brano
+riproduci il brano gimme gimme gimme per favore	riproduci_musica	richiesta=gimme gimme gimme;tipo=brano
+fammi sentire gimme gimme gimme di abba	riproduci_musica	richiesta=gimme gimme gimme di abba
+metti girls just want to have fun	riproduci_musica	richiesta=girls just want to have fun
+metti la canzone girls just want to have fun	riproduci_musica	richiesta=girls just want to have fun;tipo=brano
+riproduci il brano girls just want to have fun per favore	riproduci_musica	richiesta=girls just want to have fun;tipo=brano
+fammi sentire girls just want to have fun di cyndi lauper	riproduci_musica	richiesta=girls just want to have fun di cyndi lauper
+metti girls on film	riproduci_musica	richiesta=girls on film
+metti la canzone girls on film	riproduci_musica	richiesta=girls on film;tipo=brano
+riproduci il brano girls on film per favore	riproduci_musica	richiesta=girls on film;tipo=brano
+fammi sentire girls on film di duran duran	riproduci_musica	richiesta=girls on film di duran duran
+metti give me everything	riproduci_musica	richiesta=give me everything
+metti la canzone give me everything	riproduci_musica	richiesta=give me everything;tipo=brano
+riproduci il brano give me everything per favore	riproduci_musica	richiesta=give me everything;tipo=brano
+fammi sentire give me everything di pitbull afrojack e ne yo	riproduci_musica	richiesta=give me everything di pitbull afrojack e ne yo
+metti give me the night	riproduci_musica	richiesta=give me the night
+metti la canzone give me the night	riproduci_musica	richiesta=give me the night;tipo=brano
+riproduci il brano give me the night per favore	riproduci_musica	richiesta=give me the night;tipo=brano
+fammi sentire give me the night di george benson	riproduci_musica	richiesta=give me the night di george benson
+metti give up the funk	riproduci_musica	richiesta=give up the funk
+metti la canzone give up the funk	riproduci_musica	richiesta=give up the funk;tipo=brano
+riproduci il brano give up the funk per favore	riproduci_musica	richiesta=give up the funk;tipo=brano
+fammi sentire give up the funk di parliament	riproduci_musica	richiesta=give up the funk di parliament
+metti go your own way	riproduci_musica	richiesta=go your own way
+metti la canzone go your own way	riproduci_musica	richiesta=go your own way;tipo=brano
+riproduci il brano go your own way per favore	riproduci_musica	richiesta=go your own way;tipo=brano
+fammi sentire go your own way di fleetwood mac	riproduci_musica	richiesta=go your own way di fleetwood mac
+metti golden brown	riproduci_musica	richiesta=golden brown
+metti la canzone golden brown	riproduci_musica	richiesta=golden brown;tipo=brano
+riproduci il brano golden brown per favore	riproduci_musica	richiesta=golden brown;tipo=brano
+fammi sentire golden brown di the stranglers	riproduci_musica	richiesta=golden brown di the stranglers
+metti golden years	riproduci_musica	richiesta=golden years
+metti la canzone golden years	riproduci_musica	richiesta=golden years;tipo=brano
+riproduci il brano golden years per favore	riproduci_musica	richiesta=golden years;tipo=brano
+fammi sentire golden years di david bowie	riproduci_musica	richiesta=golden years di david bowie
+metti good lovin'	riproduci_musica	richiesta=good lovin'
+metti la canzone good lovin'	riproduci_musica	richiesta=good lovin';tipo=brano
+riproduci il brano good lovin' per favore	riproduci_musica	richiesta=good lovin';tipo=brano
+fammi sentire good lovin' di bobby mcferrin	riproduci_musica	richiesta=good lovin' di bobby mcferrin
+metti good news	riproduci_musica	richiesta=good news
+metti la canzone good news	riproduci_musica	richiesta=good news;tipo=brano
+riproduci il brano good news per favore	riproduci_musica	richiesta=good news;tipo=brano
+fammi sentire good news di mac miller	riproduci_musica	richiesta=good news di mac miller
+metti good old fashioned lover boy	riproduci_musica	richiesta=good old fashioned lover boy
+metti la canzone good old fashioned lover boy	riproduci_musica	richiesta=good old fashioned lover boy;tipo=brano
+riproduci il brano good old fashioned lover boy per favore	riproduci_musica	richiesta=good old fashioned lover boy;tipo=brano
+fammi sentire good old fashioned lover boy di queen	riproduci_musica	richiesta=good old fashioned lover boy di queen
+metti good vibrations	riproduci_musica	richiesta=good vibrations
+metti la canzone good vibrations	riproduci_musica	richiesta=good vibrations;tipo=brano
+riproduci il brano good vibrations per favore	riproduci_musica	richiesta=good vibrations;tipo=brano
+fammi sentire good vibrations di the beach boys	riproduci_musica	richiesta=good vibrations di the beach boys
+metti goodbye moonmen	riproduci_musica	richiesta=goodbye moonmen
+metti la canzone goodbye moonmen	riproduci_musica	richiesta=goodbye moonmen;tipo=brano
+riproduci il brano goodbye moonmen per favore	riproduci_musica	richiesta=goodbye moonmen;tipo=brano
+fammi sentire goodbye moonmen di rick and morty jemaine clement e ryan elder	riproduci_musica	richiesta=goodbye moonmen di rick and morty jemaine clement e ryan elder
+metti goodbye stranger	riproduci_musica	richiesta=goodbye stranger
+metti la canzone goodbye stranger	riproduci_musica	richiesta=goodbye stranger;tipo=brano
+riproduci il brano goodbye stranger per favore	riproduci_musica	richiesta=goodbye stranger;tipo=brano
+fammi sentire goodbye stranger di supertramp	riproduci_musica	richiesta=goodbye stranger di supertramp
+metti got my mind set on you	riproduci_musica	richiesta=got my mind set on you
+metti la canzone got my mind set on you	riproduci_musica	richiesta=got my mind set on you;tipo=brano
+riproduci il brano got my mind set on you per favore	riproduci_musica	richiesta=got my mind set on you;tipo=brano
+fammi sentire got my mind set on you di george harrison	riproduci_musica	richiesta=got my mind set on you di george harrison
+metti got to give it up	riproduci_musica	richiesta=got to give it up
+metti la canzone got to give it up	riproduci_musica	richiesta=got to give it up;tipo=brano
+riproduci il brano got to give it up per favore	riproduci_musica	richiesta=got to give it up;tipo=brano
+fammi sentire got to give it up di marvin gaye	riproduci_musica	richiesta=got to give it up di marvin gaye
+metti grace kelly	riproduci_musica	richiesta=grace kelly
+metti la canzone grace kelly	riproduci_musica	richiesta=grace kelly;tipo=brano
+riproduci il brano grace kelly per favore	riproduci_musica	richiesta=grace kelly;tipo=brano
+fammi sentire grace kelly di mika	riproduci_musica	richiesta=grace kelly di mika
+metti great balls of fire	riproduci_musica	richiesta=great balls of fire
+metti la canzone great balls of fire	riproduci_musica	richiesta=great balls of fire;tipo=brano
+riproduci il brano great balls of fire per favore	riproduci_musica	richiesta=great balls of fire;tipo=brano
+fammi sentire great balls of fire di jerry lee lewis	riproduci_musica	richiesta=great balls of fire di jerry lee lewis
+metti grееn dау rеvоlutiоn rаdiо	riproduci_musica	richiesta=grееn dау rеvоlutiоn rаdiо
+metti la canzone grееn dау rеvоlutiоn rаdiо	riproduci_musica	richiesta=grееn dау rеvоlutiоn rаdiо;tipo=brano
+riproduci il brano grееn dау rеvоlutiоn rаdiо per favore	riproduci_musica	richiesta=grееn dау rеvоlutiоn rаdiо;tipo=brano
+fammi sentire grееn dау rеvоlutiоn rаdiо di vlad	riproduci_musica	richiesta=grееn dау rеvоlutiоn rаdiо di vlad
+metti happy together	riproduci_musica	richiesta=happy together
+metti la canzone happy together	riproduci_musica	richiesta=happy together;tipo=brano
+riproduci il brano happy together per favore	riproduci_musica	richiesta=happy together;tipo=brano
+fammi sentire happy together di the turtles	riproduci_musica	richiesta=happy together di the turtles
+metti have you ever seen the rain	riproduci_musica	richiesta=have you ever seen the rain
+metti la canzone have you ever seen the rain	riproduci_musica	richiesta=have you ever seen the rain;tipo=brano
+riproduci il brano have you ever seen the rain per favore	riproduci_musica	richiesta=have you ever seen the rain;tipo=brano
+fammi sentire have you ever seen the rain di creedence clearwater revival	riproduci_musica	richiesta=have you ever seen the rain di creedence clearwater revival
+metti head over heels	riproduci_musica	richiesta=head over heels
+metti la canzone head over heels	riproduci_musica	richiesta=head over heels;tipo=brano
+riproduci il brano head over heels per favore	riproduci_musica	richiesta=head over heels;tipo=brano
+fammi sentire head over heels di tears for fears	riproduci_musica	richiesta=head over heels di tears for fears
+metti heart shaped box	riproduci_musica	richiesta=heart shaped box
+metti la canzone heart shaped box	riproduci_musica	richiesta=heart shaped box;tipo=brano
+riproduci il brano heart shaped box per favore	riproduci_musica	richiesta=heart shaped box;tipo=brano
+fammi sentire heart shaped box di nirvana	riproduci_musica	richiesta=heart shaped box di nirvana
+metti heaven knows i'm miserable now	riproduci_musica	richiesta=heaven knows i'm miserable now
+metti la canzone heaven knows i'm miserable now	riproduci_musica	richiesta=heaven knows i'm miserable now;tipo=brano
+riproduci il brano heaven knows i'm miserable now per favore	riproduci_musica	richiesta=heaven knows i'm miserable now;tipo=brano
+fammi sentire heaven knows i'm miserable now di the smiths	riproduci_musica	richiesta=heaven knows i'm miserable now di the smiths
+metti hello dolly	riproduci_musica	richiesta=hello dolly
+metti la canzone hello dolly	riproduci_musica	richiesta=hello dolly;tipo=brano
+riproduci il brano hello dolly per favore	riproduci_musica	richiesta=hello dolly;tipo=brano
+fammi sentire hello dolly di louis armstrong	riproduci_musica	richiesta=hello dolly di louis armstrong
+metti hey baby	riproduci_musica	richiesta=hey baby
+metti la canzone hey baby	riproduci_musica	richiesta=hey baby;tipo=brano
+riproduci il brano hey baby per favore	riproduci_musica	richiesta=hey baby;tipo=brano
+fammi sentire hey baby di anton	riproduci_musica	richiesta=hey baby di anton
+metti hey joe	riproduci_musica	richiesta=hey joe
+metti la canzone hey joe	riproduci_musica	richiesta=hey joe;tipo=brano
+riproduci il brano hey joe per favore	riproduci_musica	richiesta=hey joe;tipo=brano
+fammi sentire hey joe di the jimi hendrix experience	riproduci_musica	richiesta=hey joe di the jimi hendrix experience
+metti hey jude	riproduci_musica	richiesta=hey jude
+metti la canzone hey jude	riproduci_musica	richiesta=hey jude;tipo=brano
+riproduci il brano hey jude per favore	riproduci_musica	richiesta=hey jude;tipo=brano
+fammi sentire hey jude di the beatles	riproduci_musica	richiesta=hey jude di the beatles
+metti hey ya	riproduci_musica	richiesta=hey ya
+metti la canzone hey ya	riproduci_musica	richiesta=hey ya;tipo=brano
+riproduci il brano hey ya per favore	riproduci_musica	richiesta=hey ya;tipo=brano
+fammi sentire hey ya di outkast	riproduci_musica	richiesta=hey ya di outkast
+metti hey you	riproduci_musica	richiesta=hey you
+metti la canzone hey you	riproduci_musica	richiesta=hey you;tipo=brano
+riproduci il brano hey you per favore	riproduci_musica	richiesta=hey you;tipo=brano
+fammi sentire hey you di pink floyd	riproduci_musica	richiesta=hey you di pink floyd
+metti high hopes	riproduci_musica	richiesta=high hopes
+metti la canzone high hopes	riproduci_musica	richiesta=high hopes;tipo=brano
+riproduci il brano high hopes per favore	riproduci_musica	richiesta=high hopes;tipo=brano
+fammi sentire high hopes di pink floyd	riproduci_musica	richiesta=high hopes di pink floyd
+metti hit the road jack	riproduci_musica	richiesta=hit the road jack
+metti la canzone hit the road jack	riproduci_musica	richiesta=hit the road jack;tipo=brano
+riproduci il brano hit the road jack per favore	riproduci_musica	richiesta=hit the road jack;tipo=brano
+fammi sentire hit the road jack di ray charles	riproduci_musica	richiesta=hit the road jack di ray charles
+metti hold the line	riproduci_musica	richiesta=hold the line
+metti la canzone hold the line	riproduci_musica	richiesta=hold the line;tipo=brano
+riproduci il brano hold the line per favore	riproduci_musica	richiesta=hold the line;tipo=brano
+fammi sentire hold the line di toto	riproduci_musica	richiesta=hold the line di toto
+metti hooked on a feeling	riproduci_musica	richiesta=hooked on a feeling
+metti la canzone hooked on a feeling	riproduci_musica	richiesta=hooked on a feeling;tipo=brano
+riproduci il brano hooked on a feeling per favore	riproduci_musica	richiesta=hooked on a feeling;tipo=brano
+fammi sentire hooked on a feeling di blue swede e björn skifs	riproduci_musica	richiesta=hooked on a feeling di blue swede e björn skifs
+metti hopelessly devoted to you	riproduci_musica	richiesta=hopelessly devoted to you
+metti la canzone hopelessly devoted to you	riproduci_musica	richiesta=hopelessly devoted to you;tipo=brano
+riproduci il brano hopelessly devoted to you per favore	riproduci_musica	richiesta=hopelessly devoted to you;tipo=brano
+fammi sentire hopelessly devoted to you di olivia newton john	riproduci_musica	richiesta=hopelessly devoted to you di olivia newton john
+metti hotel california	riproduci_musica	richiesta=hotel california
+metti la canzone hotel california	riproduci_musica	richiesta=hotel california;tipo=brano
+riproduci il brano hotel california per favore	riproduci_musica	richiesta=hotel california;tipo=brano
+fammi sentire hotel california di eagles	riproduci_musica	richiesta=hotel california di eagles
+metti house of the rising sun	riproduci_musica	richiesta=house of the rising sun
+metti la canzone house of the rising sun	riproduci_musica	richiesta=house of the rising sun;tipo=brano
+riproduci il brano house of the rising sun per favore	riproduci_musica	richiesta=house of the rising sun;tipo=brano
+fammi sentire house of the rising sun di the animals	riproduci_musica	richiesta=house of the rising sun di the animals
+metti hungry like the wolf	riproduci_musica	richiesta=hungry like the wolf
+metti la canzone hungry like the wolf	riproduci_musica	richiesta=hungry like the wolf;tipo=brano
+riproduci il brano hungry like the wolf per favore	riproduci_musica	richiesta=hungry like the wolf;tipo=brano
+fammi sentire hungry like the wolf di duran duran	riproduci_musica	richiesta=hungry like the wolf di duran duran
+metti i belong to you	riproduci_musica	richiesta=i belong to you
+metti la canzone i belong to you	riproduci_musica	richiesta=i belong to you;tipo=brano
+riproduci il brano i belong to you per favore	riproduci_musica	richiesta=i belong to you;tipo=brano
+fammi sentire i belong to you di lenny kravitz	riproduci_musica	richiesta=i belong to you di lenny kravitz
+metti i don't know how to love	riproduci_musica	richiesta=i don't know how to love
+metti la canzone i don't know how to love	riproduci_musica	richiesta=i don't know how to love;tipo=brano
+riproduci il brano i don't know how to love per favore	riproduci_musica	richiesta=i don't know how to love;tipo=brano
+fammi sentire i don't know how to love di the drums	riproduci_musica	richiesta=i don't know how to love di the drums
+metti i get around	riproduci_musica	richiesta=i get around
+metti la canzone i get around	riproduci_musica	richiesta=i get around;tipo=brano
+riproduci il brano i get around per favore	riproduci_musica	richiesta=i get around;tipo=brano
+fammi sentire i get around di the beach boys	riproduci_musica	richiesta=i get around di the beach boys
+metti i got you	riproduci_musica	richiesta=i got you
+metti la canzone i got you	riproduci_musica	richiesta=i got you;tipo=brano
+riproduci il brano i got you per favore	riproduci_musica	richiesta=i got you;tipo=brano
+fammi sentire i got you di james brown the famous flames	riproduci_musica	richiesta=i got you di james brown the famous flames
+metti i gotta feeling	riproduci_musica	richiesta=i gotta feeling
+metti la canzone i gotta feeling	riproduci_musica	richiesta=i gotta feeling;tipo=brano
+riproduci il brano i gotta feeling per favore	riproduci_musica	richiesta=i gotta feeling;tipo=brano
+fammi sentire i gotta feeling di the black eyed peas	riproduci_musica	richiesta=i gotta feeling di the black eyed peas
+metti i know what you want	riproduci_musica	richiesta=i know what you want
+metti la canzone i know what you want	riproduci_musica	richiesta=i know what you want;tipo=brano
+riproduci il brano i know what you want per favore	riproduci_musica	richiesta=i know what you want;tipo=brano
+fammi sentire i know what you want di busta rhymes e mariah carey	riproduci_musica	richiesta=i know what you want di busta rhymes e mariah carey
+metti i shot the sheriff	riproduci_musica	richiesta=i shot the sheriff
+metti la canzone i shot the sheriff	riproduci_musica	richiesta=i shot the sheriff;tipo=brano
+riproduci il brano i shot the sheriff per favore	riproduci_musica	richiesta=i shot the sheriff;tipo=brano
+fammi sentire i shot the sheriff di bob marley e the wailers	riproduci_musica	richiesta=i shot the sheriff di bob marley e the wailers
+metti i think i'm going to kill myself	riproduci_musica	richiesta=i think i'm going to kill myself
+metti la canzone i think i'm going to kill myself	riproduci_musica	richiesta=i think i'm going to kill myself;tipo=brano
+riproduci il brano i think i'm going to kill myself per favore	riproduci_musica	richiesta=i think i'm going to kill myself;tipo=brano
+fammi sentire i think i'm going to kill myself di elton john	riproduci_musica	richiesta=i think i'm going to kill myself di elton john
+metti i want to know what love is	riproduci_musica	richiesta=i want to know what love is
+metti la canzone i want to know what love is	riproduci_musica	richiesta=i want to know what love is;tipo=brano
+riproduci il brano i want to know what love is per favore	riproduci_musica	richiesta=i want to know what love is;tipo=brano
+fammi sentire i want to know what love is di foreigner	riproduci_musica	richiesta=i want to know what love is di foreigner
+metti i'd love to change the world	riproduci_musica	richiesta=i'd love to change the world
+metti la canzone i'd love to change the world	riproduci_musica	richiesta=i'd love to change the world;tipo=brano
+riproduci il brano i'd love to change the world per favore	riproduci_musica	richiesta=i'd love to change the world;tipo=brano
+fammi sentire i'd love to change the world di ten years after	riproduci_musica	richiesta=i'd love to change the world di ten years after
+metti i'm a believer	riproduci_musica	richiesta=i'm a believer
+metti la canzone i'm a believer	riproduci_musica	richiesta=i'm a believer;tipo=brano
+riproduci il brano i'm a believer per favore	riproduci_musica	richiesta=i'm a believer;tipo=brano
+fammi sentire i'm a believer di the monkees	riproduci_musica	richiesta=i'm a believer di the monkees
+metti i'm just a kid	riproduci_musica	richiesta=i'm just a kid
+metti la canzone i'm just a kid	riproduci_musica	richiesta=i'm just a kid;tipo=brano
+riproduci il brano i'm just a kid per favore	riproduci_musica	richiesta=i'm just a kid;tipo=brano
+fammi sentire i'm just a kid di simple plan	riproduci_musica	richiesta=i'm just a kid di simple plan
+metti i've got a woman	riproduci_musica	richiesta=i've got a woman
+metti la canzone i've got a woman	riproduci_musica	richiesta=i've got a woman;tipo=brano
+riproduci il brano i've got a woman per favore	riproduci_musica	richiesta=i've got a woman;tipo=brano
+fammi sentire i've got a woman di ray charles	riproduci_musica	richiesta=i've got a woman di ray charles
+metti imagine	riproduci_musica	richiesta=imagine
+metti la canzone imagine	riproduci_musica	richiesta=imagine;tipo=brano
+riproduci il brano imagine per favore	riproduci_musica	richiesta=imagine;tipo=brano
+fammi sentire imagine di john lennon	riproduci_musica	richiesta=imagine di john lennon
+metti immigrant song	riproduci_musica	richiesta=immigrant song
+metti la canzone immigrant song	riproduci_musica	richiesta=immigrant song;tipo=brano
+riproduci il brano immigrant song per favore	riproduci_musica	richiesta=immigrant song;tipo=brano
+fammi sentire immigrant song di led zeppelin	riproduci_musica	richiesta=immigrant song di led zeppelin
+metti in the air tonight	riproduci_musica	richiesta=in the air tonight
+metti la canzone in the air tonight	riproduci_musica	richiesta=in the air tonight;tipo=brano
+riproduci il brano in the air tonight per favore	riproduci_musica	richiesta=in the air tonight;tipo=brano
+fammi sentire in the air tonight di phil collins	riproduci_musica	richiesta=in the air tonight di phil collins
+metti in the heat of the morning	riproduci_musica	richiesta=in the heat of the morning
+metti la canzone in the heat of the morning	riproduci_musica	richiesta=in the heat of the morning;tipo=brano
+riproduci il brano in the heat of the morning per favore	riproduci_musica	richiesta=in the heat of the morning;tipo=brano
+fammi sentire in the heat of the morning di the last shadow puppets	riproduci_musica	richiesta=in the heat of the morning di the last shadow puppets
+metti in the heat of the night	riproduci_musica	richiesta=in the heat of the night
+metti la canzone in the heat of the night	riproduci_musica	richiesta=in the heat of the night;tipo=brano
+riproduci il brano in the heat of the night per favore	riproduci_musica	richiesta=in the heat of the night;tipo=brano
+fammi sentire in the heat of the night di imagination	riproduci_musica	richiesta=in the heat of the night di imagination
+metti in the summertime	riproduci_musica	richiesta=in the summertime
+metti la canzone in the summertime	riproduci_musica	richiesta=in the summertime;tipo=brano
+riproduci il brano in the summertime per favore	riproduci_musica	richiesta=in the summertime;tipo=brano
+fammi sentire in the summertime di mungo jerry	riproduci_musica	richiesta=in the summertime di mungo jerry
+metti interstate love song	riproduci_musica	richiesta=interstate love song
+metti la canzone interstate love song	riproduci_musica	richiesta=interstate love song;tipo=brano
+riproduci il brano interstate love song per favore	riproduci_musica	richiesta=interstate love song;tipo=brano
+fammi sentire interstate love song di stone temple pilots	riproduci_musica	richiesta=interstate love song di stone temple pilots
+metti island in the sun	riproduci_musica	richiesta=island in the sun
+metti la canzone island in the sun	riproduci_musica	richiesta=island in the sun;tipo=brano
+riproduci il brano island in the sun per favore	riproduci_musica	richiesta=island in the sun;tipo=brano
+fammi sentire island in the sun di weezer	riproduci_musica	richiesta=island in the sun di weezer
+metti it don't mean a thing	riproduci_musica	richiesta=it don't mean a thing
+metti la canzone it don't mean a thing	riproduci_musica	richiesta=it don't mean a thing;tipo=brano
+riproduci il brano it don't mean a thing per favore	riproduci_musica	richiesta=it don't mean a thing;tipo=brano
+fammi sentire it don't mean a thing di louis armstrong e duke ellington	riproduci_musica	richiesta=it don't mean a thing di louis armstrong e duke ellington
+metti it's not unusual	riproduci_musica	richiesta=it's not unusual
+metti la canzone it's not unusual	riproduci_musica	richiesta=it's not unusual;tipo=brano
+riproduci il brano it's not unusual per favore	riproduci_musica	richiesta=it's not unusual;tipo=brano
+fammi sentire it's not unusual di tom jones	riproduci_musica	richiesta=it's not unusual di tom jones
+metti jailhouse rock	riproduci_musica	richiesta=jailhouse rock
+metti la canzone jailhouse rock	riproduci_musica	richiesta=jailhouse rock;tipo=brano
+riproduci il brano jailhouse rock per favore	riproduci_musica	richiesta=jailhouse rock;tipo=brano
+fammi sentire jailhouse rock di elvis presley	riproduci_musica	richiesta=jailhouse rock di elvis presley
+metti jeannie nitro	riproduci_musica	richiesta=jeannie nitro
+metti la canzone jeannie nitro	riproduci_musica	richiesta=jeannie nitro;tipo=brano
+riproduci il brano jeannie nitro per favore	riproduci_musica	richiesta=jeannie nitro;tipo=brano
+fammi sentire jeannie nitro di the fratellis	riproduci_musica	richiesta=jeannie nitro di the fratellis
+metti johnny b goode	riproduci_musica	richiesta=johnny b goode
+metti la canzone johnny b goode	riproduci_musica	richiesta=johnny b goode;tipo=brano
+riproduci il brano johnny b goode per favore	riproduci_musica	richiesta=johnny b goode;tipo=brano
+fammi sentire johnny b goode di chuck berry	riproduci_musica	richiesta=johnny b goode di chuck berry
+metti joker and the thief	riproduci_musica	richiesta=joker and the thief
+metti la canzone joker and the thief	riproduci_musica	richiesta=joker and the thief;tipo=brano
+riproduci il brano joker and the thief per favore	riproduci_musica	richiesta=joker and the thief;tipo=brano
+fammi sentire joker and the thief di wolfmother	riproduci_musica	richiesta=joker and the thief di wolfmother
+metti jump	riproduci_musica	richiesta=jump
+metti la canzone jump	riproduci_musica	richiesta=jump;tipo=brano
+riproduci il brano jump per favore	riproduci_musica	richiesta=jump;tipo=brano
+fammi sentire jump di van halen	riproduci_musica	richiesta=jump di van halen
+metti kids	riproduci_musica	richiesta=kids
+metti la canzone kids	riproduci_musica	richiesta=kids;tipo=brano
+riproduci il brano kids per favore	riproduci_musica	richiesta=kids;tipo=brano
+fammi sentire kids di current joys	riproduci_musica	richiesta=kids di current joys
+metti kiss	riproduci_musica	richiesta=kiss
+metti la canzone kiss	riproduci_musica	richiesta=kiss;tipo=brano
+riproduci il brano kiss per favore	riproduci_musica	richiesta=kiss;tipo=brano
+fammi sentire kiss di prince the revolution	riproduci_musica	richiesta=kiss di prince the revolution
+metti kissing strangers	riproduci_musica	richiesta=kissing strangers
+metti la canzone kissing strangers	riproduci_musica	richiesta=kissing strangers;tipo=brano
+riproduci il brano kissing strangers per favore	riproduci_musica	richiesta=kissing strangers;tipo=brano
+fammi sentire kissing strangers di dnce	riproduci_musica	richiesta=kissing strangers di dnce
+metti knockin' on heaven's door	riproduci_musica	richiesta=knockin' on heaven's door
+metti la canzone knockin' on heaven's door	riproduci_musica	richiesta=knockin' on heaven's door;tipo=brano
+riproduci il brano knockin' on heaven's door per favore	riproduci_musica	richiesta=knockin' on heaven's door;tipo=brano
+fammi sentire knockin' on heaven's door di bob dylan	riproduci_musica	richiesta=knockin' on heaven's door di bob dylan
+metti kung fu fighting	riproduci_musica	richiesta=kung fu fighting
+metti la canzone kung fu fighting	riproduci_musica	richiesta=kung fu fighting;tipo=brano
+riproduci il brano kung fu fighting per favore	riproduci_musica	richiesta=kung fu fighting;tipo=brano
+fammi sentire kung fu fighting di carl douglas	riproduci_musica	richiesta=kung fu fighting di carl douglas
+metti la bamba	riproduci_musica	richiesta=la bamba
+metti la canzone la bamba	riproduci_musica	richiesta=la bamba;tipo=brano
+riproduci il brano la bamba per favore	riproduci_musica	richiesta=la bamba;tipo=brano
+fammi sentire la bamba di ritchie valens	riproduci_musica	richiesta=la bamba di ritchie valens
+metti lala song	riproduci_musica	richiesta=lala song
+metti la canzone lala song	riproduci_musica	richiesta=lala song;tipo=brano
+riproduci il brano lala song per favore	riproduci_musica	richiesta=lala song;tipo=brano
+fammi sentire lala song di bob sinclar	riproduci_musica	richiesta=lala song di bob sinclar
+metti le freak	riproduci_musica	richiesta=le freak
+metti la canzone le freak	riproduci_musica	richiesta=le freak;tipo=brano
+riproduci il brano le freak per favore	riproduci_musica	richiesta=le freak;tipo=brano
+fammi sentire le freak di chic	riproduci_musica	richiesta=le freak di chic
+metti learn to fly	riproduci_musica	richiesta=learn to fly
+metti la canzone learn to fly	riproduci_musica	richiesta=learn to fly;tipo=brano
+riproduci il brano learn to fly per favore	riproduci_musica	richiesta=learn to fly;tipo=brano
+fammi sentire learn to fly di foo fighters	riproduci_musica	richiesta=learn to fly di foo fighters
+metti let it rock	riproduci_musica	richiesta=let it rock
+metti la canzone let it rock	riproduci_musica	richiesta=let it rock;tipo=brano
+riproduci il brano let it rock per favore	riproduci_musica	richiesta=let it rock;tipo=brano
+fammi sentire let it rock di chuck berry	riproduci_musica	richiesta=let it rock di chuck berry
+metti let's twist again	riproduci_musica	richiesta=let's twist again
+metti la canzone let's twist again	riproduci_musica	richiesta=let's twist again;tipo=brano
+riproduci il brano let's twist again per favore	riproduci_musica	richiesta=let's twist again;tipo=brano
+fammi sentire let's twist again di chubby checker	riproduci_musica	richiesta=let's twist again di chubby checker
+metti light my fire	riproduci_musica	richiesta=light my fire
+metti la canzone light my fire	riproduci_musica	richiesta=light my fire;tipo=brano
+riproduci il brano light my fire per favore	riproduci_musica	richiesta=light my fire;tipo=brano
+fammi sentire light my fire di the doors	riproduci_musica	richiesta=light my fire di the doors
+metti little green bag	riproduci_musica	richiesta=little green bag
+metti la canzone little green bag	riproduci_musica	richiesta=little green bag;tipo=brano
+riproduci il brano little green bag per favore	riproduci_musica	richiesta=little green bag;tipo=brano
+fammi sentire little green bag di george baker selection	riproduci_musica	richiesta=little green bag di george baker selection
+metti losing my religion	riproduci_musica	richiesta=losing my religion
+metti la canzone losing my religion	riproduci_musica	richiesta=losing my religion;tipo=brano
+riproduci il brano losing my religion per favore	riproduci_musica	richiesta=losing my religion;tipo=brano
+fammi sentire losing my religion di r e m	riproduci_musica	richiesta=losing my religion di r e m
+metti lost for words	riproduci_musica	richiesta=lost for words
+metti la canzone lost for words	riproduci_musica	richiesta=lost for words;tipo=brano
+riproduci il brano lost for words per favore	riproduci_musica	richiesta=lost for words;tipo=brano
+fammi sentire lost for words di pink floyd	riproduci_musica	richiesta=lost for words di pink floyd
+metti love generation	riproduci_musica	richiesta=love generation
+metti la canzone love generation	riproduci_musica	richiesta=love generation;tipo=brano
+riproduci il brano love generation per favore	riproduci_musica	richiesta=love generation;tipo=brano
+fammi sentire love generation di bob sinclar	riproduci_musica	richiesta=love generation di bob sinclar
+metti love grows	riproduci_musica	richiesta=love grows
+metti la canzone love grows	riproduci_musica	richiesta=love grows;tipo=brano
+riproduci il brano love grows per favore	riproduci_musica	richiesta=love grows;tipo=brano
+fammi sentire love grows di edison lighthouse	riproduci_musica	richiesta=love grows di edison lighthouse
+metti love is a laserquest	riproduci_musica	richiesta=love is a laserquest
+metti la canzone love is a laserquest	riproduci_musica	richiesta=love is a laserquest;tipo=brano
+riproduci il brano love is a laserquest per favore	riproduci_musica	richiesta=love is a laserquest;tipo=brano
+fammi sentire love is a laserquest di arctic monkeys	riproduci_musica	richiesta=love is a laserquest di arctic monkeys
+metti love me two times	riproduci_musica	richiesta=love me two times
+metti la canzone love me two times	riproduci_musica	richiesta=love me two times;tipo=brano
+riproduci il brano love me two times per favore	riproduci_musica	richiesta=love me two times;tipo=brano
+fammi sentire love me two times di the doors	riproduci_musica	richiesta=love me two times di the doors
+metti love will tear us apart	riproduci_musica	richiesta=love will tear us apart
+metti la canzone love will tear us apart	riproduci_musica	richiesta=love will tear us apart;tipo=brano
+riproduci il brano love will tear us apart per favore	riproduci_musica	richiesta=love will tear us apart;tipo=brano
+fammi sentire love will tear us apart di joy division	riproduci_musica	richiesta=love will tear us apart di joy division
+metti lovely day	riproduci_musica	richiesta=lovely day
+metti la canzone lovely day	riproduci_musica	richiesta=lovely day;tipo=brano
+riproduci il brano lovely day per favore	riproduci_musica	richiesta=lovely day;tipo=brano
+fammi sentire lovely day di bill withers	riproduci_musica	richiesta=lovely day di bill withers
+metti lovesong	riproduci_musica	richiesta=lovesong
+metti la canzone lovesong	riproduci_musica	richiesta=lovesong;tipo=brano
+riproduci il brano lovesong per favore	riproduci_musica	richiesta=lovesong;tipo=brano
+fammi sentire lovesong di the cure	riproduci_musica	richiesta=lovesong di the cure
+metti low	riproduci_musica	richiesta=low
+metti la canzone low	riproduci_musica	richiesta=low;tipo=brano
+riproduci il brano low per favore	riproduci_musica	richiesta=low;tipo=brano
+fammi sentire low di lenny kravitz	riproduci_musica	richiesta=low di lenny kravitz
+metti ma chérie	riproduci_musica	richiesta=ma chérie
+metti la canzone ma chérie	riproduci_musica	richiesta=ma chérie;tipo=brano
+riproduci il brano ma chérie per favore	riproduci_musica	richiesta=ma chérie;tipo=brano
+fammi sentire ma chérie di dj antoine	riproduci_musica	richiesta=ma chérie di dj antoine
+metti magic dance	riproduci_musica	richiesta=magic dance
+metti la canzone magic dance	riproduci_musica	richiesta=magic dance;tipo=brano
+riproduci il brano magic dance per favore	riproduci_musica	richiesta=magic dance;tipo=brano
+fammi sentire magic dance di david bowie	riproduci_musica	richiesta=magic dance di david bowie
+metti mambo no 5	riproduci_musica	richiesta=mambo no 5
+metti la canzone mambo no 5	riproduci_musica	richiesta=mambo no 5;tipo=brano
+riproduci il brano mambo no 5 per favore	riproduci_musica	richiesta=mambo no 5;tipo=brano
+fammi sentire mambo no 5 di lou bega	riproduci_musica	richiesta=mambo no 5 di lou bega
+metti maniac	riproduci_musica	richiesta=maniac
+metti la canzone maniac	riproduci_musica	richiesta=maniac;tipo=brano
+riproduci il brano maniac per favore	riproduci_musica	richiesta=maniac;tipo=brano
+fammi sentire maniac di michael sembello	riproduci_musica	richiesta=maniac di michael sembello
+metti mardy bum	riproduci_musica	richiesta=mardy bum
+metti la canzone mardy bum	riproduci_musica	richiesta=mardy bum;tipo=brano
+riproduci il brano mardy bum per favore	riproduci_musica	richiesta=mardy bum;tipo=brano
+fammi sentire mardy bum di arctic monkeys	riproduci_musica	richiesta=mardy bum di arctic monkeys
+metti maybe	riproduci_musica	richiesta=maybe
+metti la canzone maybe	riproduci_musica	richiesta=maybe;tipo=brano
+riproduci il brano maybe per favore	riproduci_musica	richiesta=maybe;tipo=brano
+fammi sentire maybe di janis joplin	riproduci_musica	richiesta=maybe di janis joplin
+metti meet me halfway	riproduci_musica	richiesta=meet me halfway
+metti la canzone meet me halfway	riproduci_musica	richiesta=meet me halfway;tipo=brano
+riproduci il brano meet me halfway per favore	riproduci_musica	richiesta=meet me halfway;tipo=brano
+fammi sentire meet me halfway di the black eyed peas	riproduci_musica	richiesta=meet me halfway di the black eyed peas
+metti message in a bottle	riproduci_musica	richiesta=message in a bottle
+metti la canzone message in a bottle	riproduci_musica	richiesta=message in a bottle;tipo=brano
+riproduci il brano message in a bottle per favore	riproduci_musica	richiesta=message in a bottle;tipo=brano
+fammi sentire message in a bottle di the police	riproduci_musica	richiesta=message in a bottle di the police
+metti michelle	riproduci_musica	richiesta=michelle
+metti la canzone michelle	riproduci_musica	richiesta=michelle;tipo=brano
+riproduci il brano michelle per favore	riproduci_musica	richiesta=michelle;tipo=brano
+fammi sentire michelle di the beatles	riproduci_musica	richiesta=michelle di the beatles
+metti mind over matter	riproduci_musica	richiesta=mind over matter
+metti la canzone mind over matter	riproduci_musica	richiesta=mind over matter;tipo=brano
+riproduci il brano mind over matter per favore	riproduci_musica	richiesta=mind over matter;tipo=brano
+fammi sentire mind over matter di young the giant	riproduci_musica	richiesta=mind over matter di young the giant
+metti miss you	riproduci_musica	richiesta=miss you
+metti la canzone miss you	riproduci_musica	richiesta=miss you;tipo=brano
+riproduci il brano miss you per favore	riproduci_musica	richiesta=miss you;tipo=brano
+fammi sentire miss you di the rolling stones	riproduci_musica	richiesta=miss you di the rolling stones
+metti moby dick	riproduci_musica	richiesta=moby dick
+metti la canzone moby dick	riproduci_musica	richiesta=moby dick;tipo=brano
+riproduci il brano moby dick per favore	riproduci_musica	richiesta=moby dick;tipo=brano
+fammi sentire moby dick di led zeppelin	riproduci_musica	richiesta=moby dick di led zeppelin
+metti money	riproduci_musica	richiesta=money
+metti la canzone money	riproduci_musica	richiesta=money;tipo=brano
+riproduci il brano money per favore	riproduci_musica	richiesta=money;tipo=brano
+fammi sentire money di pink floyd	riproduci_musica	richiesta=money di pink floyd
+metti mother	riproduci_musica	richiesta=mother
+metti la canzone mother	riproduci_musica	richiesta=mother;tipo=brano
+riproduci il brano mother per favore	riproduci_musica	richiesta=mother;tipo=brano
+fammi sentire mother di pink floyd	riproduci_musica	richiesta=mother di pink floyd
+metti mr sandman	riproduci_musica	richiesta=mr sandman
+metti la canzone mr sandman	riproduci_musica	richiesta=mr sandman;tipo=brano
+riproduci il brano mr sandman per favore	riproduci_musica	richiesta=mr sandman;tipo=brano
+fammi sentire mr sandman di the chordettes	riproduci_musica	richiesta=mr sandman di the chordettes
+metti my life	riproduci_musica	richiesta=my life
+metti la canzone my life	riproduci_musica	richiesta=my life;tipo=brano
+riproduci il brano my life per favore	riproduci_musica	richiesta=my life;tipo=brano
+fammi sentire my life di billy joel	riproduci_musica	richiesta=my life di billy joel
+metti my sharona	riproduci_musica	richiesta=my sharona
+metti la canzone my sharona	riproduci_musica	richiesta=my sharona;tipo=brano
+riproduci il brano my sharona per favore	riproduci_musica	richiesta=my sharona;tipo=brano
+fammi sentire my sharona di the knack	riproduci_musica	richiesta=my sharona di the knack
+metti need you tonight	riproduci_musica	richiesta=need you tonight
+metti la canzone need you tonight	riproduci_musica	richiesta=need you tonight;tipo=brano
+riproduci il brano need you tonight per favore	riproduci_musica	richiesta=need you tonight;tipo=brano
+fammi sentire need you tonight di inxs	riproduci_musica	richiesta=need you tonight di inxs
+metti never going home	riproduci_musica	richiesta=never going home
+metti la canzone never going home	riproduci_musica	richiesta=never going home;tipo=brano
+riproduci il brano never going home per favore	riproduci_musica	richiesta=never going home;tipo=brano
+fammi sentire never going home di kungs	riproduci_musica	richiesta=never going home di kungs
+metti never tear us apart	riproduci_musica	richiesta=never tear us apart
+metti la canzone never tear us apart	riproduci_musica	richiesta=never tear us apart;tipo=brano
+riproduci il brano never tear us apart per favore	riproduci_musica	richiesta=never tear us apart;tipo=brano
+fammi sentire never tear us apart di party tyme	riproduci_musica	richiesta=never tear us apart di party tyme
+metti no rain	riproduci_musica	richiesta=no rain
+metti la canzone no rain	riproduci_musica	richiesta=no rain;tipo=brano
+riproduci il brano no rain per favore	riproduci_musica	richiesta=no rain;tipo=brano
+fammi sentire no rain di blind melon	riproduci_musica	richiesta=no rain di blind melon
+metti one scotch one bourbon one beer	riproduci_musica	richiesta=one scotch one bourbon one beer
+metti la canzone one scotch one bourbon one beer	riproduci_musica	richiesta=one scotch one bourbon one beer;tipo=brano
+riproduci il brano one scotch one bourbon one beer per favore	riproduci_musica	richiesta=one scotch one bourbon one beer;tipo=brano
+fammi sentire one scotch one bourbon one beer di amos milburn e his aladdin chickenshakers	riproduci_musica	richiesta=one scotch one bourbon one beer di amos milburn e his aladdin chickenshakers
+metti one way or another	riproduci_musica	richiesta=one way or another
+metti la canzone one way or another	riproduci_musica	richiesta=one way or another;tipo=brano
+riproduci il brano one way or another per favore	riproduci_musica	richiesta=one way or another;tipo=brano
+fammi sentire one way or another di blondie	riproduci_musica	richiesta=one way or another di blondie
+metti ordinary world	riproduci_musica	richiesta=ordinary world
+metti la canzone ordinary world	riproduci_musica	richiesta=ordinary world;tipo=brano
+riproduci il brano ordinary world per favore	riproduci_musica	richiesta=ordinary world;tipo=brano
+fammi sentire ordinary world di duran duran	riproduci_musica	richiesta=ordinary world di duran duran
+metti otherside	riproduci_musica	richiesta=otherside
+metti la canzone otherside	riproduci_musica	richiesta=otherside;tipo=brano
+riproduci il brano otherside per favore	riproduci_musica	richiesta=otherside;tipo=brano
+fammi sentire otherside di red hot chili peppers	riproduci_musica	richiesta=otherside di red hot chili peppers
+metti paint it black	riproduci_musica	richiesta=paint it black
+metti la canzone paint it black	riproduci_musica	richiesta=paint it black;tipo=brano
+riproduci il brano paint it black per favore	riproduci_musica	richiesta=paint it black;tipo=brano
+fammi sentire paint it black di the rolling stones	riproduci_musica	richiesta=paint it black di the rolling stones
+metti parallel universe	riproduci_musica	richiesta=parallel universe
+metti la canzone parallel universe	riproduci_musica	richiesta=parallel universe;tipo=brano
+riproduci il brano parallel universe per favore	riproduci_musica	richiesta=parallel universe;tipo=brano
+fammi sentire parallel universe di red hot chili peppers	riproduci_musica	richiesta=parallel universe di red hot chili peppers
+metti paranoid	riproduci_musica	richiesta=paranoid
+metti la canzone paranoid	riproduci_musica	richiesta=paranoid;tipo=brano
+riproduci il brano paranoid per favore	riproduci_musica	richiesta=paranoid;tipo=brano
+fammi sentire paranoid di black sabbath	riproduci_musica	richiesta=paranoid di black sabbath
+metti peace frog	riproduci_musica	richiesta=peace frog
+metti la canzone peace frog	riproduci_musica	richiesta=peace frog;tipo=brano
+riproduci il brano peace frog per favore	riproduci_musica	richiesta=peace frog;tipo=brano
+fammi sentire peace frog di the doors	riproduci_musica	richiesta=peace frog di the doors
+metti people are strange	riproduci_musica	richiesta=people are strange
+metti la canzone people are strange	riproduci_musica	richiesta=people are strange;tipo=brano
+riproduci il brano people are strange per favore	riproduci_musica	richiesta=people are strange;tipo=brano
+fammi sentire people are strange di the doors	riproduci_musica	richiesta=people are strange di the doors
+metti perfect day	riproduci_musica	richiesta=perfect day
+metti la canzone perfect day	riproduci_musica	richiesta=perfect day;tipo=brano
+riproduci il brano perfect day per favore	riproduci_musica	richiesta=perfect day;tipo=brano
+fammi sentire perfect day di lou reed	riproduci_musica	richiesta=perfect day di lou reed
+metti personal jesus	riproduci_musica	richiesta=personal jesus
+metti la canzone personal jesus	riproduci_musica	richiesta=personal jesus;tipo=brano
+riproduci il brano personal jesus per favore	riproduci_musica	richiesta=personal jesus;tipo=brano
+fammi sentire personal jesus di depeche mode	riproduci_musica	richiesta=personal jesus di depeche mode
+metti piano man	riproduci_musica	richiesta=piano man
+metti la canzone piano man	riproduci_musica	richiesta=piano man;tipo=brano
+riproduci il brano piano man per favore	riproduci_musica	richiesta=piano man;tipo=brano
+fammi sentire piano man di billy joel	riproduci_musica	richiesta=piano man di billy joel
+metti pigs	riproduci_musica	richiesta=pigs
+metti la canzone pigs	riproduci_musica	richiesta=pigs;tipo=brano
+riproduci il brano pigs per favore	riproduci_musica	richiesta=pigs;tipo=brano
+fammi sentire pigs di pink floyd	riproduci_musica	richiesta=pigs di pink floyd
+metti pigs on the wing 1	riproduci_musica	richiesta=pigs on the wing 1
+metti la canzone pigs on the wing 1	riproduci_musica	richiesta=pigs on the wing 1;tipo=brano
+riproduci il brano pigs on the wing 1 per favore	riproduci_musica	richiesta=pigs on the wing 1;tipo=brano
+fammi sentire pigs on the wing 1 di pink floyd	riproduci_musica	richiesta=pigs on the wing 1 di pink floyd
+metti pigs on the wing 2	riproduci_musica	richiesta=pigs on the wing 2
+metti la canzone pigs on the wing 2	riproduci_musica	richiesta=pigs on the wing 2;tipo=brano
+riproduci il brano pigs on the wing 2 per favore	riproduci_musica	richiesta=pigs on the wing 2;tipo=brano
+fammi sentire pigs on the wing 2 di pink floyd	riproduci_musica	richiesta=pigs on the wing 2 di pink floyd
+metti piledriver waltz	riproduci_musica	richiesta=piledriver waltz
+metti la canzone piledriver waltz	riproduci_musica	richiesta=piledriver waltz;tipo=brano
+riproduci il brano piledriver waltz per favore	riproduci_musica	richiesta=piledriver waltz;tipo=brano
+fammi sentire piledriver waltz di alex turner	riproduci_musica	richiesta=piledriver waltz di alex turner
+metti prey	riproduci_musica	richiesta=prey
+metti la canzone prey	riproduci_musica	richiesta=prey;tipo=brano
+riproduci il brano prey per favore	riproduci_musica	richiesta=prey;tipo=brano
+fammi sentire prey di the neighbourhood	riproduci_musica	richiesta=prey di the neighbourhood
+metti psycho killer	riproduci_musica	richiesta=psycho killer
+metti la canzone psycho killer	riproduci_musica	richiesta=psycho killer;tipo=brano
+riproduci il brano psycho killer per favore	riproduci_musica	richiesta=psycho killer;tipo=brano
+fammi sentire psycho killer di talking heads	riproduci_musica	richiesta=psycho killer di talking heads
+metti pumped up kicks	riproduci_musica	richiesta=pumped up kicks
+metti la canzone pumped up kicks	riproduci_musica	richiesta=pumped up kicks;tipo=brano
+riproduci il brano pumped up kicks per favore	riproduci_musica	richiesta=pumped up kicks;tipo=brano
+fammi sentire pumped up kicks di foster the people	riproduci_musica	richiesta=pumped up kicks di foster the people
+metti purple haze	riproduci_musica	richiesta=purple haze
+metti la canzone purple haze	riproduci_musica	richiesta=purple haze;tipo=brano
+riproduci il brano purple haze per favore	riproduci_musica	richiesta=purple haze;tipo=brano
+fammi sentire purple haze di the jimi hendrix experience	riproduci_musica	richiesta=purple haze di the jimi hendrix experience
+metti purple rain	riproduci_musica	richiesta=purple rain
+metti la canzone purple rain	riproduci_musica	richiesta=purple rain;tipo=brano
+riproduci il brano purple rain per favore	riproduci_musica	richiesta=purple rain;tipo=brano
+fammi sentire purple rain di prince the revolution	riproduci_musica	richiesta=purple rain di prince the revolution
+metti r i p 2 my youth	riproduci_musica	richiesta=r i p 2 my youth
+metti la canzone r i p 2 my youth	riproduci_musica	richiesta=r i p 2 my youth;tipo=brano
+riproduci il brano r i p 2 my youth per favore	riproduci_musica	richiesta=r i p 2 my youth;tipo=brano
+fammi sentire r i p 2 my youth di the neighbourhood	riproduci_musica	richiesta=r i p 2 my youth di the neighbourhood
+metti rape me	riproduci_musica	richiesta=rape me
+metti la canzone rape me	riproduci_musica	richiesta=rape me;tipo=brano
+riproduci il brano rape me per favore	riproduci_musica	richiesta=rape me;tipo=brano
+fammi sentire rape me di nirvana	riproduci_musica	richiesta=rape me di nirvana
+metti rapper's delight	riproduci_musica	richiesta=rapper's delight
+metti la canzone rapper's delight	riproduci_musica	richiesta=rapper's delight;tipo=brano
+riproduci il brano rapper's delight per favore	riproduci_musica	richiesta=rapper's delight;tipo=brano
+fammi sentire rapper's delight di the sugarhill gang	riproduci_musica	richiesta=rapper's delight di the sugarhill gang
+metti rasputin	riproduci_musica	richiesta=rasputin
+metti la canzone rasputin	riproduci_musica	richiesta=rasputin;tipo=brano
+riproduci il brano rasputin per favore	riproduci_musica	richiesta=rasputin;tipo=brano
+fammi sentire rasputin di boney m	riproduci_musica	richiesta=rasputin di boney m
+metti ready teddy	riproduci_musica	richiesta=ready teddy
+metti la canzone ready teddy	riproduci_musica	richiesta=ready teddy;tipo=brano
+riproduci il brano ready teddy per favore	riproduci_musica	richiesta=ready teddy;tipo=brano
+fammi sentire ready teddy di little richard	riproduci_musica	richiesta=ready teddy di little richard
+metti rebel rebel	riproduci_musica	richiesta=rebel rebel
+metti la canzone rebel rebel	riproduci_musica	richiesta=rebel rebel;tipo=brano
+riproduci il brano rebel rebel per favore	riproduci_musica	richiesta=rebel rebel;tipo=brano
+fammi sentire rebel rebel di david bowie	riproduci_musica	richiesta=rebel rebel di david bowie
+metti redbone	riproduci_musica	richiesta=redbone
+metti la canzone redbone	riproduci_musica	richiesta=redbone;tipo=brano
+riproduci il brano redbone per favore	riproduci_musica	richiesta=redbone;tipo=brano
+fammi sentire redbone di childish gambino	riproduci_musica	richiesta=redbone di childish gambino
+metti reflections	riproduci_musica	richiesta=reflections
+metti la canzone reflections	riproduci_musica	richiesta=reflections;tipo=brano
+riproduci il brano reflections per favore	riproduci_musica	richiesta=reflections;tipo=brano
+fammi sentire reflections di the neighbourhood	riproduci_musica	richiesta=reflections di the neighbourhood
+metti regulate	riproduci_musica	richiesta=regulate
+metti la canzone regulate	riproduci_musica	richiesta=regulate;tipo=brano
+riproduci il brano regulate per favore	riproduci_musica	richiesta=regulate;tipo=brano
+fammi sentire regulate di warren g	riproduci_musica	richiesta=regulate di warren g
+metti riders on the storm	riproduci_musica	richiesta=riders on the storm
+metti la canzone riders on the storm	riproduci_musica	richiesta=riders on the storm;tipo=brano
+riproduci il brano riders on the storm per favore	riproduci_musica	richiesta=riders on the storm;tipo=brano
+fammi sentire riders on the storm di the doors	riproduci_musica	richiesta=riders on the storm di the doors
+metti right down the line	riproduci_musica	richiesta=right down the line
+metti la canzone right down the line	riproduci_musica	richiesta=right down the line;tipo=brano
+riproduci il brano right down the line per favore	riproduci_musica	richiesta=right down the line;tipo=brano
+fammi sentire right down the line di gerry rafferty	riproduci_musica	richiesta=right down the line di gerry rafferty
+metti roadhouse blues	riproduci_musica	richiesta=roadhouse blues
+metti la canzone roadhouse blues	riproduci_musica	richiesta=roadhouse blues;tipo=brano
+riproduci il brano roadhouse blues per favore	riproduci_musica	richiesta=roadhouse blues;tipo=brano
+fammi sentire roadhouse blues di the doors	riproduci_musica	richiesta=roadhouse blues di the doors
+metti rock 'n' roll suicide	riproduci_musica	richiesta=rock 'n' roll suicide
+metti la canzone rock 'n' roll suicide	riproduci_musica	richiesta=rock 'n' roll suicide;tipo=brano
+riproduci il brano rock 'n' roll suicide per favore	riproduci_musica	richiesta=rock 'n' roll suicide;tipo=brano
+fammi sentire rock 'n' roll suicide di david bowie	riproduci_musica	richiesta=rock 'n' roll suicide di david bowie
+metti rock and roll music	riproduci_musica	richiesta=rock and roll music
+metti la canzone rock and roll music	riproduci_musica	richiesta=rock and roll music;tipo=brano
+riproduci il brano rock and roll music per favore	riproduci_musica	richiesta=rock and roll music;tipo=brano
+fammi sentire rock and roll music di chuck berry	riproduci_musica	richiesta=rock and roll music di chuck berry
+metti rock this party	riproduci_musica	richiesta=rock this party
+metti la canzone rock this party	riproduci_musica	richiesta=rock this party;tipo=brano
+riproduci il brano rock this party per favore	riproduci_musica	richiesta=rock this party;tipo=brano
+fammi sentire rock this party di bob sinclar e cutee b	riproduci_musica	richiesta=rock this party di bob sinclar e cutee b
+metti rock with you	riproduci_musica	richiesta=rock with you
+metti la canzone rock with you	riproduci_musica	richiesta=rock with you;tipo=brano
+riproduci il brano rock with you per favore	riproduci_musica	richiesta=rock with you;tipo=brano
+fammi sentire rock with you di michael jackson	riproduci_musica	richiesta=rock with you di michael jackson
+metti rocket man	riproduci_musica	richiesta=rocket man
+metti la canzone rocket man	riproduci_musica	richiesta=rocket man;tipo=brano
+riproduci il brano rocket man per favore	riproduci_musica	richiesta=rocket man;tipo=brano
+fammi sentire rocket man di elton john	riproduci_musica	richiesta=rocket man di elton john
+metti roll over beethoven	riproduci_musica	richiesta=roll over beethoven
+metti la canzone roll over beethoven	riproduci_musica	richiesta=roll over beethoven;tipo=brano
+riproduci il brano roll over beethoven per favore	riproduci_musica	richiesta=roll over beethoven;tipo=brano
+fammi sentire roll over beethoven di chuck berry and his combo	riproduci_musica	richiesta=roll over beethoven di chuck berry and his combo
+metti romeo and juliet	riproduci_musica	richiesta=romeo and juliet
+metti la canzone romeo and juliet	riproduci_musica	richiesta=romeo and juliet;tipo=brano
+riproduci il brano romeo and juliet per favore	riproduci_musica	richiesta=romeo and juliet;tipo=brano
+fammi sentire romeo and juliet di dire straits	riproduci_musica	richiesta=romeo and juliet di dire straits
+metti route 66	riproduci_musica	richiesta=route 66
+metti la canzone route 66	riproduci_musica	richiesta=route 66;tipo=brano
+riproduci il brano route 66 per favore	riproduci_musica	richiesta=route 66;tipo=brano
+fammi sentire route 66 di chuck berry	riproduci_musica	richiesta=route 66 di chuck berry
+metti roxanne	riproduci_musica	richiesta=roxanne
+metti la canzone roxanne	riproduci_musica	richiesta=roxanne;tipo=brano
+riproduci il brano roxanne per favore	riproduci_musica	richiesta=roxanne;tipo=brano
+fammi sentire roxanne di the police	riproduci_musica	richiesta=roxanne di the police
+metti ruby tuesday	riproduci_musica	richiesta=ruby tuesday
+metti la canzone ruby tuesday	riproduci_musica	richiesta=ruby tuesday;tipo=brano
+riproduci il brano ruby tuesday per favore	riproduci_musica	richiesta=ruby tuesday;tipo=brano
+fammi sentire ruby tuesday di the rolling stones	riproduci_musica	richiesta=ruby tuesday di the rolling stones
+metti santeria	riproduci_musica	richiesta=santeria
+metti la canzone santeria	riproduci_musica	richiesta=santeria;tipo=brano
+riproduci il brano santeria per favore	riproduci_musica	richiesta=santeria;tipo=brano
+fammi sentire santeria di sublime	riproduci_musica	richiesta=santeria di sublime
+metti scar tissue	riproduci_musica	richiesta=scar tissue
+metti la canzone scar tissue	riproduci_musica	richiesta=scar tissue;tipo=brano
+riproduci il brano scar tissue per favore	riproduci_musica	richiesta=scar tissue;tipo=brano
+fammi sentire scar tissue di red hot chili peppers	riproduci_musica	richiesta=scar tissue di red hot chili peppers
+metti september	riproduci_musica	richiesta=september
+metti la canzone september	riproduci_musica	richiesta=september;tipo=brano
+riproduci il brano september per favore	riproduci_musica	richiesta=september;tipo=brano
+fammi sentire september di earth wind fire	riproduci_musica	richiesta=september di earth wind fire
+metti seven seas of rhye	riproduci_musica	richiesta=seven seas of rhye
+metti la canzone seven seas of rhye	riproduci_musica	richiesta=seven seas of rhye;tipo=brano
+riproduci il brano seven seas of rhye per favore	riproduci_musica	richiesta=seven seas of rhye;tipo=brano
+fammi sentire seven seas of rhye di queen	riproduci_musica	richiesta=seven seas of rhye di queen
+metti sexbomb	riproduci_musica	richiesta=sexbomb
+metti la canzone sexbomb	riproduci_musica	richiesta=sexbomb;tipo=brano
+riproduci il brano sexbomb per favore	riproduci_musica	richiesta=sexbomb;tipo=brano
+fammi sentire sexbomb di tom jones	riproduci_musica	richiesta=sexbomb di tom jones
+metti sh boom life could be a dream	riproduci_musica	richiesta=sh boom life could be a dream
+metti la canzone sh boom life could be a dream	riproduci_musica	richiesta=sh boom life could be a dream;tipo=brano
+riproduci il brano sh boom life could be a dream per favore	riproduci_musica	richiesta=sh boom life could be a dream;tipo=brano
+fammi sentire sh boom life could be a dream di the chordettes	riproduci_musica	richiesta=sh boom life could be a dream di the chordettes
+metti sh boom	riproduci_musica	richiesta=sh boom
+metti la canzone sh boom	riproduci_musica	richiesta=sh boom;tipo=brano
+riproduci il brano sh boom per favore	riproduci_musica	richiesta=sh boom;tipo=brano
+fammi sentire sh boom di the chords	riproduci_musica	richiesta=sh boom di the chords
+metti she said	riproduci_musica	richiesta=she said
+metti la canzone she said	riproduci_musica	richiesta=she said;tipo=brano
+riproduci il brano she said per favore	riproduci_musica	richiesta=she said;tipo=brano
+fammi sentire she said di plan b	riproduci_musica	richiesta=she said di plan b
+metti she's a rainbow	riproduci_musica	richiesta=she's a rainbow
+metti la canzone she's a rainbow	riproduci_musica	richiesta=she's a rainbow;tipo=brano
+riproduci il brano she's a rainbow per favore	riproduci_musica	richiesta=she's a rainbow;tipo=brano
+fammi sentire she's a rainbow di the rolling stones	riproduci_musica	richiesta=she's a rainbow di the rolling stones
+metti sheep	riproduci_musica	richiesta=sheep
+metti la canzone sheep	riproduci_musica	richiesta=sheep;tipo=brano
+riproduci il brano sheep per favore	riproduci_musica	richiesta=sheep;tipo=brano
+fammi sentire sheep di pink floyd	riproduci_musica	richiesta=sheep di pink floyd
+metti should i stay or should i go	riproduci_musica	richiesta=should i stay or should i go
+metti la canzone should i stay or should i go	riproduci_musica	richiesta=should i stay or should i go;tipo=brano
+riproduci il brano should i stay or should i go per favore	riproduci_musica	richiesta=should i stay or should i go;tipo=brano
+fammi sentire should i stay or should i go di the clash	riproduci_musica	richiesta=should i stay or should i go di the clash
+metti simple man	riproduci_musica	richiesta=simple man
+metti la canzone simple man	riproduci_musica	richiesta=simple man;tipo=brano
+riproduci il brano simple man per favore	riproduci_musica	richiesta=simple man;tipo=brano
+fammi sentire simple man di lynyrd skynyrd	riproduci_musica	richiesta=simple man di lynyrd skynyrd
+metti since i've been loving you	riproduci_musica	richiesta=since i've been loving you
+metti la canzone since i've been loving you	riproduci_musica	richiesta=since i've been loving you;tipo=brano
+riproduci il brano since i've been loving you per favore	riproduci_musica	richiesta=since i've been loving you;tipo=brano
+fammi sentire since i've been loving you di led zeppelin	riproduci_musica	richiesta=since i've been loving you di led zeppelin
+metti single	riproduci_musica	richiesta=single
+metti la canzone single	riproduci_musica	richiesta=single;tipo=brano
+riproduci il brano single per favore	riproduci_musica	richiesta=single;tipo=brano
+fammi sentire single di the neighbourhood	riproduci_musica	richiesta=single di the neighbourhood
+metti smells like teen spirit	riproduci_musica	richiesta=smells like teen spirit
+metti la canzone smells like teen spirit	riproduci_musica	richiesta=smells like teen spirit;tipo=brano
+riproduci il brano smells like teen spirit per favore	riproduci_musica	richiesta=smells like teen spirit;tipo=brano
+fammi sentire smells like teen spirit di nirvana	riproduci_musica	richiesta=smells like teen spirit di nirvana
+metti smoke on the water	riproduci_musica	richiesta=smoke on the water
+metti la canzone smoke on the water	riproduci_musica	richiesta=smoke on the water;tipo=brano
+riproduci il brano smoke on the water per favore	riproduci_musica	richiesta=smoke on the water;tipo=brano
+fammi sentire smoke on the water di deep purple	riproduci_musica	richiesta=smoke on the water di deep purple
+metti smooth operator	riproduci_musica	richiesta=smooth operator
+metti la canzone smooth operator	riproduci_musica	richiesta=smooth operator;tipo=brano
+riproduci il brano smooth operator per favore	riproduci_musica	richiesta=smooth operator;tipo=brano
+fammi sentire smooth operator di sade	riproduci_musica	richiesta=smooth operator di sade
+metti snow	riproduci_musica	richiesta=snow
+metti la canzone snow	riproduci_musica	richiesta=snow;tipo=brano
+riproduci il brano snow per favore	riproduci_musica	richiesta=snow;tipo=brano
+fammi sentire snow di red hot chili peppers	riproduci_musica	richiesta=snow di red hot chili peppers
+metti somebody to love	riproduci_musica	richiesta=somebody to love
+metti la canzone somebody to love	riproduci_musica	richiesta=somebody to love;tipo=brano
+riproduci il brano somebody to love per favore	riproduci_musica	richiesta=somebody to love;tipo=brano
+fammi sentire somebody to love di queen	riproduci_musica	richiesta=somebody to love di queen
+metti somebody's watching me	riproduci_musica	richiesta=somebody's watching me
+metti la canzone somebody's watching me	riproduci_musica	richiesta=somebody's watching me;tipo=brano
+riproduci il brano somebody's watching me per favore	riproduci_musica	richiesta=somebody's watching me;tipo=brano
+fammi sentire somebody's watching me di rockwell	riproduci_musica	richiesta=somebody's watching me di rockwell
+metti something	riproduci_musica	richiesta=something
+metti la canzone something	riproduci_musica	richiesta=something;tipo=brano
+riproduci il brano something per favore	riproduci_musica	richiesta=something;tipo=brano
+fammi sentire something di the beatles	riproduci_musica	richiesta=something di the beatles
+metti soul kitchen	riproduci_musica	richiesta=soul kitchen
+metti la canzone soul kitchen	riproduci_musica	richiesta=soul kitchen;tipo=brano
+riproduci il brano soul kitchen per favore	riproduci_musica	richiesta=soul kitchen;tipo=brano
+fammi sentire soul kitchen di the doors	riproduci_musica	richiesta=soul kitchen di the doors
+metti space oddity	riproduci_musica	richiesta=space oddity
+metti la canzone space oddity	riproduci_musica	richiesta=space oddity;tipo=brano
+riproduci il brano space oddity per favore	riproduci_musica	richiesta=space oddity;tipo=brano
+fammi sentire space oddity di david bowie	riproduci_musica	richiesta=space oddity di david bowie
+metti spirit in the sky	riproduci_musica	richiesta=spirit in the sky
+metti la canzone spirit in the sky	riproduci_musica	richiesta=spirit in the sky;tipo=brano
+riproduci il brano spirit in the sky per favore	riproduci_musica	richiesta=spirit in the sky;tipo=brano
+fammi sentire spirit in the sky di norman greenbaum	riproduci_musica	richiesta=spirit in the sky di norman greenbaum
+metti stairway to heaven	riproduci_musica	richiesta=stairway to heaven
+metti la canzone stairway to heaven	riproduci_musica	richiesta=stairway to heaven;tipo=brano
+riproduci il brano stairway to heaven per favore	riproduci_musica	richiesta=stairway to heaven;tipo=brano
+fammi sentire stairway to heaven di led zeppelin	riproduci_musica	richiesta=stairway to heaven di led zeppelin
+metti stand by me	riproduci_musica	richiesta=stand by me
+metti la canzone stand by me	riproduci_musica	richiesta=stand by me;tipo=brano
+riproduci il brano stand by me per favore	riproduci_musica	richiesta=stand by me;tipo=brano
+fammi sentire stand by me di ben e king	riproduci_musica	richiesta=stand by me di ben e king
+metti starman	riproduci_musica	richiesta=starman
+metti la canzone starman	riproduci_musica	richiesta=starman;tipo=brano
+riproduci il brano starman per favore	riproduci_musica	richiesta=starman;tipo=brano
+fammi sentire starman di david bowie	riproduci_musica	richiesta=starman di david bowie
+metti stayin alive	riproduci_musica	richiesta=stayin alive
+metti la canzone stayin alive	riproduci_musica	richiesta=stayin alive;tipo=brano
+riproduci il brano stayin alive per favore	riproduci_musica	richiesta=stayin alive;tipo=brano
+fammi sentire stayin alive di bee gees	riproduci_musica	richiesta=stayin alive di bee gees
+metti staying power	riproduci_musica	richiesta=staying power
+metti la canzone staying power	riproduci_musica	richiesta=staying power;tipo=brano
+riproduci il brano staying power per favore	riproduci_musica	richiesta=staying power;tipo=brano
+fammi sentire staying power di queen	riproduci_musica	richiesta=staying power di queen
+metti stick	riproduci_musica	richiesta=stick
+metti la canzone stick	riproduci_musica	richiesta=stick;tipo=brano
+riproduci il brano stick per favore	riproduci_musica	richiesta=stick;tipo=brano
+fammi sentire stick di icemop	riproduci_musica	richiesta=stick di icemop
+metti stuck in the middle with you	riproduci_musica	richiesta=stuck in the middle with you
+metti la canzone stuck in the middle with you	riproduci_musica	richiesta=stuck in the middle with you;tipo=brano
+riproduci il brano stuck in the middle with you per favore	riproduci_musica	richiesta=stuck in the middle with you;tipo=brano
+fammi sentire stuck in the middle with you di stealers wheel	riproduci_musica	richiesta=stuck in the middle with you di stealers wheel
+metti stuck on the puzzle	riproduci_musica	richiesta=stuck on the puzzle
+metti la canzone stuck on the puzzle	riproduci_musica	richiesta=stuck on the puzzle;tipo=brano
+riproduci il brano stuck on the puzzle per favore	riproduci_musica	richiesta=stuck on the puzzle;tipo=brano
+fammi sentire stuck on the puzzle di alex turner	riproduci_musica	richiesta=stuck on the puzzle di alex turner
+metti suck it and see	riproduci_musica	richiesta=suck it and see
+metti la canzone suck it and see	riproduci_musica	richiesta=suck it and see;tipo=brano
+riproduci il brano suck it and see per favore	riproduci_musica	richiesta=suck it and see;tipo=brano
+fammi sentire suck it and see di arctic monkeys	riproduci_musica	richiesta=suck it and see di arctic monkeys
+metti sultans of swing	riproduci_musica	richiesta=sultans of swing
+metti la canzone sultans of swing	riproduci_musica	richiesta=sultans of swing;tipo=brano
+riproduci il brano sultans of swing per favore	riproduci_musica	richiesta=sultans of swing;tipo=brano
+fammi sentire sultans of swing di dire straits	riproduci_musica	richiesta=sultans of swing di dire straits
+metti sunflower	riproduci_musica	richiesta=sunflower
+metti la canzone sunflower	riproduci_musica	richiesta=sunflower;tipo=brano
+riproduci il brano sunflower per favore	riproduci_musica	richiesta=sunflower;tipo=brano
+fammi sentire sunflower di rex orange county	riproduci_musica	richiesta=sunflower di rex orange county
+metti superstar sh t	riproduci_musica	richiesta=superstar sh t
+metti la canzone superstar sh t	riproduci_musica	richiesta=superstar sh t;tipo=brano
+riproduci il brano superstar sh t per favore	riproduci_musica	richiesta=superstar sh t;tipo=brano
+fammi sentire superstar sh t di dominic fike	riproduci_musica	richiesta=superstar sh t di dominic fike
+metti superstition	riproduci_musica	richiesta=superstition
+metti la canzone superstition	riproduci_musica	richiesta=superstition;tipo=brano
+riproduci il brano superstition per favore	riproduci_musica	richiesta=superstition;tipo=brano
+fammi sentire superstition di stevie wonder	riproduci_musica	richiesta=superstition di stevie wonder
+metti susie q	riproduci_musica	richiesta=susie q
+metti la canzone susie q	riproduci_musica	richiesta=susie q;tipo=brano
+riproduci il brano susie q per favore	riproduci_musica	richiesta=susie q;tipo=brano
+fammi sentire susie q di bobby mcferrin	riproduci_musica	richiesta=susie q di bobby mcferrin
+metti suspicious minds	riproduci_musica	richiesta=suspicious minds
+metti la canzone suspicious minds	riproduci_musica	richiesta=suspicious minds;tipo=brano
+riproduci il brano suspicious minds per favore	riproduci_musica	richiesta=suspicious minds;tipo=brano
+fammi sentire suspicious minds di elvis presley	riproduci_musica	richiesta=suspicious minds di elvis presley
+metti sweet caroline	riproduci_musica	richiesta=sweet caroline
+metti la canzone sweet caroline	riproduci_musica	richiesta=sweet caroline;tipo=brano
+riproduci il brano sweet caroline per favore	riproduci_musica	richiesta=sweet caroline;tipo=brano
+fammi sentire sweet caroline di neil diamond	riproduci_musica	richiesta=sweet caroline di neil diamond
+metti sweet child o' mine	riproduci_musica	richiesta=sweet child o' mine
+metti la canzone sweet child o' mine	riproduci_musica	richiesta=sweet child o' mine;tipo=brano
+riproduci il brano sweet child o' mine per favore	riproduci_musica	richiesta=sweet child o' mine;tipo=brano
+fammi sentire sweet child o' mine di guns n' roses	riproduci_musica	richiesta=sweet child o' mine di guns n' roses
+metti sweet home alabama	riproduci_musica	richiesta=sweet home alabama
+metti la canzone sweet home alabama	riproduci_musica	richiesta=sweet home alabama;tipo=brano
+riproduci il brano sweet home alabama per favore	riproduci_musica	richiesta=sweet home alabama;tipo=brano
+fammi sentire sweet home alabama di lynyrd skynyrd	riproduci_musica	richiesta=sweet home alabama di lynyrd skynyrd
+metti sweet home chicago	riproduci_musica	richiesta=sweet home chicago
+metti la canzone sweet home chicago	riproduci_musica	richiesta=sweet home chicago;tipo=brano
+riproduci il brano sweet home chicago per favore	riproduci_musica	richiesta=sweet home chicago;tipo=brano
+fammi sentire sweet home chicago di the blues brothers	riproduci_musica	richiesta=sweet home chicago di the blues brothers
+metti sweet little sixteen	riproduci_musica	richiesta=sweet little sixteen
+metti la canzone sweet little sixteen	riproduci_musica	richiesta=sweet little sixteen;tipo=brano
+riproduci il brano sweet little sixteen per favore	riproduci_musica	richiesta=sweet little sixteen;tipo=brano
+fammi sentire sweet little sixteen di chuck berry	riproduci_musica	richiesta=sweet little sixteen di chuck berry
+metti sympathy for the devil	riproduci_musica	richiesta=sympathy for the devil
+metti la canzone sympathy for the devil	riproduci_musica	richiesta=sympathy for the devil;tipo=brano
+riproduci il brano sympathy for the devil per favore	riproduci_musica	richiesta=sympathy for the devil;tipo=brano
+fammi sentire sympathy for the devil di the rolling stones	riproduci_musica	richiesta=sympathy for the devil di the rolling stones
+metti tadow	riproduci_musica	richiesta=tadow
+metti la canzone tadow	riproduci_musica	richiesta=tadow;tipo=brano
+riproduci il brano tadow per favore	riproduci_musica	richiesta=tadow;tipo=brano
+fammi sentire tadow di masego e fkj	riproduci_musica	richiesta=tadow di masego e fkj
+metti tainted love	riproduci_musica	richiesta=tainted love
+metti la canzone tainted love	riproduci_musica	richiesta=tainted love;tipo=brano
+riproduci il brano tainted love per favore	riproduci_musica	richiesta=tainted love;tipo=brano
+fammi sentire tainted love di soft cell	riproduci_musica	richiesta=tainted love di soft cell
+metti take me home country roads	riproduci_musica	richiesta=take me home country roads
+metti la canzone take me home country roads	riproduci_musica	richiesta=take me home country roads;tipo=brano
+riproduci il brano take me home country roads per favore	riproduci_musica	richiesta=take me home country roads;tipo=brano
+fammi sentire take me home country roads di john denver	riproduci_musica	richiesta=take me home country roads di john denver
+metti take my breath away	riproduci_musica	richiesta=take my breath away
+metti la canzone take my breath away	riproduci_musica	richiesta=take my breath away;tipo=brano
+riproduci il brano take my breath away per favore	riproduci_musica	richiesta=take my breath away;tipo=brano
+fammi sentire take my breath away di berlin	riproduci_musica	richiesta=take my breath away di berlin
+metti teddy picker	riproduci_musica	richiesta=teddy picker
+metti la canzone teddy picker	riproduci_musica	richiesta=teddy picker;tipo=brano
+riproduci il brano teddy picker per favore	riproduci_musica	richiesta=teddy picker;tipo=brano
+fammi sentire teddy picker di arctic monkeys	riproduci_musica	richiesta=teddy picker di arctic monkeys
+metti temperature	riproduci_musica	richiesta=temperature
+metti la canzone temperature	riproduci_musica	richiesta=temperature;tipo=brano
+riproduci il brano temperature per favore	riproduci_musica	richiesta=temperature;tipo=brano
+fammi sentire temperature di sean paul	riproduci_musica	richiesta=temperature di sean paul
+metti that's the way	riproduci_musica	richiesta=that's the way
+metti la canzone that's the way	riproduci_musica	richiesta=that's the way;tipo=brano
+riproduci il brano that's the way per favore	riproduci_musica	richiesta=that's the way;tipo=brano
+fammi sentire that's the way di kc the sunshine band	riproduci_musica	richiesta=that's the way di kc the sunshine band
+metti that's what i like	riproduci_musica	richiesta=that's what i like
+metti la canzone that's what i like	riproduci_musica	richiesta=that's what i like;tipo=brano
+riproduci il brano that's what i like per favore	riproduci_musica	richiesta=that's what i like;tipo=brano
+fammi sentire that's what i like di bruno mars	riproduci_musica	richiesta=that's what i like di bruno mars
+metti the adults are talking	riproduci_musica	richiesta=the adults are talking
+metti la canzone the adults are talking	riproduci_musica	richiesta=the adults are talking;tipo=brano
+riproduci il brano the adults are talking per favore	riproduci_musica	richiesta=the adults are talking;tipo=brano
+fammi sentire the adults are talking di the strokes	riproduci_musica	richiesta=the adults are talking di the strokes
+metti the beach	riproduci_musica	richiesta=the beach
+metti la canzone the beach	riproduci_musica	richiesta=the beach;tipo=brano
+riproduci il brano the beach per favore	riproduci_musica	richiesta=the beach;tipo=brano
+fammi sentire the beach di the neighbourhood	riproduci_musica	richiesta=the beach di the neighbourhood
+metti the bird's the word	riproduci_musica	richiesta=the bird's the word
+metti la canzone the bird's the word	riproduci_musica	richiesta=the bird's the word;tipo=brano
+riproduci il brano the bird's the word per favore	riproduci_musica	richiesta=the bird's the word;tipo=brano
+fammi sentire the bird's the word di the rivingtons	riproduci_musica	richiesta=the bird's the word di the rivingtons
+metti the chain	riproduci_musica	richiesta=the chain
+metti la canzone the chain	riproduci_musica	richiesta=the chain;tipo=brano
+riproduci il brano the chain per favore	riproduci_musica	richiesta=the chain;tipo=brano
+fammi sentire the chain di fleetwood mac	riproduci_musica	richiesta=the chain di fleetwood mac
+metti the dark side of the moon full album	riproduci_musica	richiesta=the dark side of the moon full album
+metti la canzone the dark side of the moon full album	riproduci_musica	richiesta=the dark side of the moon full album;tipo=brano
+riproduci il brano the dark side of the moon full album per favore	riproduci_musica	richiesta=the dark side of the moon full album;tipo=brano
+fammi sentire the dark side of the moon full album di pink floyd	riproduci_musica	richiesta=the dark side of the moon full album di pink floyd
+metti the great gig in the sky	riproduci_musica	richiesta=the great gig in the sky
+metti la canzone the great gig in the sky	riproduci_musica	richiesta=the great gig in the sky;tipo=brano
+riproduci il brano the great gig in the sky per favore	riproduci_musica	richiesta=the great gig in the sky;tipo=brano
+fammi sentire the great gig in the sky di pink floyd	riproduci_musica	richiesta=the great gig in the sky di pink floyd
+metti the happiest days of our lives	riproduci_musica	richiesta=the happiest days of our lives
+metti la canzone the happiest days of our lives	riproduci_musica	richiesta=the happiest days of our lives;tipo=brano
+riproduci il brano the happiest days of our lives per favore	riproduci_musica	richiesta=the happiest days of our lives;tipo=brano
+fammi sentire the happiest days of our lives di pink floyd	riproduci_musica	richiesta=the happiest days of our lives di pink floyd
+metti the killing moon	riproduci_musica	richiesta=the killing moon
+metti la canzone the killing moon	riproduci_musica	richiesta=the killing moon;tipo=brano
+riproduci il brano the killing moon per favore	riproduci_musica	richiesta=the killing moon;tipo=brano
+fammi sentire the killing moon di echo and the bunnymen	riproduci_musica	richiesta=the killing moon di echo and the bunnymen
+metti the less i know the better	riproduci_musica	richiesta=the less i know the better
+metti la canzone the less i know the better	riproduci_musica	richiesta=the less i know the better;tipo=brano
+riproduci il brano the less i know the better per favore	riproduci_musica	richiesta=the less i know the better;tipo=brano
+fammi sentire the less i know the better di tame impala	riproduci_musica	richiesta=the less i know the better di tame impala
+metti the logical song	riproduci_musica	richiesta=the logical song
+metti la canzone the logical song	riproduci_musica	richiesta=the logical song;tipo=brano
+riproduci il brano the logical song per favore	riproduci_musica	richiesta=the logical song;tipo=brano
+fammi sentire the logical song di supertramp	riproduci_musica	richiesta=the logical song di supertramp
+metti the passenger	riproduci_musica	richiesta=the passenger
+metti la canzone the passenger	riproduci_musica	richiesta=the passenger;tipo=brano
+riproduci il brano the passenger per favore	riproduci_musica	richiesta=the passenger;tipo=brano
+fammi sentire the passenger di iggy pop	riproduci_musica	richiesta=the passenger di iggy pop
+metti the pink phantom	riproduci_musica	richiesta=the pink phantom
+metti la canzone the pink phantom	riproduci_musica	richiesta=the pink phantom;tipo=brano
+riproduci il brano the pink phantom per favore	riproduci_musica	richiesta=the pink phantom;tipo=brano
+fammi sentire the pink phantom di gorillaz	riproduci_musica	richiesta=the pink phantom di gorillaz
+metti the prettiest star	riproduci_musica	richiesta=the prettiest star
+metti la canzone the prettiest star	riproduci_musica	richiesta=the prettiest star;tipo=brano
+riproduci il brano the prettiest star per favore	riproduci_musica	richiesta=the prettiest star;tipo=brano
+fammi sentire the prettiest star di david bowie	riproduci_musica	richiesta=the prettiest star di david bowie
+metti the wild boys	riproduci_musica	richiesta=the wild boys
+metti la canzone the wild boys	riproduci_musica	richiesta=the wild boys;tipo=brano
+riproduci il brano the wild boys per favore	riproduci_musica	richiesta=the wild boys;tipo=brano
+fammi sentire the wild boys di duran duran	riproduci_musica	richiesta=the wild boys di duran duran
+metti there is a light that never goes out	riproduci_musica	richiesta=there is a light that never goes out
+metti la canzone there is a light that never goes out	riproduci_musica	richiesta=there is a light that never goes out;tipo=brano
+riproduci il brano there is a light that never goes out per favore	riproduci_musica	richiesta=there is a light that never goes out;tipo=brano
+fammi sentire there is a light that never goes out di the smiths	riproduci_musica	richiesta=there is a light that never goes out di the smiths
+metti these boots are made for walkin'	riproduci_musica	richiesta=these boots are made for walkin'
+metti la canzone these boots are made for walkin'	riproduci_musica	richiesta=these boots are made for walkin';tipo=brano
+riproduci il brano these boots are made for walkin' per favore	riproduci_musica	richiesta=these boots are made for walkin';tipo=brano
+fammi sentire these boots are made for walkin' di nancy sinatra	riproduci_musica	richiesta=these boots are made for walkin' di nancy sinatra
+metti this house is a circus	riproduci_musica	richiesta=this house is a circus
+metti la canzone this house is a circus	riproduci_musica	richiesta=this house is a circus;tipo=brano
+riproduci il brano this house is a circus per favore	riproduci_musica	richiesta=this house is a circus;tipo=brano
+fammi sentire this house is a circus di arctic monkeys	riproduci_musica	richiesta=this house is a circus di arctic monkeys
+metti this must be the place	riproduci_musica	richiesta=this must be the place
+metti la canzone this must be the place	riproduci_musica	richiesta=this must be the place;tipo=brano
+riproduci il brano this must be the place per favore	riproduci_musica	richiesta=this must be the place;tipo=brano
+fammi sentire this must be the place di talking heads	riproduci_musica	richiesta=this must be the place di talking heads
+metti this old dog 2017	riproduci_musica	richiesta=this old dog 2017
+metti la canzone this old dog 2017	riproduci_musica	richiesta=this old dog 2017;tipo=brano
+riproduci il brano this old dog 2017 per favore	riproduci_musica	richiesta=this old dog 2017;tipo=brano
+fammi sentire this old dog 2017 di mac demarco	riproduci_musica	richiesta=this old dog 2017 di mac demarco
+metti tik tok	riproduci_musica	richiesta=tik tok
+metti la canzone tik tok	riproduci_musica	richiesta=tik tok;tipo=brano
+riproduci il brano tik tok per favore	riproduci_musica	richiesta=tik tok;tipo=brano
+fammi sentire tik tok di kesha	riproduci_musica	richiesta=tik tok di kesha
+metti time	riproduci_musica	richiesta=time
+metti la canzone time	riproduci_musica	richiesta=time;tipo=brano
+riproduci il brano time per favore	riproduci_musica	richiesta=time;tipo=brano
+fammi sentire time di pink floyd	riproduci_musica	richiesta=time di pink floyd
+metti tiny dancer	riproduci_musica	richiesta=tiny dancer
+metti la canzone tiny dancer	riproduci_musica	richiesta=tiny dancer;tipo=brano
+riproduci il brano tiny dancer per favore	riproduci_musica	richiesta=tiny dancer;tipo=brano
+fammi sentire tiny dancer di elton john	riproduci_musica	richiesta=tiny dancer di elton john
+metti train in vain	riproduci_musica	richiesta=train in vain
+metti la canzone train in vain	riproduci_musica	richiesta=train in vain;tipo=brano
+riproduci il brano train in vain per favore	riproduci_musica	richiesta=train in vain;tipo=brano
+fammi sentire train in vain di the clash	riproduci_musica	richiesta=train in vain di the clash
+metti true	riproduci_musica	richiesta=true
+metti la canzone true	riproduci_musica	richiesta=true;tipo=brano
+riproduci il brano true per favore	riproduci_musica	richiesta=true;tipo=brano
+fammi sentire true di spandau ballet	riproduci_musica	richiesta=true di spandau ballet
+metti tu vuo fà l'americano	riproduci_musica	richiesta=tu vuo fà l'americano
+metti la canzone tu vuo fà l'americano	riproduci_musica	richiesta=tu vuo fà l'americano;tipo=brano
+riproduci il brano tu vuo fà l'americano per favore	riproduci_musica	richiesta=tu vuo fà l'americano;tipo=brano
+fammi sentire tu vuo fà l'americano di renato carosone	riproduci_musica	richiesta=tu vuo fà l'americano di renato carosone
+metti tutti frutti	riproduci_musica	richiesta=tutti frutti
+metti la canzone tutti frutti	riproduci_musica	richiesta=tutti frutti;tipo=brano
+riproduci il brano tutti frutti per favore	riproduci_musica	richiesta=tutti frutti;tipo=brano
+fammi sentire tutti frutti di little richard	riproduci_musica	richiesta=tutti frutti di little richard
+metti twist and shout	riproduci_musica	richiesta=twist and shout
+metti la canzone twist and shout	riproduci_musica	richiesta=twist and shout;tipo=brano
+riproduci il brano twist and shout per favore	riproduci_musica	richiesta=twist and shout;tipo=brano
+fammi sentire twist and shout di the beatles	riproduci_musica	richiesta=twist and shout di the beatles
+metti t h e w a l l 1979	riproduci_musica	richiesta=t h e w a l l 1979
+metti la canzone t h e w a l l 1979	riproduci_musica	richiesta=t h e w a l l 1979;tipo=brano
+riproduci il brano t h e w a l l 1979 per favore	riproduci_musica	richiesta=t h e w a l l 1979;tipo=brano
+fammi sentire t h e w a l l 1979 di pink floyd	riproduci_musica	richiesta=t h e w a l l 1979 di pink floyd
+metti u can't touch this	riproduci_musica	richiesta=u can't touch this
+metti la canzone u can't touch this	riproduci_musica	richiesta=u can't touch this;tipo=brano
+riproduci il brano u can't touch this per favore	riproduci_musica	richiesta=u can't touch this;tipo=brano
+fammi sentire u can't touch this di m c hammer	riproduci_musica	richiesta=u can't touch this di m c hammer
+metti ugly	riproduci_musica	richiesta=ugly
+metti la canzone ugly	riproduci_musica	richiesta=ugly;tipo=brano
+riproduci il brano ugly per favore	riproduci_musica	richiesta=ugly;tipo=brano
+fammi sentire ugly di timmies e nineteen95	riproduci_musica	richiesta=ugly di timmies e nineteen95
+metti una storia disonesta	riproduci_musica	richiesta=una storia disonesta
+metti la canzone una storia disonesta	riproduci_musica	richiesta=una storia disonesta;tipo=brano
+riproduci il brano una storia disonesta per favore	riproduci_musica	richiesta=una storia disonesta;tipo=brano
+fammi sentire una storia disonesta di stefano rosso	riproduci_musica	richiesta=una storia disonesta di stefano rosso
+metti under pressure	riproduci_musica	richiesta=under pressure
+metti la canzone under pressure	riproduci_musica	richiesta=under pressure;tipo=brano
+riproduci il brano under pressure per favore	riproduci_musica	richiesta=under pressure;tipo=brano
+fammi sentire under pressure di queen	riproduci_musica	richiesta=under pressure di queen
+metti under the bridge	riproduci_musica	richiesta=under the bridge
+metti la canzone under the bridge	riproduci_musica	richiesta=under the bridge;tipo=brano
+riproduci il brano under the bridge per favore	riproduci_musica	richiesta=under the bridge;tipo=brano
+fammi sentire under the bridge di red hot chili peppers	riproduci_musica	richiesta=under the bridge di red hot chili peppers
+metti venus	riproduci_musica	richiesta=venus
+metti la canzone venus	riproduci_musica	richiesta=venus;tipo=brano
+riproduci il brano venus per favore	riproduci_musica	richiesta=venus;tipo=brano
+fammi sentire venus di shocking blue	riproduci_musica	richiesta=venus di shocking blue
+metti video killed the radio star	riproduci_musica	richiesta=video killed the radio star
+metti la canzone video killed the radio star	riproduci_musica	richiesta=video killed the radio star;tipo=brano
+riproduci il brano video killed the radio star per favore	riproduci_musica	richiesta=video killed the radio star;tipo=brano
+fammi sentire video killed the radio star di the buggles	riproduci_musica	richiesta=video killed the radio star di the buggles
+metti vienna	riproduci_musica	richiesta=vienna
+metti la canzone vienna	riproduci_musica	richiesta=vienna;tipo=brano
+riproduci il brano vienna per favore	riproduci_musica	richiesta=vienna;tipo=brano
+fammi sentire vienna di billy joel	riproduci_musica	richiesta=vienna di billy joel
+metti voodoo child	riproduci_musica	richiesta=voodoo child
+metti la canzone voodoo child	riproduci_musica	richiesta=voodoo child;tipo=brano
+riproduci il brano voodoo child per favore	riproduci_musica	richiesta=voodoo child;tipo=brano
+fammi sentire voodoo child di the jimi hendrix experience	riproduci_musica	richiesta=voodoo child di the jimi hendrix experience
+metti wake me up before you go go	riproduci_musica	richiesta=wake me up before you go go
+metti la canzone wake me up before you go go	riproduci_musica	richiesta=wake me up before you go go;tipo=brano
+riproduci il brano wake me up before you go go per favore	riproduci_musica	richiesta=wake me up before you go go;tipo=brano
+fammi sentire wake me up before you go go di wham	riproduci_musica	richiesta=wake me up before you go go di wham
+metti walk of life	riproduci_musica	richiesta=walk of life
+metti la canzone walk of life	riproduci_musica	richiesta=walk of life;tipo=brano
+riproduci il brano walk of life per favore	riproduci_musica	richiesta=walk of life;tipo=brano
+fammi sentire walk of life di dire straits	riproduci_musica	richiesta=walk of life di dire straits
+metti walk on the wild side	riproduci_musica	richiesta=walk on the wild side
+metti la canzone walk on the wild side	riproduci_musica	richiesta=walk on the wild side;tipo=brano
+riproduci il brano walk on the wild side per favore	riproduci_musica	richiesta=walk on the wild side;tipo=brano
+fammi sentire walk on the wild side di lou reed	riproduci_musica	richiesta=walk on the wild side di lou reed
+metti we've gotta get out of this place	riproduci_musica	richiesta=we've gotta get out of this place
+metti la canzone we've gotta get out of this place	riproduci_musica	richiesta=we've gotta get out of this place;tipo=brano
+riproduci il brano we've gotta get out of this place per favore	riproduci_musica	richiesta=we've gotta get out of this place;tipo=brano
+fammi sentire we've gotta get out of this place di the animals	riproduci_musica	richiesta=we've gotta get out of this place di the animals
+metti what's going on	riproduci_musica	richiesta=what's going on
+metti la canzone what's going on	riproduci_musica	richiesta=what's going on;tipo=brano
+riproduci il brano what's going on per favore	riproduci_musica	richiesta=what's going on;tipo=brano
+fammi sentire what's going on di marvin gaye	riproduci_musica	richiesta=what's going on di marvin gaye
+metti what's new scooby doo	riproduci_musica	richiesta=what's new scooby doo
+metti la canzone what's new scooby doo	riproduci_musica	richiesta=what's new scooby doo;tipo=brano
+riproduci il brano what's new scooby doo per favore	riproduci_musica	richiesta=what's new scooby doo;tipo=brano
+fammi sentire what's new scooby doo di simple plan	riproduci_musica	richiesta=what's new scooby doo di simple plan
+metti when the sun goes down	riproduci_musica	richiesta=when the sun goes down
+metti la canzone when the sun goes down	riproduci_musica	richiesta=when the sun goes down;tipo=brano
+riproduci il brano when the sun goes down per favore	riproduci_musica	richiesta=when the sun goes down;tipo=brano
+fammi sentire when the sun goes down di arctic monkeys	riproduci_musica	richiesta=when the sun goes down di arctic monkeys
+metti where is my mind	riproduci_musica	richiesta=where is my mind
+metti la canzone where is my mind	riproduci_musica	richiesta=where is my mind;tipo=brano
+riproduci il brano where is my mind per favore	riproduci_musica	richiesta=where is my mind;tipo=brano
+fammi sentire where is my mind di pixies	riproduci_musica	richiesta=where is my mind di pixies
+metti whole lotta love	riproduci_musica	richiesta=whole lotta love
+metti la canzone whole lotta love	riproduci_musica	richiesta=whole lotta love;tipo=brano
+riproduci il brano whole lotta love per favore	riproduci_musica	richiesta=whole lotta love;tipo=brano
+fammi sentire whole lotta love di led zeppelin	riproduci_musica	richiesta=whole lotta love di led zeppelin
+metti why'd you only call me when you're high	riproduci_musica	richiesta=why'd you only call me when you're high
+metti la canzone why'd you only call me when you're high	riproduci_musica	richiesta=why'd you only call me when you're high;tipo=brano
+riproduci il brano why'd you only call me when you're high per favore	riproduci_musica	richiesta=why'd you only call me when you're high;tipo=brano
+fammi sentire why'd you only call me when you're high di arctic monkeys	riproduci_musica	richiesta=why'd you only call me when you're high di arctic monkeys
+metti wicked game	riproduci_musica	richiesta=wicked game
+metti la canzone wicked game	riproduci_musica	richiesta=wicked game;tipo=brano
+riproduci il brano wicked game per favore	riproduci_musica	richiesta=wicked game;tipo=brano
+fammi sentire wicked game di chris isaak	riproduci_musica	richiesta=wicked game di chris isaak
+metti wish you were here	riproduci_musica	richiesta=wish you were here
+metti la canzone wish you were here	riproduci_musica	richiesta=wish you were here;tipo=brano
+riproduci il brano wish you were here per favore	riproduci_musica	richiesta=wish you were here;tipo=brano
+fammi sentire wish you were here di pink floyd	riproduci_musica	richiesta=wish you were here di pink floyd
+metti wonderwall	riproduci_musica	richiesta=wonderwall
+metti la canzone wonderwall	riproduci_musica	richiesta=wonderwall;tipo=brano
+riproduci il brano wonderwall per favore	riproduci_musica	richiesta=wonderwall;tipo=brano
+fammi sentire wonderwall di oasis	riproduci_musica	richiesta=wonderwall di oasis
+metti world hold on	riproduci_musica	richiesta=world hold on
+metti la canzone world hold on	riproduci_musica	richiesta=world hold on;tipo=brano
+riproduci il brano world hold on per favore	riproduci_musica	richiesta=world hold on;tipo=brano
+fammi sentire world hold on di ameritz countdown karaoke	riproduci_musica	richiesta=world hold on di ameritz countdown karaoke
+metti yesterday	riproduci_musica	richiesta=yesterday
+metti la canzone yesterday	riproduci_musica	richiesta=yesterday;tipo=brano
+riproduci il brano yesterday per favore	riproduci_musica	richiesta=yesterday;tipo=brano
+fammi sentire yesterday di the beatles	riproduci_musica	richiesta=yesterday di the beatles
+metti you are the right one	riproduci_musica	richiesta=you are the right one
+metti la canzone you are the right one	riproduci_musica	richiesta=you are the right one;tipo=brano
+riproduci il brano you are the right one per favore	riproduci_musica	richiesta=you are the right one;tipo=brano
+fammi sentire you are the right one di sports	riproduci_musica	richiesta=you are the right one di sports
+metti you can't always get what you want	riproduci_musica	richiesta=you can't always get what you want
+metti la canzone you can't always get what you want	riproduci_musica	richiesta=you can't always get what you want;tipo=brano
+riproduci il brano you can't always get what you want per favore	riproduci_musica	richiesta=you can't always get what you want;tipo=brano
+fammi sentire you can't always get what you want di the rolling stones	riproduci_musica	richiesta=you can't always get what you want di the rolling stones
+metti you never can tell	riproduci_musica	richiesta=you never can tell
+metti la canzone you never can tell	riproduci_musica	richiesta=you never can tell;tipo=brano
+riproduci il brano you never can tell per favore	riproduci_musica	richiesta=you never can tell;tipo=brano
+fammi sentire you never can tell di chuck berry	riproduci_musica	richiesta=you never can tell di chuck berry
+metti you really got me	riproduci_musica	richiesta=you really got me
+metti la canzone you really got me	riproduci_musica	richiesta=you really got me;tipo=brano
+riproduci il brano you really got me per favore	riproduci_musica	richiesta=you really got me;tipo=brano
+fammi sentire you really got me di the kinks	riproduci_musica	richiesta=you really got me di the kinks
+metti young lust	riproduci_musica	richiesta=young lust
+metti la canzone young lust	riproduci_musica	richiesta=young lust;tipo=brano
+riproduci il brano young lust per favore	riproduci_musica	richiesta=young lust;tipo=brano
+fammi sentire young lust di pink floyd	riproduci_musica	richiesta=young lust di pink floyd
+metti zanzibar	riproduci_musica	richiesta=zanzibar
+metti la canzone zanzibar	riproduci_musica	richiesta=zanzibar;tipo=brano
+riproduci il brano zanzibar per favore	riproduci_musica	richiesta=zanzibar;tipo=brano
+fammi sentire zanzibar di billy joel	riproduci_musica	richiesta=zanzibar di billy joel

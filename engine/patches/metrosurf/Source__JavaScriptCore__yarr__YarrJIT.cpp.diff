@@ -1,0 +1,20 @@
+--- a/Source/JavaScriptCore/yarr/YarrJIT.cpp
++++ b/Source/JavaScriptCore/yarr/YarrJIT.cpp
+@@ -6727,6 +6727,8 @@
+             size_t stackSizeForCalleeSaves = WTF::roundUpToMultipleOf<stackAlignmentBytes()>(m_calleeSaves.registerCount() * sizeof(UCPURegister));
+ #if CPU(X86_64) || CPU(ARM64)
+             m_jit.subPtr(GPRInfo::callFrameRegister, CCallHelpers::TrustedImm32(stackSizeForCalleeSaves), MacroAssembler::stackPointerRegister);
++#elif CPU(ARM_THUMB2)
++            m_jit.subPtr(CCallHelpers::TrustedImm32(stackSizeForCalleeSaves), MacroAssembler::stackPointerRegister);
+ #else
+             m_jit.subPtr(GPRInfo::callFrameRegister, CCallHelpers::TrustedImm32(stackSizeForCalleeSaves), m_regs.regT0);
+             m_jit.move(m_regs.regT0, MacroAssembler::stackPointerRegister);
+@@ -6990,7 +6992,7 @@
+ #if CPU(ARM_THUMB2)
+             // Not enough argument registers: try to load the 5th argument from the stack
+             MacroAssembler::RegisterID matchingContext = m_regs.regT1;
+-            unsigned offset = POKE_ARGUMENT_OFFSET;
++            unsigned offset = POKE_ARGUMENT_OFFSET + 2;
+             m_jit.loadPtr(MacroAssembler::Address(GPRInfo::callFrameRegister, offset * sizeof(void*)), matchingContext);
+ #else
+             // The MatchingContextHolder* arrives in the 5th argument register.

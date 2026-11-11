@@ -1,0 +1,24 @@
+--- a/Source/JavaScriptCore/dfg/DFGJITCompiler.cpp
++++ b/Source/JavaScriptCore/dfg/DFGJITCompiler.cpp
+@@ -544,9 +544,18 @@
+ #if USE(JSVALUE64)
+     subPtr(GPRInfo::jitDataRegister, TrustedImm32(static_cast<uintptr_t>(index.m_index + 1) * sizeof(HandlerPropertyInlineCache)), dest);
+ #else
+-    UNUSED_PARAM(index);
+-    UNUSED_PARAM(dest);
+-    RELEASE_ASSERT_NOT_REACHED();
++    loadJITData(dest);
++    subPtr(TrustedImm32(static_cast<uintptr_t>(index.m_index + 1) * sizeof(HandlerPropertyInlineCache)), dest);
++#endif
++}
++
++void JITCompiler::loadJITData(GPRReg dest)
++{
++#if USE(JSVALUE64)
++    move(GPRInfo::jitDataRegister, dest);
++#else
++    emitGetFromCallFrameHeaderPtr(CallFrameSlot::codeBlock, dest);
++    loadPtr(Address(dest, CodeBlock::offsetOfJITData()), dest);
+ #endif
+ }
+ 

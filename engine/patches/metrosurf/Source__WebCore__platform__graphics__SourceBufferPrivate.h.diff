@@ -1,0 +1,13 @@
+--- a/Source/WebCore/platform/graphics/SourceBufferPrivate.h
++++ b/Source/WebCore/platform/graphics/SourceBufferPrivate.h
+@@ -220,6 +220,10 @@
+ 
+     virtual bool isMediaSampleAllowed(const MediaSample&) const { return true; }
+ 
++#if defined(WP81)
++    virtual void didRemoveCodedFrames(const MediaTime& , const MediaTime& ) { }
++#endif
++
+     // Must be called once all samples have been processed.
+     WEBCORE_EXPORT void appendCompleted(bool parsingSucceeded, Function<void()>&& = [] { });
+ 

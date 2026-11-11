@@ -1,0 +1,11 @@
+--- a/Source/WebCore/platform/network/ResourceHandle.cpp
++++ b/Source/WebCore/platform/network/ResourceHandle.cpp
+@@ -309,7 +309,7 @@
+     platformSetDefersLoading(defers);
+ }
+ 
+-#if USE(SOUP) || USE(CURL)
++#if USE(SOUP) || (USE(CURL) && !defined(WP81))
+ ResourceHandleInternal::~ResourceHandleInternal() = default;
+ 
+ ResourceHandle::~ResourceHandle()

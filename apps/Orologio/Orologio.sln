@@ -1,0 +1,15 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Orologio", "Orologio\Orologio.vcxproj", "{8C9F0AB9-ED5E-482C-BE69-A2564DB2B194}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C9F0AB9-ED5E-482C-BE69-A2564DB2B194}.Release|ARM.ActiveCfg = Release|ARM
+		{8C9F0AB9-ED5E-482C-BE69-A2564DB2B194}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+EndGlobal

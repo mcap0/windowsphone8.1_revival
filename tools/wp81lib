@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# wp81lib <App> <path\to\project.vcxproj relative to apps/App> — sync apps/<App> to the Windows VM and build one
+# project (e.g. a static lib) for Release|ARM. Prints the error/warning summary; full log in C:\lumia\out\<App>-lib.log.
+set -Eeuo pipefail
+app=$1
+proj=$2
+repo_root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+remote=user@192.168.122.21
+vmssh="$repo_root/tools/vmssh"
+"$vmssh" ssh "$remote" "if exist C:\\lumia\\src\\$app rmdir /s /q C:\\lumia\\src\\$app"
+tar --exclude=bin --exclude=obj --exclude=AppPackages --exclude=ARM --exclude=Generated\ Files \
+    -cf - -C "$repo_root/apps" "$app" DumbPhone.pfx | "$vmssh" ssh "$remote" "tar -xf - -C C:/lumia/src"
+scratch=$(mktemp -d)
+trap 'rm -rf -- "$scratch"' EXIT
+cat > "$scratch/lib.ps1" <<PS
+\$ErrorActionPreference = 'Continue'
+Set-Location C:\\lumia\\src\\$app
+\$msbuild = 'C:\\Program Files (x86)\\MSBuild\\14.0\\Bin\\MSBuild.exe'
+& \$msbuild '$proj' /m /t:Build /p:Configuration=Release /p:Platform=ARM /nologo /v:m > C:\\lumia\\out\\$app-lib.log 2>&1
+\$code = \$LASTEXITCODE
+Get-Content C:\\lumia\\out\\$app-lib.log | Select-String -Pattern ' error | warning C4013' | ForEach-Object { \$_.Line.Trim() } | Select-Object -Unique | Select-Object -First 200
+Write-Output "MSBUILD_EXIT \$code"
+PS
+"$repo_root/tools/vps" "$scratch/lib.ps1"

@@ -1,0 +1,25 @@
+--- a/Source/WebCore/platform/graphics/MediaPlayer.cpp
++++ b/Source/WebCore/platform/graphics/MediaPlayer.cpp
+@@ -320,6 +320,10 @@
+     return true;
+ }
+ 
++#if defined(WP81)
++MediaEngineRegister* g_wp81RegisterMediaEngines;
++#endif
++
+ static void buildMediaEnginesVector() WTF_REQUIRES_LOCK(mediaEngineVectorLock)
+ {
+     ASSERT(mediaEngineVectorLock.isLocked());
+@@ -356,6 +360,11 @@
+     MediaPlayerPrivateHolePunch::registerMediaEngine(addMediaEngine);
+ #endif
+ 
++#if defined(WP81)
++    if (g_wp81RegisterMediaEngines)
++        g_wp81RegisterMediaEngines(addMediaEngine);
++#endif
++
+ #if ENABLE(WIRELESS_PLAYBACK_MEDIA_PLAYER)
+     MediaPlayerPrivateWirelessPlayback::registerMediaEngine(addMediaEngine);
+ #endif

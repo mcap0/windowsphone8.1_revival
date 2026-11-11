@@ -1,0 +1,11 @@
+# Trackers missing from pgl.txt (one host per line; a host covers its subdomains).
+clarity.ms
+amplitude.com
+cdn.segment.com
+api.segment.io
+bat.bing.com
+analytics.tiktok.com
+static.ads-twitter.com
+analytics.twitter.com
+snap.licdn.com
+px.ads.linkedin.com

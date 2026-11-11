@@ -1,0 +1,13 @@
+--- a/Source/WebCore/platform/network/ResourceHandle.h
++++ b/Source/WebCore/platform/network/ResourceHandle.h
+@@ -206,6 +206,10 @@
+ #endif
+ 
+     friend class ResourceHandleInternal;
++#if USE(CURL) && defined(WP81)
++    friend class CurlResourceHandleDelegate;
++    void startCurlRequest(ResourceRequest&&);
++#endif
+     std::unique_ptr<ResourceHandleInternal> d;
+ };
+ 

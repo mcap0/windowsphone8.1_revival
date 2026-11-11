@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Dialoghi e schede</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:16px}
+button,a.b{display:block;width:100%;box-sizing:border-box;color:#fff;background:#1976d2;border:0;border-radius:0;padding:14px;margin:10px 0;
+  text-decoration:none;font-size:20px;text-align:left;font-family:inherit}
+#log{font-size:14px;color:#ccc;white-space:pre-wrap;border-top:1px solid #444;margin-top:16px;padding-top:8px}
+textarea{width:100%;box-sizing:border-box;font-size:18px;height:70px}
+.long{color:#999;font-size:15px}
+</style></head><body>
+<h2>Dialoghi e schede</h2>
+<button onclick="say('alert: ' + (alert('Questo è un alert.') === undefined ? 'chiuso' : '?'))">alert</button>
+<button onclick="say('confirm: ' + confirm('Confermi?'))">confirm</button>
+<button onclick="say('prompt: ' + JSON.stringify(prompt('Come ti chiami?', 'Mario')))">prompt</button>
+<button onclick="armUnload()">attiva &ldquo;lasciare la pagina?&rdquo;</button>
+<textarea id="t" placeholder="scrivi qui, poi esci dalla pagina"></textarea>
+<a class="b" href="index.html" target="_blank">link con target=_blank (nuova scheda)</a>
+<button onclick="say('window.open: ' + window.open('features.html'))">window.open (nuova scheda)</button>
+<a class="b" href="#sotto">vai a #sotto (Indietro torna qui, stessa pagina)</a>
+<button onclick="history.pushState({n: 1}, '', '?stato=1'); say('pushState: ' + location.search)">history.pushState</button>
+<p class="long">Testo per &ldquo;trova nella pagina&rdquo;: il Lumia 1020 ha una fotocamera da 41 megapixel. Lumia, lumia, LUMIA.</p>
+<div id="log"></div>
+<p style="margin-top:900px" id="sotto">Qui &egrave; #sotto. Scorri, apri un'altra pagina e torna con Indietro: deve tornare a quest'altezza.</p>
+<p class="long">Ancora Lumia in fondo alla pagina.</p>
+<script src="common.js"></script><script>
+var lines = [];
+function say(text) {
+  lines.push(text);
+  T.$("log").textContent = lines.join("\n");
+  T.send("dialogs", [text]);
+}
+function armUnload() {
+  window.onbeforeunload = function (e) { e.preventDefault(); e.returnValue = "x"; return "x"; };
+  say("beforeunload attivo: tocca la pagina e poi esci");
+}
+window.addEventListener("pageshow", function (e) { say("pageshow, dalla cache: " + e.persisted + ", scrollY " + window.scrollY); });
+window.addEventListener("popstate", function () { say("popstate: " + location.search); });
+say("caricata; motore " + T.engine() + ", platform " + navigator.platform);
+</script></body></html>

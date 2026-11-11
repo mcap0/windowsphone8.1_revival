@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+# wpdisasm — disassemble a WP8.1 ARM (Thumb-2) PE function by function, using .pdata for the function starts, and
+# annotate every pc-relative literal load with the string, import or value it loads (PLAN §69.8).
+#   tools/wpdisasm <dll> <lo-hex> <hi-hex>     functions whose start is in [lo, hi)
+#   tools/wpdisasm <dll> --funcs               list function starts
+import struct,subprocess,re,sys
+dll=sys.argv[1]; d=open(dll,'rb').read()
+pe=struct.unpack_from('<I',d,0x3c)[0]; opt=pe+24
+base=struct.unpack_from('<I',d,opt+28)[0]
+nsec=struct.unpack_from('<H',d,pe+6)[0]; optsize=struct.unpack_from('<H',d,pe+20)[0]
+secs=[struct.unpack_from('<8sIIII',d,pe+24+optsize+40*i)[:5] for i in range(nsec)]
+def rva2off(va):
+    r=va-base
+    for name,vs,sva,rs,ro in secs:
+        if sva<=r<sva+max(vs,rs): return ro+r-sva
+    return -1
+def u32(va):
+    try: return struct.unpack_from('<I',d,rva2off(va))[0]
+    except: return None
+def s_at(va):
+    o=rva2off(va)
+    if not (0<=o<len(d)): return None
+    b=d[o:o+200]
+    if len(b)>4 and b[1]==0 and 32<=b[0]<127:
+        s=b.decode('utf-16le','ignore').split('\0')[0]
+        if len(s)>=3: return 'L"'+s+'"'
+    a=b.split(b'\0')[0]
+    if len(a)>=4 and all(32<=c<127 for c in a): return '"'+a.decode()+'"'
+    return None
+# imports
+imp={}
+idt_rva=struct.unpack_from('<I',d,opt+96+8)[0]
+o=rva2off(base+idt_rva)
+while True:
+    ilt,_,_,name,iat=struct.unpack_from('<5I',d,o)
+    if not name: break
+    dn=d[rva2off(base+name):].split(b'\0')[0].decode()
+    j=0
+    while True:
+        e=struct.unpack_from('<I',d,rva2off(base+(ilt or iat))+4*j)[0]
+        if not e: break
+        fn=('#%d'%(e&0xffff)) if e&0x80000000 else d[rva2off(base+e)+2:].split(b'\0')[0].decode()
+        imp[base+iat+4*j]=dn+'!'+fn; j+=1
+    o+=20
+pdata=[x for x in secs if x[0].rstrip(b'\0')==b'.pdata'][0]
+fs=sorted(set(base+(struct.unpack_from('<I',d,pdata[4]+i)[0]&~1) for i in range(0,pdata[1],8)) - {base})
+if sys.argv[2]=='--funcs':
+    for f in fs: print(hex(f))
+    sys.exit()
+lo,hi=int(sys.argv[2],16),int(sys.argv[3],16)
+for i,f in enumerate(fs):
+    if not (lo<=f<hi): continue
+    end=fs[i+1] if i+1<len(fs) else f+0x400
+    out=subprocess.run(['llvm-objdump','-d','--triple=thumbv7-windows','--start-address=%#x'%f,'--stop-address=%#x'%end,dll],capture_output=True,text=True).stdout
+    print('==== func',hex(f))
+    for line in out.splitlines():
+        m=re.search(r'@ 0x([0-9a-f]+)',line)
+        if m and 'ldr' in line:
+            v=u32(int(m.group(1),16)); note=''
+            if v is not None:
+                note=imp.get(v) or s_at(v) or hex(v)
+            line+='   ; '+note
+        if re.match(r'^[0-9a-f]+:',line): print(line)

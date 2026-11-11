@@ -1,0 +1,1103 @@
+--- a/Source/JavaScriptCore/dfg/DFGSpeculativeJIT32_64.cpp
++++ b/Source/JavaScriptCore/dfg/DFGSpeculativeJIT32_64.cpp
+@@ -30,6 +30,7 @@
+ #if ENABLE(DFG_JIT)
+ 
+ #include "ArrayPrototype.h"
++#include "BaselineJITRegisters.h"
+ #include "CallFrameShuffler.h"
+ #include "ClonedArguments.h"
+ #include "DFGAbstractInterpreterInlines.h"
+@@ -170,109 +171,83 @@
+     }
+ }
+ 
+-void SpeculativeJIT::cachedGetById(Node* node, CodeOrigin origin, JSValueRegs base, JSValueRegs result, GPRReg propertyCacheGPR, GPRReg scratchGPR, CacheableIdentifier identifier, Jump slowPathTarget , SpillRegistersMode mode, AccessType type)
++template<size_t N>
++void SpeculativeJIT::moveToICRegisters(std::array<JSValueRegs, N> sources, std::array<JSValueRegs, N> destinations)
+ {
+-    cachedGetById(node, origin, base.tagGPR(), base.payloadGPR(), result.tagGPR(), result.payloadGPR(), propertyCacheGPR, scratchGPR, identifier, slowPathTarget, mode, type);
++    std::array<GPRReg, 2 * N> from;
++    std::array<GPRReg, 2 * N> to;
++    for (size_t i = 0; i < N; ++i) {
++        from[i] = sources[i].payloadGPR();
++        to[i] = destinations[i].payloadGPR();
++        from[N + i] = sources[i].tagGPR() == InvalidGPRReg ? destinations[i].tagGPR() : sources[i].tagGPR();
++        to[N + i] = destinations[i].tagGPR();
++    }
++    shuffleRegisters<GPRReg, 2 * N>(from, to);
++    for (size_t i = 0; i < N; ++i) {
++        if (sources[i].tagGPR() == InvalidGPRReg)
++            move(TrustedImm32(JSValue::CellTag), destinations[i].tagGPR());
++    }
+ }
+ 
+-void SpeculativeJIT::cachedGetById(
+-    Node* node, CodeOrigin codeOrigin, GPRReg baseTagGPROrNone, GPRReg basePayloadGPR, GPRReg resultTagGPR, GPRReg resultPayloadGPR, GPRReg propertyCacheGPR,
+-    GPRReg scratchGPR, CacheableIdentifier identifier, Jump slowPathTarget, SpillRegistersMode spillMode, AccessType type)
++void SpeculativeJIT::cachedGetById(Node* node, CodeOrigin codeOrigin, JSValueRegs baseRegs, JSValueRegs resultRegs, CacheableIdentifier identifier, bool needsBaseCellCheck, AccessType type, CacheType cacheType)
+ {
+     UNUSED_PARAM(node);
+-    UNUSED_PARAM(propertyCacheGPR);
+-    UNUSED_PARAM(scratchGPR);
+-    // This is a hacky fix for when the register allocator decides to alias the base payload with the result tag. This only happens
+-    // in the case of GetByIdFlush/GetByIdDirectFlush, which has a relatively expensive register allocation story already so we probably don't need to
+-    // trip over one move instruction.
+-    if (basePayloadGPR == resultTagGPR) {
+-        RELEASE_ASSERT(basePayloadGPR != resultPayloadGPR);
+-        
+-        if (baseTagGPROrNone == resultPayloadGPR) {
+-            swap(basePayloadGPR, baseTagGPROrNone);
+-            baseTagGPROrNone = resultTagGPR;
+-        } else
+-            move(basePayloadGPR, resultPayloadGPR);
+-        basePayloadGPR = resultPayloadGPR;
+-    }
+-    
+-    RegisterSet usedRegisters = this->usedRegisters();
+-    if (spillMode == DontSpill) {
+-        // We've already flushed registers to the stack, we don't need to spill these.
+-        usedRegisters.remove(JSValueRegs(baseTagGPROrNone, basePayloadGPR));
+-        usedRegisters.remove(JSValueRegs(resultTagGPR, resultPayloadGPR));
+-    }
+-    
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
++    RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<1>({ baseRegs }, { BaselineJITRegisters::GetById::baseJSR });
+     JITGetByIdGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, usedRegisters, identifier,
+-        JSValueRegs(baseTagGPROrNone, basePayloadGPR), JSValueRegs(resultTagGPR, resultPayloadGPR), InvalidGPRReg, type, CacheType::GetByIdSelf);
+-    
+-    gen.generateFastPath(*this);
+-    
++        BaselineJITRegisters::GetById::baseJSR, resultRegs, BaselineJITRegisters::GetById::propertyCacheGPR, type, cacheType);
+     JumpList slowCases;
+-    if (slowPathTarget.isSet())
+-        slowCases.append(slowPathTarget);
+-    slowCases.append(gen.slowPathJump());
+-
+-    std::unique_ptr<SlowPathGenerator> slowPath;
+-    if (baseTagGPROrNone == InvalidGPRReg) {
+-        slowPath = slowPathCall(
+-            slowCases, this, appropriateGetByIdOptimizeFunction(type),
+-            JSValueRegs(resultTagGPR, resultPayloadGPR),
+-            CellValue(basePayloadGPR), TrustedImmPtr(gen.propertyCache()));
+-    } else {
+-        slowPath = slowPathCall(
+-            slowCases, this, appropriateGetByIdOptimizeFunction(type),
+-            JSValueRegs(resultTagGPR, resultPayloadGPR),
+-            JSValueRegs(baseTagGPROrNone, basePayloadGPR), TrustedImmPtr(gen.propertyCache()));
+-    }
++    if (needsBaseCellCheck)
++        slowCases.append(branchIfNotCell(BaselineJITRegisters::GetById::baseJSR));
++
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::GetById::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::GetById::propertyCacheGPR, Address(BaselineJITRegisters::GetById::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), appropriateGetByIdOptimizeFunction(type),
++        DontSpill, ExceptionCheckRequirement::CheckNeeded,
++        resultRegs, BaselineJITRegisters::GetById::baseJSR, BaselineJITRegisters::GetById::propertyCacheGPR);
+ 
+     addGetById(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
++    addSlowPathGeneratorLambda([=, this]() mutable {
++        gen.generateDataICSlowPath(*this);
++    });
+ }
+ 
+-void SpeculativeJIT::cachedGetByIdWithThis(Node* node,
+-    CodeOrigin codeOrigin, GPRReg baseTagGPROrNone, GPRReg basePayloadGPR, GPRReg thisTagGPR, GPRReg thisPayloadGPR, GPRReg resultTagGPR, GPRReg resultPayloadGPR, GPRReg propertyCacheGPR, GPRReg scratchGPR,
+-    CacheableIdentifier identifier, const JumpList& slowPathTarget)
++
++void SpeculativeJIT::cachedGetByIdWithThis(Node* node, CodeOrigin codeOrigin, JSValueRegs baseRegs, JSValueRegs thisRegs, JSValueRegs resultRegs, CacheableIdentifier identifier, bool needsBaseAndThisCellCheck)
+ {
+     UNUSED_PARAM(node);
+-    UNUSED_PARAM(propertyCacheGPR);
+-    UNUSED_PARAM(scratchGPR);
+-    RegisterSet usedRegisters = this->usedRegisters();
+-    
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
++    RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ baseRegs, thisRegs }, { BaselineJITRegisters::GetByIdWithThis::baseJSR, BaselineJITRegisters::GetByIdWithThis::thisJSR });
+     JITGetByIdWithThisGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, usedRegisters, identifier,
+-        JSValueRegs(resultTagGPR, resultPayloadGPR), JSValueRegs(baseTagGPROrNone, basePayloadGPR), JSValueRegs(thisTagGPR, thisPayloadGPR), InvalidGPRReg);
+-    
+-    gen.generateFastPath(*this);
+-    
++        resultRegs, BaselineJITRegisters::GetByIdWithThis::baseJSR, BaselineJITRegisters::GetByIdWithThis::thisJSR, BaselineJITRegisters::GetByIdWithThis::propertyCacheGPR);
+     JumpList slowCases;
+-    if (!slowPathTarget.empty())
+-        slowCases.append(slowPathTarget);
+-    slowCases.append(gen.slowPathJump());
+-
+-    std::unique_ptr<SlowPathGenerator> slowPath;
+-    if (baseTagGPROrNone == InvalidGPRReg && thisTagGPR == InvalidGPRReg) {
+-        slowPath = slowPathCall(
+-            slowCases, this, operationGetByIdWithThisOptimize,
+-            JSValueRegs(resultTagGPR, resultPayloadGPR),
+-            CellValue(basePayloadGPR), CellValue(thisPayloadGPR), TrustedImmPtr(gen.propertyCache()));
+-    } else {
+-        ASSERT(baseTagGPROrNone != InvalidGPRReg);
+-        ASSERT(thisTagGPR != InvalidGPRReg);
+-        
+-        slowPath = slowPathCall(
+-            slowCases, this, operationGetByIdWithThisOptimize,
+-            JSValueRegs(resultTagGPR, resultPayloadGPR),
+-            JSValueRegs(baseTagGPROrNone, basePayloadGPR), JSValueRegs(thisTagGPR, thisPayloadGPR), TrustedImmPtr(gen.propertyCache()));
++    if (needsBaseAndThisCellCheck) {
++        slowCases.append(branchIfNotCell(BaselineJITRegisters::GetByIdWithThis::baseJSR));
++        slowCases.append(branchIfNotCell(BaselineJITRegisters::GetByIdWithThis::thisJSR));
+     }
+ 
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::GetByIdWithThis::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::GetByIdWithThis::propertyCacheGPR, Address(BaselineJITRegisters::GetByIdWithThis::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationGetByIdWithThisOptimize,
++        DontSpill, ExceptionCheckRequirement::CheckNeeded,
++        resultRegs, BaselineJITRegisters::GetByIdWithThis::baseJSR, BaselineJITRegisters::GetByIdWithThis::thisJSR, BaselineJITRegisters::GetByIdWithThis::propertyCacheGPR);
++
+     addGetByIdWithThis(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
++    addSlowPathGeneratorLambda([=, this]() mutable {
++        gen.generateDataICSlowPath(*this);
++    });
+ }
+ 
+ void SpeculativeJIT::nonSpeculativeNonPeepholeCompareNullOrUndefined(Edge operand)
+@@ -1863,35 +1838,30 @@
+             RegisterSet usedRegisters = this->usedRegisters();
+ 
+             JumpList slowCases;
+-            if (!m_state.forNode(m_graph.varArgChild(node, 0)).isType(SpecCell))
+-                slowCases.append(branchIfNotCell(baseRegs));
+-
+             auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++            moveToICRegisters<2>({ baseRegs, propertyRegs }, { BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR });
++            loadJITData(BaselineJITRegisters::GetByVal::profileGPR);
++            addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::GetByVal::profileGPR);
+             JITGetByValGenerator gen(
+                 codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, AccessType::GetByVal, usedRegisters,
+-                baseRegs, propertyRegs, resultRegs, InvalidGPRReg, InvalidGPRReg);
++                BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR, resultRegs, BaselineJITRegisters::GetByVal::profileGPR, BaselineJITRegisters::GetByVal::propertyCacheGPR);
++            if (!m_state.forNode(m_graph.varArgChild(node, 0)).isType(SpecCell))
++                slowCases.append(branchIfNotCell(BaselineJITRegisters::GetByVal::baseJSR));
+ 
+-            if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecString))
+-                gen.propertyCache()->propertyIsString = true;
+-            else if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecInt32Only))
+-                gen.propertyCache()->propertyIsInt32 = true;
+-            else if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecSymbol))
+-                gen.propertyCache()->propertyIsSymbol = true;
+-
+-            gen.generateFastPath(*this);
+-
+-            slowCases.append(gen.slowPathJump());
+-
+-            std::unique_ptr<SlowPathGenerator> slowPath;
+-            if (baseRegs.tagGPR() == InvalidGPRReg) {
+-                slowPath = slowPathCall(
+-                    slowCases, this, operationGetByValOptimize,
+-                    resultRegs, CellValue(baseRegs.payloadGPR()), propertyRegs, TrustedImmPtr(gen.propertyCache()), nullptr);
+-            } else {
+-                slowPath = slowPathCall(
+-                    slowCases, this, operationGetByValOptimize,
+-                    resultRegs, baseRegs, propertyRegs, TrustedImmPtr(gen.propertyCache()), nullptr);
+-            }
++            WTF::visit([&](auto* propertyCache) {
++                if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecString))
++                    propertyCache->propertyIsString = true;
++                else if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecInt32Only))
++                    propertyCache->propertyIsInt32 = true;
++                else if (m_state.forNode(m_graph.varArgChild(node, 1)).isType(SpecSymbol))
++                    propertyCache->propertyIsSymbol = true;
++            }, propertyCache);
++
++            loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::GetByVal::propertyCacheGPR);
++            gen.generateDataICFastPath(*this);
++            auto slowPath = slowPathICCall(
++                slowCases, this, propertyCacheConstant, BaselineJITRegisters::GetByVal::propertyCacheGPR, Address(BaselineJITRegisters::GetByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationGetByValOptimize,
++                resultRegs, BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR, BaselineJITRegisters::GetByVal::propertyCacheGPR, BaselineJITRegisters::GetByVal::profileGPR);
+ 
+             addGetByVal(gen, slowPath.get());
+             addSlowPathGenerator(WTF::move(slowPath));
+@@ -3527,39 +3497,32 @@
+         if (node->child1().useKind() == CellUse && node->child2().useKind() == CellUse) {
+             SpeculateCellOperand base(this, node->child1());
+             SpeculateCellOperand thisValue(this, node->child2());
+-            GPRTemporary resultTag(this);
+-            GPRTemporary resultPayload(this);
+-            
++
+             GPRReg baseGPR = base.gpr();
+-            GPRReg thisGPR = thisValue.gpr();
+-            GPRReg resultTagGPR = resultTag.gpr();
+-            GPRReg resultPayloadGPR = resultPayload.gpr();
++            GPRReg thisValueGPR = thisValue.gpr();
+ 
+-            cachedGetByIdWithThis(node, node->origin.semantic, InvalidGPRReg, baseGPR, InvalidGPRReg, thisGPR, resultTagGPR, resultPayloadGPR, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier());
++            flushRegisters();
++            JSValueRegsFlushedCallResult result(this);
++            JSValueRegs resultRegs = result.regs();
+ 
+-            jsValueResult(resultTagGPR, resultPayloadGPR, node);
++            constexpr bool needsBaseCellCheck = false;
++            cachedGetByIdWithThis(node, node->origin.semantic, JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(thisValueGPR), resultRegs, node->cacheableIdentifier(), needsBaseCellCheck);
++            jsValueResult(resultRegs, node);
+         } else {
+             JSValueOperand base(this, node->child1());
+             JSValueOperand thisValue(this, node->child2());
+-            GPRTemporary resultTag(this);
+-            GPRTemporary resultPayload(this);
+-            
+-            GPRReg baseTagGPR = base.tagGPR();
+-            GPRReg basePayloadGPR = base.payloadGPR();
+-            GPRReg thisTagGPR = thisValue.tagGPR();
+-            GPRReg thisPayloadGPR = thisValue.payloadGPR();
+-            GPRReg resultTagGPR = resultTag.gpr();
+-            GPRReg resultPayloadGPR = resultPayload.gpr();
+ 
+-            JumpList notCellList;
+-            notCellList.append(branchIfNotCell(base.jsValueRegs()));
+-            notCellList.append(branchIfNotCell(thisValue.jsValueRegs()));
++            JSValueRegs baseRegs = base.jsValueRegs();
++            JSValueRegs thisRegs = thisValue.jsValueRegs();
+ 
+-            cachedGetByIdWithThis(node, node->origin.semantic, baseTagGPR, basePayloadGPR, thisTagGPR, thisPayloadGPR, resultTagGPR, resultPayloadGPR, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), notCellList);
++            flushRegisters();
++            JSValueRegsFlushedCallResult result(this);
++            JSValueRegs resultRegs = result.regs();
+ 
+-            jsValueResult(resultTagGPR, resultPayloadGPR, node);
++            constexpr bool needsBaseCellCheck = true;
++            cachedGetByIdWithThis(node, node->origin.semantic, baseRegs, thisRegs, resultRegs, node->cacheableIdentifier(), needsBaseCellCheck);
++            jsValueResult(resultRegs, node);
+         }
+-        
+         break;
+     }
+ 
+@@ -4729,37 +4692,40 @@
+ void SpeculativeJIT::compileGetById(Node* node, AccessType accessType)
+ {
+     ASSERT(accessType == AccessType::GetById || accessType == AccessType::GetByIdDirect);
++    CacheType cacheType = CacheType::GetByIdSelf;
++    if (node->cacheableIdentifier() == vm().propertyNames->length)
++        cacheType = CacheType::ArrayLength;
++    else if (accessType == AccessType::GetById)
++        cacheType = node->cacheType();
+ 
+     switch (node->child1().useKind()) {
+     case CellUse: {
+         SpeculateCellOperand base(this, node->child1());
+-        JSValueRegsTemporary result(this, Reuse, base);
+ 
+         JSValueRegs baseRegs = JSValueRegs::payloadOnly(base.gpr());
+-        JSValueRegs resultRegs = result.regs();
+ 
+-        base.use();
+-
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), Jump(), NeedToSpill, accessType);
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
++        JSValueRegs resultRegs = result.regs();
+ 
+-        jsValueResult(resultRegs, node, DataFormatJS, UseChildrenCalledExplicitly);
++        constexpr bool needsBaseCellCheck = false;
++        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, node->cacheableIdentifier(), needsBaseCellCheck, accessType, cacheType);
++        jsValueResult(resultRegs, node, DataFormatJS);
+         break;
+     }
+ 
+     case UntypedUse: {
+         JSValueOperand base(this, node->child1());
+-        JSValueRegsTemporary result(this, Reuse, base);
+ 
+         JSValueRegs baseRegs = base.jsValueRegs();
+-        JSValueRegs resultRegs = result.regs();
+ 
+-        base.use();
+-
+-        Jump notCell = branchIfNotCell(baseRegs);
+-
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), notCell, NeedToSpill, accessType);
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
++        JSValueRegs resultRegs = result.regs();
+ 
+-        jsValueResult(resultRegs, node, DataFormatJS, UseChildrenCalledExplicitly);
++        constexpr bool needsBaseCellCheck = true;
++        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, node->cacheableIdentifier(), needsBaseCellCheck, accessType, cacheType);
++        jsValueResult(resultRegs, node, DataFormatJS);
+         break;
+     }
+ 
+@@ -4771,81 +4737,43 @@
+ 
+ void SpeculativeJIT::compileGetByIdFlush(Node* node, AccessType accessType)
+ {
+-    switch (node->child1().useKind()) {
+-    case CellUse: {
+-        SpeculateCellOperand base(this, node->child1());
+-        JSValueRegsFlushedCallResult result(this);
+-
+-        JSValueRegs baseRegs = JSValueRegs::payloadOnly(base.gpr());
+-        JSValueRegs resultRegs = result.regs();
+-
+-        base.use();
+-
+-        flushRegisters();
+-
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), Jump(), DontSpill, accessType);
+-
+-        jsValueResult(resultRegs, node, DataFormatJS, UseChildrenCalledExplicitly);
+-        break;
+-    }
+-
+-    case UntypedUse: {
+-        JSValueOperand base(this, node->child1());
+-        JSValueRegsFlushedCallResult result(this);
+-
+-        JSValueRegs baseRegs = base.jsValueRegs();
+-        JSValueRegs resultRegs = result.regs();
+-
+-        base.use();
+-
+-        flushRegisters();
+-
+-        Jump notCell = branchIfNotCell(baseRegs);
+-
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), notCell, DontSpill, accessType);
+-
+-        jsValueResult(resultRegs, node, DataFormatJS, UseChildrenCalledExplicitly);
+-        break;
+-    }
+-
+-    default:
+-        DFG_CRASH(m_graph, node, "Bad use kind");
+-        break;
+-    }
++    compileGetById(node, accessType);
+ }
+ 
+ void SpeculativeJIT::compileDeleteById(Node* node)
+ {
+     if (node->child1().useKind() == CellUse) {
+         SpeculateCellOperand base(this, node->child1());
+-        JSValueRegsTemporary result(this);
+ 
+-        JumpList slowCases;
++        GPRReg baseGPR = base.gpr();
+ 
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
+         JSValueRegs resultRegs = result.regs();
+-        GPRReg baseGPR = base.gpr();
+-        GPRReg resultGPR = resultRegs.payloadGPR();
+ 
+         CodeOrigin codeOrigin = node->origin.semantic;
+         CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+         RegisterSet usedRegisters = this->usedRegisters();
+ 
+         auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++        moveToICRegisters<1>({ JSValueRegs::payloadOnly(baseGPR) }, { BaselineJITRegisters::DelById::baseJSR });
+         JITDelByIdGenerator gen(
+             codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, node->ecmaMode().isStrict() ? AccessType::DeleteByIdStrict : AccessType::DeleteByIdSloppy, usedRegisters, node->cacheableIdentifier(),
+-            JSValueRegs::payloadOnly(baseGPR), resultRegs, InvalidGPRReg);
++            BaselineJITRegisters::DelById::baseJSR, resultRegs, BaselineJITRegisters::DelById::propertyCacheGPR);
++        JumpList slowCases;
+ 
+         auto* operation = node->ecmaMode().isStrict() ? operationDeleteByIdStrictOptimize : operationDeleteByIdSloppyOptimize;
+-        gen.generateFastPath(*this);
+-        slowCases.append(gen.slowPathJump());
+-        std::unique_ptr<SlowPathGenerator> slowPath = slowPathCall(
+-            slowCases, this, operation,
+-            resultGPR, CellValue(baseGPR), TrustedImmPtr(gen.propertyCache()));
++        loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::DelById::propertyCacheGPR);
++        gen.generateDataICFastPath(*this);
++        ASSERT(!gen.propertyCache());
++        auto slowPath = slowPathICCall(
++            slowCases, this, propertyCacheConstant, BaselineJITRegisters::DelById::propertyCacheGPR, Address(BaselineJITRegisters::DelById::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operation,
++            resultRegs.payloadGPR(), BaselineJITRegisters::DelById::baseJSR, BaselineJITRegisters::DelById::propertyCacheGPR);
+ 
+         addDelById(gen, slowPath.get());
+         addSlowPathGenerator(WTF::move(slowPath));
+ 
+-        unblessedBooleanResult(resultGPR, node);
++        unblessedBooleanResult(resultRegs.payloadGPR(), node);
+         return;
+     }
+ 
+@@ -4869,40 +4797,42 @@
+     if (node->child1().useKind() == CellUse) {
+         SpeculateCellOperand base(this, node->child1());
+         JSValueOperand key(this, node->child2(), ManualOperandSpeculation);
+-        JSValueRegsTemporary result(this, Reuse, key);
+-
+-        JumpList slowCases;
+ 
+         GPRReg baseGPR = base.gpr();
+         JSValueRegs keyRegs = key.jsValueRegs();
+-        JSValueRegs resultRegs = result.regs();
+-        GPRReg resultGPR = resultRegs.payloadGPR();
+ 
+         speculate(node, node->child2());
+ 
+-        if (needsTypeCheck(node->child2(), SpecCell))
+-            slowCases.append(branchIfNotCell(keyRegs));
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
++        JSValueRegs resultRegs = result.regs();
+ 
+         CodeOrigin codeOrigin = node->origin.semantic;
+         CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+         RegisterSet usedRegisters = this->usedRegisters();
+ 
+         auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++        moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), keyRegs }, { BaselineJITRegisters::DelByVal::baseJSR, BaselineJITRegisters::DelByVal::propertyJSR });
+         JITDelByValGenerator gen(
+             codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, node->ecmaMode().isStrict() ? AccessType::DeleteByValStrict : AccessType::DeleteByValSloppy, usedRegisters,
+-            JSValueRegs::payloadOnly(baseGPR), keyRegs, resultRegs, InvalidGPRReg);
++            BaselineJITRegisters::DelByVal::baseJSR, BaselineJITRegisters::DelByVal::propertyJSR, resultRegs, BaselineJITRegisters::DelByVal::propertyCacheGPR);
++        JumpList slowCases;
++        if (needsTypeCheck(node->child2(), SpecCell))
++            slowCases.append(branchIfNotCell(BaselineJITRegisters::DelByVal::propertyJSR));
+ 
+         auto* operation = node->ecmaMode().isStrict() ? operationDeleteByValStrictOptimize : operationDeleteByValSloppyOptimize;
+-        gen.generateFastPath(*this);
+-        slowCases.append(gen.slowPathJump());
+-        std::unique_ptr<SlowPathGenerator> slowPath = slowPathCall(
+-            slowCases, this, operation,
+-            resultGPR, CellValue(baseGPR), keyRegs, TrustedImmPtr(gen.propertyCache()));
++
++        loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::DelByVal::propertyCacheGPR);
++        gen.generateDataICFastPath(*this);
++        ASSERT(!gen.propertyCache());
++        auto slowPath = slowPathICCall(
++            slowCases, this, propertyCacheConstant, BaselineJITRegisters::DelByVal::propertyCacheGPR, Address(BaselineJITRegisters::DelByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operation,
++            resultRegs.payloadGPR(), BaselineJITRegisters::DelByVal::baseJSR, BaselineJITRegisters::DelByVal::propertyJSR, BaselineJITRegisters::DelByVal::propertyCacheGPR);
+ 
+         addDelByVal(gen, slowPath.get());
+         addSlowPathGenerator(WTF::move(slowPath));
+ 
+-        unblessedBooleanResult(resultGPR, node);
++        unblessedBooleanResult(resultRegs.payloadGPR(), node);
+         return;
+     }
+ 
+@@ -4925,112 +4855,123 @@
+ void SpeculativeJIT::compileInById(Node* node)
+ {
+     SpeculateCellOperand base(this, node->child1());
+-    JSValueRegsTemporary result(this, Reuse, base, PayloadWord);
+ 
+     GPRReg baseGPR = base.gpr();
+-    JSValueRegs resultRegs = result.regs();
+ 
+-    base.use();
++    flushRegisters();
++    JSValueRegsFlushedCallResult result(this);
++    JSValueRegs resultRegs = result.regs();
+ 
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<1>({ JSValueRegs::payloadOnly(baseGPR) }, { BaselineJITRegisters::InById::baseJSR });
+     JITInByIdGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, usedRegisters, node->cacheableIdentifier(),
+-        JSValueRegs::payloadOnly(baseGPR), resultRegs, InvalidGPRReg);
+-
++        BaselineJITRegisters::InById::baseJSR, resultRegs, BaselineJITRegisters::InById::propertyCacheGPR);
+     JumpList slowCases;
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, operationInByIdOptimize,
+-        NeedToSpill, ExceptionCheckRequirement::CheckNeeded,
+-        resultRegs, CellValue(baseGPR), TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::InById::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    ASSERT(!gen.propertyCache());
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::InById::propertyCacheGPR, Address(BaselineJITRegisters::InById::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationInByIdOptimize,
++        DontSpill, ExceptionCheckRequirement::CheckNeeded,
++        resultRegs, BaselineJITRegisters::InById::baseJSR, BaselineJITRegisters::InById::propertyCacheGPR);
+ 
+     addInById(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
++    addSlowPathGeneratorLambda([=, this]() mutable {
++        gen.generateDataICSlowPath(*this);
++    });
+ 
+-    blessedBooleanResult(resultRegs.payloadGPR(), node, UseChildrenCalledExplicitly);
++    blessedBooleanResult(resultRegs.payloadGPR(), node);
+ }
+ 
+ void SpeculativeJIT::compileInByVal(Node* node)
+ {
+     SpeculateCellOperand base(this, node->child1());
+     JSValueOperand key(this, node->child2());
+-    JSValueRegsTemporary result(this, Reuse, key);
+ 
+     GPRReg baseGPR = base.gpr();
+     JSValueRegs keyRegs = key.jsValueRegs();
+-    JSValueRegs resultRegs = result.regs();
+-
+-    base.use();
+-    key.use();
+ 
+-    JumpList slowCases;
++    flushRegisters();
++    JSValueRegsFlushedCallResult result(this);
++    JSValueRegs resultRegs = result.regs();
+ 
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), keyRegs }, { BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR });
++    loadJITData(BaselineJITRegisters::InByVal::profileGPR);
++    addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::InByVal::profileGPR);
+     JITInByValGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, AccessType::InByVal, usedRegisters,
+-        JSValueRegs::payloadOnly(baseGPR), keyRegs, resultRegs, InvalidGPRReg, InvalidGPRReg);
++        BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR, resultRegs, BaselineJITRegisters::InByVal::profileGPR, BaselineJITRegisters::InByVal::propertyCacheGPR);
++    JumpList slowCases;
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, operationInByValOptimize,
+-        NeedToSpill, ExceptionCheckRequirement::CheckNeeded,
+-        resultRegs, CellValue(baseGPR), keyRegs, TrustedImmPtr(gen.propertyCache()), nullptr);
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::InByVal::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    ASSERT(!gen.propertyCache());
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::InByVal::propertyCacheGPR, Address(BaselineJITRegisters::InByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationInByValOptimize,
++        DontSpill, ExceptionCheckRequirement::CheckNeeded,
++        resultRegs, BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR, BaselineJITRegisters::InByVal::propertyCacheGPR, BaselineJITRegisters::InByVal::profileGPR);
+ 
+     addInByVal(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+ 
+-    blessedBooleanResult(resultRegs.payloadGPR(), node, UseChildrenCalledExplicitly);
++    blessedBooleanResult(resultRegs.payloadGPR(), node);
+ }
+ 
+ void SpeculativeJIT::compileHasPrivate(Node* node, AccessType type)
+ {
+     SpeculateCellOperand base(this, node->child1());
+     SpeculateCellOperand propertyOrBrand(this, node->child2());
+-    JSValueRegsTemporary result(this, Reuse, base);
+ 
+     GPRReg baseGPR = base.gpr();
+     GPRReg propertyOrBrandGPR = propertyOrBrand.gpr();
+-    JSValueRegs resultRegs = result.regs();
+ 
+     speculateSymbol(node->child2(), propertyOrBrandGPR);
+ 
+-    base.use();
+-    propertyOrBrand.use();
+-
+-    JumpList slowCases;
++    flushRegisters();
++    JSValueRegsFlushedCallResult result(this);
++    JSValueRegs resultRegs = result.regs();
+ 
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(propertyOrBrandGPR) }, { BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR });
++    loadJITData(BaselineJITRegisters::InByVal::profileGPR);
++    addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::InByVal::profileGPR);
+     JITInByValGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, type, usedRegisters,
+-        JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(propertyOrBrandGPR), resultRegs, InvalidGPRReg, InvalidGPRReg);
++        BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR, resultRegs, BaselineJITRegisters::InByVal::profileGPR, BaselineJITRegisters::InByVal::propertyCacheGPR);
++    JumpList slowCases;
+ 
+     WTF::visit([&](auto* propertyCache) {
+         propertyCache->propertyIsSymbol = true;
+     }, propertyCache);
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, type == AccessType::HasPrivateName ? operationHasPrivateNameOptimize : operationHasPrivateBrandOptimize,
+-        NeedToSpill, ExceptionCheckRequirement::CheckNeeded,
+-        resultRegs, CellValue(baseGPR), CellValue(propertyOrBrandGPR), TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::InByVal::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    ASSERT(!gen.propertyCache());
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::InByVal::propertyCacheGPR, Address(BaselineJITRegisters::InByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), type == AccessType::HasPrivateName ? operationHasPrivateNameOptimize : operationHasPrivateBrandOptimize,
++        DontSpill, ExceptionCheckRequirement::CheckNeeded,
++        resultRegs, BaselineJITRegisters::InByVal::baseJSR, BaselineJITRegisters::InByVal::propertyJSR, BaselineJITRegisters::InByVal::propertyCacheGPR);
+ 
+     addInByVal(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+ 
+-    blessedBooleanResult(resultRegs.payloadGPR(), node, UseChildrenCalledExplicitly);
++    blessedBooleanResult(resultRegs.payloadGPR(), node);
+ }
+ 
+ void SpeculativeJIT::compileHasPrivateName(Node* node)
+@@ -5108,6 +5049,8 @@
+         speculate(node, child2);
+         speculate(node, child3);
+ 
++        flushRegisters();
++
+         CodeOrigin codeOrigin = node->origin.semantic;
+         CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+         RegisterSet usedRegisters = this->usedRegisters();
+@@ -5115,9 +5058,13 @@
+         ECMAMode ecmaMode = node->ecmaMode();
+ 
+         auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++        moveToICRegisters<3>({ baseRegs, propertyRegs, valueRegs }, { BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR });
++        loadJITData(BaselineJITRegisters::PutByVal::profileGPR);
++        addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::PutByVal::profileGPR);
+         JITPutByValGenerator gen(
+             codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, isDirect ? (ecmaMode.isStrict() ? AccessType::PutByValDirectStrict : AccessType::PutByValDirectSloppy) : (ecmaMode.isStrict() ? AccessType::PutByValStrict : AccessType::PutByValSloppy), usedRegisters,
+-            baseRegs, propertyRegs, valueRegs, InvalidGPRReg, InvalidGPRReg);
++            BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR, BaselineJITRegisters::PutByVal::profileGPR, BaselineJITRegisters::PutByVal::propertyCacheGPR);
++        JumpList slowCases;
+ 
+         WTF::visit([&](auto* propertyCache) {
+             if (m_state.forNode(child2).isType(SpecString))
+@@ -5128,14 +5075,12 @@
+                 propertyCache->propertyIsSymbol = true;
+         }, propertyCache);
+ 
+-        JumpList slowCases;
+-
+         auto operation = isDirect ? (ecmaMode.isStrict() ? operationDirectPutByValStrictOptimize : operationDirectPutByValSloppyOptimize) : (ecmaMode.isStrict() ? operationPutByValStrictOptimize : operationPutByValSloppyOptimize);
+-        gen.generateFastPath(*this);
+-        slowCases.append(gen.slowPathJump());
+-        auto slowPath = slowPathCall(
+-            slowCases, this, operation,
+-            NoResult, baseRegs, propertyRegs, valueRegs, TrustedImmPtr(gen.propertyCache()), nullptr);
++        loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::PutByVal::propertyCacheGPR);
++        gen.generateDataICFastPath(*this);
++        auto slowPath = slowPathICCall(
++            slowCases, this, propertyCacheConstant, BaselineJITRegisters::PutByVal::propertyCacheGPR, Address(BaselineJITRegisters::PutByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operation,
++            NoResult, BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR, BaselineJITRegisters::PutByVal::propertyCacheGPR, BaselineJITRegisters::PutByVal::profileGPR);
+ 
+         addPutByVal(gen, slowPath.get());
+         addSlowPathGenerator(WTF::move(slowPath));
+@@ -5254,41 +5199,36 @@
+     DFG_ASSERT(m_graph, node, node->op() == GetPrivateName);
+     DFG_ASSERT(m_graph, node, m_graph.child(node, 1).useKind() == SymbolUse);
+ 
+-    JSValueRegsTemporary result(this);
++    speculateSymbol(m_graph.child(node, 1));
+ 
++    flushRegisters();
++    JSValueRegsFlushedCallResult result(this);
+     JSValueRegs resultRegs = result.regs();
+ 
+-    speculateSymbol(m_graph.child(node, 1));
+-
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
+ 
+-    JumpList slowCases;
+-    const bool baseIsKnownCell = m_state.forNode(m_graph.child(node, 0)).isType(SpecCell);
+-    if (!baseIsKnownCell)
+-        slowCases.append(branchIfNotCell(baseRegs));
+-
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ baseRegs, propertyRegs }, { BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR });
++    loadJITData(BaselineJITRegisters::GetByVal::profileGPR);
++    addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::GetByVal::profileGPR);
+     JITGetByValGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, AccessType::GetPrivateName, usedRegisters,
+-        baseRegs, propertyRegs, resultRegs, InvalidGPRReg, InvalidGPRReg);
++        BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR, resultRegs, BaselineJITRegisters::GetByVal::profileGPR, BaselineJITRegisters::GetByVal::propertyCacheGPR);
++    JumpList slowCases;
++    if (!m_state.forNode(m_graph.child(node, 0)).isType(SpecCell))
++        slowCases.append(branchIfNotCell(BaselineJITRegisters::GetByVal::baseJSR));
+ 
+     WTF::visit([&](auto* propertyCache) {
+         propertyCache->propertyIsSymbol = true;
+     }, propertyCache);
+ 
+-    auto makeSlowPathICCall = [&](auto base, auto) {
+-        gen.generateFastPath(*this);
+-        slowCases.append(gen.slowPathJump());
+-        return slowPathCall(
+-            slowCases, this, operationGetPrivateNameOptimize,
+-            result.regs(), base, CellValue(propertyRegs.payloadGPR()), TrustedImmPtr(gen.propertyCache()));
+-    };
+-
+-    std::unique_ptr<SlowPathGenerator> slowPath = baseIsKnownCell
+-        ? makeSlowPathICCall(CellValue(baseRegs.payloadGPR()), propertyCacheConstant)
+-        : makeSlowPathICCall(baseRegs, propertyCacheConstant);
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::GetByVal::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::GetByVal::propertyCacheGPR, Address(BaselineJITRegisters::GetByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationGetPrivateNameOptimize,
++        result.regs(), BaselineJITRegisters::GetByVal::baseJSR, BaselineJITRegisters::GetByVal::propertyJSR, BaselineJITRegisters::GetByVal::propertyCacheGPR);
+ 
+     addGetByVal(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+@@ -5301,28 +5241,30 @@
+     switch (m_graph.child(node, 0).useKind()) {
+     case CellUse: {
+         SpeculateCellOperand base(this, m_graph.child(node, 0));
+-        JSValueRegsTemporary result(this, Reuse, base);
+ 
+         JSValueRegs baseRegs = JSValueRegs::payloadOnly(base.gpr());
+-        JSValueRegs resultRegs = result.regs();
+ 
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), Jump(), NeedToSpill, AccessType::GetPrivateNameById);
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
++        JSValueRegs resultRegs = result.regs();
+ 
++        constexpr bool needsBaseCellCheck = false;
++        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, node->cacheableIdentifier(), needsBaseCellCheck, AccessType::GetPrivateNameById, CacheType::GetByIdSelf);
+         jsValueResult(resultRegs, node, DataFormatJS);
+         break;
+     }
+ 
+     case UntypedUse: {
+         JSValueOperand base(this, m_graph.child(node, 0));
+-        JSValueRegsTemporary result(this, Reuse, base);
+ 
+         JSValueRegs baseRegs = base.jsValueRegs();
+-        JSValueRegs resultRegs = result.regs();
+-
+-        Jump notCell = branchIfNotCell(baseRegs);
+ 
+-        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, InvalidGPRReg, InvalidGPRReg, node->cacheableIdentifier(), notCell, NeedToSpill, AccessType::GetPrivateNameById);
++        flushRegisters();
++        JSValueRegsFlushedCallResult result(this);
++        JSValueRegs resultRegs = result.regs();
+ 
++        constexpr bool needsBaseCellCheck = true;
++        cachedGetById(node, node->origin.semantic, baseRegs, resultRegs, node->cacheableIdentifier(), needsBaseCellCheck, AccessType::GetPrivateNameById, CacheType::GetByIdSelf);
+         jsValueResult(resultRegs, node, DataFormatJS);
+         break;
+     }
+@@ -5369,27 +5311,31 @@
+ 
+     speculateSymbol(child2, propertyGPR);
+ 
++    flushRegisters();
++
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
+ 
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<3>({ JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(propertyGPR), valueRegs }, { BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR });
++    loadJITData(BaselineJITRegisters::PutByVal::profileGPR);
++    addPtr(TrustedImm32(JITData::offsetOfDummyArrayProfile()), BaselineJITRegisters::PutByVal::profileGPR);
+     JITPutByValGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, node->privateFieldPutKind().isDefine() ? AccessType::DefinePrivateNameByVal : AccessType::SetPrivateNameByVal, usedRegisters,
+-        JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(propertyGPR), valueRegs, InvalidGPRReg, InvalidGPRReg);
++        BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR, BaselineJITRegisters::PutByVal::profileGPR, BaselineJITRegisters::PutByVal::propertyCacheGPR);
++    JumpList slowCases;
+ 
+     WTF::visit([&](auto* propertyCache) {
+         propertyCache->propertyIsSymbol = true;
+     }, propertyCache);
+ 
+-    JumpList slowCases;
+-
+     auto operation = node->privateFieldPutKind().isDefine() ? operationPutByValDefinePrivateFieldOptimize : operationPutByValSetPrivateFieldOptimize;
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, operation,
+-        NoResult, CellValue(baseGPR), CellValue(propertyGPR), valueRegs, TrustedImmPtr(gen.propertyCache()), nullptr);
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::PutByVal::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::PutByVal::propertyCacheGPR, Address(BaselineJITRegisters::PutByVal::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operation,
++        NoResult, BaselineJITRegisters::PutByVal::baseJSR, BaselineJITRegisters::PutByVal::propertyJSR, BaselineJITRegisters::PutByVal::valueJSR, BaselineJITRegisters::PutByVal::propertyCacheGPR, BaselineJITRegisters::PutByVal::profileGPR);
+ 
+     addPutByVal(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+@@ -5401,51 +5347,52 @@
+ {
+     SpeculateCellOperand base(this, node->child1());
+     JSValueOperand value(this, node->child2());
+-    GPRTemporary scratch(this);
+ 
+     JSValueRegs valueRegs = value.jsValueRegs();
+     GPRReg baseGPR = base.gpr();
+-    GPRReg scratchGPR = scratch.gpr();
++
++    flushRegisters();
+ 
+     // We emit property check during DFG generation, so we don't need
+     // to check it here.
+-    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, InvalidGPRReg, scratchGPR, InvalidGPRReg, node->cacheableIdentifier(), node->privateFieldPutKind().isDefine() ? AccessType::DefinePrivateNameById : AccessType::SetPrivateNameById);
++    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, node->cacheableIdentifier(), node->privateFieldPutKind().isDefine() ? AccessType::DefinePrivateNameById : AccessType::SetPrivateNameById);
+ 
+     noResult(node);
+ }
+ 
+ void SpeculativeJIT::compileCheckPrivateBrand(Node* node)
+ {
+-    JSValueOperand base(this, node->child1());
++    ASSERT(node->child1().useKind() == CellUse);
++    SpeculateCellOperand base(this, node->child1());
+     SpeculateCellOperand brandValue(this, node->child2());
+ 
+-    JSValueRegs baseRegs = base.jsValueRegs();
++    GPRReg baseGPR = base.gpr();
+     GPRReg brandGPR = brandValue.gpr();
+ 
+     speculateSymbol(node->child2(), brandGPR);
+ 
++    flushRegisters();
++
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
+ 
+-    JumpList slowCases;
+-    if (needsTypeCheck(node->child1(), SpecCell))
+-        slowCases.append(branchIfNotCell(baseRegs));
+-
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(brandGPR) }, { BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR });
+     JITPrivateBrandAccessGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, AccessType::CheckPrivateBrand, usedRegisters,
+-        baseRegs, JSValueRegs::payloadOnly(brandGPR), InvalidGPRReg);
++        BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
++    JumpList slowCases;
+ 
+     WTF::visit([&](auto* propertyCache) {
+         propertyCache->propertyIsSymbol = true;
+     }, propertyCache);
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, operationCheckPrivateBrandOptimize, NoResult,
+-        baseRegs, CellValue(brandGPR), TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::PrivateBrand::propertyCacheGPR, Address(BaselineJITRegisters::PrivateBrand::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationCheckPrivateBrandOptimize, NoResult,
++        BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
+ 
+     addPrivateBrandAccess(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+@@ -5464,25 +5411,28 @@
+ 
+     speculateSymbol(node->child2(), brandGPR);
+ 
++    flushRegisters();
++
+     CodeOrigin codeOrigin = node->origin.semantic;
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
+ 
+-    JumpList slowCases;
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(brandGPR) }, { BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR });
+     JITPrivateBrandAccessGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, AccessType::SetPrivateBrand, usedRegisters,
+-        JSValueRegs::payloadOnly(baseGPR), JSValueRegs::payloadOnly(brandGPR), InvalidGPRReg);
++        BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
++    JumpList slowCases;
+ 
+     WTF::visit([&](auto* propertyCache) {
+         propertyCache->propertyIsSymbol = true;
+     }, propertyCache);
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(
+-        slowCases, this, operationSetPrivateBrandOptimize, NoResult,
+-        CellValue(baseGPR), CellValue(brandGPR), TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(
++        slowCases, this, propertyCacheConstant, BaselineJITRegisters::PrivateBrand::propertyCacheGPR, Address(BaselineJITRegisters::PrivateBrand::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationSetPrivateBrandOptimize, NoResult,
++        BaselineJITRegisters::PrivateBrand::baseJSR, BaselineJITRegisters::PrivateBrand::propertyJSR, BaselineJITRegisters::PrivateBrand::propertyCacheGPR);
+ 
+     addPrivateBrandAccess(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+@@ -5490,23 +5440,25 @@
+     noResult(node);
+ }
+ 
+-void SpeculativeJIT::compileInstanceOfForCells(Node* node, JSValueRegs valueRegs, JSValueRegs prototypeRegs, GPRReg resultGPR, GPRReg propertyCacheGPR, Jump slowCase)
++void SpeculativeJIT::compileInstanceOfForCells(Node* node, JSValueRegs valueRegs, JSValueRegs prototypeRegs, GPRReg resultGPR, bool needsPrototypeCellCheck)
+ {
+-    CodeOrigin codeOrigin = node->origin.semantic;
+-    CallSiteIndex callSiteIndex = addCallSite(codeOrigin);
+-
+     bool prototypeIsKnownObject = m_state.forNode(node->child2()).isType(SpecObject | ~SpecCell);
++    CodeOrigin codeOrigin = node->origin.semantic;
++    CallSiteIndex callSiteIndex = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
+     RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ valueRegs, prototypeRegs }, { BaselineJITRegisters::Instanceof::valueJSR, BaselineJITRegisters::Instanceof::protoJSR });
+     JITInstanceOfGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, node->origin.semantic, callSiteIndex, usedRegisters, resultGPR,
+-        valueRegs.payloadGPR(), prototypeRegs.payloadGPR(), propertyCacheGPR, prototypeIsKnownObject);
++        BaselineJITRegisters::Instanceof::valueJSR.payloadGPR(), BaselineJITRegisters::Instanceof::protoJSR.payloadGPR(), BaselineJITRegisters::Instanceof::propertyCacheGPR, prototypeIsKnownObject);
+     JumpList slowCases;
+-    slowCases.append(slowCase);
++    if (needsPrototypeCellCheck)
++        slowCases.append(branchIfNotCell(BaselineJITRegisters::Instanceof::protoJSR));
+ 
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(slowCases, this, operationInstanceOfOptimize, resultGPR, valueRegs, prototypeRegs, TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::Instanceof::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(slowCases, this, propertyCacheConstant, BaselineJITRegisters::Instanceof::propertyCacheGPR, Address(BaselineJITRegisters::Instanceof::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operationInstanceOfOptimize, resultGPR, BaselineJITRegisters::Instanceof::valueJSR, BaselineJITRegisters::Instanceof::protoJSR, BaselineJITRegisters::Instanceof::propertyCacheGPR);
+ 
+     addInstanceOf(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
+@@ -5520,11 +5472,11 @@
+     JSValueOperand value(this, node->child1());
+     JSValueOperand prototype(this, node->child2());
+ 
+-    GPRTemporary result(this);
+-
+     JSValueRegs valueRegs = value.jsValueRegs();
+     JSValueRegs prototypeRegs = prototype.jsValueRegs();
+ 
++    flushRegisters();
++    GPRFlushedCallResult result(this);
+     GPRReg resultGPR = result.gpr();
+ 
+     Jump isCell = branchIfCell(valueRegs);
+@@ -5534,42 +5486,29 @@
+ 
+     isCell.link(this);
+ 
+-    Jump slowCase = branchIfNotCell(prototypeRegs);
+-
+-    compileInstanceOfForCells(node, valueRegs, prototypeRegs, resultGPR, InvalidGPRReg, slowCase);
++    constexpr bool needsPrototypeCellCheck = true;
++    compileInstanceOfForCells(node, valueRegs, prototypeRegs, resultGPR, needsPrototypeCellCheck);
+ 
+     done.link(this);
+     blessedBooleanResult(resultGPR, node);
+-    return;
+ }
+ 
+ void SpeculativeJIT::compilePutByIdFlush(Node* node)
+ {
+-    SpeculateCellOperand base(this, node->child1());
+-    JSValueOperand value(this, node->child2());
+-    GPRTemporary scratch(this);
+-
+-    GPRReg baseGPR = base.gpr();
+-    JSValueRegs valueRegs = value.jsValueRegs();
+-    GPRReg scratchGPR = scratch.gpr();
+-    flushRegisters();
+-
+-    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, InvalidGPRReg, scratchGPR, InvalidGPRReg, node->cacheableIdentifier(), node->ecmaMode().isStrict() ? AccessType::PutByIdStrict : AccessType::PutByIdSloppy, Jump(), DontSpill);
+-
+-    noResult(node);
++    compilePutById(node);
+ }
+ 
+ void SpeculativeJIT::compilePutById(Node* node)
+ {
+     SpeculateCellOperand base(this, node->child1());
+     JSValueOperand value(this, node->child2());
+-    GPRTemporary scratch(this);
+ 
+     GPRReg baseGPR = base.gpr();
+     JSValueRegs valueRegs = value.jsValueRegs();
+-    GPRReg scratchGPR = scratch.gpr();
+ 
+-    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, InvalidGPRReg, scratchGPR, InvalidGPRReg, node->cacheableIdentifier(), node->ecmaMode().isStrict() ? AccessType::PutByIdStrict : AccessType::PutByIdSloppy);
++    flushRegisters();
++
++    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, node->cacheableIdentifier(), node->ecmaMode().isStrict() ? AccessType::PutByIdStrict : AccessType::PutByIdSloppy);
+ 
+     noResult(node);
+ }
+@@ -5578,50 +5517,39 @@
+ {
+     SpeculateCellOperand base(this, node->child1());
+     JSValueOperand value(this, node->child2());
+-    GPRTemporary scratch(this);
+ 
+     GPRReg baseGPR = base.gpr();
+     JSValueRegs valueRegs = value.jsValueRegs();
+-    GPRReg scratchGPR = scratch.gpr();
+ 
+-    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, InvalidGPRReg, scratchGPR, InvalidGPRReg, node->cacheableIdentifier(), node->ecmaMode().isStrict() ? AccessType::PutByIdDirectStrict : AccessType::PutByIdDirectSloppy);
++    flushRegisters();
++
++    cachedPutById(node, node->origin.semantic, baseGPR, valueRegs, node->cacheableIdentifier(), node->ecmaMode().isStrict() ? AccessType::PutByIdDirectStrict : AccessType::PutByIdDirectSloppy);
+ 
+     noResult(node);
+ }
+ 
+-void SpeculativeJIT::cachedPutById(Node* node, CodeOrigin codeOrigin, GPRReg baseGPR, JSValueRegs valueRegs, GPRReg propertyCacheGPR, GPRReg scratchGPR, GPRReg scratch2GPR, CacheableIdentifier identifier, AccessType accessType, Jump slowPathTarget, SpillRegistersMode spillMode)
++void SpeculativeJIT::cachedPutById(Node*, CodeOrigin codeOrigin, GPRReg baseGPR, JSValueRegs valueRegs, CacheableIdentifier identifier, AccessType accessType)
+ {
+-    UNUSED_PARAM(node);
+-    RegisterSet usedRegisters = this->usedRegisters();
+-    if (spillMode == DontSpill) {
+-        // We've already flushed registers to the stack, we don't need to spill these.
+-        usedRegisters.remove(baseGPR);
+-        usedRegisters.remove(valueRegs);
+-        if (propertyCacheGPR != InvalidGPRReg)
+-            usedRegisters.remove(propertyCacheGPR);
+-        if (scratchGPR != InvalidGPRReg)
+-            usedRegisters.remove(scratchGPR);
+-        if (scratch2GPR != InvalidGPRReg)
+-            usedRegisters.remove(scratch2GPR);
+-    }
+     CallSiteIndex callSite = recordCallSiteAndGenerateExceptionHandlingOSRExitIfNeeded(codeOrigin, m_stream.size());
++    RegisterSet usedRegisters = this->usedRegisters();
++
+     auto [ propertyCache, propertyCacheConstant ] = addPropertyInlineCache();
++    moveToICRegisters<2>({ JSValueRegs::payloadOnly(baseGPR), valueRegs }, { BaselineJITRegisters::PutById::baseJSR, BaselineJITRegisters::PutById::valueJSR });
+     JITPutByIdGenerator gen(
+         codeBlock(), propertyCache, JITType::DFGJIT, codeOrigin, callSite, usedRegisters, identifier,
+-        JSValueRegs::payloadOnly(baseGPR), valueRegs, propertyCacheGPR,
+-        scratchGPR, accessType);
+-
++        BaselineJITRegisters::PutById::baseJSR, BaselineJITRegisters::PutById::valueJSR, BaselineJITRegisters::PutById::propertyCacheGPR,
++        BaselineJITRegisters::PutById::scratch1GPR, accessType);
+     JumpList slowCases;
+-    if (slowPathTarget.isSet())
+-        slowCases.append(slowPathTarget);
+-
+     auto* operation = appropriatePutByIdOptimizeFunction(accessType);
+-    gen.generateFastPath(*this);
+-    slowCases.append(gen.slowPathJump());
+-    auto slowPath = slowPathCall(slowCases, this, operation, NoResult, valueRegs, CellValue(baseGPR), TrustedImmPtr(gen.propertyCache()));
++    loadPropertyInlineCache(propertyCacheConstant, BaselineJITRegisters::PutById::propertyCacheGPR);
++    gen.generateDataICFastPath(*this);
++    auto slowPath = slowPathICCall(slowCases, this, propertyCacheConstant, BaselineJITRegisters::PutById::propertyCacheGPR, Address(BaselineJITRegisters::PutById::propertyCacheGPR, HandlerPropertyInlineCache::offsetOfSlowOperation()), operation, NoResult, BaselineJITRegisters::PutById::valueJSR, BaselineJITRegisters::PutById::baseJSR, BaselineJITRegisters::PutById::propertyCacheGPR);
+ 
+     addPutById(gen, slowPath.get());
+     addSlowPathGenerator(WTF::move(slowPath));
++    addSlowPathGeneratorLambda([=, this]() mutable {
++        gen.generateDataICSlowPath(*this);
++    });
+ }
+ 
+ void SpeculativeJIT::speculateInt32(Edge edge, JSValueRegs regs)

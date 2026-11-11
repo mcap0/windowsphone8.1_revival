@@ -1,0 +1,281 @@
+<Page
+    x:Class="Browser.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Black">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!-- One SwapChainPanel per live tab, added from code: the engine's compositor thread of that tab draws into it
+             (EGL window surface through ANGLE), and its independent input source delivers touch on a thread of its own.
+             Only the active tab's panel is visible, so only it gets fingers. -->
+        <Grid x:Name="Pages" Background="Black"/>
+        <!-- A short notice over the bottom of the page (a download started, finished or failed): tapping it does what it
+             says, and it goes by itself after a few seconds. -->
+        <Border x:Name="Notice" VerticalAlignment="Bottom" Background="#333333" BorderBrush="#1976D2" BorderThickness="0,3,0,0"
+                Visibility="Collapsed" Tapped="Notice_Tapped">
+            <TextBlock x:Name="NoticeText" Margin="16,12,16,14" FontSize="18" Foreground="White" TextWrapping="Wrap" MaxLines="3"/>
+        </Border>
+        <!-- Bottom bar like IE: favorites, address (reload/stop at its end), tabs, menu. -->
+        <!-- While the address is edited the bar rises above the keyboard by a transform (MainPage::InputPane_Showing):
+             the page under it keeps its size and layout. -->
+        <Grid x:Name="Bar" Grid.Row="1" Background="#1F1F1F">
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="BarShift"/>
+            </Grid.RenderTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!-- Favorites and history. Borders, not Buttons: they never take the focus. -->
+            <Border x:Name="Favorites" Background="#1976D2" MinWidth="56" Margin="6,6,0,6" Tapped="Favorites_Tapped">
+                <TextBlock Text="&#x2605;" FontFamily="Segoe UI Symbol" FontSize="24" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <TextBox x:Name="Address" Grid.Column="1" Margin="6,6,0,6" FontSize="18" InputScope="Url" KeyUp="Address_KeyUp"
+                     GotFocus="Address_GotFocus" LostFocus="Address_LostFocus" TextChanged="Address_TextChanged"/>
+            <!-- Site apps (Site.h): the page's title where Internet has the address. -->
+            <TextBlock x:Name="SiteTitle" Grid.Column="1" Margin="12,0,0,0" FontSize="18" Foreground="White"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Visibility="Collapsed"/>
+            <!-- Reload, or stop while the page loads. -->
+            <Border x:Name="Reload" Grid.Column="2" Background="#444444" MinWidth="52" Margin="4,6,0,6" Tapped="Reload_Tapped">
+                <TextBlock x:Name="ReloadGlyph" Text="&#x21BB;" FontFamily="Segoe UI Symbol" FontSize="22" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <!-- Clears the address while it is being edited; a Border, so the keyboard stays up. -->
+            <Border x:Name="ClearAddress" Grid.Column="3" Background="#444444" MinWidth="56" Margin="4,6,0,6"
+                    Visibility="Collapsed" Tapped="ClearAddress_Tapped">
+                <TextBlock Text="X" FontSize="20" FontWeight="SemiBold" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <!-- Tabs: a square with how many are open, as IE. -->
+            <Border x:Name="TabsButton" Grid.Column="4" Background="#444444" MinWidth="52" Margin="4,6,0,6" Tapped="TabsButton_Tapped">
+                <Border BorderBrush="White" BorderThickness="2" Width="28" Height="28" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock x:Name="TabsCount" Text="1" FontSize="15" FontWeight="SemiBold" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Border>
+            <!-- Load state as a thin line along the top of the bar, as long as the load's progress: accent while
+                 loading, red on failure. Takes no width from the address. -->
+            <Rectangle x:Name="LoadLine" Grid.ColumnSpan="6" Height="3" VerticalAlignment="Top" Fill="#1976D2"
+                       Visibility="Collapsed" IsHitTestVisible="False">
+                <!-- The page's load progress: the line's share of the bar's width. -->
+                <Rectangle.RenderTransform>
+                    <ScaleTransform x:Name="LoadScale" ScaleX="0.05"/>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Border x:Name="More" Grid.Column="5" Background="#444444" MinWidth="52" Margin="4,6,6,6" Tapped="More_Tapped">
+                <TextBlock Text="..." FontSize="20" FontWeight="SemiBold" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+        <!-- While the address is edited: favorites and history that match what is typed, over the page. -->
+        <Grid x:Name="Suggest" Background="#1F1F1F" Visibility="Collapsed">
+            <ScrollViewer x:Name="SuggestScroll" VerticalScrollBarVisibility="Hidden">
+                <StackPanel x:Name="SuggestItems" VerticalAlignment="Bottom"/>
+            </ScrollViewer>
+        </Grid>
+        <!-- Favorites, history, tabs, downloads and the page's file picker: one full page, filled from code. -->
+        <Grid x:Name="ListPanel" Grid.RowSpan="2" Background="#1F1F1F" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="12,18,12,8">
+                <TextBlock x:Name="ListTitle1" FontSize="34" FontWeight="Light" Margin="0,0,24,0" Tapped="ListTitle1_Tapped"/>
+                <TextBlock x:Name="ListTitle2" FontSize="34" FontWeight="Light" Foreground="#777777" Tapped="ListTitle2_Tapped"/>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" x:Name="ListScroll" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="ListItems"/>
+            </ScrollViewer>
+            <TextBlock x:Name="ListEmpty" Grid.Row="1" Margin="16,8" FontSize="20" Foreground="#AAAAAA" TextWrapping="Wrap"
+                       Visibility="Collapsed"/>
+            <Grid Grid.Row="2" x:Name="ListActions">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="ListAction" Background="#1976D2" Margin="6" Height="56" Tapped="ListAction_Tapped">
+                    <TextBlock x:Name="ListActionText" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Background="#444444" Margin="6" Height="56" Tapped="ListClose_Tapped">
+                    <TextBlock Text="chiudi" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+        <!-- Find in page: above the keyboard, like the compose bar. -->
+        <Grid x:Name="FindBar" Grid.RowSpan="2" VerticalAlignment="Bottom" Background="#1F1F1F" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="FindText" Margin="6,6,2,6" FontSize="18" InputScope="Search" TextChanged="FindText_TextChanged"
+                     KeyUp="FindText_KeyUp"/>
+            <TextBlock x:Name="FindCount" Grid.Column="1" Margin="6,0" FontSize="16" Foreground="#AAAAAA" VerticalAlignment="Center"/>
+            <Border Grid.Column="2" Background="#444444" MinWidth="48" Margin="2,6" Tapped="FindPrevious_Tapped">
+                <TextBlock Text="&#x25B2;" FontFamily="Segoe UI Symbol" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border Grid.Column="3" Background="#444444" MinWidth="48" Margin="2,6" Tapped="FindNext_Tapped">
+                <TextBlock Text="&#x25BC;" FontFamily="Segoe UI Symbol" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Border Grid.Column="4" Background="#444444" MinWidth="48" Margin="2,6,6,6" Tapped="FindClose_Tapped">
+                <TextBlock Text="X" FontSize="18" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+        <!-- Compose bar: floats above the system keyboard while a page field has the focus (engine: LW_EVENT_FIELD_FOCUS).
+             An overlay, not a new row, so showing it does not resize the view and force a relayout of the page. -->
+        <Grid x:Name="Compose" Grid.RowSpan="2" VerticalAlignment="Bottom" Visibility="Collapsed">
+            <Grid Background="#1F1F1F">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="Field" Margin="6,6,2,6" FontSize="18" KeyDown="Field_KeyDown"
+                         LostFocus="Field_LostFocus" TextChanged="Field_TextChanged"/>
+                <!-- Password fields use PasswordBox: on WP8.1 TextBox has no PasswordChar (checked in Windows.winmd). -->
+                <PasswordBox x:Name="Secret" Margin="6,6,2,6" FontSize="18" Visibility="Collapsed"
+                             KeyDown="Secret_KeyDown" LostFocus="Field_LostFocus"
+                             PasswordChanged="Secret_PasswordChanged"/>
+                <!-- Invio is a Border, not a Button: a Button takes the focus when tapped, and the bar's TextBox would
+                     lose it — the system keyboard then hides and the bar closes on every send. A Border never takes
+                     focus, so the keyboard stays up. -->
+                <Border x:Name="Send" Grid.Column="1" Background="#1976D2" Width="76" Margin="4,6,6,6"
+                        Tapped="Send_Click">
+                    <TextBlock Text="Invio" FontSize="16" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+        <!-- Long press on a link or image (engine: LW_EVENT_CONTEXT_MENU) and the page's menu: the page dims and the
+             choices rise from the bottom. Square, as the rest of the phone's UI. Tapping the dimmed page or Back closes it. -->
+        <Grid x:Name="Menu" Grid.RowSpan="2" Background="#B0000000" Visibility="Collapsed" Tapped="Menu_Tapped">
+            <!-- At most the screen's height: a long menu scrolls. -->
+            <Grid VerticalAlignment="Bottom" Background="#1F1F1F" Margin="0,40,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="MenuTitle" Margin="16,14,16,8" FontSize="15" Foreground="#AAAAAA"
+                           TextTrimming="CharacterEllipsis" MaxLines="2" TextWrapping="Wrap"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="MenuItems"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <!-- "Aggiungi a Start": the site's own icons, in their colours, then our icons on the phone's accent colour. A tap
+             pins the page, or changes the icon of a tile that is already there. Back closes it. -->
+        <Grid x:Name="IconPicker" Grid.RowSpan="2" Background="#1F1F1F" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="IconPickerTitle" Margin="16,16,16,8" FontSize="24" Foreground="White" TextTrimming="CharacterEllipsis"/>
+            <ScrollViewer Grid.Row="1" Padding="10,0,10,8" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock x:Name="IconSiteLabel" Margin="6,4" FontSize="15" Foreground="#AAAAAA" Text="icona del sito"/>
+                    <VariableSizedWrapGrid x:Name="IconSiteGrid" Orientation="Horizontal" ItemWidth="118" ItemHeight="118"/>
+                    <TextBlock Margin="6,12,6,4" FontSize="15" Foreground="#AAAAAA" Text="icone con il colore del sistema"/>
+                    <VariableSizedWrapGrid x:Name="IconPresetGrid" Orientation="Horizontal" ItemWidth="118" ItemHeight="118"/>
+                </StackPanel>
+            </ScrollViewer>
+            <Border Grid.Row="2" Background="#444444" Margin="6" Height="56" Tapped="IconPickerClose_Tapped">
+                <TextBlock Text="annulla" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+        <!-- Text from the page with the system's own selection (handles and the copy button), since WP8.1 apps cannot
+             write the clipboard: the paragraph under a long press, or a link's address. Also renames a favorite. -->
+        <Grid x:Name="Sheet" Grid.RowSpan="2" Background="#1F1F1F" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Padding="16,16,16,0">
+                <TextBlock x:Name="SheetText" FontSize="20" TextWrapping="Wrap" IsTextSelectionEnabled="True" Foreground="White"/>
+            </ScrollViewer>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="#1976D2" Margin="6" Height="56" Tapped="SheetShare_Tapped">
+                    <TextBlock Text="condividi" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Background="#444444" Margin="6" Height="56" Tapped="SheetClose_Tapped">
+                    <TextBlock Text="chiudi" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+        <!-- The page's alert, confirm, prompt and "leave this page?" (engine: LW_EVENT_DIALOG), and the app's own
+             questions (rename a favorite). The page waits for the answer; Back is "cancel". -->
+        <Grid x:Name="DialogPanel" Grid.RowSpan="2" Background="#B0000000" Visibility="Collapsed">
+            <StackPanel VerticalAlignment="Top" Background="#1F1F1F" Margin="0,24,0,0">
+                <TextBlock x:Name="DialogTitle" Margin="16,16,16,4" FontSize="15" Foreground="#AAAAAA" TextTrimming="CharacterEllipsis"/>
+                <ScrollViewer MaxHeight="300" Margin="16,4,16,8" VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="DialogText" FontSize="20" Foreground="White" TextWrapping="Wrap"/>
+                </ScrollViewer>
+                <TextBox x:Name="DialogInput" Margin="12,0,12,8" FontSize="18" Visibility="Collapsed" KeyUp="DialogInput_KeyUp"/>
+                <!-- A server's password question (LW_EVENT_PASSWORD): the name goes in DialogInput, the password here. -->
+                <PasswordBox x:Name="DialogPassword" Margin="12,0,12,8" FontSize="18" Visibility="Collapsed" KeyUp="DialogPassword_KeyUp"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="DialogOk" Background="#1976D2" Margin="6" Height="56" Tapped="DialogOk_Tapped">
+                        <TextBlock x:Name="DialogOkText" Text="ok" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="DialogCancel" Grid.Column="1" Background="#444444" Margin="6" Height="56" Tapped="DialogCancel_Tapped">
+                        <TextBlock x:Name="DialogCancelText" Text="annulla" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <!-- Site apps: the PIN screen over everything, opaque (the page loads behind it but is not seen). First time:
+             the site's username and password, then a PIN chosen and repeated on the keypad (Vault.h); afterwards only
+             the PIN. The keypad is ours (square keys, the site's colour on OK): WP8.1's PasswordBox has no digit
+             keyboard. Built from code: MainPage::BuildKeypad. -->
+        <Grid x:Name="Lock" Grid.RowSpan="2" Background="#111111" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel Margin="24,36,24,0">
+                <Rectangle x:Name="LockBand" Width="56" Height="8" HorizontalAlignment="Left" Margin="0,0,0,14"/>
+                <TextBlock x:Name="LockTitle" FontSize="46" FontWeight="Light" Foreground="White"/>
+                <TextBlock x:Name="LockMessage" FontSize="18" Foreground="#9E9E9E" TextWrapping="Wrap" Margin="0,6,0,0"/>
+            </StackPanel>
+            <StackPanel x:Name="LockSetup" Grid.Row="1" Margin="24,20,24,0" Visibility="Collapsed">
+                <TextBlock Text="nome utente" FontSize="15" Foreground="#9E9E9E"/>
+                <TextBox x:Name="LockUser" FontSize="18" Margin="0,4,0,14" InputScope="EmailSmtpAddress"/>
+                <TextBlock Text="password" FontSize="15" Foreground="#9E9E9E"/>
+                <PasswordBox x:Name="LockPassword" FontSize="18" Margin="0,4,0,18"/>
+                <Border x:Name="LockNext" Height="56" Tapped="LockNext_Tapped">
+                    <TextBlock Text="avanti: scegli un PIN" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <!-- No PIN screen at all: the credentials stay encrypted for this phone only (DPAPI). -->
+                <Border x:Name="LockNoPin" Height="56" Margin="0,10,0,0" Tapped="LockNoPin_Tapped">
+                    <TextBlock Text="salva senza PIN" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+            <!-- One square per digit typed (Metro: no circles). -->
+            <StackPanel x:Name="LockDots" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Height="20"/>
+            <Grid x:Name="Keypad" Grid.Row="2" Margin="12,0,12,8"/>
+            <TextBlock x:Name="LockOther" Grid.Row="3" FontSize="16" Foreground="#9E9E9E" HorizontalAlignment="Center"
+                       Margin="0,6,0,22" Tapped="LockOther_Tapped"/>
+        </Grid>
+    </Grid>
+</Page>

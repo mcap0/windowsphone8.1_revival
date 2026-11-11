@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""banco — the fixed-page bench of the "Internet" app, driven from the PC (PLAN.md §56.5 point 1, §74).
+
+Opens the copies made by tools/banco-pagine (share/banco/<name>/index.html, served by tools/inbox) in the app through
+tools/phonecmd, one after the other, several rounds, and reads the app's log (share/inbox/internet.txt) for each load:
+time from `caricamento: inizio` to `caricamento: fine`, and the Web thread's busy time by kind from the 2 s activity
+lines, up to the end of the rest after the load. The pages never change and reach nothing but the PC, so two runs of the
+same engine do the same work. The first round of a new engine fills the bytecode cache: the summary is the median of the
+others. The app must be open on the home Wi-Fi, on the charger, and left alone.
+
+    tools/banco                         # 4 rounds of every page
+    tools/banco --giri 6 poste wikipedia
+    tools/banco --profilo 25 poste      # one load of each page with the Web thread sampled (tools/profile.py --all)
+    tools/banco --nota "lto"            # a word for the line appended to share/banco/risultati.txt
+"""
+import argparse, os, re, statistics, subprocess, sys, time
+
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+LOG = os.path.join(ROOT, "share", "inbox", "internet.txt")
+PAGES = os.path.join(ROOT, "share", "banco")
+HOST = "192.168.1.148:8765"
+LABELS = ("js", "style", "layout", "parser", "timer", "render")
+
+parser = argparse.ArgumentParser()
+parser.add_argument("pages", nargs="*")
+parser.add_argument("--giri", type=int, default=4)
+parser.add_argument("--riposo", type=int, default=8, help="seconds at rest after each load, counted in the Web time")
+parser.add_argument("--attesa", type=int, default=120, help="seconds before a load is given up")
+parser.add_argument("--profilo", type=int, default=0, help="sample the Web thread for this many seconds from each navigation (one round)")
+parser.add_argument("--nota", default="")
+parser.add_argument("--comando", action="append", default=[], help="bar command sent before the run (e.g. 'motore blocco')")
+args = parser.parse_args()
+pages = args.pages or sorted(d for d in os.listdir(PAGES) if os.path.isfile(os.path.join(PAGES, d, "index.html")))
+rounds = 1 if args.profilo else args.giri
+
+
+def send(*texts):
+    subprocess.check_call([os.path.join(ROOT, "tools", "phonecmd"), *texts])
+
+
+def lines_from(offset):
+    """(phone ms, text) of the log lines after a byte offset; the sender may deliver a line twice."""
+    with open(LOG, "rb") as f:
+        f.seek(offset)
+        data = f.read()
+    seen, out = set(), []
+    for line in data.decode("utf-8", "replace").splitlines():
+        m = re.match(r"\s*(\d+) ms (.*)", line)
+        if m and (m.group(1), m.group(2)[:160]) not in seen:
+            seen.add((m.group(1), m.group(2)[:160]))
+            out.append((int(m.group(1)), m.group(2)))
+    return out
+
+
+def measure(name):
+    offset = os.path.getsize(LOG)
+    if args.profilo:
+        send("profilo %d" % args.profilo)
+    send("http://%s/banco/%s/index.html" % (HOST, name))
+    deadline = time.time() + args.attesa
+    start = end = None
+    while time.time() < deadline:
+        time.sleep(1)
+        start = end = None
+        for t, text in lines_from(offset):
+            if text.startswith("caricamento: inizio") and start is None:
+                start = t
+            elif start is not None and text.startswith(("caricamento: fine", "caricamento: errore")):
+                end = t
+                break
+        if end is not None:
+            break
+    if end is None:
+        return None
+    time.sleep(max(args.riposo, args.profilo - (end - start) / 1000 + 2) + 3)  # the log arrives every 2 s
+    row = {"load": (end - start) / 1000, "web": 0.0, **dict.fromkeys(LABELS, 0.0)}
+    for t, text in lines_from(offset):
+        m = re.search(r"attivita': \[web\] occupato ([\d.]+)/([\d.]+) ms", text)
+        # A summary covers the 2 s before it.
+        if m and start < t <= end + args.riposo * 1000 + 1000:
+            row["web"] += float(m.group(1)) / 1000
+            for label in LABELS:
+                lm = re.search(r"\b%s ([\d.]+)" % label, text.split("lunghi", 1)[-1])
+                if lm:
+                    row[label] += float(lm.group(1)) / 1000
+    return row
+
+
+def version():
+    manifest = open(os.path.join(ROOT, "apps", "Browser", "Browser", "Package.appxmanifest"), encoding="utf-8", errors="replace").read()
+    m = re.search(r'<Identity [^>]*Version="([0-9.]+)"', manifest)
+    return m.group(1) if m else "?"
+
+
+if time.time() - os.path.getmtime(LOG) > 30:
+    sys.exit("banco: nessun log dall'app da %d s: apri Internet sul telefono (Wi-Fi di casa)" % (time.time() - os.path.getmtime(LOG)))
+if args.comando:
+    send(*args.comando)
+    time.sleep(3)
+results = {name: [] for name in pages}
+header = f"{'pagina':<10} {'giro':>4} {'durata':>7} {'web':>7} " + " ".join(f"{l:>6}" for l in LABELS)
+print(header, flush=True)
+for number in range(1, rounds + 1):
+    for name in pages:
+        row = measure(name)
+        results[name].append(row)
+        if row:
+            print(f"{name:<10} {number:>4} {row['load']:6.1f}s {row['web']:6.1f}s " + " ".join(f"{row[l]:6.1f}" for l in LABELS), flush=True)
+        else:
+            print(f"{name:<10} {number:>4} non finita in {args.attesa} s", flush=True)
+if args.profilo:
+    sys.exit(0)
+print("\nmediana dei giri dal secondo (il primo riempie la cache del bytecode); scarto = (max - min) / mediana")
+summary = []
+for name in pages:
+    rows = [r for r in results[name][1:] if r]
+    if not rows:
+        continue
+    load = statistics.median(r["load"] for r in rows)
+    web = statistics.median(r["web"] for r in rows)
+    spread = 100 * (max(r["web"] for r in rows) - min(r["web"] for r in rows)) / web if web else 0
+    print(f"{name:<10} durata {load:5.1f} s, web {web:5.1f} s (scarto {spread:.0f}%), " + ", ".join(f"{l} {statistics.median(r[l] for r in rows):.1f}" for l in LABELS))
+    summary.append(f"{name} {load:.1f}/{web:.1f}")
+with open(os.path.join(PAGES, "risultati.txt"), "a") as out:
+    out.write("%s  %-28s %-12s %s  (durata/web s, mediana di %d giri)\n" % (time.strftime("%Y-%m-%d %H:%M"), version(), args.nota, "  ".join(summary), rounds - 1))

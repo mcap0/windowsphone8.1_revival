@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>scroll-busy</title><style>
+body{font:18px sans-serif;background:#000;color:#fff;margin:0}
+#bar{position:fixed;top:0;left:0;right:0;background:#222;padding:4px;z-index:9}
+#bar button{font-size:15px;padding:8px 8px;margin:2px;background:#1976d2;color:#fff;border:0}
+#stat{font:12px monospace;color:#ccc;padding:2px}
+.b{height:170px;font-size:60px;line-height:170px;text-align:center}
+#end{padding:16px}#end button{font-size:16px;padding:12px;margin:4px;background:#444;color:#fff;border:0}
+</style></head><body>
+<div id="bar"><button id="once">Blocca 2 s</button><button id="loop">Blocchi continui</button><button id="stop">Stop</button><button id="send">Invia</button><div id="stat">1) premi un blocco 2) scorri subito su e giu' col dito 3) rispondi in fondo 4) Invia</div></div>
+<div id="list" style="padding-top:96px"></div>
+<div id="end">Mentre la pagina era bloccata, scorrendo:<br>
+<button class="r" data-v="fluida">seguiva il dito</button><button class="r" data-v="scatti">andava a scatti</button><button class="r" data-v="ferma">restava ferma</button></div>
+<script src="common.js"></script><script>
+(function () {
+  var list = T.$("list"), html = "";
+  for (var i = 1; i <= 80; i++)
+    html += '<div class="b" style="background:hsl(' + (i * 37 % 360) + ',60%,35%)">' + i + "</div>";
+  list.innerHTML = html;
+
+  var log = [], frames = [], frameLast = T.now(), scrolls = [], looping = false, answers = [];
+
+  (function frame() {
+    var n = T.now();
+    frames.push(n - frameLast);
+    frameLast = n;
+    if (frames.length > 3000) frames.shift();
+    requestAnimationFrame(frame);
+  })();
+
+  window.addEventListener("scroll", function (e) {
+    scrolls.push({ t: T.now(), y: window.pageYOffset, age: T.age(e) });
+    if (scrolls.length > 5000) scrolls.shift();
+  }, false);
+
+  function block(ms, done) {
+    // Starts from a timer task so the button's own click has been handled and painted.
+    setTimeout(function () {
+      var y0 = window.pageYOffset, t0 = T.now(), mark = scrolls.length;
+      T.busy(ms);
+      var yEnd = window.pageYOffset;
+      setTimeout(function () {
+        var yAfter = window.pageYOffset, late = [], n = 0;
+        for (var i = mark; i < scrolls.length; i++) { n++; late.push(scrolls[i].age); }
+        log.push("blocco " + ms + " ms: y prima=" + y0 + " fine=" + yEnd + " subito dopo=" + yAfter +
+          " eventi scroll=" + n + " eta' eventi " + T.stats(late) + " durata vera=" + Math.round(T.now() - t0) + " ms");
+        T.$("stat").textContent = log[log.length - 1];
+        if (done) done();
+      }, 0);
+    }, 50);
+  }
+
+  function loop() {
+    if (!looping) return;
+    block(1000, function () { setTimeout(loop, 500); });
+  }
+
+  T.$("once").onclick = function () { T.$("stat").textContent = "blocco in corso: scorri!"; block(2000); };
+  T.$("loop").onclick = function () { if (!looping) { looping = true; T.$("stat").textContent = "blocchi continui: scorri!"; loop(); } };
+  T.$("stop").onclick = function () { looping = false; T.$("stat").textContent = "fermato"; };
+
+  var rs = document.querySelectorAll(".r");
+  for (var k = 0; k < rs.length; k++) rs[k].onclick = function () {
+    answers.push(this.getAttribute("data-v"));
+    this.style.background = "#1976d2";
+  };
+
+  T.$("send").onclick = function () {
+    looping = false;
+    var long = 0;
+    for (var i = 1; i < frames.length; i++) if (frames[i] > 50) long++;
+    var lines = log.slice();
+    lines.push("fotogrammi rAF " + T.stats(frames.slice(1)) + ", oltre 50 ms: " + long);
+    lines.push("risposta utente: " + (answers.join(",") || "nessuna"));
+    T.send("scroll-busy", lines, function (ok) { T.$("stat").textContent = ok ? "inviato" : "invio fallito"; });
+  };
+})();
+</script></body></html>

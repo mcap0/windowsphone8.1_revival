@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""vm shot | vm click X Y | vm type 'text' | vm key KEY_A [KEY_B...] (combo) — drive Windows-Debugger VM."""
+import subprocess, sys, time
+D="Windows-Debugger"; import os; S=os.path.expanduser("~/dumbphone/tools/.cache")
+V=["virsh","-c","qemu:///system"]
+def key(*k): subprocess.run(V+["send-key",D,*k],check=True,stdout=subprocess.DEVNULL)
+# Italian keyboard layout in guest
+plain={c:"KEY_"+c.upper() for c in "abcdefghijklmnopqrstuvwxyz"}
+plain.update({str(i):"KEY_%d"%i for i in range(10)}); plain.update({" ":"KEY_SPACE","\n":"KEY_ENTER","\t":"KEY_TAB",",":"KEY_COMMA",".":"KEY_DOT","-":"KEY_SLASH","+":"KEY_RIGHTBRACE","'":"KEY_MINUS","\\":"KEY_GRAVE","<":"KEY_102ND"})
+shift={c.upper():"KEY_"+c.upper() for c in "abcdefghijklmnopqrstuvwxyz"}
+shift.update({"!":"KEY_1",'"':"KEY_2","$":"KEY_4","%":"KEY_5","&":"KEY_6","/":"KEY_7","(":"KEY_8",")":"KEY_9","=":"KEY_0","?":"KEY_MINUS","_":"KEY_SLASH",":":"KEY_DOT",";":"KEY_COMMA","*":"KEY_RIGHTBRACE",">":"KEY_102ND","|":"KEY_GRAVE","^":"KEY_EQUAL"})
+altgr={"@":"KEY_SEMICOLON","#":"KEY_APOSTROPHE","[":"KEY_LEFTBRACE","]":"KEY_RIGHTBRACE","{":None,"}":None}
+cmd=sys.argv[1]
+if cmd=="shot":
+    out=sys.argv[2] if len(sys.argv)>2 else S+"/vm.png"
+    subprocess.run(V+["screenshot",D,S+"/vm.ppm"],check=True,stdout=subprocess.DEVNULL)
+    subprocess.run(["ffmpeg","-loglevel","error","-y","-i",S+"/vm.ppm","-vf","scale=1200:-1",out],check=True)
+elif cmd=="key": key(*sys.argv[2:])
+elif cmd=="click":
+    # x y in the coordinates of the 1200 px wide screenshot
+    subprocess.run(V+["screenshot",D,S+"/vm.ppm"],check=True,stdout=subprocess.DEVNULL)
+    # the tablet is absolute: QEMU wants 0..0x7fff on both axes
+    from PIL import Image
+    w,h=Image.open(S+"/vm.ppm").size
+    x,y=int(int(sys.argv[2])*0x7fff/1200),int(int(sys.argv[3])*0x7fff/(h*1200/w))
+    import json
+    def ev(events): subprocess.run(V+["qemu-monitor-command",D,json.dumps({"execute":"input-send-event","arguments":{"events":events}})],check=True,stdout=subprocess.DEVNULL)
+    ev([{"type":"abs","data":{"axis":"x","value":x}},{"type":"abs","data":{"axis":"y","value":y}}]); time.sleep(0.1)
+    ev([{"type":"btn","data":{"down":True,"button":"left"}}]); time.sleep(0.1)
+    ev([{"type":"btn","data":{"down":False,"button":"left"}}])
+elif cmd=="type":
+    for c in sys.argv[2]:
+        if c in plain: key(plain[c])
+        elif c in shift: key("KEY_LEFTSHIFT",shift[c])
+        elif c in altgr and altgr[c]: key("KEY_RIGHTALT",altgr[c])
+        elif c=="{": key("KEY_RIGHTALT","KEY_LEFTSHIFT","KEY_LEFTBRACE")
+        elif c=="}": key("KEY_RIGHTALT","KEY_LEFTSHIFT","KEY_RIGHTBRACE")
+        else: sys.exit("no mapping for %r"%c)
+        time.sleep(0.03)

@@ -1,0 +1,27 @@
+--- a/Source/WebCore/platform/network/ResourceHandleInternal.h
++++ b/Source/WebCore/platform/network/ResourceHandleInternal.h
+@@ -33,6 +33,11 @@
+ #include "Timer.h"
+ #include <wtf/MonotonicTime.h>
+ 
++#if USE(CURL) && defined(WP81)
++#include "CurlRequest.h"
++#include "CurlResourceHandleDelegate.h"
++#endif
++
+ #if PLATFORM(COCOA)
+ #include <wtf/WeakObjCPtr.h>
+ 
+@@ -98,6 +103,12 @@
+     // It is almost identical to m_currentWebChallenge.nsURLAuthenticationChallenge(), but has a different sender.
+     WeakObjCPtr<NSURLAuthenticationChallenge> m_currentMacChallenge;
+ #endif
++#if USE(CURL) && defined(WP81)
++    RefPtr<CurlResourceHandleDelegate> m_delegate;
++    RefPtr<CurlRequest> m_curlRequest;
++    bool m_curlRequestResumed { false };
++    bool m_cancelled { false };
++#endif
+     Box<NetworkLoadMetrics> m_networkLoadMetrics;
+     MonotonicTime m_startTime;
+ 

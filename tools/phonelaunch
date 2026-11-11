@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# phonelaunch [product-id] — starts an app on the phone over USB (AppDeployCmd /launch through the VM), default
+# "Internet" (apps/Browser). The phone must be unlocked. With tools/phonecmd and tools/banco nothing is touched on it.
+set -Eeuo pipefail
+root=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+product=${1:-afcc45ef-005b-42f6-b2bd-18695a1f8826}
+script=$(mktemp "${TMPDIR:-/tmp}/phonelaunch.XXXXXX.ps1")
+trap 'rm -f "$script"' EXIT
+cat > "$script" <<PS
+& 'C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\AppDeploy\AppDeployCmd.exe' /launch $product /targetdevice:de 2>&1
+PS
+"$root/tools/vps" "$script"

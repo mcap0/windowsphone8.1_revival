@@ -1,0 +1,71 @@
+<Page
+    x:Class="Esplora.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="#FF000000"
+    Foreground="#FFFFFFFF">
+  <Page.Resources>
+    <DataTemplate x:Key="ItemTemplate">
+      <StackPanel Height="68" Margin="0,2" VerticalAlignment="Center">
+        <TextBlock Text="{Binding Name}" FontSize="19" TextTrimming="CharacterEllipsis" />
+        <TextBlock Text="{Binding Details}" FontSize="13" Opacity="0.65" TextTrimming="CharacterEllipsis" />
+      </StackPanel>
+    </DataTemplate>
+  </Page.Resources>
+  <Pivot x:Name="Tabs" Title="ESPLORA">
+    <PivotItem Header="file">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBox x:Name="FilePathBox" FontSize="16" InputScope="Url" />
+          <Button x:Name="FileGoButton" Grid.Column="1" Content="vai" MinWidth="60" Padding="4,0" />
+        </Grid>
+        <TextBlock x:Name="FileStatus" Grid.Row="1" FontSize="13" Opacity="0.8" Margin="2,2" TextTrimming="CharacterEllipsis" />
+        <ListView x:Name="FileList" Grid.Row="2" ItemTemplate="{StaticResource ItemTemplate}" IsItemClickEnabled="True" SelectionMode="None" />
+      </Grid>
+    </PivotItem>
+    <PivotItem Header="registro">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBox x:Name="RegPathBox" FontSize="16" InputScope="Url" />
+          <Button x:Name="RegGoButton" Grid.Column="1" Content="vai" MinWidth="60" Padding="4,0" />
+        </Grid>
+        <TextBlock x:Name="RegStatus" Grid.Row="1" FontSize="13" Opacity="0.8" Margin="2,2" TextTrimming="CharacterEllipsis" />
+        <ListView x:Name="RegList" Grid.Row="2" ItemTemplate="{StaticResource ItemTemplate}" IsItemClickEnabled="True" SelectionMode="None" />
+      </Grid>
+    </PivotItem>
+    <PivotItem Header="sistema">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel>
+          <TextBlock x:Name="SysStatus" FontSize="14" Opacity="0.8" TextWrapping="Wrap" Margin="2,0,2,8" />
+          <Button x:Name="SearchButtonBtn" Content="Tasto Cerca" HorizontalAlignment="Stretch" />
+          <ToggleSwitch x:Name="ConsoleSwitch" Header="Console di diagnostica dal PC (sola lettura)" />
+          <Button x:Name="SkipCmdButton" Content="ignora comando in attesa" HorizontalAlignment="Stretch" />
+          <TextBlock x:Name="SkipCmdStatus" FontSize="14" Opacity="0.8" TextWrapping="Wrap" Margin="2,0,2,8" />
+        </StackPanel>
+        <ListView x:Name="AppList" Grid.Row="1" ItemTemplate="{StaticResource ItemTemplate}" IsItemClickEnabled="True" SelectionMode="None" />
+      </Grid>
+    </PivotItem>
+  </Pivot>
+</Page>

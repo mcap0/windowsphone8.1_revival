@@ -1,0 +1,19 @@
+<Page
+    x:Class="Appunti.ItemPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Loaded="Page_Loaded"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="16,12,16,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Tocca l'icona Copia sopra la tastiera" FontSize="16" Opacity="0.7" TextWrapping="Wrap" />
+        <!-- Text prediction must stay on: the Copy icon lives in the keyboard's suggestion bar. -->
+        <TextBox x:Name="Editor" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" FontSize="22"
+                 IsSpellCheckEnabled="False" Margin="0,8,0,0" />
+    </Grid>
+</Page>

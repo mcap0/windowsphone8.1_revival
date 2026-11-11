@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# remotonet — Remoto bench through the relay, as from 4G (PLAN §65). The PC plays the Lumia's client
+# (apps/TsNet/pc/remotonet.cpp: our own Tailscale code, DERP only, the downlink read at a fixed rate so the
+# relay's buffers fill as for the phone) against a second Remoto instance on the Pixel 9a (port 8796, its own
+# display, never the user's apps) showing the test app ponte/banco (Kindle-like pages, a DS-like game, a pinball).
+#
+#   tools/remotonet MODE KBIT SECONDS [client args]     MODE = pagine | gioco | flipper; KBIT 0 = no shaping
+#     client args: --tap MS (a tap every MS ms) --audio --loss PERMILLE --profile "secs:kbit,..." (0 = stalled)
+#                  --old (the Lumia 1.3.2.5 logic) --out FILE.h264 --lan 192.168.1.112 (plain TCP, no relay)
+#   tools/remotonet start | stop     the bench instance (start also pushes ponte/agent/build/agent.dex as bench.dex)
+#
+# Prints frames per second, how old frames are on arrival, gaps, ping, tap -> first/last frame; the Pixel's own
+# pacing line (remoto: N fps ...) comes from /data/local/tmp/ponte/remotobench.log.
+set -euo pipefail
+here=$(cd "$(dirname "$0")" && pwd)
+root=$here/..
+export ANDROID_SERIAL=${ANDROID_SERIAL:-55201JEBF03292}   # the 9a (the Pixel 2 XL may be attached too)
+cache=$here/.cache/remotonet
+mkdir -p "$cache"
+ts=$root/apps/TsNet
+mbed=$root/apps/TgNative/third_party/mbedtls
+
+build() {
+    local defs=(-DMBEDTLS_USER_CONFIG_FILE='"tsnet_mbedtls_config.h"')
+    if [[ ! -f $cache/libmbed.a ]]; then
+        mkdir -p "$cache/mbed"
+        for f in "$mbed"/library/*.c; do
+            gcc -O2 -c "${defs[@]}" -I"$ts" -I"$mbed/include" -I"$mbed/library" "$f" -o "$cache/mbed/$(basename "$f" .c).o" &
+            while (( $(jobs -rp | wc -l) >= 8 )); do wait -n; done
+        done
+        wait
+        ar rcs "$cache/libmbed.a" "$cache"/mbed/*.o
+    fi
+    local newest
+    newest=$(ls -t "$ts"/*.cpp "$ts"/*.h "$ts"/*.c "$ts"/pc/remotonet.cpp | head -1)
+    if [[ ! -x $cache/remotonet || $newest -nt $cache/remotonet ]]; then
+        gcc -O2 -c "${defs[@]}" -I"$ts" -I"$mbed/include" "$ts/tsmbed.c" -o "$cache/tsmbed.o"
+        g++ -std=c++14 -O2 -g "${defs[@]}" -I"$ts" -I"$mbed/include" "$ts"/tailnet.cpp "$ts"/tscontrol.cpp "$ts"/tscrypto.cpp \
+            "$ts"/tsderp.cpp "$ts"/tsio.cpp "$ts"/tsjson.cpp "$ts"/tstcp.cpp "$ts"/tswg.cpp "$ts/pc/remotonet.cpp" \
+            "$cache/tsmbed.o" "$cache/libmbed.a" -lpthread -o "$cache/remotonet"
+    fi
+}
+
+server() {   # start|stop the bench instance
+    adb shell "cat > /data/local/tmp/ponte/benchsrv.sh" <<'EOF'
+#!/system/bin/sh
+D=/data/local/tmp/ponte
+for p in $(pgrep -f 'Remoto 8796'); do [ "$p" != $$ ] && kill $p 2>/dev/null; done
+[ "$1" = stop ] && exit 0
+cd $D
+CLASSPATH=$D/bench.dex setsid app_process / dumbphone.ponte.Remoto 8796 remotobench >> $D/remotobench.log 2>&1 < /dev/null &
+EOF
+    if [[ $1 == start ]]; then
+        adb push "$root/ponte/agent/build/agent.dex" /data/local/tmp/ponte/bench.dex >/dev/null
+        adb shell pm path dumbphone.ponte.banco >/dev/null 2>&1 || "$root/ponte/banco/build.sh" install >/dev/null
+    fi
+    adb shell sh /data/local/tmp/ponte/benchsrv.sh "$1"
+    [[ $1 == start ]] && sleep 2.5 && adb shell 'tail -1 /data/local/tmp/ponte/remotobench.log'
+    return 0
+}
+
+case "${1:-}" in
+    start|stop) server "$1"; exit 0 ;;
+    pagine|gioco|flipper) ;;
+    *) sed -n '2,15p' "$0"; exit 2 ;;
+esac
+mode=$1 rate=$2 secs=$3
+shift 3
+build
+if ! adb shell 'pgrep -f "[R]emoto 8796"' >/dev/null; then server start; fi
+display=$(adb shell 'grep -E "remoto: display [0-9]+ " /data/local/tmp/ponte/remotobench.log | tail -1' | awk '{print $4}')
+adb shell "am force-stop dumbphone.ponte.banco; am start --display $display -n dumbphone.ponte.banco/.Banco --es mode $mode" >/dev/null
+sleep 1
+key=$(awk '{print $2}' "$root/share/ponte-pair.txt")
+state=$cache/pc.state   # tailnet node "tsnet-pc-remoto": the first run prints a LOGIN link to approve
+"$cache/remotonet" --state "$state" --key "$key" --port 8796 --seconds "$secs" --rate "$rate" --rcvbuf 256 "$@" 2>>"$cache/ts.log"
+adb shell 'grep -E "remoto: [0-9.]+ fps" /data/local/tmp/ponte/remotobench.log | tail -1'

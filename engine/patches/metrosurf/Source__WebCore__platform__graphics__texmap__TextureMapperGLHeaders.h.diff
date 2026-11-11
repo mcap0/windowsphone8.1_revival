@@ -1,0 +1,22 @@
+--- a/Source/WebCore/platform/graphics/texmap/TextureMapperGLHeaders.h
++++ b/Source/WebCore/platform/graphics/texmap/TextureMapperGLHeaders.h
+@@ -55,3 +55,19 @@
+ #ifndef GL_TEXTURE_EXTERNAL_OES
+ #define GL_TEXTURE_EXTERNAL_OES 0x8D65
+ #endif
++
++#ifndef GL_RGBA8
++#define GL_RGBA8 0x8058
++#endif
++#ifndef GL_R8
++#define GL_R8 0x8229
++#endif
++#ifndef GL_R16
++#define GL_R16 0x822A
++#endif
++#ifndef GL_RG8
++#define GL_RG8 0x822B
++#endif
++#ifndef GL_RG16
++#define GL_RG16 0x822C
++#endif

@@ -1,0 +1,123 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>features</title><style>
+body{font:15px sans-serif;background:#000;color:#fff;margin:12px}
+h3{margin:14px 0 4px;color:#90caf9}.no{color:#ff8a80}.si{color:#b9f6ca}
+#sum{font-size:17px;margin:8px 0}div.r{font:13px monospace}
+</style></head><body>
+<h2>Funzioni dei siti moderni</h2><div id="sum">in corso...</div><div id="out"></div>
+<script nomodule>window.__nomodRan = 1;</script>
+<script type="module">window.__mod = 1;</script>
+<script src="common.js"></script><script>
+// Module scripts run deferred: test after load so script type=module has had its chance to run.
+window.addEventListener("load", function () {
+  function syn(code) { return function () { new Function(code); return true; }; }
+  function has(path) {
+    return function () {
+      var o = window, p = path.split(".");
+      for (var i = 0; i < p.length; i++) { if (o == null || !(p[i] in Object(o))) return false; o = o[p[i]]; }
+      return true;
+    };
+  }
+  function css(prop) { return function () { return !!(window.CSS && CSS.supports && CSS.supports(prop)); }; }
+  function mse(type) { return function () { return !!(window.MediaSource && MediaSource.isTypeSupported(type)); }; }
+  function video(type) {
+    return function () { var v = document.createElement("video"); return v.canPlayType ? (v.canPlayType(type) || false) : false; };
+  }
+
+  var groups = [
+    ["Sintassi JS", [
+      ["let/const", syn("let a=1;const b=2;")], ["arrow", syn("var f=x=>x+1;")], ["class", syn("class A{constructor(){this.x=1}}")],
+      ["template", syn("var s=`a${1}`;")], ["destrutturazione", syn("var {a,b}={a:1,b:2};var [c,d]=[1,2];")],
+      ["spread/rest", syn("function f(...a){return [...a]}")], ["generatori", syn("function* g(){yield 1}")],
+      ["async/await", syn("async function f(){await 1}")], ["for await", syn("async function f(){for await (const x of []){}}")],
+      ["object spread", syn("var o={...{a:1}};")], ["catch senza variabile", syn("try{}catch{}")],
+      ["optional chaining ?.", syn("var a=null;var b=a?.b?.[0]?.();")], ["nullish ??", syn("var a=null??1;")],
+      ["assegnazione logica", syn("var a=null;a??=1;a||=2;a&&=3;")], ["separatori 1_000", syn("var n=1_000;")],
+      ["BigInt 10n", syn("var n=10n;")], ["campi di classe", syn("class A{x=1;static y=2}")],
+      ["campi privati #x", syn("class A{#x=1;#m(){return this.#x}g(){return #x in this}}")], ["static block", syn("class A{static{}}")],
+      ["import() dinamico", syn("return import('data:text/javascript,')")],
+      ["regex lookbehind", syn("return /(?<=a)b/")], ["regex gruppi nominati", syn("return /(?<y>\\d+)/")],
+      ["regex \\p{L}", syn("return /\\p{L}/u")], ["regex flag v", syn("return /[\\p{L}--[a-z]]/v")],
+      ["script type=module", function () { return !!window.__mod; }], ["nomodule ignorato", function () { return !window.__nomodRan; }]
+    ]],
+    ["Libreria JS", [
+      ["Promise", has("Promise")], ["Promise.allSettled", has("Promise.allSettled")], ["Promise.any", has("Promise.any")],
+      ["Promise.withResolvers", has("Promise.withResolvers")], ["Promise.try", has("Promise.try")],
+      ["Proxy", has("Proxy")], ["Reflect", has("Reflect")], ["Symbol.asyncIterator", has("Symbol.asyncIterator")],
+      ["WeakRef", has("WeakRef")], ["FinalizationRegistry", has("FinalizationRegistry")], ["globalThis", function () { return typeof globalThis === "object"; }],
+      ["Array.at", has("Array.prototype.at")], ["Array.findLast", has("Array.prototype.findLast")], ["Array.toSorted", has("Array.prototype.toSorted")],
+      ["Array.fromAsync", has("Array.fromAsync")], ["Object.hasOwn", has("Object.hasOwn")], ["Object.groupBy", has("Object.groupBy")],
+      ["String.replaceAll", has("String.prototype.replaceAll")], ["String.isWellFormed", has("String.prototype.isWellFormed")],
+      ["Set.union", has("Set.prototype.union")], ["Iterator helpers", has("Iterator.prototype.map")], ["RegExp.escape", has("RegExp.escape")],
+      ["Float16Array", has("Float16Array")], ["structuredClone", has("structuredClone")], ["queueMicrotask", has("queueMicrotask")],
+      ["Intl.RelativeTimeFormat", has("Intl.RelativeTimeFormat")], ["Intl.ListFormat", has("Intl.ListFormat")],
+      ["Intl.Segmenter", has("Intl.Segmenter")], ["Intl.Locale", has("Intl.Locale")], ["Intl.DisplayNames", has("Intl.DisplayNames")],
+      ["TextEncoder", has("TextEncoder")], ["URL", function () { try { return new URL("https://a.b/c?d=1").searchParams.get("d") === "1"; } catch (e) { return false; } }],
+      ["SharedArrayBuffer", has("SharedArrayBuffer")], ["Atomics", has("Atomics")]
+    ]],
+    ["DOM e pagina", [
+      ["fetch", has("fetch")], ["AbortController", has("AbortController")], ["ReadableStream", has("ReadableStream")],
+      ["TransformStream", has("TransformStream")], ["CompressionStream", has("CompressionStream")],
+      ["IntersectionObserver", has("IntersectionObserver")], ["ResizeObserver", has("ResizeObserver")], ["MutationObserver", has("MutationObserver")],
+      ["customElements", has("customElements")], ["Shadow DOM", has("Element.prototype.attachShadow")], ["<template>", function () { return "content" in document.createElement("template"); }],
+      ["<dialog>", function () { return typeof document.createElement("dialog").showModal === "function"; }],
+      ["popover", function () { return "popover" in document.createElement("div"); }], ["inert", function () { return "inert" in document.createElement("div"); }],
+      ["requestIdleCallback", has("requestIdleCallback")], ["Element.animate", has("Element.prototype.animate")], ["document.fonts", has("document.fonts")],
+      ["PointerEvent", has("PointerEvent")], ["TouchEvent", has("TouchEvent")],
+      ["listener passive", function () { var ok = false; try { var o = Object.defineProperty({}, "passive", { get: function () { ok = true; } }); window.addEventListener("x", null, o); } catch (e) {} return ok; }],
+      ["beforeinput", function () { return "onbeforeinput" in document.createElement("div") || (window.InputEvent && "inputType" in InputEvent.prototype); }],
+      ["visualViewport", has("visualViewport")], ["matchMedia scheme", function () { return !!(window.matchMedia && matchMedia("(prefers-color-scheme: dark)").media !== "not all"); }],
+      ["PerformanceObserver", has("PerformanceObserver")], ["sendBeacon", has("navigator.sendBeacon")], ["navigator.share", has("navigator.share")],
+      ["clipboard", has("navigator.clipboard")], ["Notification", has("Notification")], ["isSecureContext", function () { return !!window.isSecureContext; }]
+    ]],
+    ["CSS", [
+      ["variabili --x", css("--a: 0")], ["grid", css("display: grid")], ["flex gap", css("gap: 1px")], ["sticky", css("position: sticky")],
+      ["aspect-ratio", css("aspect-ratio: 1")], ["backdrop-filter", function () { return css("backdrop-filter: blur(1px)")() || css("-webkit-backdrop-filter: blur(1px)")(); }],
+      [":has()", css("selector(:has(a))")], [":focus-visible", css("selector(:focus-visible)")], [":is()", css("selector(:is(a))")],
+      ["container queries", css("container-type: inline-size")], ["nesting", css("selector(&)")], ["color-mix", css("color: color-mix(in srgb, red, blue)")],
+      ["dvh", css("height: 100dvh")], ["overscroll-behavior", css("overscroll-behavior: contain")], ["scroll-snap", css("scroll-snap-type: x mandatory")],
+      ["@layer/cascade", function () { try { var s = document.createElement("style"); s.textContent = "@layer a{b{color:red}}"; document.head.appendChild(s); var ok = s.sheet && s.sheet.cssRules.length === 1 && s.sheet.cssRules[0].type !== 1; document.head.removeChild(s); return !!ok; } catch (e) { return false; } }]
+    ]],
+    ["Dati, worker, rete", [
+      ["indexedDB", has("indexedDB")], ["localStorage", function () { try { localStorage.setItem("__t", "1"); localStorage.removeItem("__t"); return true; } catch (e) { return false; } }],
+      ["Cache API", has("caches")], ["Worker", has("Worker")], ["SharedWorker", has("SharedWorker")], ["ServiceWorker", has("navigator.serviceWorker")],
+      ["BroadcastChannel", has("BroadcastChannel")], ["Web Locks", has("navigator.locks")], ["MessageChannel", has("MessageChannel")],
+      ["WebSocket", has("WebSocket")], ["EventSource", has("EventSource")], ["WebRTC", has("RTCPeerConnection")],
+      ["crypto.getRandomValues", has("crypto.getRandomValues")], ["crypto.subtle", has("crypto.subtle")], ["crypto.randomUUID", has("crypto.randomUUID")],
+      ["WebAssembly", function () { return !!(window.WebAssembly && WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0]))); }],
+      ["WebAssembly streaming", has("WebAssembly.instantiateStreaming")], ["OffscreenCanvas", has("OffscreenCanvas")],
+      ["WebGL", function () { try { return !!document.createElement("canvas").getContext("webgl"); } catch (e) { return false; } }],
+      ["WebGL2", function () { try { return !!document.createElement("canvas").getContext("webgl2"); } catch (e) { return false; } }],
+      ["createImageBitmap", has("createImageBitmap")]
+    ]],
+    ["Video", [
+      ["MediaSource", has("MediaSource")], ["ManagedMediaSource", has("ManagedMediaSource")],
+      ["MSE mp4 H.264+AAC", mse('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')], ["MSE mp4 H.264 720p", mse('video/mp4; codecs="avc1.4d401f"')],
+      ["MSE webm VP9", mse('video/webm; codecs="vp9"')], ["MSE webm Opus", mse('audio/webm; codecs="opus"')], ["MSE mp4 AAC", mse('audio/mp4; codecs="mp4a.40.2"')],
+      ["video mp4 H.264", video('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')], ["video webm VP9", video('video/webm; codecs="vp9, opus"')],
+      ["video HLS", video("application/vnd.apple.mpegurl")], ["audio mp3", video("audio/mpeg")], ["audio opus", video('audio/ogg; codecs="opus"')],
+      ["EME", has("navigator.requestMediaKeySystemAccess")], ["Picture-in-Picture", has("document.pictureInPictureEnabled")]
+    ]]
+  ];
+
+  var out = T.$("out"), lines = [], total = 0, ok = 0, missing = [];
+  for (var g = 0; g < groups.length; g++) {
+    var h = document.createElement("h3"); h.textContent = groups[g][0]; out.appendChild(h);
+    lines.push("== " + groups[g][0]);
+    var items = groups[g][1];
+    for (var i = 0; i < items.length; i++) {
+      var r;
+      try { r = items[i][1](); } catch (e) { r = false; }
+      var good = !!r;
+      total++; if (good) ok++; else missing.push(items[i][0]);
+      var d = document.createElement("div"); d.className = "r " + (good ? "si" : "no");
+      d.textContent = (good ? "si  " : "NO  ") + items[i][0] + (typeof r === "string" ? " (" + r + ")" : "");
+      out.appendChild(d);
+      lines.push((good ? "si " : "NO ") + items[i][0] + (typeof r === "string" ? " (" + r + ")" : ""));
+    }
+  }
+  T.$("sum").textContent = ok + " su " + total + " presenti";
+  lines.unshift("totale " + ok + "/" + total + "; mancano: " + missing.join(", "));
+  T.send("features", lines, function (sent) { T.$("sum").textContent += sent ? " (inviato)" : " (invio fallito)"; });
+}, false);
+</script></body></html>

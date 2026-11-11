@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Remoto", "Remoto\Remoto.vcxproj", "{810BAEA7-E70C-472D-8637-10DFB7ABC24F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TsNet", "..\TsNet\TsNet.vcxproj", "{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Opus", "Opus\Opus.vcxproj", "{7C1E9B52-3A4D-4F80-9E61-2B5D8C0A4F17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{810BAEA7-E70C-472D-8637-10DFB7ABC24F}.Release|ARM.ActiveCfg = Release|ARM
+		{810BAEA7-E70C-472D-8637-10DFB7ABC24F}.Release|ARM.Build.0 = Release|ARM
+		{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}.Release|ARM.ActiveCfg = Release|ARM
+		{5E2A7C41-93B8-4F06-B1D7-2C8E4A6F0B93}.Release|ARM.Build.0 = Release|ARM
+		{7C1E9B52-3A4D-4F80-9E61-2B5D8C0A4F17}.Release|ARM.ActiveCfg = Release|ARM
+		{7C1E9B52-3A4D-4F80-9E61-2B5D8C0A4F17}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+EndGlobal

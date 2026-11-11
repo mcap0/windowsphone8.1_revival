@@ -1,0 +1,20 @@
+--- a/Source/ThirdParty/skia/src/ports/SkFontMgr_win_dw.cpp
++++ b/Source/ThirdParty/skia/src/ports/SkFontMgr_win_dw.cpp
+@@ -657,6 +657,9 @@
+         return nullptr;
+     }
+ 
++#if defined(WP81)
++    return this->SkFontMgr::onMatch(request);
++#else
+     SkTScopedComPtr<IDWriteFontCollection1> fontCollection1;
+     fFontCollection->QueryInterface(&fontCollection1);
+     if (!fontCollection1) {
+@@ -740,6 +743,7 @@
+     SkTScopedComPtr<IDWriteFontFace5> fontFace5;
+     HRNM(matches->CreateFontFace(0, &fontFace5), "Failed to create match");
+     return this->makeTypefaceFromDWriteFontFace(fontFace5.get());
++#endif
+ }
+ 
+ sk_sp<SkTypeface> SkFontMgr_DirectWrite::onFallback(const Request& request) const {

@@ -1,0 +1,20 @@
+--- a/Source/JavaScriptCore/runtime/OptionsList.h
++++ b/Source/JavaScriptCore/runtime/OptionsList.h
+@@ -84,7 +84,7 @@
+     v(Bool, useLLInt,  true, Normal, "allows the LLINT to be used if true"_s) \
+     v(Bool, useJIT, jitEnabledByDefault(), Normal, "allows the executable pages to be allocated for JIT and thunks if true"_s) \
+     v(Bool, useBaselineJIT, true, Normal, "allows the baseline JIT to be used if true"_s) \
+-    v(Bool, useDFGJIT, is64Bit(), Normal, "allows the DFG JIT to be used if true"_s) \
++    v(Bool, useDFGJIT, is64Bit() || isWP81ARMJIT(), Normal, "allows the DFG JIT to be used if true"_s) \
+     v(Bool, useRegExpJIT, jitEnabledByDefault() && is64Bit(), Normal, "allows the RegExp JIT to be used if true"_s) \
+     v(Bool, useDOMJIT, is64Bit(), Normal, "allows the DOMJIT to be used if true"_s) \
+     \
+@@ -101,7 +101,7 @@
+     v(Size, jitMemoryReservationAddress, 0, Restricted, "If non-zero, we will attempt to allocate JIT memory at the address provided and crash if we cannot.") \
+     \
+     v(Bool, forceCodeBlockLiveness, false, Normal, nullptr) \
+-    v(Bool, forceICFailure, is32Bit(), Normal, nullptr) \
++    v(Bool, forceICFailure, is32Bit() && !isWP81ARMJIT(), Normal, nullptr)  \
+     v(Bool, forceUnlinkedDFG, false, Normal, nullptr) \
+     \
+     v(Unsigned, repatchCountForCoolDown, 8, Normal, nullptr) \

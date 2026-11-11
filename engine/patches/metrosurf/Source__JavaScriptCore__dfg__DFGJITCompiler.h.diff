@@ -1,0 +1,10 @@
+--- a/Source/JavaScriptCore/dfg/DFGJITCompiler.h
++++ b/Source/JavaScriptCore/dfg/DFGJITCompiler.h
+@@ -350,6 +350,7 @@
+ 
+     void loadConstant(LinkerIR::Constant, GPRReg);
+     void loadPropertyInlineCache(PropertyInlineCacheIndex, GPRReg);
++    void loadJITData(GPRReg);
+     void loadLinkableConstant(LinkableConstant, GPRReg);
+     void storeLinkableConstant(LinkableConstant, Address);
+ 

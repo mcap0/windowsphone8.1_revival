@@ -1,0 +1,10 @@
+--- a/Source/WebCore/platform/graphics/texmap/BitmapTexture.cpp
++++ b/Source/WebCore/platform/graphics/texmap/BitmapTexture.cpp
+@@ -72,6 +72,7 @@
+ 
+ namespace WebCore {
+ 
++
+ void BitmapTexture::determineRenderTargetAndBinding()
+ {
+     if (m_flags.contains(Flags::ExternalOESRenderTarget)) {

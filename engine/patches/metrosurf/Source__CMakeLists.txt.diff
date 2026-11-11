@@ -1,0 +1,16 @@
+--- a/Source/CMakeLists.txt
++++ b/Source/CMakeLists.txt
+@@ -64,6 +64,13 @@
+     add_subdirectory(WebCore)
+ endif ()
+ 
++if (WP81 AND ENABLE_WEBCORE)
++    add_subdirectory(${WP81_ROOT}/src/webkit-open ${CMAKE_BINARY_DIR}/Source/webkit-open)
++    if (EXISTS ${WP81_ROOT}/src/wkwp)
++        add_subdirectory(${WP81_ROOT}/src/wkwp ${CMAKE_BINARY_DIR}/Source/wkwp)
++    endif ()
++endif ()
++
+ if (ENABLE_WEBKIT_LEGACY)
+     add_subdirectory(WebKitLegacy)
+ endif ()

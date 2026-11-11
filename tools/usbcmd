@@ -1,0 +1,63 @@
+#!/bin/bash
+# usbcmd — Esplora console over USB (no Wi-Fi to the PC needed): Esplora ≥0.2.12 open, console on.
+#   tools/usbcmd [-p file ...] "cmd" ["cmd" ...]
+#     -p file    also copy share-side file into Esplora's LocalFolder\usb\ (then "put <name> <path>" on the phone)
+#   "get <path>" copies the phone file to LocalFolder\usb\get\ and back here into share/usbget/.
+# How: ISETool snapshot of Esplora's LocalFolder (ts), add usb\cmd.txt (+ files), restore (rs), wait, snapshot
+# again and print the new part of usb\out.txt.
+ID=1c07cf82-2c63-4406-8a41-f14d6e9221fd
+VM=user@192.168.122.21
+ROOT=~/dumbphone
+files=()
+while [ "$1" = -p ]; do files+=("$2"); shift 2; done
+[ $# -gt 0 ] || { echo "uso: usbcmd [-p file] \"cmd\" ..."; exit 1; }
+SP=$(mktemp -d)
+{ printf '#%s\n' "$(date +%s%N)"; for c in "$@"; do printf '%s\n' "$c"; done; } > "$SP/cmd.txt"
+for f in "${files[@]}"; do scp -q "$f" "$VM:C:/lumia/iso/usbput_$(basename "$f")" || exit 1; done
+scp -q "$SP/cmd.txt" "$VM:C:/lumia/iso/usbcmd.txt" || exit 1
+cat > "$SP/u.ps1" <<'PS'
+$ErrorActionPreference = 'Continue'
+$ise = 'C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\IsolatedStorageExplorerTool\ISETool.exe'
+$id = '__ID__'
+$d = 'C:\lumia\iso\esplora'
+if (Test-Path $d) { Remove-Item -Recurse -Force $d }
+New-Item -ItemType Directory -Force $d | Out-Null
+& $ise ts de $id $d | Out-Null
+$store = Join-Path $d 'IsolatedStore'
+# an empty LocalFolder gives no IsolatedStore folder at all
+if (-not (Test-Path $store)) { New-Item -ItemType Directory -Force $store | Out-Null }
+$usb = Join-Path $store 'usb'
+New-Item -ItemType Directory -Force $usb | Out-Null
+$before = 0
+$out = Join-Path $usb 'out.txt'
+if (Test-Path $out) { $before = (Get-Item $out).Length }
+Get-ChildItem C:\lumia\iso -Filter 'usbput_*' | ForEach-Object { Move-Item -Force $_.FullName (Join-Path $usb ($_.Name.Substring(7))) }
+Move-Item -Force C:\lumia\iso\usbcmd.txt (Join-Path $usb 'cmd.txt')
+$r = & $ise rs de $id $store 2>&1 | Out-String
+if ($r -match 'rror') { "ISETool rs: " + $r.Trim() }
+for ($i = 0; $i -lt 30; $i++) {
+  Start-Sleep -Seconds 3
+  $d2 = 'C:\lumia\iso\esplora2'
+  if (Test-Path $d2) { Remove-Item -Recurse -Force $d2 }
+  New-Item -ItemType Directory -Force $d2 | Out-Null
+  & $ise ts de $id $d2 | Out-Null
+  $o2 = Join-Path $d2 'IsolatedStore\usb\out.txt'
+  if ((Test-Path $o2) -and ((Get-Item $o2).Length -gt $before) -and -not (Test-Path (Join-Path $d2 'IsolatedStore\usb\cmd.txt'))) {
+    $bytes = [IO.File]::ReadAllBytes($o2)
+    [Text.Encoding]::UTF8.GetString($bytes, $before, $bytes.Length - $before)
+    $g = Join-Path $d2 'IsolatedStore\usb\get'
+    if (Test-Path $g) { "GETDIR " + $g }
+    exit 0
+  }
+}
+"nessuna risposta: Esplora aperta in primo piano con la console accesa?"
+PS
+sed -i "s/__ID__/$ID/" "$SP/u.ps1"
+out=$("$ROOT/tools/vps" "$SP/u.ps1" 2>&1)
+echo "$out" | grep -v '^GETDIR '
+g=$(echo "$out" | sed -n 's/^GETDIR \(.*\)/\1/p' | tr -d '\r')
+if [ -n "$g" ]; then
+  mkdir -p "$ROOT/share/usbget"
+  scp -q -r "$VM:${g//\\//}/*" "$ROOT/share/usbget/" 2>/dev/null && echo "file in share/usbget/: $(ls "$ROOT/share/usbget" | tr '\n' ' ')"
+fi
+rm -rf "$SP"
