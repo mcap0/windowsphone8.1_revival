@@ -35,8 +35,9 @@ __pycache__/
 .vs/
 releases/
 engine/out/
-engine/sysroot/
-engine/deps/
+engine/sysroot/msvc/
+engine/sysroot/phone/*.lib
+engine/deps/src/
 engine/logs/
 engine/pgo/raw/
 *.profdata

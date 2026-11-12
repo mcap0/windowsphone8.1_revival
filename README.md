@@ -28,6 +28,9 @@ As far as I could find, these had not been done on Windows Phone 8.1 before:
   brought this WebKit to the platform: their changes to WebKit are the base (`engine/patches/metrosurf`), ours come
   on top (`engine/patches/0002-lumia.patch`) together with a port layer written here (`engine/port`: threaded compositor on ANGLE/Direct3D 11 level 9_3, own network and disk cache, ad blocker,
   ThinLTO + PGO with profiles collected on the phone). `apps/Browser` ("Internet") is the browser on top of it.
+  **No closed-source code**: every line in the browser can be read, and MetroSurf's unpublished parts (its .NET
+  shell and `wkwp.dll`) are not used. How every part works, and why it is fast:
+  **[docs/browser.md](docs/browser.md)**.
 - **Offline voice assistant** — `apps/Assistente` understands Italian commands (timers, alarms, calls, music, open
   app, notes, calendar, weather) with nothing leaving the phone: speech through a Vosk/Kaldi build for WP8.1 ARM
   (`vosk/`), and intent parsing by a tiny neural network whose weights are *written by hand*, not trained
