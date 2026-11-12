@@ -259,7 +259,7 @@ installed once.
 
 ## Ready-made package, for convenience
 
-To save you the steps above, the GitHub releases of this repository carry a ready-made
+To save you the steps above, the [`builds/`](../builds) folder of this repository carries a ready-made
 `Browser_<version>_ARM.appx`. It is only a convenience: anyone can rebuild the package from this page.
 
 **Be aware of how the current package differs from these sources.** The first package, **0.1.0.64**, is the last

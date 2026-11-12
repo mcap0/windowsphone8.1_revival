@@ -56,3 +56,6 @@ ref/
 data/
 backup/
 backups/
+
+# Ready-made packages (docs/browser.md, "Ready-made package")
+!builds/*.appx
