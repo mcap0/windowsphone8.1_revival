@@ -12,6 +12,7 @@ The project's own code is AGPL-3.0-or-later (`LICENSE`). The parts below keep th
 | `apps/TgNative/third_party/opus/` | Opus | BSD-3-Clause |
 | `apps/Authenticator81/Authenticator81/lib/ZXing.*` | ZXing.Net | Apache-2.0 |
 | `apps/Meteo/Meteo/Assets/Haru/` | Weather design and icons from Haru by FriendsNone (github.com/FriendsNone/Haru) | MIT (`LICENSE-Haru.txt`) |
+| `apps/Browser/Browser/libEGL.dll`, `libGLESv2.dll` (not in this repository) | ANGLE 2.1.8 (file version `2.1.8.e0a02ffcdaa5`, the WinRT build of Microsoft's ANGLE fork, github.com/microsoft/angle), used by the browser to draw through Direct3D 11. We did not build these two DLLs: they are the prebuilt ones shipped in the MetroSurf 2.0.1 package (github.com/MetroSurf/MetroSurf), copied next to `webkit.dll` by `tools/browser`. MD5: libEGL `afcfd089ca7f1f6ddf409c60ac9d1719`, libGLESv2 `049562367df75f93bb55d0bec789fb5f` | BSD-3-Clause (ANGLE) |
 | `apps/Browser/Browser/cacert.pem` | Mozilla CA bundle (via curl.se) | MPL-2.0 |
 | `share/isrgrootx1.cer` | ISRG Root X1 certificate (Let's Encrypt) | public certificate |
 | `engine/port/blocklist/pgl.txt` | Peter Lowe's ad and tracking server list (pgl.yoyo.org) | McRae General Public License; credit required |
