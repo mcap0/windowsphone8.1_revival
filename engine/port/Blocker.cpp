@@ -134,6 +134,14 @@ void installBlocker()
     WebCore::wp81BlockLoadHook = shouldBlock;
 }
 
+void setBlockerEnabled(bool on)
+{
+    if (enabled == on)
+        return;
+    enabled = on;
+    log("blocco: %s (impostazioni)", enabled ? "acceso" : "spento");
+}
+
 void blockerCommand(const String& argument)
 {
     if (argument.isEmpty()) {

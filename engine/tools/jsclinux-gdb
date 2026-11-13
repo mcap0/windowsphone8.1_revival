@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# jsclinux-gdb [jsc arguments] — runs engine/tools/jsclinux under gdb (qemu's gdb stub) and prints the backtrace of
+# every thread at the first fatal signal (SIGSEGV, SIGILL, SIGBUS, SIGABRT). JSC's own SIGUSR1/2 are passed through.
+set -Eeuo pipefail
+engine=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+base=$engine/out/jsc-linux
+port=$(( 20000 + RANDOM % 20000 ))
+JSC_LINUX_GDB=$port "$engine/tools/jsclinux" "$@" &
+sleep 1
+gdb -batch -nx -ex 'set debuginfod enabled off' -ex 'set architecture arm' -ex "set sysroot $base/sysroot" \
+    -ex "file $base/build/bin/jsc" -ex "target remote :$port" \
+    -ex 'handle SIGUSR1 nostop noprint pass' -ex 'handle SIGUSR2 nostop noprint pass' -ex 'handle SIGPIPE nostop noprint pass' \
+    -ex 'continue' -ex 'info registers' -ex 'x/6i $pc' -ex 'thread apply all bt 24' 2>&1 | grep -v '^warning\|^Reading\|^\[New\|^\[Switching'
+wait || true

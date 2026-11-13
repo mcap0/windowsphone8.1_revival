@@ -11,11 +11,11 @@ code comes from.
 | Part | Where the source is | Licence |
 |---|---|---|
 | The app (`Internet.exe`: UI, tabs, input, compose bar) | `apps/Browser/Browser` | AGPL-3.0-or-later (this project) |
-| The port layer inside `webkit.dll` (C API, compositor, input, caches, blocker, media) | `engine/port` | AGPL-3.0-or-later, except the files copied from WebKit (they keep their BSD/LGPL headers) |
+| The port layer inside `webkit.dll` (C API, compositor, input, caches, blocker, media, service workers) | `engine/port` | AGPL-3.0-or-later, except the files copied from WebKit (they keep their BSD/LGPL headers) |
 | WebKit (JavaScriptCore, WebCore, WTF, WebKitLegacy, bmalloc) | upstream tag `webkitgtk-2.54.1`, commit `628d6ce1850e`, fetched at build time | LGPL-2.1 / BSD-2-Clause |
 | MetroSurf's changes to WebKit (32-bit ARM JIT, Windows ARM ABI, WP8.1 build) | `engine/patches/0001-metrosurf-overlay.patch`, reviewed file by file in `engine/patches/metrosurf/REVIEW.md` | same as the files they patch |
 | Our changes to WebKit | `engine/patches/0002-lumia.patch` | same as the files they patch |
-| Libraries linked into `webkit.dll` (curl, nghttp2, LibreSSL, ICU, HarfBuzz, SQLite, libjpeg-turbo, libpng, libwebp, libxml2, libxslt, zlib, brotli, libpsl, woff2, Skia, mimalloc) | their upstream releases, built from source | their own (all open source) |
+| Libraries linked into `webkit.dll` (curl, nghttp2, LibreSSL with our P-256 patch, ICU, HarfBuzz, SQLite, libjpeg-turbo, libpng, libwebp, libxml2, libxslt, zlib-ng, brotli, libpsl, woff2, Skia, mimalloc) | their upstream releases, built from source (our library patches in `engine/deps/patches`) | their own (all open source) |
 | ANGLE (`libEGL.dll`, `libGLESv2.dll`: OpenGL ES on Direct3D 11) | Microsoft's ANGLE fork, branch `ms-master`, commit `e0a02ffcdaa5` (2016-04-18), project `winrt/8.1/windowsphone/src/angle.sln`. Our packages so far carry the prebuilt DLLs of the MetroSurf 2.0.1 package (same version, see `THIRD-PARTY.md`); the same DLLs build from this source (step 7 below, same exports and imports) and will replace them once tested on the phone | BSD-3-Clause |
 
 ### The only closed-source pieces: Microsoft's compiler runtime and the operating system
@@ -108,6 +108,19 @@ verdict on every file.
 - **Compositing** (TextureMapper, coordinated graphics): drawing limits of Direct3D feature level 9_3, frame pacing,
   damage tracking, the tap highlight.
 - **Memory**: WebKit's memory pressure policy tied to the limit the OS gives the app.
+- **WebAssembly on 32-bit ARM**: upstream 2.54 builds no WebAssembly tier for 32-bit CPUs. WebKit's own earlier 32-bit
+  BBQ tier and in-place interpreter (`engine/tools/wasm32/`, applied by `engine/tools/wasm32.py` and exported into the
+  patch) are brought back and ported forward, with tail calls; the LOLJIT stays off on 32 bits.
+- **Service workers, Cache API, Web Audio, OffscreenCanvas**: service workers run in the browser's single process
+  (with navigation preload), the Cache API is stored on disk, Web Audio renders through the port's audio output, and
+  OffscreenCanvas has its 2D context in workers. `requestIdleCallback` and `overscroll-behavior` are on.
+- **Style from the CSSOM**: rules added, removed or changed by script invalidate only what they affect.
+- **Bytecode cache encoding**: JavaScriptCore's encoder no longer scans its pages from the first on every write
+  (6 to 65 times fewer instructions per encode); functions are encoded at rest, in small slices on the idle lane,
+  which gives way to timers that are due.
+
+Everything in this list from WebAssembly on, and the media items below, is in the `dev-untested` branch only and has
+not run on a device yet.
 
 ### The port layer (`engine/port`)
 
@@ -128,9 +141,22 @@ use, so this one was written for the phone, borrowing from WebKit's own ports wh
 | `Storage`, `VisitedLinks`, `BackForwardList` | localStorage/sessionStorage/IndexedDB (WebKitLegacy's in-process SQLite implementations), `:visited`, session history. |
 | `Downloads`, `Authentication`, `Permissions`, `Pickers` | Downloads, HTTP passwords, permission questions/geolocation/notifications/share, `<select>` and date pickers: each asks the app with an event and waits for its reply without blocking it. |
 | `SocketStreamHandleImplCurl` | WebSocket byte stream over curl. |
-| `media/` | Own media pipeline: MP4/MP3/ADTS demuxers, the phone's Media Foundation decoders, XAudio2 output as the clock, YUV video layer. **Built, not yet proven on the phone.** |
+| `media/` | Own media pipeline: MP4/MP3/ADTS demuxers, HLS (`Hls.cpp`, `MediaFetcher`), Media Source Extensions (`MediaSourceWP81`, `MediaQueue`), the phone's Media Foundation decoders, XAudio2 output as the clock (`AudioOutput`), YUV video layer, Web Audio's output and FFT (`AudioDestinationWP81`, `FFTFrameWP81`). **Built, not yet proven on the phone.** |
+| `ServiceWorkers`, `CacheStorage` | Service workers in one process (registration, update, fetch events, navigation preload) and the Cache API's store on disk. |
 | `Profiler` | Sampling profiler of the Web thread, symbolized on the PC with the link map. |
-| `tests/` | `jsctest` (JavaScriptCore alone, for the "Prova motore" app) and `demuxtest` (demuxers checked against ffprobe). |
+| `tests/` | `jsctest` (JavaScriptCore alone, for the "Prova motore" app), `demuxtest` (demuxers checked against ffprobe), P-256 checks (`p256field`, `p256test`, `p256wycheproof`), crypto and library benches (`ecbench`, `aeadbench`, `libbench`), JIT and WebAssembly smoke tests (`*.js`). |
+
+### Testing on a PC, without the phone
+
+The parts of the engine that do not need the phone's screen can be run on a Linux PC under qemu (`qemu-arm`):
+
+- `engine/tools/jsclinux` builds a Linux ARMv7 `jsc` shell from the same patched JavaScriptCore
+  (`engine/cmake/linux-armv7.cmake`, a Debian armhf sysroot); `engine/tools/jsctests.py` and `engine/tools/wasmtests.py`
+  run JavaScriptCore's own JavaScript and WebAssembly suites with it, the way `run-jsc-stress-tests` does.
+- `engine/tools/armcount` and `engine/tools/armprof` (qemu plugins) count the ARM instructions a run executes, in total
+  or by function: a way to compare two versions of a library, not a timing.
+- `engine/tools/ecbench.py` (P-256: bench, tests, Wycheproof vectors, LibreSSL's regress tests), `libbench.py` (zlib-ng,
+  libpng) and `demuxtest.py` (demuxers against `ffprobe`).
 
 ## The app (`apps/Browser`)
 
@@ -147,6 +173,9 @@ missing DLL is reported instead of killing the app at start.
   the page are recognised). This is why typing stays fluid on heavy pages.
 - **Address box** with suggestions from favourites and history, find in page, long-press menu (open, copy, save
   image), downloads, file picker, form pickers, permission questions, mobile/desktop version per site.
+- **Private tabs**: cookies and IndexedDB in memory, a separate localStorage, no disk or bytecode cache, no history;
+  emptied with the last private tab. **Settings page**: search engine, ad blocker, saved HTTP passwords, site
+  permissions, clearing data. Both on `dev-untested` only, not yet run on a device.
 - **Site apps** (`Site.h`, `apps/Browser/sites/`): the same shell and engine built as a single-site app (Gmail, Poste)
   with its own cookies and the login kept in a PIN vault (`Vault.cpp`: PBKDF2 + AES-256-GCM, then DPAPI; all crypto from
   the system).
@@ -179,16 +208,18 @@ Nothing in the build depends on a file only we have.
 | WebKit | tag `webkitgtk-2.54.1` (commit `628d6ce1850e17225185a5807a9d0aa375bae2be`) | https://github.com/WebKit/WebKit | LGPL-2.1 / BSD-2-Clause | the engine |
 | MetroSurf's WebKit changes | v2.0.1 | https://github.com/MetroSurf/MetroSurf (already in this repository as `engine/patches/0001-metrosurf-overlay.patch`) | as the files they patch | 32-bit ARM JIT, WP8.1 build |
 | ANGLE (Microsoft's WinRT fork) | `ms-master`, commit `e0a02ffcdaa58405c7660a552e723606f5ae12a9` (version 2.1.8) | https://github.com/microsoft/angle | BSD-3-Clause | OpenGL ES 2 on Direct3D 11: `libEGL.dll`, `libGLESv2.dll` |
-| zlib | 1.3.2 | https://github.com/madler/zlib | zlib | compression |
+| zlib-ng | 2.3.3, zlib-compatible build with NEON (zlib 1.3.2 can still be built by name, `engine/deps/build.sh zlib`) | https://github.com/zlib-ng/zlib-ng | zlib | compression |
 | brotli | 1.2.1 | https://github.com/google/brotli | MIT | `Content-Encoding: br`, WOFF2 |
 | nghttp2 | 1.70.0 | https://github.com/nghttp2/nghttp2 | MIT | HTTP/2 |
-| LibreSSL | 4.3.3 | https://github.com/libressl/portable | OpenSSL/ISC | TLS |
+| LibreSSL | 4.3.3, plus our P-256 patch (`engine/deps/patches/libressl`) | https://github.com/libressl/portable | OpenSSL/ISC | TLS |
+| BoringSSL's P-256 code (inside the LibreSSL patch) | tag `0.20241209.0`, `crypto/fipsmodule/ec` | https://boringssl.googlesource.com/boringssl | ISC | P-256 point arithmetic |
+| fiat-crypto's P-256 field arithmetic (inside the LibreSSL patch) | `fiat_p256_32.h` | https://github.com/mit-plv/fiat-crypto | MIT / Apache-2.0 / BSD-1-Clause | P-256 field arithmetic |
 | libpsl | 0.23.3 | https://github.com/rockdaboot/libpsl | MIT | public suffix list (cookies) |
 | curl | 8.23.0 | https://github.com/curl/curl | curl (MIT-like) | the network stack |
 | ICU | 77.1 (code + `icudt77l.dat` data) | https://github.com/unicode-org/icu | Unicode | text, locales |
 | HarfBuzz | 14.6.0 | https://github.com/harfbuzz/harfbuzz | MIT | text shaping |
 | libjpeg-turbo | 3.2.0 | https://github.com/libjpeg-turbo/libjpeg-turbo | BSD-3-Clause / IJG / zlib | JPEG |
-| libpng | 1.6.59 | https://github.com/pnggroup/libpng | libpng | PNG |
+| libpng | 1.6.59, with its NEON filters | https://github.com/pnggroup/libpng | libpng | PNG |
 | libwebp | 1.6.0 | https://chromium.googlesource.com/webm/libwebp | BSD-3-Clause | WebP |
 | libxml2 | 2.15.4 | https://gitlab.gnome.org/GNOME/libxml2 | MIT | XML |
 | libxslt | 1.1.45 | https://gitlab.gnome.org/GNOME/libxslt | MIT | XSLT |
@@ -198,6 +229,7 @@ Nothing in the build depends on a file only we have.
 | Mozilla CA bundle | any current one | https://curl.se/docs/caextract.html | MPL-2.0 | HTTPS root certificates (`cacert.pem`) |
 | Ad and tracker list | — | https://pgl.yoyo.org/adservers/ (already in `engine/port/blocklist/pgl.txt`) | McRae GPL, credit required | the blocker |
 | LLVM (clang-cl, lld-link, llvm-dlltool, llvm-profdata) | 21.1.8 | https://llvm.org | Apache-2.0 with LLVM exception | compiler (build only) |
+| qemu, FFmpeg | any current one | https://www.qemu.org, https://ffmpeg.org | GPL-2.0 / LGPL-2.1 | tests on the PC only (`qemu-arm`, test media and `ffprobe` checks); nothing of them is in the browser |
 | MSVC 14.44 headers + static CRT, Windows SDK 10.0.22621 (ARM) | — | Microsoft, downloaded with xwin (https://github.com/Jake-Shadle/xwin) | Microsoft's licence, you accept it yourself | headers and C runtime (build only) |
 | Visual Studio 2013 + Windows Phone 8.1 SDK | Update 5 | Microsoft | Microsoft's licence | building the app and ANGLE (build only) |
 
@@ -230,8 +262,9 @@ nothing. Some paths and addresses in the scripts are those of our setup (a Fedor
    ```
    With a dump of a phone's `Windows\System32` you can instead make them from the DLLs themselves:
    `python3 engine/tools/implib.py <System32>/KERNELBASE.DLL ... -o engine/sysroot/phone`.
-4. Dependencies: `engine/deps/fetch.sh` downloads the pinned sources and checks them against
-   `engine/deps/SHA256SUMS`; `engine/deps/build.sh` builds them all as static libraries into `engine/out/deps`.
+4. Dependencies: `engine/deps/fetch.sh` downloads the pinned sources, checks them against
+   `engine/deps/SHA256SUMS` and applies our patches in `engine/deps/patches/<name>/`; `engine/deps/build.sh` builds
+   them all as static libraries into `engine/out/deps`.
 5. WebKit:
    ```
    git clone --filter=blob:none --branch webkitgtk-2.54.1 https://github.com/WebKit/WebKit.git engine/webkit
@@ -248,8 +281,8 @@ nothing. Some paths and addresses in the scripts are those of our setup (a Fedor
 7. ANGLE: clone https://github.com/microsoft/angle, check out `e0a02ffcdaa58405c7660a552e723606f5ae12a9`, open
    `winrt/8.1/windowsphone/src/angle.sln` and build **Release | ARM**. Copy `libEGL.dll` and `libGLESv2.dll` to
    `engine/out/angle/bin/` on the PC.
-8. The app: `tools/browser stage` copies `webkit.dll`, the two ANGLE DLLs, `icudt77l.dat`, `lumiaweb.h` and a CA
-   bundle (`cacert.pem`) into `apps/Browser/Browser/`. Then build `apps/Browser/Browser.sln` as **Release | ARM**
+8. The app: `tools/browser stage` copies `webkit.dll`, the two ANGLE DLLs, `icudt77l.dat`, `lumiaweb.h`, a CA
+   bundle (`cacert.pem`) and WebKit's HRTF data for Web Audio (`audio/Composite.wav`) into `apps/Browser/Browser/`. Then build `apps/Browser/Browser.sln` as **Release | ARM**
    (from the PC, `tools/browser` does it through the VM with `tools/wp81build`). The package is in `AppPackages/`.
 
 **On the phone:** a developer-unlocked Windows Phone 8.1 on ARM. Install with the SDK's deployment tool
@@ -262,13 +295,12 @@ installed once.
 To save you the steps above, the [`builds/`](../builds) folder of this repository carries a ready-made
 `Browser_<version>_ARM.appx`. It is only a convenience: anyone can rebuild the package from this page.
 
-**Be aware of how the current package differs from these sources.** The first package, **0.1.0.64**, is the last
-version tested on the phone, and it is not an exact build of this repository:
+**Be aware of how the current package differs from these sources.** The package, **0.1.0.64**, is `main`'s: the
+last version tested on the phone. It is not a build of this branch, and this branch has no package of its own:
 
-- **Code from a day earlier.** It was built on 2026-11-11 at 13:00 from our working tree of that moment; this
-  repository holds the code of a few hours later (0.1.0.67), which adds the first stage of the media pipeline
-  (`engine/port/media`) and small changes in the compositor and `WebPage`. Building this repository gives you
-  0.1.0.67, not 0.1.0.64. Nothing in 0.1.0.64 is missing here: the differences are additions.
+- **Older code.** It was built on 2026-11-11 at 13:00. This branch holds the code of 2026-11-13: building it gives
+  you Internet **0.1.0.72**, which has not been run on any device. Nothing in 0.1.0.64 is missing here: the
+  differences are the additions listed in the README.
 - **ThinLTO + PGO engine.** Its `webkit.dll` was optimised with a profile collected on our phone, which is not in the
   repository (`tools/pgo` makes your own). Without it you get the plain build: the same code, 20-30% slower on loads.
 - **MetroSurf's prebuilt ANGLE.** Its `libEGL.dll` and `libGLESv2.dll` are the ones from the MetroSurf 2.0.1 package
@@ -278,5 +310,5 @@ The next tested package will be built from exactly the sources of its release ta
 
 ## Status
 
-Work in progress and **not a safe browser**: no sandbox, no security updates, custom network and cache code. Audio and
-video are not proven yet. See the Status section of the main README.
+Work in progress and **not a safe browser**: no sandbox, no security updates, custom network and cache code. Nothing
+on this branch has run on a device yet; audio and video are not proven. See the Status section of the main README.

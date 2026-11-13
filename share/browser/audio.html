@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Audio</title><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+#out{font:12px monospace;white-space:pre-wrap}
+button{font:16px sans-serif;padding:10px 16px;margin:8px 0;background:#333;color:#fff;border:1px solid #666}
+</style></head><body>
+<div>Web Audio (PLAN §76): ogni riga deve dire OK. Le prove fuori linea non suonano; l'ultima suona un la per mezzo secondo.</div>
+<button id="tap">tocca per la prova dal vivo</button>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var lines = [], out = T.$("out"), failures = 0, pending = 0, sent = false;
+  function say(s) { lines.push(s); out.textContent = lines.join("\n"); }
+  function check(ok, what) { if (!ok) failures++; say((ok ? "OK " : "ERRORE ") + what); }
+  function start() { pending++; }
+  function done() { if (--pending === 0 && !sent) { sent = true; say(failures ? failures + " errori" : "tutto OK"); T.send("audio", lines); } }
+  var AC = window.AudioContext || window.webkitAudioContext, OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  check(!!AC && !!OAC, "AudioContext e OfflineAudioContext");
+  if (!AC || !OAC) { T.send("audio", lines); return; }
+  setTimeout(function () { if (!sent) { check(false, "prova non finita in 40 s (" + pending + " in corso)"); sent = true; T.send("audio", lines); } }, 40000);
+
+  function rms(data, from, to) { var s = 0; for (var i = from; i < to; i++) s += data[i] * data[i]; return Math.sqrt(s / (to - from)); }
+
+  // 1. An oscillator rendered off line: level and frequency of a sine.
+  start();
+  (function () {
+    var rate = 44100, ctx = new OAC(1, rate / 10, rate), osc = ctx.createOscillator();
+    osc.frequency.value = 441; osc.connect(ctx.destination); osc.start(0);
+    ctx.startRendering().then(function (buffer) {
+      var d = buffer.getChannelData(0), crossings = 0;
+      for (var i = 1; i < d.length; i++) if ((d[i - 1] < 0) !== (d[i] < 0)) crossings++;
+      var level = rms(d, 0, d.length);
+      check(Math.abs(level - Math.SQRT1_2) < 0.02, "sinusoide fuori linea: livello " + level.toFixed(3) + " (atteso 0.707)");
+      check(Math.abs(crossings - 88) <= 2, "sinusoide a 441 Hz: " + crossings + " passaggi per lo zero in 0,1 s (attesi 88)");
+    }, function (e) { check(false, "startRendering: " + e); }).then(done);
+  })();
+
+  // 2. The analyser's FFT (FFTFrameWP81), read while an off-line render is suspended.
+  start();
+  (function () {
+    var rate = 44100, ctx = new OAC(1, rate / 2, rate), osc = ctx.createOscillator(), an = ctx.createAnalyser();
+    an.fftSize = 2048; osc.frequency.value = 1000; osc.connect(an); an.connect(ctx.destination); osc.start(0);
+    ctx.suspend(0.25).then(function () {
+      var bins = new Float32Array(an.frequencyBinCount), best = 0;
+      an.getFloatFrequencyData(bins);
+      for (var i = 1; i < bins.length; i++) if (bins[i] > bins[best]) best = i;
+      var hz = best * rate / an.fftSize;
+      check(Math.abs(hz - 1000) < 2 * rate / an.fftSize, "FFT dell'analizzatore: picco a " + Math.round(hz) + " Hz (atteso 1000), " + bins[best].toFixed(1) + " dB");
+      ctx.resume();
+    });
+    ctx.startRendering().then(function () { }, function (e) { check(false, "analizzatore: " + e); }).then(done);
+  })();
+
+  // 3. Convolution (FFT both ways): an impulse through an impulse response that is a copy delayed by 100 samples.
+  start();
+  (function () {
+    var rate = 44100, ctx = new OAC(1, 4096, rate), src = ctx.createBufferSource(), conv = ctx.createConvolver();
+    var impulse = ctx.createBuffer(1, 4096, rate); impulse.getChannelData(0)[10] = 1;
+    var ir = ctx.createBuffer(1, 512, rate); ir.getChannelData(0)[100] = 0.5;
+    conv.normalize = false; conv.buffer = ir; src.buffer = impulse; src.connect(conv); conv.connect(ctx.destination); src.start(0);
+    ctx.startRendering().then(function (buffer) {
+      var d = buffer.getChannelData(0), peak = 0;
+      for (var i = 0; i < d.length; i++) if (Math.abs(d[i]) > Math.abs(d[peak])) peak = i;
+      check(peak === 110 && Math.abs(d[peak] - 0.5) < 0.01, "convoluzione: picco al campione " + peak + " (atteso 110), valore " + d[peak].toFixed(3));
+    }, function (e) { check(false, "convoluzione: " + e); }).then(done);
+  })();
+
+  // 4. The HRTF panner (WebCore's impulse responses, package audio\Composite.wav): a source on the right.
+  start();
+  (function () {
+    var rate = 44100, ctx = new OAC(2, rate / 5, rate), osc = ctx.createOscillator(), pan = ctx.createPanner();
+    pan.panningModel = "HRTF";
+    if (pan.positionX) { pan.positionX.value = 3; pan.positionY.value = 0; pan.positionZ.value = 0; } else pan.setPosition(3, 0, 0);
+    osc.connect(pan); pan.connect(ctx.destination); osc.start(0);
+    ctx.startRendering().then(function (buffer) {
+      var l = rms(buffer.getChannelData(0), 4410, buffer.length), r = rms(buffer.getChannelData(1), 4410, buffer.length);
+      check(r > 0.01 && r > l * 1.5, "panner HRTF: destra " + r.toFixed(3) + ", sinistra " + l.toFixed(3) + (r ? "" : " (manca Composite.wav?)"));
+    }, function (e) { check(false, "panner HRTF: " + e); }).then(done);
+  })();
+
+  // 5. decodeAudioData: a WAV made here (8 kHz, 16 bit, a quarter second), then the MP3 and M4A of media/.
+  function wav() {
+    var rate = 8000, n = rate / 4, b = new DataView(new ArrayBuffer(44 + n * 2));
+    function s(o, t) { for (var i = 0; i < t.length; i++) b.setUint8(o + i, t.charCodeAt(i)); }
+    s(0, "RIFF"); b.setUint32(4, 36 + n * 2, true); s(8, "WAVE"); s(12, "fmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true);
+    b.setUint16(22, 1, true); b.setUint32(24, rate, true); b.setUint32(28, rate * 2, true); b.setUint16(32, 2, true); b.setUint16(34, 16, true);
+    s(36, "data"); b.setUint32(40, n * 2, true);
+    for (var i = 0; i < n; i++) b.setInt16(44 + i * 2, Math.round(16000 * Math.sin(2 * Math.PI * 1000 * i / rate)), true);
+    return b.buffer;
+  }
+  var decoder = new OAC(1, 1, 44100);
+  function decode(what, data, expected) {
+    start();
+    decoder.decodeAudioData(data).then(function (buffer) {
+      check(Math.abs(buffer.duration - expected) < 0.06 && rms(buffer.getChannelData(0), 0, buffer.length) > 0.05,
+        "decodeAudioData " + what + ": " + buffer.duration.toFixed(3) + " s, " + buffer.numberOfChannels + " canali, " + buffer.sampleRate + " Hz");
+    }, function (e) { check(false, "decodeAudioData " + what + ": " + e); }).then(done);
+  }
+  decode("WAV", wav(), 0.25);
+  ["tone.mp3", "tone.m4a"].forEach(function (file) {
+    start();
+    fetch("media/" + file).then(function (r) { return r.arrayBuffer(); }).then(function (data) {
+      decode(file, data, 8);
+      done();
+    }, function (e) { check(false, file + ": " + e); done(); });
+  });
+
+  // 6. Live: the output thread and the context's clock (a tap may be needed: autoplay policy).
+  function live(how) {
+    start();
+    var ctx = new AC(), osc = ctx.createOscillator(), gain = ctx.createGain();
+    gain.gain.value = 0.2; osc.connect(gain); gain.connect(ctx.destination);
+    var settled = false;
+    // Without a tap the policy may keep the context suspended: resume() then waits for one.
+    setTimeout(function () { if (!settled) { settled = true; say("dal vivo (" + how + "): sospeso, serve un tocco sul pulsante"); done(); } }, 1500);
+    ctx.resume().then(function () {
+      if (settled) return;
+      settled = true;
+      osc.start(); osc.stop(ctx.currentTime + 0.5);
+      var t0 = ctx.currentTime, w0 = T.now();
+      setTimeout(function () {
+        var advanced = ctx.currentTime - t0, wall = (T.now() - w0) / 1000;
+        check(ctx.state === "running" && Math.abs(advanced - wall) < 0.15,
+          "dal vivo (" + how + "): " + ctx.sampleRate + " Hz, il tempo del contesto avanza " + advanced.toFixed(2) + " s in " + wall.toFixed(2) + " s, latenza " + (ctx.baseLatency || 0).toFixed(3) + " s");
+        ctx.close();
+        done();
+      }, 700);
+    }, function (e) { say("dal vivo (" + how + "): " + e + " (tocca il pulsante)"); done(); });
+  }
+  live("senza tocco");
+  T.$("tap").onclick = function () { sent = false; failures = 0; lines = []; live("dopo un tocco"); };
+})();
+</script></body></html>

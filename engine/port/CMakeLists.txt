@@ -19,6 +19,7 @@ set_target_properties(jsctest PROPERTIES OUTPUT_NAME jsctest)
 # include paths and definitions; our folders come first, since WebCore has headers with the same names.
 set(WP81_PORT_SOURCES
     BackForwardList.cpp
+    CacheStorage.cpp
     Blocker.cpp
     ChromeClient.cpp
     Downloads.cpp
@@ -31,6 +32,7 @@ set(WP81_PORT_SOURCES
     Pickers.cpp
     PlatformStrategies.cpp
     ScrollingTreeDispatcher.cpp
+    ServiceWorkers.cpp
     Storage.cpp
     VisitedLinks.cpp
     WebPage.cpp
@@ -44,11 +46,17 @@ set(WP81_PORT_SOURCES
     compositor/ThreadedDisplayRefreshMonitor.cpp
     loader/WebResourceLoadScheduler.cpp
     loader/WebResourceLoadSchedulerErrors.cpp
+    media/AudioDestinationWP81.cpp
     media/AudioOutput.cpp
+    media/FFTFrameWP81.cpp
     media/Demux.cpp
     media/MediaData.cpp
     media/MediaDecoder.cpp
+    media/Hls.cpp
+    media/MediaFetcher.cpp
     media/MediaPipeline.cpp
+    media/MediaQueue.cpp
+    media/MediaSourceWP81.cpp
     media/MediaPlayerPrivateWP81.cpp
     media/VideoLayer.cpp
     media/VideoProbe.cpp

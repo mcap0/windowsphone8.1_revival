@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>video</title><style>body{font:15px sans-serif;background:#000;color:#fff;margin:0}video{width:100%;background:#222}p{margin:8px}</style></head><body>
+<video id="v" controls playsinline></video><p id="s"></p>
+<script>
+// video.html?<file in media/ or address>[&muto]: one video with its controls, played at once; the line under it says
+// time, frames shown and dropped once a second (the engine's log has the decoder's cost).
+var q = location.search.slice(1).split("&"), v = document.getElementById("v"), s = document.getElementById("s");
+v.muted = q.indexOf("muto") > 0; v.src = q[0].indexOf("/") < 0 ? "media/" + q[0] : decodeURIComponent(q[0]);
+v.play();
+setInterval(function () {
+  var p = v.getVideoPlaybackQuality ? v.getVideoPlaybackQuality() : null;
+  s.textContent = v.videoWidth + "x" + v.videoHeight + ", tempo " + v.currentTime.toFixed(1) + " di " + (v.duration || 0).toFixed(1) +
+    (p ? ", fotogrammi " + p.totalVideoFrames + ", saltati " + p.droppedVideoFrames : "") + (v.error ? ", errore " + v.error.message : "");
+}, 1000);
+</script></body></html>

@@ -164,6 +164,20 @@ LW_API void lw_memory_pressure(int critical);        /* OS memory warning */
 LW_API void lw_network_changed(int online, int switched);
 LW_API void lw_memory_report(void);                  /* development: where the memory is, as LW_EVENT_TRACE lines */
 LW_API void lw_clear_visited_links(void);            /* the app cleared its history: no link shows as visited */
+/* Everything the engine keeps for the sites, of the kinds in `what`, for every site (the private tabs' things go by
+   themselves with the last private tab). */
+typedef enum lw_clear_kind {
+    LW_CLEAR_COOKIES = 1,      /* cookies (logins) */
+    LW_CLEAR_CACHE = 2,        /* disk and memory caches, compiled scripts */
+    LW_CLEAR_STORAGE = 4,      /* localStorage, IndexedDB */
+    LW_CLEAR_PASSWORDS = 8,    /* HTTP passwords given in this run */
+    LW_CLEAR_PERMISSIONS = 16, /* the answers to LW_EVENT_PERMISSION given in this run */
+    LW_CLEAR_HISTORY = 32      /* visited links */
+} lw_clear_kind;
+LW_API void lw_clear_data(unsigned what);
+/* The app's settings. LW_OPTION_BLOCKER: the ad and tracker blocker, 1 on (the default), 0 off. */
+typedef enum lw_option { LW_OPTION_BLOCKER = 1 } lw_option;
+LW_API void lw_set_option(int option, int value);
 LW_API void lw_trace_enable(int enabled);            /* latency trace lines as LW_EVENT_TRACE */
 LW_API void lw_gpu_test(void);                      /* record a 6 s frame timeline to the log (tools/timeline.py) */
 LW_API void lw_profile(int milliseconds);            /* sample the Web thread (<= 30 s, 0 = 10 s), profile to the log */
@@ -175,6 +189,10 @@ LW_API void lw_command(const char* command);
 
 /* swap_chain_panel: the XAML SwapChainPanel as IInspectable*; the compositor thread draws into it. */
 LW_API lw_view* lw_view_create(void* swap_chain_panel, int width, int height, float device_scale);
+/* A private tab: cookies, passwords, localStorage and IndexedDB of its own, in memory only, shared with the other
+   private tabs open at the time and gone with the last of them; nothing of it reaches the disk cache, the compiled
+   scripts' cache or the visited links. Its windows (window.open, target=_blank through lw_window_reply) are private. */
+LW_API lw_view* lw_view_create_private(void* swap_chain_panel, int width, int height, float device_scale);
 LW_API void lw_view_destroy(lw_view* view);
 LW_API void lw_view_resize(lw_view* view, int width, int height);
 LW_API void lw_view_set_visible(lw_view* view, int visible); /* hidden tabs are frozen */

@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>riproduzione</title><style>
+body{font:15px sans-serif;background:#000;color:#fff;margin:12px}
+.no{color:#ff8a80}.si{color:#b9f6ca}div.r{font:13px monospace;margin:2px 0}
+video{width:100%;background:#222;margin:8px 0}canvas{width:160px;border:1px solid #444}
+</style></head><body>
+<h2>Riproduzione</h2><div id="sum">in corso...</div><div id="out"></div>
+<video id="v" muted playsinline preload="auto"></video><canvas id="c" width="160" height="90"></canvas>
+<script src="common.js"></script><script>
+// What media.html does not ask: pause, seek (paused and playing), the end, playing again, rate, loop, the ranges, a
+// video drawn to a canvas, two elements at once. One step after the other on muted elements; each step has its own
+// limit and says what it saw. ES5, as the other pages.
+(function () {
+  var out = T.$("out"), lines = [], passed = 0, total = 0, v = T.$("v");
+  function line(ok, text) {
+    total++; if (ok) passed++;
+    var d = document.createElement("div"); d.className = "r " + (ok ? "si" : "no"); d.textContent = (ok ? "si  " : "NO  ") + text;
+    out.appendChild(d); lines.push((ok ? "si " : "NO ") + text);
+  }
+  // Polls test() every 50 ms; done(true, ms) when it holds, done(false, limit) at the limit.
+  function until(test, limit, done) {
+    var start = T.now();
+    (function poll() {
+      var held = false;
+      try { held = test(); } catch (e) {}
+      if (held) return done(true, Math.round(T.now() - start));
+      if (T.now() - start > limit) return done(false, limit);
+      setTimeout(poll, 50);
+    })();
+  }
+  function once(el, name, limit, done) {
+    var fired = false, start = T.now();
+    function on() { if (fired) return; fired = true; el.removeEventListener(name, on, false); done(true, Math.round(T.now() - start)); }
+    el.addEventListener(name, on, false);
+    setTimeout(function () { if (fired) return; fired = true; el.removeEventListener(name, on, false); done(false, limit); }, limit);
+  }
+  function t(x) { return (Math.round(x * 100) / 100).toFixed(2); }
+  var steps = [
+    function (next) {
+      v.src = "media/h264-aac.mp4"; v.play();
+      until(function () { return v.currentTime > 0.6; }, 8000, function (ok, ms) { line(ok, "parte: tempo " + t(v.currentTime) + " dopo " + ms + " ms"); next(); });
+    },
+    function (next) {
+      v.pause(); var a = v.currentTime;
+      setTimeout(function () { var b = v.currentTime; setTimeout(function () {
+        line(v.paused && v.currentTime === b && b - a < 0.15, "pausa: " + t(a) + " -> " + t(b) + " -> " + t(v.currentTime)); next(); }, 400); }, 200);
+    },
+    function (next) {
+      once(v, "seeked", 5000, function (ok, ms) {
+        line(ok && Math.abs(v.currentTime - 5) < 0.05 && !v.seeking, "seek in pausa a 5: seeked " + (ok ? "dopo " + ms + " ms" : "mai") + ", tempo " + t(v.currentTime)); next(); });
+      v.currentTime = 5;
+    },
+    function (next) {
+      // The picture at 5 s on a canvas: not a flat black or grey rectangle.
+      var why = "";
+      try {
+        var c = T.$("c"), g = c.getContext("2d"); g.drawImage(v, 0, 0, 160, 90);
+        var d = g.getImageData(0, 0, 160, 90).data, lo = 255, hi = 0;
+        for (var i = 0; i < d.length; i += 4 * 37) { var s = d[i] + d[i + 1] + d[i + 2]; if (s / 3 < lo) lo = s / 3; if (s / 3 > hi) hi = s / 3; }
+        why = "luminosità da " + Math.round(lo) + " a " + Math.round(hi);
+        line(hi - lo > 30, "canvas: " + why);
+      } catch (e) { line(false, "canvas: " + e.message); }
+      next();
+    },
+    function (next) {
+      v.play();
+      until(function () { return v.currentTime > 5.5; }, 4000, function (ok) {
+        once(v, "seeked", 5000, function (ok2, ms) {
+          var at = v.currentTime;
+          once(v, "ended", 4000, function (ok3, ms3) {
+            line(ok && ok2 && ok3 && v.ended && Math.abs(v.currentTime - v.duration) < 0.05,
+              "riprende da 5 (" + (ok ? "si" : "no") + "), seek a 7 mentre suona " + (ok2 ? ms + " ms, tempo " + t(at) : "mai") + ", ended " + (ok3 ? "dopo " + ms3 + " ms" : "mai") + ", tempo " + t(v.currentTime) + " di " + t(v.duration));
+            next(); });
+        });
+        v.currentTime = 7;
+      });
+    },
+    function (next) {
+      v.play();
+      until(function () { return !v.ended && v.currentTime > 0.3 && v.currentTime < 3; }, 5000, function (ok, ms) { line(ok, "di nuovo dall'inizio: tempo " + t(v.currentTime) + " dopo " + ms + " ms"); next(); });
+    },
+    function (next) {
+      v.playbackRate = 2; var a = v.currentTime, start = T.now();
+      setTimeout(function () {
+        var gained = v.currentTime - a, wall = (T.now() - start) / 1000; v.playbackRate = 1;
+        line(Math.abs(gained / wall - 2) < 0.3, "velocità 2: " + t(gained) + " s in " + t(wall) + " s"); next(); }, 1500);
+    },
+    function (next) {
+      var b = v.buffered, s = v.seekable;
+      line(b.length >= 1 && b.end(b.length - 1) > v.currentTime && s.length === 1 && Math.abs(s.end(0) - v.duration) < 0.05,
+        "intervalli: buffered " + (b.length ? t(b.start(0)) + "-" + t(b.end(b.length - 1)) : "vuoto") + ", seekable " + (s.length ? t(s.start(0)) + "-" + t(s.end(0)) : "vuoto"));
+      next();
+    },
+    function (next) {
+      // A second element (sound only, looping) next to the video: both advance; the loop wraps.
+      var a = document.createElement("audio"); a.muted = true; a.loop = true; a.src = "media/tone.m4a"; document.body.appendChild(a);
+      once(a, "loadedmetadata", 5000, function (ok) {
+        a.currentTime = 7.2; a.play();
+        var v0 = v.currentTime, top = 0;
+        until(function () { if (a.currentTime > top) top = a.currentTime; return top > 7.5 && a.currentTime < 1 && a.currentTime > 0.1; }, 6000, function (ok2, ms) {
+          line(ok && ok2 && (v.currentTime > v0 + 0.5 || v.ended), "due insieme e loop: audio a " + t(top) + " poi " + t(a.currentTime) + " dopo " + ms + " ms, video " + t(v0) + " -> " + t(v.currentTime));
+          a.pause(); a.removeAttribute("src"); a.load(); document.body.removeChild(a); next(); });
+      });
+    },
+    function (next) {
+      // MP3: a seek by byte position lands near the time asked.
+      var a = document.createElement("audio"); a.muted = true; a.src = "media/tone.mp3"; document.body.appendChild(a);
+      once(a, "loadedmetadata", 5000, function () {
+        once(a, "seeked", 5000, function (ok, ms) {
+          a.play();
+          until(function () { return a.currentTime > 4.5; }, 4000, function (ok2) {
+            line(ok && ok2 && a.currentTime < 6, "mp3 seek a 4: seeked " + (ok ? ms + " ms" : "mai") + ", poi tempo " + t(a.currentTime));
+            a.pause(); a.removeAttribute("src"); a.load(); document.body.removeChild(a); next(); });
+        });
+        a.currentTime = 4;
+      });
+    },
+    function (next) {
+      // An address that is not there: an error, not a wait.
+      var a = document.createElement("audio"); a.src = "media/manca.mp3"; document.body.appendChild(a);
+      once(a, "error", 6000, function (ok, ms) {
+        line(ok && a.error && a.error.code === 4, "file che non c'è: " + (ok ? "errore " + (a.error ? a.error.code + " " + (a.error.message || "") : "?") + " dopo " + ms + " ms" : "nessun errore"));
+        document.body.removeChild(a); next(); });
+    }
+  ];
+  var index = 0;
+  function next() {
+    if (index >= steps.length) {
+      v.pause();
+      T.$("sum").textContent = passed + " su " + total;
+      lines.unshift("totale " + passed + "/" + total);
+      T.send("riproduzione", lines, function (sent) { T.$("sum").textContent += sent ? " (inviato)" : " (invio fallito)"; });
+      return;
+    }
+    try { steps[index++](next); } catch (e) { line(false, "passo " + index + ": " + e.message); next(); }
+  }
+  window.addEventListener("load", next, false);
+})();
+</script></body></html>

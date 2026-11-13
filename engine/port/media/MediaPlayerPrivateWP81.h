@@ -5,6 +5,7 @@
 #pragma once
 
 #include "MediaPipeline.h"
+#include <wtf/Logger.h>
 #include <WebCore/MediaPlayerPrivate.h>
 #include <WebCore/PlatformLayer.h>
 #include <wtf/RefCounted.h>
@@ -16,6 +17,8 @@ class CoordinatedPlatformLayerBufferProxy;
 }
 
 namespace Lumia {
+
+class MediaSourcePrivateWP81;
 
 // Web thread, once, before the first media element: hooks the engine into WebCore's list.
 void installMediaEngine();
@@ -35,12 +38,23 @@ public:
     static WebCore::MediaPlayer::SupportsType supportsType(const WebCore::MediaEngineSupportParameters&);
     static void getSupportedTypes(HashSet<String>&);
 
+    // For the Media Source classes (MediaSourceWP81.cpp).
+    const Logger& logger() const { return m_logger.get(); }
+    RefPtr<MediaQueue> mediaQueue() const { return m_queue; }
+    void startMediaSource(std::vector<Media::Track>&&);
+    void mediaSourceDurationChanged(const MediaTime&);
+    void mediaSourceActiveBuffersChanged();
+
 private:
     constexpr WebCore::MediaPlayerType mediaPlayerType() const final { return WebCore::MediaPlayerType::MediaFoundation; }
 
     void load(const String&) final;
 #if ENABLE(MEDIA_SOURCE)
     void load(const URL&, const LoadOptions&, WebCore::MediaSourcePrivateClient&) final;
+    void readyStateFromMediaSourceChanged() final;
+    void characteristicsFromMediaSourceChanged() final;
+    void mediaSourceHasRetrievedAllData() final;
+    void finishMediaSourceSeek(const MediaTime&);
 #endif
 #if ENABLE(MEDIA_STREAM)
     void load(WebCore::MediaStreamPrivate&) final;
@@ -68,7 +82,7 @@ private:
     void setPreload(WebCore::MediaPlayer::Preload) final;
 
     WebCore::MediaPlayer::NetworkState networkState() const final { return m_networkState; }
-    WebCore::MediaPlayer::ReadyState readyState() const final { return m_readyState; }
+    WebCore::MediaPlayer::ReadyState readyState() const final;
     MediaTime maxTimeSeekable() const final;
     const WebCore::PlatformTimeRanges& buffered() const final;
     unsigned long long totalBytes() const final;
@@ -92,7 +106,17 @@ private:
 
     ThreadSafeWeakPtr<WebCore::MediaPlayer> m_player;
     const Ref<WebCore::CoordinatedPlatformLayerBufferProxy> m_proxy;
+    const Ref<const Logger> m_logger;
     RefPtr<MediaData> m_data;
+    RefPtr<MediaFetcher> m_fetcher;
+    // Media Source.
+    RefPtr<MediaSourcePrivateWP81> m_mediaSource;
+    RefPtr<MediaQueue> m_queue;
+    WebCore::FloatSize m_mediaSourceSize;
+    bool m_seekWaitsForData { false };       // a seek whose samples the page has not brought yet
+    std::optional<MediaTime> m_seekReady;    // samples in the queue, no pipeline yet to seek
+    unsigned m_seekSerial { 0 };
+    mutable double m_lastBufferedEnd { -1 };
     RefPtr<MediaPipeline> m_pipeline;
     WebCore::MediaPlayer::NetworkState m_networkState { WebCore::MediaPlayer::NetworkState::Empty };
     WebCore::MediaPlayer::ReadyState m_readyState { WebCore::MediaPlayer::ReadyState::HaveNothing };

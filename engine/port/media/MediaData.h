@@ -55,6 +55,9 @@ public:
 
     // Called on the reading thread when a read starts (true) and stops (false) waiting for the network.
     Function<void(bool)> onWaiting;
+    // Web thread: the fetch rests (true: the stretch ahead of the reader is cached, or the whole file is; nothing is
+    // asked) or works again (false). The element's networkState is Idle while it rests, so it fires no "stalled".
+    Function<void(bool)> onRestingChanged;
 
 private:
     class Client;
@@ -75,6 +78,7 @@ private:
 
     // Web thread.
     void pump();
+    void setResting(bool);
     void retryFired();
     void schedulePump() WTF_REQUIRES_LOCK(m_lock);
     void request(uint64_t from);
@@ -110,6 +114,7 @@ private:
     int m_httpStatus WTF_GUARDED_BY_LOCK(m_lock) { 0 };
     bool m_progress WTF_GUARDED_BY_LOCK(m_lock) { false };
     bool m_pumpScheduled WTF_GUARDED_BY_LOCK(m_lock) { false };
+    bool m_resting { false }; // Web thread.
     bool m_retryPending WTF_GUARDED_BY_LOCK(m_lock) { false };  // the retry timer runs
     bool m_retryNow WTF_GUARDED_BY_LOCK(m_lock) { false };
     // The request in flight: [m_fetchStart, m_fetchEnd), next byte to arrive at m_fetchPosition.

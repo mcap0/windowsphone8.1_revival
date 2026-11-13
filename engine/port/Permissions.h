@@ -17,6 +17,8 @@ namespace Lumia {
 void provideDeviceFeatures(lw_view&, WebCore::Page&);
 // lw_view_destroy: the view's open questions are refused (not remembered), its position watch and notifications end.
 void deviceFeaturesViewWillClose(lw_view&);
+// lw_clear_data (privateOnly false: the normal tabs' answers), or the last private tab closed (true: the private ones).
+void forgetPermissions(bool privateOnly);
 // navigator.share: the app's share screen. True once it is asked to open.
 void share(lw_view&, const WebCore::ShareDataWithParsedURL&, CompletionHandler<void(bool)>&&);
 

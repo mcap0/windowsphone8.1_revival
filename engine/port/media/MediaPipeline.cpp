@@ -27,13 +27,17 @@ long long framesToUs(uint64_t frames, int rate)
 
 } // namespace
 
-Ref<MediaPipeline> MediaPipeline::create(Ref<MediaData>&& data, Ref<CoordinatedPlatformLayerBufferProxy>&& proxy, Function<void(Event)>&& notify)
+Ref<MediaPipeline> MediaPipeline::create(Source&& source, Ref<CoordinatedPlatformLayerBufferProxy>&& proxy, Function<void(Event)>&& notify)
 {
-    return adoptRef(*new MediaPipeline(WTF::move(data), WTF::move(proxy), WTF::move(notify)));
+    return adoptRef(*new MediaPipeline(WTF::move(source), WTF::move(proxy), WTF::move(notify)));
 }
 
-MediaPipeline::MediaPipeline(Ref<MediaData>&& data, Ref<CoordinatedPlatformLayerBufferProxy>&& proxy, Function<void(Event)>&& notify)
-    : m_data(WTF::move(data))
+MediaPipeline::MediaPipeline(Source&& source, Ref<CoordinatedPlatformLayerBufferProxy>&& proxy, Function<void(Event)>&& notify)
+    : m_data(WTF::move(source.data))
+    , m_fetcher(WTF::move(source.fetcher))
+    , m_url(source.url.isolatedCopy())
+    , m_queue(WTF::move(source.queue))
+    , m_queueTracks(std::move(source.tracks))
     , m_proxy(WTF::move(proxy))
     , m_textures(VideoTextures::create())
     , m_notify(WTF::move(notify))
@@ -46,16 +50,16 @@ void MediaPipeline::start()
 {
     ASSERT(isMainThread());
     // A read that waits for the network: a clock that is not the sound's stops with it.
-    m_data->onWaiting = [this](bool waiting) {
-        {
+    if (m_data)
+        m_data->onWaiting = [this](bool waiting) { setStalled(waiting, true); };
+    if (m_fetcher)
+        m_fetcher->onWaiting = [this](bool waiting) { setStalled(waiting, true); };
+    if (m_queue) {
+        m_queue->setWake([this] {
             Locker locker { m_lock };
-            if (m_stop)
-                return;
-            m_stalled = waiting;
-            updateRunning();
-        }
-        notify(waiting ? Event::Waiting : Event::Resumed);
-    };
+            m_condition.notifyAll();
+        });
+    }
     m_thread = Thread::create("Media"_s, [this, protectedThis = Ref { *this }] {
         run();
     });
@@ -70,7 +74,12 @@ void MediaPipeline::shutdown()
         m_condition.notifyAll();
     }
     m_audio.stop();
-    m_data->stop();
+    if (m_data)
+        m_data->stop();
+    if (m_fetcher)
+        m_fetcher->stop();
+    if (m_queue)
+        m_queue->setWake(nullptr);
     if (auto thread = std::exchange(m_thread, nullptr))
         thread->waitForCompletion();
     m_notify = nullptr;
@@ -93,6 +102,38 @@ void MediaPipeline::seek(long long timeUs)
     m_shownSeekUs = *m_seekTargetUs;
     updateRunning();
     m_condition.notifyAll();
+}
+
+void MediaPipeline::suspendForSeek(long long timeUs)
+{
+    Locker locker { m_lock };
+    m_shownSeekUs = std::max<long long>(timeUs, 0);
+    updateRunning();
+}
+
+void MediaPipeline::setStalled(bool stalled, bool tell)
+{
+    {
+        Locker locker { m_lock };
+        if (m_stop || m_stalled == stalled)
+            return;
+        m_stalled = stalled;
+        updateRunning();
+    }
+    if (tell)
+        notify(stalled ? Event::Waiting : Event::Resumed);
+}
+
+bool MediaPipeline::sourceFailed() const
+{
+    return (m_data && m_data->failed()) || (m_fetcher && !m_fetcher->failure().isNull());
+}
+
+String MediaPipeline::sourceFailure() const
+{
+    if (m_data && m_data->failed())
+        return m_data->failure();
+    return m_fetcher ? m_fetcher->failure() : String();
 }
 
 void MediaPipeline::setRate(double rate)
@@ -134,6 +175,11 @@ long long MediaPipeline::clockUs() const
 {
     if (m_shownSeekUs >= 0)
         return m_shownSeekUs;
+    return positionUs();
+}
+
+long long MediaPipeline::positionUs() const
+{
     if (m_ended)
         return m_endUs;
     if (m_audioMaster)
@@ -261,12 +307,16 @@ void MediaPipeline::run()
 bool MediaPipeline::open()
 {
     std::string error;
-    m_demuxer = Media::Demuxer::open(m_data.get(), error);
+    if (m_queue)
+        m_demuxer = m_queue->createDemuxer(std::move(m_queueTracks));
+    else
+        m_demuxer = Media::Demuxer::open(*m_data, error, m_fetcher.get(), std::string(m_url.utf8().data()));
     if (!m_demuxer) {
-        bool network = m_data->failed();
-        fail(network ? makeString("caricamento fallito: "_s, m_data->failure()) : String::fromUTF8(error.c_str()), network);
+        bool network = sourceFailed();
+        fail(network ? makeString("caricamento fallito: "_s, sourceFailure()) : String::fromUTF8(error.c_str()), network);
         return false;
     }
+    m_live = m_demuxer->live();
     StringBuilder description;
     IntSize size;
     auto& tracks = m_demuxer->tracks();
@@ -326,6 +376,9 @@ void MediaPipeline::loop()
 
         bool worked = feedAudio();
         worked |= feedVideo();
+        m_bufferedEndUs = m_demuxer->bufferedEndUs();
+        if (m_queue)
+            updateStarving();
 
         bool prerolled, playing, ended;
         {
@@ -364,8 +417,24 @@ void MediaPipeline::loop()
     }
 }
 
+// Media Source: the page has not brought the samples of the position yet. A clock that is not the sound's waits for
+// them (the sound's own stops when its output runs dry).
+void MediaPipeline::updateStarving()
+{
+    bool video = m_videoDecoder && !m_videoEnded && m_pictures.isEmpty() && m_demuxer->pending(m_videoTrack);
+    bool audio = m_audioDecoder && !m_audioEnded && m_demuxer->pending(m_audioTrack)
+        && (!m_audio.isOpen() || m_audio.playedFrames() >= m_audio.submittedFrames());
+    setStalled(video || audio, false);
+}
+
 void MediaPipeline::performSeek(long long targetUs)
 {
+    if (m_demuxer->live()) {
+        // No going back in a stream that is not kept: the position stays.
+        Locker locker { m_lock };
+        targetUs = positionUs();
+        m_shownSeekUs = targetUs;
+    }
     m_audio.close();
     m_pictures.clear();
     if (m_audioDecoder)
@@ -416,8 +485,15 @@ void MediaPipeline::finishPreroll()
 
 bool MediaPipeline::feedAudio()
 {
-    if (!m_audioDecoder || m_audioEnded)
+    if (!m_audioDecoder)
         return false;
+    if (m_audioEnded) {
+        // Media Source: samples after the end (the page went on appending).
+        if (!m_queue || m_queue->finished(false) || m_demuxer->pending(m_audioTrack))
+            return false;
+        m_audioEnded = false;
+        m_audioDecoder->flush();
+    }
     if (m_audio.isOpen()) {
         bool prerolled;
         {
@@ -429,10 +505,14 @@ bool MediaPipeline::feedAudio()
         if (framesToUs(submitted - played, m_audio.rate()) >= (prerolled ? audioQueueUs : audioPrerollUs) || m_audio.queuedBuffers() >= 48)
             return false;
     }
+    if (m_demuxer->pending(m_audioTrack))
+        return false;
     Media::Sample sample;
     if (!m_demuxer->read(m_audioTrack, sample)) {
-        if (m_demuxer->failed() && m_data->failed()) {
-            fail(makeString("caricamento interrotto: "_s, m_data->failure()), true);
+        if (m_demuxer->pending(m_audioTrack))
+            return false;
+        if (m_demuxer->failed() && sourceFailed()) {
+            fail(makeString("caricamento interrotto: "_s, sourceFailure()), true);
             return false;
         }
         m_audioDecoder->drain();
@@ -506,12 +586,22 @@ void MediaPipeline::submitAudio()
 
 bool MediaPipeline::feedVideo()
 {
-    if (!m_videoDecoder || m_videoEnded || m_pictures.size() >= pictureQueue)
+    if (!m_videoDecoder || m_pictures.size() >= pictureQueue)
+        return false;
+    if (m_videoEnded) {
+        if (!m_queue || m_queue->finished(true) || m_demuxer->pending(m_videoTrack))
+            return false;
+        m_videoEnded = false;
+        m_videoDecoder->flush();
+    }
+    if (m_demuxer->pending(m_videoTrack))
         return false;
     Media::Sample sample;
     if (!m_demuxer->read(m_videoTrack, sample)) {
-        if (m_demuxer->failed() && m_data->failed()) {
-            fail(makeString("caricamento interrotto: "_s, m_data->failure()), true);
+        if (m_demuxer->pending(m_videoTrack))
+            return false;
+        if (m_demuxer->failed() && sourceFailed()) {
+            fail(makeString("caricamento interrotto: "_s, sourceFailure()), true);
             return false;
         }
         m_videoDecoder->drain();
@@ -520,7 +610,7 @@ bool MediaPipeline::feedVideo()
         return true;
     }
     // The parameter sets before every key frame: the decoder starts, or starts again after a seek, from any of them.
-    if (sample.key && !m_videoConfig.empty())
+    if (sample.key && !m_videoConfig.empty() && !m_demuxer->configInBand())
         sample.data.insert(sample.data.begin(), m_videoConfig.begin(), m_videoConfig.end());
     auto before = MonotonicTime::now();
     bool decoded = m_videoDecoder->decode({ sample.data.data(), sample.data.size() }, sample.ptsUs, sample.durationUs);
@@ -624,15 +714,17 @@ void MediaPipeline::catchUp(long long nowUs)
             if (m_stop || m_seekTargetUs)
                 return;
         }
+        if (m_demuxer->pending(m_videoTrack))
+            return;
         if (!m_demuxer->read(m_videoTrack, sample)) {
-            m_videoEnded = true;
+            m_videoEnded = !m_demuxer->pending(m_videoTrack);
             return;
         }
         if (sample.key && sample.ptsUs >= nowUs)
             break;
         ++m_droppedFrames;
     }
-    if (!m_videoConfig.empty())
+    if (!m_videoConfig.empty() && !m_demuxer->configInBand())
         sample.data.insert(sample.data.begin(), m_videoConfig.begin(), m_videoConfig.end());
     m_videoDecoder->decode({ sample.data.data(), sample.data.size() }, sample.ptsUs, sample.durationUs);
     m_lastPictureUs = sample.ptsUs;
@@ -645,6 +737,8 @@ void MediaPipeline::checkEnd()
     bool audioDone = !m_audioDecoder || (m_audioEnded && (!m_audio.isOpen() || m_audio.playedFrames() >= submitted));
     bool videoDone = !m_videoDecoder || (m_videoEnded && m_pictures.isEmpty());
     bool durationChanged = false;
+    // Media Source: the duration is the page's, and it may have changed.
+    long long queueDurationUs = m_queue ? m_queue->durationUs() : 0;
     {
         Locker locker { m_lock };
         if (!m_prerolled || m_ended || m_shownSeekUs >= 0)
@@ -658,6 +752,8 @@ void MediaPipeline::checkEnd()
         if (!audioDone || !videoDone)
             return;
         long long nowUs = clockUs();
+        if (queueDurationUs > 0)
+            m_durationUs = queueDurationUs;
         if (m_durationUs <= 0) {
             m_durationUs = std::max<long long>(nowUs, 1);
             durationChanged = true;

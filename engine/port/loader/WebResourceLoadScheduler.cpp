@@ -26,6 +26,7 @@
 #include "WebResourceLoadScheduler.h"
 
 #include "PingHandle.h"
+#include "ServiceWorkers.h"
 #include <WebCore/ArchiveResource.h>
 #include <WebCore/CachedResource.h>
 #include <WebCore/Document.h>
@@ -199,6 +200,10 @@ void WebResourceLoadScheduler::scheduleLoad(ResourceLoader* resourceLoader)
 void WebResourceLoadScheduler::remove(ResourceLoader* resourceLoader)
 {
     ASSERT(resourceLoader);
+
+    // A load a service worker was answering (it never took a place in a host's queue... or it did, after the worker
+    // passed): the worker is told to stop.
+    Lumia::serviceWorkerLoadRemoved(*resourceLoader);
 
     CheckedPtr host = hostForURL(resourceLoader->url());
     if (host)

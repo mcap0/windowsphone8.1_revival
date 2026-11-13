@@ -20,12 +20,14 @@
 struct lw_view;
 
 namespace WebCore {
+class CookieJar;
 class GraphicsLayer;
 class GraphicsLayerFactory;
 class LocalFrame;
 class LocalFrameView;
 class NetworkStorageSession;
 class ResourceError;
+class SocketProvider;
 }
 
 namespace Lumia {
@@ -39,7 +41,9 @@ class LayerTreeHost;
 class WebPage final : public RefCounted<WebPage>, public CanMakeWeakPtr<WebPage>, public WebCore::DisplayRefreshMonitorFactory {
     WTF_MAKE_TZONE_ALLOCATED(WebPage);
 public:
-    static Ref<WebPage> create(lw_view&, void* swapChainPanel, const WebCore::IntSize&, float deviceScaleFactor);
+    // `ephemeral`: a private tab (lw_view_create_private): the private session's cookies, storage in memory, nothing of
+    // it on disk.
+    static Ref<WebPage> create(lw_view&, void* swapChainPanel, const WebCore::IntSize&, float deviceScaleFactor, bool ephemeral = false);
     ~WebPage();
 
     void close();
@@ -90,6 +94,14 @@ public:
     RefPtr<WebCore::DisplayRefreshMonitor> createDisplayRefreshMonitor(WebCore::PlatformDisplayID) override;
 
     static WebCore::NetworkStorageSession& storageSession();
+    // For the pages WebCore runs service workers behind (ServiceWorkers.cpp): the same cookies and sockets as a tab.
+    static Ref<WebCore::CookieJar> createCookieJar(bool ephemeral);
+    static Ref<WebCore::SocketProvider> socketProvider();
+    // The private tabs' session: cookies and credentials in memory, shared by the private tabs open at the same time
+    // and emptied when the last of them closes (Lumia::endPrivateSession).
+    static WebCore::NetworkStorageSession& ephemeralStorageSession();
+    bool isEphemeral() const { return m_ephemeral; }
+    WebCore::NetworkStorageSession& session() const { return m_ephemeral ? ephemeralStorageSession() : storageSession(); }
 
     // lw_view_clear_site_data: the page first goes to about:blank, so its document closes its own IndexedDB
     // connections and storage areas (deleting databases a live page holds open aborted in IDBServer); when that blank
@@ -125,7 +137,7 @@ public:
     void updateCompositorZoom();
 
 private:
-    WebPage(lw_view&, void* swapChainPanel, const WebCore::IntSize&, float deviceScaleFactor);
+    WebPage(lw_view&, void* swapChainPanel, const WebCore::IntSize&, float deviceScaleFactor, bool ephemeral);
 
     enum class ZoomToInitialScale : bool { No, Yes };
     void viewportConfigurationChanged(ZoomToInitialScale = ZoomToInitialScale::No);
@@ -134,6 +146,7 @@ private:
     WebCore::IntSize contentsSizeForViewport() const;
 
     lw_view& m_view;
+    const bool m_ephemeral;
     void* m_swapChainPanel;
     WebCore::IntSize m_size;
     float m_deviceScaleFactor;

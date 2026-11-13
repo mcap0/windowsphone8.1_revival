@@ -46,18 +46,21 @@ using namespace WebCore;
 
 namespace {
 
-// Every frame loads through the process-wide curl storage session (cookies, HSTS, credentials).
+// Every frame loads through the process-wide curl storage session (cookies, HSTS, credentials), a private tab's frames
+// through the private one.
 class NetworkingContext final : public FrameNetworkingContext {
 public:
-    static Ref<NetworkingContext> create(LocalFrame& frame) { return adoptRef(*new NetworkingContext(frame)); }
+    static Ref<NetworkingContext> create(LocalFrame& frame, bool ephemeral) { return adoptRef(*new NetworkingContext(frame, ephemeral)); }
 
 private:
-    explicit NetworkingContext(LocalFrame& frame)
+    NetworkingContext(LocalFrame& frame, bool ephemeral)
         : FrameNetworkingContext(&frame)
+        , m_ephemeral(ephemeral)
     {
     }
 
-    NetworkStorageSession* storageSession() const override { return &WebPage::storageSession(); }
+    NetworkStorageSession* storageSession() const override { return m_ephemeral ? &WebPage::ephemeralStorageSession() : &WebPage::storageSession(); }
+    const bool m_ephemeral;
     ResourceError blockedError(const ResourceRequest&) const override { return { }; }
 };
 
@@ -269,7 +272,7 @@ RefPtr<LocalFrame> FrameLoaderClient::createFrame(const AtomString& name, HTMLFr
 
 Ref<FrameNetworkingContext> FrameLoaderClient::createNetworkingContext()
 {
-    return NetworkingContext::create(m_localFrame.get());
+    return NetworkingContext::create(m_localFrame.get(), m_page && m_page->isEphemeral());
 }
 
 String FrameLoaderClient::userAgent(const URL& url) const

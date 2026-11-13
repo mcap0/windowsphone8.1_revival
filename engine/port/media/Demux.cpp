@@ -163,6 +163,10 @@ struct Mp4Track {
     // Fragments.
     uint32_t defaultDuration { 0 }, defaultSize { 0 }, defaultFlags { 0 };
     int64_t nextDts { 0 };
+    // A fragmented file whose first samples are in moov (ffmpeg's frag_keyframe without empty_moov): those samples,
+    // put back when the fragments are read again from the start.
+    std::vector<Entry> initial;
+    int64_t initialNextDts { 0 };
 
     long long pts(const Entry& e) const { return toUs(e.dts + e.cts - mediaTime, timescale) + delayUs; }
     long long dts(const Entry& e) const { return toUs(e.dts - mediaTime, timescale) + delayUs; }
@@ -271,8 +275,11 @@ public:
             m_firstFragment = m_scan = offset;
             if (m_index.empty())
                 readMfra();
+            calibrateIndex();
             if (!m_durationUs && !m_index.empty())
                 m_durationUs = endOfLastFragment();
+            if (!m_durationUs)
+                m_durationUs = m_moovSamplesEndUs; // no index: what moov holds, as a plain file would say
         }
         for (size_t i = 0; i < m_tracks.size(); ++i) {
             if (!m_tracks[i].durationUs)
@@ -315,29 +322,50 @@ public:
         if (timeUs < 0)
             timeUs = 0;
         if (m_fragmented) {
+            // The fragment that holds the time for each indexed track (each its own fragments when a fragment holds
+            // one track only): the earliest of them.
             uint64_t from = m_firstFragment;
-            for (auto& point : m_index) {
-                if (point.timeUs > timeUs)
-                    break;
-                from = point.offset;
-            }
-            m_scan = from;
-            m_ended = false;
-            for (auto& t : m_states) {
-                t.table.clear();
-                t.next = 0;
-                t.nextDts = 0;
-            }
-            // Without an index the fragments are read from the first one until the time is inside one.
-            for (;;) {
-                bool reached = false;
-                for (auto& t : m_states) {
-                    if (!t.table.empty() && t.pts(t.table.back()) + toUs(t.table.back().duration, t.timescale) > timeUs)
-                        reached = true;
+            if (!m_trackIndex.empty()) {
+                from = UINT64_MAX;
+                for (auto& [id, points] : m_trackIndex) {
+                    uint64_t trackFrom = m_firstFragment;
+                    for (auto& point : points) {
+                        if (point.timeUs > timeUs)
+                            break;
+                        trackFrom = point.offset;
+                    }
+                    from = std::min(from, trackFrom);
                 }
-                if (reached || !loadNextFragment())
-                    break;
-                if (!m_index.empty())
+            } else {
+                for (auto& point : m_index) {
+                    if (point.timeUs > timeUs)
+                        break;
+                    from = point.offset;
+                }
+            }
+            if (from == m_firstFragment)
+                rewindFragments();
+            else {
+                m_scan = from;
+                m_ended = false;
+                for (auto& t : m_states) {
+                    t.table.clear();
+                    t.next = 0;
+                    t.nextDts = 0;
+                }
+            }
+            // Fragments are read until every track holds the time (without an index, from the first one): in a file
+            // whose fragments each hold one track (ffmpeg's separate_moof, DASH-style packagers) the other tracks'
+            // fragments for it are further on. Once one track holds it, at most 16 more: a track that ended early.
+            int further = 0;
+            for (;;) {
+                bool any = false, all = true;
+                for (auto& t : m_states) {
+                    bool holds = !t.table.empty() && t.pts(t.table.back()) + toUs(t.table.back().duration, t.timescale) > timeUs;
+                    any = any || holds;
+                    all = all && holds;
+                }
+                if (all || (any && ++further > 16) || !loadNextFragment())
                     break;
             }
         }
@@ -349,6 +377,73 @@ public:
                 t.next = 0;
             }
         }
+    }
+
+    // The tracks at the first fragment again, with the samples moov holds in front of it.
+    void rewindFragments()
+    {
+        m_scan = m_firstFragment;
+        m_ended = false;
+        for (auto& t : m_states) {
+            t.table = t.initial;
+            t.next = 0;
+            t.nextDts = t.initialNextDts;
+        }
+    }
+
+    // For the stream parser: the source now holds one fragment (moof + mdat) from its first byte.
+    void restartAtFragment()
+    {
+        m_scan = 0;
+        m_ended = false;
+        for (auto& t : m_states) {
+            t.table.clear();
+            t.next = 0;
+        }
+    }
+    bool fragmented() const { return m_fragmented; }
+
+    // The earliest presentation time of the file, from the sample tables (a fragmented file: its first fragment,
+    // read now; the tracks are back at their start after). Composition offsets put the earliest picture among the
+    // first few in decode order.
+    long long firstPresentationUs()
+    {
+        bool empty = true;
+        for (auto& t : m_states)
+            empty = empty && t.table.empty();
+        if (m_fragmented && empty) {
+            // A fragment may hold one track only: up to 8, until every track has its first samples.
+            for (int i = 0; i < 8 && loadNextFragment(); ++i) {
+                bool all = true;
+                for (auto& t : m_states)
+                    all = all && !t.table.empty();
+                if (all)
+                    break;
+            }
+            if (m_failed)
+                return 0;
+        }
+        bool any = false;
+        long long first = 0;
+        for (auto& t : m_states) {
+            for (size_t i = 0; i < t.table.size() && i < 32; ++i) {
+                long long pts = t.pts(t.table[i]);
+                if (!any || pts < first)
+                    first = pts;
+                any = true;
+            }
+        }
+        if (m_fragmented)
+            rewindFragments(); // back to the start: read() loads the first fragment again
+        return any ? first : 0;
+    }
+
+    std::vector<uint32_t> trackIds() const
+    {
+        std::vector<uint32_t> ids;
+        for (auto& t : m_states)
+            ids.push_back(t.id);
+        return ids;
     }
 
 private:
@@ -465,7 +560,22 @@ private:
             m_tracks.push_back(std::move(track));
             m_states.push_back(std::move(state));
         }
-        m_fragmented = hasMvex && !anySamples;
+        // mvex: fragments follow, also when moov holds the first samples (then its durations count only those).
+        m_fragmented = hasMvex;
+        if (hasMvex && anySamples) {
+            for (size_t i = 0; i < m_states.size(); ++i) {
+                auto& t = m_states[i];
+                if (!t.table.empty()) {
+                    const Entry& last = t.table.back();
+                    t.initialNextDts = last.dts + last.duration;
+                    m_moovSamplesEndUs = std::max(m_moovSamplesEndUs, t.pts(last) + toUs(last.duration, t.timescale));
+                }
+                t.initial = t.table;
+                t.nextDts = t.initialNextDts;
+                m_tracks[i].durationUs = 0;
+            }
+            m_durationUs = 0;
+        }
         if (hasMvex) {
             Box mehd;
             if (findBox(mvex, tag("mehd"), mehd) && mehd.size >= 8) {
@@ -797,7 +907,8 @@ private:
     }
 
     // `endUs`: only the end time of the fragment is wanted, the tables are left alone.
-    void parseMoof(const std::vector<uint8_t>& moof, uint64_t moofOffset, long long* endUs)
+    // `startOf`/`startUs`: only the earliest time of that track in the fragment is wanted.
+    void parseMoof(const std::vector<uint8_t>& moof, uint64_t moofOffset, long long* endUs, uint32_t startOf = 0, long long* startUs = nullptr)
     {
         const uint8_t* p = moof.data();
         const uint8_t* end = p + moof.size();
@@ -895,14 +1006,17 @@ private:
                     e.key = !(t && t->video) || !(sampleFlags & 0x10000);
                     offset += e.size;
                     dts += e.duration;
-                    if (t && endUs)
+                    if (t && startUs) {
+                        if (t->id == startOf && (*startUs < 0 || t->pts(e) < *startUs))
+                            *startUs = t->pts(e);
+                    } else if (t && endUs)
                         *endUs = std::max(*endUs, t->pts(e) + toUs(e.duration, t->timescale));
                     else if (t)
                         t->table.push_back(e);
                 }
             }
             runningOffset = offset;
-            if (t && !endUs)
+            if (t && !endUs && !startUs)
                 t->nextDts = dts;
         }
     }
@@ -944,6 +1058,18 @@ private:
         long long total = m_source.size();
         if (points.empty() || total < 0 || offset + (static_cast<uint64_t>(total) - after) / 10 < static_cast<uint64_t>(total))
             return;
+        // One sidx per track (ffmpeg's global_sidx) or one for the file: the video's is the main index.
+        Mp4Track* t = trackById(be32(p + 4));
+        if (t) {
+            auto known = std::find_if(m_trackIndex.begin(), m_trackIndex.end(), [&](auto& entry) { return entry.first == t->id; });
+            if (known != m_trackIndex.end())
+                known->second = points;
+            else
+                m_trackIndex.push_back({ t->id, points });
+        }
+        if (!m_index.empty() && m_indexTrack && !(t && t->video))
+            return;
+        m_indexTrack = t ? t->id : 0;
         m_index.swap(points);
         if (!m_durationUs)
             m_durationUs = toUs(static_cast<long long>(time), timescale);
@@ -990,10 +1116,50 @@ private:
                     continue;
                 points.push_back({ us, offset });
             }
-            if (best.empty() || t->video)
+            m_trackIndex.push_back({ t->id, points });
+            if (best.empty() || t->video) {
                 best.swap(points);
+                m_indexTrack = t->id;
+            }
         }
         m_index.swap(best);
+    }
+
+    // An index whose times are not those of the fragments it points to (ffmpeg's -output_ts_offset moves the mfra
+    // times, not the tfdt ones): the fragments' own times win, a track's index moves by the difference in its first
+    // indexed fragment.
+    void calibrateIndex()
+    {
+        for (auto& [id, points] : m_trackIndex) {
+            long long shift = indexShift(id, points);
+            for (auto& point : points)
+                point.timeUs += shift;
+            if (id == m_indexTrack) {
+                for (auto& point : m_index)
+                    point.timeUs += shift;
+            }
+        }
+    }
+
+    long long indexShift(uint32_t trackId, const std::vector<IndexPoint>& points)
+    {
+        if (points.empty())
+            return 0;
+        uint32_t type = 0;
+        uint64_t size = 0;
+        size_t header = 0;
+        uint64_t at = points.front().offset;
+        if (!boxHeader(at, type, size, header) || type != tag("moof") || size > 64 * 1024 * 1024)
+            return 0;
+        std::vector<uint8_t> moof(static_cast<size_t>(size - header));
+        if (!m_source.read(at + header, moof.data(), moof.size()))
+            return 0;
+        long long startUs = -1;
+        parseMoof(moof, at, nullptr, trackId, &startUs);
+        if (startUs < 0)
+            return 0;
+        long long shift = startUs - points.front().timeUs;
+        return shift > -100000 && shift < 100000 ? 0 : shift; // composition offsets and rounding stay
     }
 
     long long endOfLastFragment()
@@ -1016,6 +1182,10 @@ private:
     std::vector<Mp4Track> m_states;
     bool m_fragmented { false };
     bool m_ended { false };
+    long long m_moovSamplesEndUs { 0 };
+    uint32_t m_indexTrack { 0 };
+    // Each indexed track's own points (mfra: a tfra per track; a sidx per track): m_index is one of them.
+    std::vector<std::pair<uint32_t, std::vector<IndexPoint>>> m_trackIndex;
     uint64_t m_firstFragment { 0 };
     uint64_t m_scan { 0 };
     std::vector<IndexPoint> m_index;
@@ -1024,18 +1194,7 @@ private:
 // ---------------------------------------------------------------------------------------------------------------
 // MP3 and ADTS: a run of self-describing frames.
 
-struct FrameInfo {
-    uint32_t size { 0 };     // the whole frame
-    uint32_t skip { 0 };     // header bytes the decoder does not want
-    int samples { 0 };
-    int rate { 0 };
-    int channels { 0 };
-    int bitrate { 0 };       // MP3, bits per second
-    int version { 0 };       // MP3: 3 = MPEG-1, 2 = MPEG-2, 0 = MPEG-2.5
-    int profile { 0 };       // ADTS: audio object type
-    int rateIndex { 0 };
-    int channelConfig { 0 };
-};
+} // namespace
 
 bool parseMp3Header(const uint8_t* h, FrameInfo& out)
 {
@@ -1077,6 +1236,8 @@ bool parseAdtsHeader(const uint8_t* h, FrameInfo& out)
     out.channels = out.channelConfig == 7 ? 8 : out.channelConfig;
     return out.size > out.skip;
 }
+
+namespace {
 
 class FramedDemuxer final : public Demuxer {
 public:
@@ -1284,9 +1445,171 @@ private:
     std::vector<uint8_t> m_toc;
 };
 
+// ---------------------------------------------------------------------------------------------------------------
+// Media Source: boxes as they come.
+
+class OwnedBytes final : public ByteSource {
+public:
+    std::vector<uint8_t> bytes;
+    long long size() final { return static_cast<long long>(bytes.size()); }
+    bool read(unsigned long long offset, void* out, size_t size) final
+    {
+        if (offset > bytes.size() || size > bytes.size() - offset)
+            return false;
+        memcpy(out, bytes.data() + offset, size);
+        return true;
+    }
+};
+
+class Mp4StreamParser final : public StreamParser {
+public:
+    bool append(const uint8_t* data, size_t size, Client& client, std::string& error) final
+    {
+        m_pending.insert(m_pending.end(), data, data + size);
+        size_t at = 0;
+        bool ok = true;
+        while (m_pending.size() - at >= 8) {
+            const uint8_t* p = m_pending.data() + at;
+            uint64_t boxSize = be32(p);
+            uint32_t type = be32(p + 4);
+            size_t header = 8;
+            if (boxSize == 1) {
+                if (m_pending.size() - at < 16)
+                    break;
+                boxSize = be64(p + 8);
+                header = 16;
+            }
+            bool known = false;
+            for (uint32_t t : { tag("ftyp"), tag("styp"), tag("moov"), tag("moof"), tag("mdat"), tag("sidx"), tag("ssix"), tag("free"),
+                     tag("skip"), tag("emsg"), tag("prft"), tag("uuid"), tag("mfra"), tag("meta"), tag("pdin") })
+                known = known || t == type;
+            if (boxSize < header || !known || boxSize > 512ull * 1024 * 1024) {
+                error = !known ? "mp4: box '" + tagName(type) + "' fuori posto" : "mp4: box '" + tagName(type) + "' di lunghezza sbagliata";
+                ok = false;
+                break;
+            }
+            if (m_pending.size() - at < boxSize)
+                break;
+            if (!box(type, p, static_cast<size_t>(boxSize), client, error)) {
+                ok = false;
+                break;
+            }
+            at += static_cast<size_t>(boxSize);
+        }
+        if (!ok) {
+            m_pending.clear();
+            m_fragment.clear();
+            return false;
+        }
+        m_pending.erase(m_pending.begin(), m_pending.begin() + static_cast<long>(at));
+        return true;
+    }
+
+    void reset() final
+    {
+        m_pending.clear();
+        m_fragment.clear();
+    }
+
+private:
+    bool box(uint32_t type, const uint8_t* data, size_t size, Client& client, std::string& error)
+    {
+        if (type == tag("moov")) {
+            m_fragment.clear();
+            m_source.bytes.assign(data, data + size);
+            auto demuxer = std::make_unique<Mp4Demuxer>(m_source);
+            if (!demuxer->open(error))
+                return false;
+            if (!demuxer->fragmented()) {
+                error = "mp4 non a frammenti in un SourceBuffer";
+                return false;
+            }
+            m_demuxer = std::move(demuxer);
+            client.initialization(m_demuxer->tracks(), m_demuxer->trackIds(), m_demuxer->durationUs());
+            return true;
+        }
+        if (type == tag("moof")) {
+            if (!m_demuxer) {
+                error = "mp4: frammento prima del segmento di inizializzazione";
+                return false;
+            }
+            m_fragment.assign(data, data + size);
+            return true;
+        }
+        if (type == tag("mdat") && m_demuxer && !m_fragment.empty()) {
+            m_source.bytes.swap(m_fragment);
+            m_fragment.clear();
+            m_source.bytes.insert(m_source.bytes.end(), data, data + size);
+            m_demuxer->restartAtFragment();
+            for (size_t i = 0; i < m_demuxer->tracks().size(); ++i) {
+                Sample sample;
+                while (m_demuxer->read(i, sample))
+                    client.sample(i, std::move(sample));
+            }
+            m_source.bytes.clear();
+        }
+        return true;
+    }
+
+    std::vector<uint8_t> m_pending, m_fragment;
+    OwnedBytes m_source;
+    std::unique_ptr<Mp4Demuxer> m_demuxer;
+};
+
 } // namespace
 
-std::unique_ptr<Demuxer> Demuxer::open(ByteSource& source, std::string& error)
+std::unique_ptr<StreamParser> StreamParser::create()
+{
+    return std::make_unique<Mp4StreamParser>();
+}
+
+// A presentation whose first time is not 0 (the fragments of a live stream saved to a file, an empty edit in front of
+// every track): its times are moved to start at 0, as Firefox does (Chrome starts the element's clock at the first
+// picture instead). The element then plays at once, and its seek bar covers what is there. Transport streams and HLS
+// do the same in Hls.cpp; Media Source keeps the times the page gives (timestampOffset is the page's to set).
+class ShiftedDemuxer final : public Demuxer {
+public:
+    ShiftedDemuxer(std::unique_ptr<Demuxer> inner, long long originUs)
+        : m_inner(std::move(inner))
+        , m_originUs(originUs)
+    {
+        m_tracks = m_inner->tracks();
+        for (auto& track : m_tracks) {
+            if (track.durationUs > originUs)
+                track.durationUs -= originUs;
+        }
+        // An mvhd duration counts from the presentation's 0 (the shift is inside it), a fragment index's end is a
+        // time: either way the end moves with the times.
+        m_durationUs = m_inner->durationUs() > originUs ? m_inner->durationUs() - originUs : m_inner->durationUs();
+    }
+
+    const char* container() const final { return m_inner->container(); }
+    bool read(size_t track, Sample& sample) final
+    {
+        if (!m_inner->read(track, sample)) {
+            m_failed = m_inner->failed();
+            return false;
+        }
+        sample.ptsUs -= m_originUs;
+        sample.dtsUs -= m_originUs;
+        return true;
+    }
+    void seek(long long timeUs) final { m_inner->seek(timeUs + m_originUs); }
+    bool live() const final { return m_inner->live(); }
+    bool pending(size_t track) final { return m_inner->pending(track); }
+    bool configInBand() const final { return m_inner->configInBand(); }
+    long long bufferedEndUs() const final
+    {
+        long long end = m_inner->bufferedEndUs();
+        return end < 0 ? end : end - m_originUs;
+    }
+
+private:
+    std::unique_ptr<Demuxer> m_inner;
+    const long long m_originUs;
+};
+
+std::unique_ptr<Demuxer> Demuxer::open(ByteSource& source, std::string& error, Fetcher* fetcher, const std::string& url)
 {
     uint8_t head[12] = { };
     if (!source.read(0, head, 12)) {
@@ -1299,6 +1622,13 @@ std::unique_ptr<Demuxer> Demuxer::open(ByteSource& source, std::string& error)
         auto demuxer = std::make_unique<Mp4Demuxer>(source);
         if (!demuxer->open(error))
             return nullptr;
+        long long origin = demuxer->firstPresentationUs();
+        if (demuxer->failed()) {
+            error = "mp4: primo frammento illeggibile";
+            return nullptr;
+        }
+        if (origin > 0)
+            return std::make_unique<ShiftedDemuxer>(std::move(demuxer), origin);
         return demuxer;
     }
     if (!memcmp(head, "OggS", 4)) {
@@ -1309,9 +1639,17 @@ std::unique_ptr<Demuxer> Demuxer::open(ByteSource& source, std::string& error)
         error = "webm/matroska: nessun decoder sul telefono";
         return nullptr;
     }
-    if (!memcmp(head, "#EXTM3U", 7)) {
-        error = "HLS: non ancora";
-        return nullptr;
+    if (!memcmp(head, "#EXTM3U", 7) || (head[0] == 0xEF && head[1] == 0xBB && head[2] == 0xBF && !memcmp(head + 3, "#EXTM3U", 7))) {
+        if (!fetcher) {
+            error = "HLS: nessun modo di scaricare i segmenti";
+            return nullptr;
+        }
+        return openHls(*fetcher, url, error);
+    }
+    if (head[0] == 0x47) {
+        uint8_t next = 0;
+        if (source.read(188, &next, 1) && next == 0x47)
+            return openTransportStream(source, error);
     }
     if (!memcmp(head, "RIFF", 4) || !memcmp(head, "fLaC", 4)) {
         error = "wav/flac: non ancora";

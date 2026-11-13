@@ -37,8 +37,12 @@ public:
     uint64_t submittedFrames() const;
     uint64_t playedFrames() const;
     unsigned queuedBuffers() const;
+    // Blocks until the voice finishes a buffer (or the timeout): a feeder thread waits here instead of polling.
+    void waitForBufferEnd(unsigned milliseconds);
 
 private:
+    struct Callback;
+    Callback* m_callback { nullptr }; // Made by open(), deleted with the object (after the voice): its callbacks use it.
     mutable Lock m_lock;
     IXAudio2SourceVoice* m_voice WTF_GUARDED_BY_LOCK(m_lock) { nullptr };
     int m_rate { 0 }, m_channels { 0 };

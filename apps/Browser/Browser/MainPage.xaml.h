@@ -42,6 +42,8 @@ namespace Browser
         unsigned long long lastUsed = 0;
         // The tab a link opened this one from: Back on its first page goes back there, as on Android.
         int openerId = 0;
+        // A private tab (lw_view_create_private): no history, not reopened, its links and windows private too.
+        bool isPrivate = false;
     };
 
     // A favorite or a history entry.
@@ -50,6 +52,24 @@ namespace Browser
         std::wstring title;
         std::wstring url;
         long long time = 0; // history: FILETIME of the visit
+    };
+
+    // A server's password the user asked to keep (HTTP authentication, LW_EVENT_PASSWORD): in LocalFolder\passwords.bin,
+    // encrypted for this phone (Vault::WriteProtectedText).
+    struct SavedPassword
+    {
+        std::wstring server; // scheme://host[:port]
+        std::wstring realm;
+        std::wstring user;
+        std::wstring password;
+    };
+
+    // A site's answer to a permission question (LW_EVENT_PERMISSION), kept in the settings.
+    struct SitePermission
+    {
+        int kind = 0;        // lw_permission_kind
+        std::wstring site;   // scheme://host[:port]
+        bool allowed = false;
     };
 
     // A file the engine saves (LW_EVENT_DOWNLOAD), or one an earlier run left in Downloads\Internet.
@@ -110,7 +130,7 @@ namespace Browser
         // Tabs (see the tabs section of MainPage.xaml.cpp).
         std::shared_ptr<Tab> ActiveTab();
         std::shared_ptr<Tab> TabForView(lw_view* view);
-        std::shared_ptr<Tab> NewTab(const std::wstring& url, int openerId, bool activate);
+        std::shared_ptr<Tab> NewTab(const std::wstring& url, int openerId, bool activate, bool isPrivate = false);
         void ActivateTab(const std::shared_ptr<Tab>& tab);
         void CloseTab(std::shared_ptr<Tab> tab);
         void EnsureLive(const std::shared_ptr<Tab>& tab);
@@ -126,7 +146,7 @@ namespace Browser
         float m_viewScale;
 
         // Favorites and history (files in LocalFolder), the list page and the suggestions under the address.
-        enum class ListKind { None, Favorites, History, Tabs, Downloads, Files, Picker };
+        enum class ListKind { None, Favorites, History, Tabs, Downloads, Files, Picker, Settings, Passwords, Permissions };
         void LoadEntries();
         void SaveFavorites();
         void SaveHistory();
@@ -146,6 +166,27 @@ namespace Browser
         std::vector<PageEntry> m_historyEntries;
         bool m_historyDirty;
         ListKind m_listKind;
+
+        // Settings (a list page): search engine, blocker, saved passwords and site permissions, clearing data.
+        void LoadSettings();
+        void ShowClearDataMenu();
+        void ClearBrowsingData(unsigned what, bool history, bool saved);
+        void LoadSavedPasswords();
+        void SaveSavedPasswords();
+        const SavedPassword* FindSavedPassword(const std::wstring& server, const std::wstring& realm);
+        void LoadSitePermissions();
+        void SaveSitePermissions();
+        const SitePermission* FindSitePermission(int kind, const std::wstring& site);
+        // allowed -1 removes the answer. tellEngine: the engine forgets this run's answers, so the site asks again
+        // (and gets the one kept here).
+        void SetSitePermission(int kind, const std::wstring& site, int allowed, bool tellEngine);
+        void DialogRemember_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
+        void UpdateRemember();
+        std::vector<SavedPassword> m_savedPasswords;
+        bool m_passwordsLoaded;
+        std::vector<SitePermission> m_sitePermissions;
+        bool m_blocker;
+        bool m_dialogRemember;
 
         // Dialogs: the page's (LW_EVENT_DIALOG) and the app's own questions, on one panel.
         void ShowPageDialog(lw_view* view, int id, int kind, const std::wstring& message, const std::wstring& value);
@@ -272,6 +313,9 @@ namespace Browser
         void Secret_PasswordChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void Secret_KeyDown(Platform::Object^ sender, Windows::UI::Xaml::Input::KeyRoutedEventArgs^ e);
         void Send_Click(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
+        void PasteEngine_Tapped(Platform::Object^ sender, Windows::UI::Xaml::Input::TappedRoutedEventArgs^ e);
+        void UpdatePasteEngine();
+        std::wstring m_engineClipboard;   // the last text a page copied (LW_EVENT_CLIPBOARD), for the field bar
         // What Enter does in the bar, shared by the keyboard's key and the Invio border: newline in a multiline field,
         // a real Enter keydown (implicit submit, page handlers) anywhere else.
         void BarEnter();

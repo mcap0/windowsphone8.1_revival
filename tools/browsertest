@@ -14,7 +14,7 @@ import os, subprocess, sys, time
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
 REPORT = os.path.join(ROOT, "share", "inbox", "browser.txt")
 HOST = "192.168.1.148"
-WAITS = {"media": 180, "riproduzione": 120}
+WAITS = {"media": 180, "riproduzione": 120, "wasm": 120, "sw": 75, "audio": 50}
 
 args = sys.argv[1:]
 wait = None

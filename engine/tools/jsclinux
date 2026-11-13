@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# jsclinux [jsc arguments] — our JavaScriptCore as a Linux ARMv7 jsc shell (engine/out/jsc-linux/build, made from a copy
+# of engine/webkit with engine/cmake/linux-armv7.cmake: JIT + DFG as on the phone, WebAssembly in BBQ), run on this PC
+# under qemu-arm. The 32-bit JIT and WebAssembly are tested here without the phone (PLAN §76).
+#   jsclinux file.js            run a script
+#   jsclinux -m module.js       run a module
+#   JSC_LINUX_GDB=1234 jsclinux ...   wait for gdb-multiarch on that port
+# Build: engine/tools/jsclinux --build (rsyncs Source/JavaScriptCore, WTF, bmalloc, cmake from engine/webkit first).
+set -Eeuo pipefail
+engine=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+# JSC_LINUX_BASE=<dir>: another build of the same layout (build/, sysroot/, src/), e.g. a private copy of the sources
+# for work that must not change the binary other test runs use.
+base=${JSC_LINUX_BASE:-$engine/out/jsc-linux}
+if [[ ${1:-} == --build ]]; then
+    shift
+    for dir in JavaScriptCore WTF bmalloc cmake; do
+        rsync -a --delete "$engine/webkit/Source/$dir/" "$base/src/Source/$dir/"
+    done
+    # The test build's own switch (not in engine/webkit): no API tests, whose sources are not copied.
+    python3 -I - "$base/src/Source/cmake/OptionsJSCOnly.cmake" <<'PY'
+import sys
+p = sys.argv[1]; t = open(p).read()
+t = t.replace('if (WIN32)\n    set(ENABLE_API_TESTS OFF)', 'if (WIN32 OR WP81_LINUX_TEST)\n    set(ENABLE_API_TESTS OFF)', 1)
+open(p, 'w').write(t)
+PY
+    exec ninja -C "$base/build" -j "${JSC_LINUX_JOBS:-4}" -k 0 jsc "$@"
+fi
+gdb=()
+[[ -n ${JSC_LINUX_GDB:-} ]] && gdb=(-g "$JSC_LINUX_GDB")
+exec qemu-arm "${gdb[@]}" -L "$base/sysroot" "$base/build/bin/jsc" "$@"

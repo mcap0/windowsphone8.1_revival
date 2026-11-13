@@ -53,6 +53,22 @@ namespace
     const wchar_t* const startPage = L"http://192.168.1.148:8765/browser/";
     const unsigned short serverPort = 8765;
 
+    // Where words typed in the address box go (impostazioni, "motore di ricerca").
+    struct SearchEngine
+    {
+        const wchar_t* name;
+        const wchar_t* prefix;
+    };
+    const SearchEngine searchEngines[] = {
+        { L"Google", L"https://www.google.com/search?q=" },
+        { L"DuckDuckGo", L"https://duckduckgo.com/?q=" },
+        { L"Bing", L"https://www.bing.com/search?q=" },
+        { L"Ecosia", L"https://www.ecosia.org/search?q=" },
+        { L"Startpage", L"https://www.startpage.com/do/search?q=" },
+    };
+    const int searchEngineCount = sizeof searchEngines / sizeof searchEngines[0];
+    int searchEngine = 0;
+
     // Sites see a phone: Safari on an iPhone, the browser our engine is closest to, so pages send their mobile layout
     // (lighter: m.youtube.com instead of the desktop app). "Versione desktop" in the menu switches a site to Safari on
     // a Mac; WhatsApp Web and Telegram Web always get it, since they refuse phones and must see a real desktop browser.
@@ -140,6 +156,9 @@ namespace
         decltype(&lw_window_reply) windowReply; // optional: window.open with its opener
         decltype(&lw_clear_visited_links) clearVisitedLinks; // optional: with the history
         decltype(&lw_network_changed) networkChanged; // optional: Wi-Fi <-> 4G
+        decltype(&lw_view_create_private) viewCreatePrivate; // optional, as the two below: private tabs, settings
+        decltype(&lw_clear_data) clearData;
+        decltype(&lw_set_option) setOption;
     };
     Engine engine;
 
@@ -778,6 +797,9 @@ MainPage::MainPage()
     , m_changingPin(false)
     , m_lockFailures(0)
     , m_lockWaitUntil(0)
+    , m_passwordsLoaded(false)
+    , m_blocker(true)
+    , m_dialogRemember(false)
 {
     // The log is opened before the page's XAML is parsed: if the markup (or this constructor) is what kills the app,
     // run.log still says so, and the next launch sends it to the PC.
@@ -968,6 +990,9 @@ bool MainPage::StartEngine()
     engine.windowReply = reinterpret_cast<decltype(engine.windowReply)>(GetProcAddress(dll, "lw_window_reply"));
     engine.clearVisitedLinks = reinterpret_cast<decltype(engine.clearVisitedLinks)>(GetProcAddress(dll, "lw_clear_visited_links"));
     engine.networkChanged = reinterpret_cast<decltype(engine.networkChanged)>(GetProcAddress(dll, "lw_network_changed"));
+    engine.viewCreatePrivate = reinterpret_cast<decltype(engine.viewCreatePrivate)>(GetProcAddress(dll, "lw_view_create_private"));
+    engine.clearData = reinterpret_cast<decltype(engine.clearData)>(GetProcAddress(dll, "lw_clear_data"));
+    engine.setOption = reinterpret_cast<decltype(engine.setOption)>(GetProcAddress(dll, "lw_set_option"));
     if (!engine.init || !engine.viewCreate || !engine.viewResize || !engine.loadURL || !engine.viewDestroy
         || !engine.setVisible || !engine.goBack || !engine.goForward || !engine.stop || !engine.dialogReply
         || !engine.inputPan || !engine.inputTap || !engine.textEdit || !engine.textEnter || !engine.textBlur)
@@ -1009,6 +1034,13 @@ bool MainPage::StartEngine()
             if (auto agent = IdentityAgent(site.second))
                 engine.setSiteUserAgent(site.first.c_str(), agent);
         }
+    }
+    // The user's settings (search engine, blocker) and what Internet keeps for the sites (passwords, permissions).
+    if (status == 0 && !Site::app)
+    {
+        LoadSettings();
+        LoadSitePermissions();
+        LoadSavedPasswords();
     }
     // Development: the tracer starts on; "traccia" in the address box turns it off and on.
     if (status == 0 && engine.traceEnable)
@@ -1063,10 +1095,15 @@ void MainPage::SaveSession()
 {
     std::wstring urls;
     int active = 0;
-    for (size_t i = 0; i < m_tabs.size() && i < 20; ++i)
+    int saved = 0;
+    for (size_t i = 0; i < m_tabs.size() && saved < 20; ++i)
     {
+        // Private tabs are not reopened.
+        if (m_tabs[i]->isPrivate)
+            continue;
         if (m_tabs[i] == m_activeTab)
-            active = static_cast<int>(i);
+            active = saved;
+        ++saved;
         std::wstring url = m_tabs[i]->url;
         if (urls.size() + url.size() + 1 > 7000)
             break;
@@ -1557,7 +1594,7 @@ static std::wstring AddressToURL(const std::wstring& typed)
     bool hasDot = hostName.find(L'.') != std::wstring::npos && hostName.back() != L'.' && hostName.front() != L'.';
     bool isLocalhost = hostName == L"localhost";
     if (hasSpace || hostName.empty() || (!hasDot && !hasPort && !isLocalhost))
-        return std::wstring(L"https://www.google.com/search?q=") + Windows::Foundation::Uri::EscapeComponent(ref new String(text.c_str()))->Data();
+        return std::wstring(searchEngines[searchEngine].prefix) + Windows::Foundation::Uri::EscapeComponent(ref new String(text.c_str()))->Data();
     bool isIPv4 = hostName.find_first_not_of(L"0123456789.") == std::wstring::npos;
     return (isIPv4 || isLocalhost ? L"http://" : L"https://") + text;
 }
@@ -1779,7 +1816,16 @@ void MainPage::More_Tapped(Object^, TappedRoutedEventArgs^ e)
         });
     }
     AddMenuItem(L"nuova scheda", [this]() { NewTab(L"about:blank", 0, true); Address->Focus(Windows::UI::Xaml::FocusState::Programmatic); });
+    if (engine.viewCreatePrivate)
+    {
+        AddMenuItem(L"nuova scheda privata", [this]()
+        {
+            NewTab(L"about:blank", 0, true, true);
+            Address->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+        });
+    }
     AddMenuItem(L"download", [this]() { ShowList(ListKind::Downloads); });
+    AddMenuItem(L"impostazioni", [this]() { ShowList(ListKind::Settings); });
     // Cookies, localStorage, IndexedDB and cache of this site, then the page again from the network: a site stuck on
     // a bad login or a broken cached state starts over as on a first visit.
     if (web && engine.clearSiteData)
@@ -1863,6 +1909,11 @@ void MainPage::HardwareBack(Object^, Windows::Phone::UI::Input::BackPressedEvent
         if (m_listKind == ListKind::Files && _wcsicmp(m_pickFolder.c_str(), phoneFolder) != 0)
         {
             ShowFolder(ParentFolder(m_pickFolder));
+            return;
+        }
+        if (m_listKind == ListKind::Passwords || m_listKind == ListKind::Permissions)
+        {
+            ShowList(ListKind::Settings);
             return;
         }
         HideList();
@@ -2094,7 +2145,8 @@ void MainPage::OnEngineEventOnUIThread(lw_view* view, int type, long long number
         tab->title = text;
         if (Site::app && active)
             SiteTitle->Text = ref new String((text.empty() ? Site::name : text).c_str());
-        AddHistory(tab->url, text);
+        if (!tab->isPrivate)
+            AddHistory(tab->url, text);
         return;
     case LW_EVENT_HISTORY:
         tab->canGoBack = (number & 1) != 0;
@@ -2115,7 +2167,7 @@ void MainPage::OnEngineEventOnUIThread(lw_view* view, int type, long long number
                 .then([](task<bool> t) { try { t.get(); } catch (Exception^) { } });
             return;
         }
-        NewTab(text, tab->id, true);
+        NewTab(text, tab->id, true, tab->isPrivate);
         return;
     case LW_EVENT_CLOSE_WINDOW:
     {
@@ -2160,7 +2212,13 @@ void MainPage::OnEngineEventOnUIThread(lw_view* view, int type, long long number
         return;
     case LW_EVENT_CLIPBOARD:
         // A page copied text (a "copy" button): it is on the engine's clipboard, for the pages of the app. For the rest
-        // of the phone the text opens in the panel, where the phone's own selection copies it.
+        // of the phone the text opens in the panel, where the phone's own selection copies it. The field bar's Incolla
+        // puts it in a field (its native TextBox only pastes the phone's clipboard).
+        if (!text.empty())
+        {
+            m_engineClipboard = text;
+            UpdatePasteEngine();
+        }
         if (active && !text.empty())
         {
             std::wstring copied = text;
@@ -2197,7 +2255,7 @@ void MainPage::OnEngineEventOnUIThread(lw_view* view, int type, long long number
     default:
         return;
     }
-    if (number == LW_LOAD_COMMITTED)
+    if (number == LW_LOAD_COMMITTED && !tab->isPrivate)
         AddHistory(tab->url, std::wstring());
     tab->loading = number == LW_LOAD_STARTED || number == LW_LOAD_COMMITTED;
     tab->failed = number == LW_LOAD_FAILED;
@@ -2390,6 +2448,7 @@ void MainPage::ShowCompose(const FieldState& state)
 
     Field->Visibility = secret ? Windows::UI::Xaml::Visibility::Collapsed : Windows::UI::Xaml::Visibility::Visible;
     Secret->Visibility = secret ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
+    UpdatePasteEngine();
     Secret->PasswordChar = ref new String(L"\u25CF");
     // Always true, for every kind: this is what keeps Enter from moving the focus to the address box (WP8.1 raises
     // no KeyDown for the keyboard's Enter, so there is nothing to intercept). The newline then arrives in
@@ -2547,6 +2606,50 @@ void MainPage::Secret_KeyDown(Object^, KeyRoutedEventArgs^ e)
         return;
     e->Handled = true;
     BarEnter();
+}
+
+// Incolla shows when a page has copied something and the bar edits a field that takes text (a password field too: a
+// copied code or password goes there as well).
+void MainPage::UpdatePasteEngine()
+{
+    PasteEngine->Visibility = m_engineClipboard.empty() ? Windows::UI::Xaml::Visibility::Collapsed : Windows::UI::Xaml::Visibility::Visible;
+}
+
+void MainPage::PasteEngine_Tapped(Object^, TappedRoutedEventArgs^ e)
+{
+    e->Handled = true;
+    if (!m_composeVisible || m_engineClipboard.empty())
+        return;
+    Log(L"campo: Incolla toccato, " + std::to_wstring(m_engineClipboard.size()) + L" caratteri");
+    // A single-line field (a password one too) takes the line breaks as WebKit's TextFieldInputType takes inserted
+    // text: the trailing ones dropped, each other one a space. A break left in the bar would be Enter
+    // (Field_TextChanged), a submit the user did not ask for.
+    std::wstring text = m_engineClipboard;
+    if (m_barKind != LW_FIELD_MULTILINE)
+    {
+        while (!text.empty() && (text.back() == L'\r' || text.back() == L'\n'))
+            text.pop_back();
+        std::wstring flat;
+        for (size_t i = 0; i < text.size(); ++i)
+        {
+            if (text[i] == L'\r' && i + 1 < text.size() && text[i + 1] == L'\n')
+                continue; // "\r\n" is one break: its space comes with the "\n"
+            flat += (text[i] == L'\r' || text[i] == L'\n') ? L' ' : text[i];
+        }
+        text.swap(flat);
+    }
+    if (m_barKind == LW_FIELD_PASSWORD)
+    {
+        // PasswordBox has no caret position to insert at: the copied text goes at the end. PasswordChanged sends it.
+        Secret->Password = Secret->Password + ref new String(text.c_str());
+        Secret->Focus(Windows::UI::Xaml::FocusState::Programmatic);
+        return;
+    }
+    // Replaces the selection, or goes in at the caret: Field_TextChanged takes it to the page as typed text.
+    Field->SelectedText = ref new String(text.c_str());
+    Field->Select(Field->SelectionStart + Field->SelectionLength, 0);
+    // As with Invio: the tap took the focus away from the field, the keyboard must stay.
+    Field->Focus(Windows::UI::Xaml::FocusState::Programmatic);
 }
 
 void MainPage::Send_Click(Object^, TappedRoutedEventArgs^)
@@ -2796,13 +2899,14 @@ std::shared_ptr<Tab> MainPage::TabForView(lw_view* view)
     return nullptr;
 }
 
-std::shared_ptr<Tab> MainPage::NewTab(const std::wstring& url, int openerId, bool activate)
+std::shared_ptr<Tab> MainPage::NewTab(const std::wstring& url, int openerId, bool activate, bool isPrivate)
 {
     auto tab = std::make_shared<Tab>();
     tab->id = m_nextTabId++;
     tab->url = url;
     tab->title = url;
     tab->openerId = openerId;
+    tab->isPrivate = isPrivate && engine.viewCreatePrivate;
     // Next to the tab that opened it, else at the end.
     auto position = m_tabs.end();
     for (auto it = m_tabs.begin(); openerId && it != m_tabs.end(); ++it)
@@ -2814,7 +2918,7 @@ std::shared_ptr<Tab> MainPage::NewTab(const std::wstring& url, int openerId, boo
         }
     }
     m_tabs.insert(position, tab);
-    Log(L"scheda " + std::to_wstring(tab->id) + L" nuova: " + url);
+    Log(L"scheda " + std::to_wstring(tab->id) + (tab->isPrivate ? L" privata" : L"") + L" nuova: " + url);
     if (activate)
         ActivateTab(tab);
     UpdateBar();
@@ -2829,7 +2933,8 @@ void MainPage::EnsureLive(const std::shared_ptr<Tab>& tab)
     tab->panel = panel;
     Pages->Children->Append(panel);
     StartInput(panel);
-    tab->view = engine.viewCreate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale);
+    tab->view = tab->isPrivate ? engine.viewCreatePrivate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale)
+                               : engine.viewCreate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale);
     Log(L"scheda " + std::to_wstring(tab->id) + L": vista " + std::to_wstring(m_viewWidth) + L"x" + std::to_wstring(m_viewHeight));
     engine.loadURL(tab->view, tab->url.empty() ? L"about:blank" : tab->url.c_str());
 }
@@ -2944,7 +3049,8 @@ void MainPage::DiscardBeyond(size_t live)
     for (auto& tab : m_tabs)
     {
         // The shown tab's opener stays too: a sign-in popup posts its result back to it.
-        if (tab->view && tab != m_activeTab && !(m_activeTab && tab->id == m_activeTab->openerId))
+        // A private tab only when memory is nearly out: its cookies and storage end with the last private view.
+        if (tab->view && tab != m_activeTab && !(m_activeTab && tab->id == m_activeTab->openerId) && (!tab->isPrivate || live == 1))
             hidden.push_back(tab);
     }
     size_t keep = live > 1 ? live - 2 : 0;
@@ -2965,6 +3071,11 @@ void MainPage::UpdateBar()
 {
     TabsCount->Text = ref new String(std::to_wstring(m_tabs.size()).c_str());
     auto tab = ActiveTab();
+    // A private tab's bar is violet, as Internet Explorer's InPrivate is marked.
+    bool isPrivate = tab && tab->isPrivate;
+    Bar->Background = ref new SolidColorBrush(isPrivate ? Windows::UI::ColorHelper::FromArgb(255, 0x4A, 0x14, 0x8C)
+                                                        : Windows::UI::ColorHelper::FromArgb(255, 0x1F, 0x1F, 0x1F));
+    Address->PlaceholderText = isPrivate ? L"scheda privata" : L"";
     bool loading = tab && tab->loading;
     ReloadGlyph->Text = loading ? L"\u2715" : L"\u21BB";
     if (!tab)
@@ -2995,6 +3106,8 @@ void MainPage::OpenWindow(lw_view* openerView, int id, const std::wstring& url)
     tab->url = url.empty() ? L"about:blank" : url;
     tab->title = tab->url;
     tab->openerId = opener->id;
+    // The engine makes a private tab's window private by itself.
+    tab->isPrivate = opener->isPrivate;
     auto position = std::find(m_tabs.begin(), m_tabs.end(), opener);
     m_tabs.insert(position == m_tabs.end() ? position : position + 1, tab);
     auto panel = ref new SwapChainPanel();
@@ -3007,7 +3120,8 @@ void MainPage::OpenWindow(lw_view* openerView, int id, const std::wstring& url)
     else
     {
         Log(L"scheda " + std::to_wstring(tab->id) + L": window.open arrivata tardi, apro l'indirizzo " + url);
-        tab->view = engine.viewCreate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale);
+        tab->view = tab->isPrivate ? engine.viewCreatePrivate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale)
+                                   : engine.viewCreate(reinterpret_cast<void*>(panel), m_viewWidth, m_viewHeight, m_viewScale);
         engine.loadURL(tab->view, tab->url.c_str());
     }
     ActivateTab(tab);
@@ -3513,8 +3627,8 @@ void MainPage::ShowList(ListKind kind)
         {
             auto entry = tab;
             std::wstring title = tab->title.empty() || tab->title == L"about:blank" ? L"nuova scheda" : tab->title;
-            std::wstring detail = (tab == m_activeTab ? L"\u25B6 " : tab->view ? L"" : L"(da ricaricare) ")
-                + (tab->url == L"about:blank" ? L"" : tab->url);
+            std::wstring detail = std::wstring(tab == m_activeTab ? L"\u25B6 " : tab->view ? L"" : L"(da ricaricare) ")
+                + (tab->isPrivate ? L"privata  " : L"") + (tab->url == L"about:blank" ? L"" : tab->url);
             AddListRow(title, detail, [this, entry]()
             {
                 HideList();
@@ -3565,6 +3679,103 @@ void MainPage::ShowList(ListKind kind)
         }
         ListActionText->Text = L"pulisci elenco";
         empty = L"Nessun download. I file che le pagine non mostrano (PDF, archivi, musica...) vanno nella cartella Download\\Internet del telefono (app File) e sono elencati qui.";
+    }
+    else if (kind == ListKind::Settings)
+    {
+        ListTitle1->Text = L"impostazioni";
+        ListTitle1->Foreground = white;
+        ListTitle2->Text = L"";
+        AddListRow(L"motore di ricerca", searchEngines[searchEngine].name, [this]()
+        {
+            MenuItems->Children->Clear();
+            MenuTitle->Text = L"le parole scritte nella barra cercano con";
+            for (int i = 0; i < searchEngineCount; ++i)
+            {
+                AddMenuItem(searchEngines[i].name, [this, i]()
+                {
+                    searchEngine = i;
+                    ApplicationData::Current->LocalSettings->Values->Insert(L"searchEngine", PropertyValue::CreateInt32(i));
+                    ShowList(ListKind::Settings);
+                });
+            }
+            Menu->Visibility = Windows::UI::Xaml::Visibility::Visible;
+        }, nullptr, nullptr);
+        if (engine.setOption)
+        {
+            AddListRow(L"blocco di pubblicit\u00E0 e tracciatori", m_blocker ? L"acceso: tocca per spegnerlo" : L"spento: tocca per accenderlo", [this]()
+            {
+                m_blocker = !m_blocker;
+                ApplicationData::Current->LocalSettings->Values->Insert(L"blocker", PropertyValue::CreateBoolean(m_blocker));
+                engine.setOption(LW_OPTION_BLOCKER, m_blocker ? 1 : 0);
+                ShowList(ListKind::Settings);
+            }, nullptr, nullptr);
+        }
+        AddListRow(L"password salvate", std::to_wstring(m_savedPasswords.size()) + L" siti che chiedono nome e password",
+            [this]() { ShowList(ListKind::Passwords); }, nullptr, nullptr);
+        AddListRow(L"permessi dei siti", std::to_wstring(m_sitePermissions.size()) + L" risposte a posizione e notifiche",
+            [this]() { ShowList(ListKind::Permissions); }, nullptr, nullptr);
+        AddListRow(L"cancella dati di navigazione", L"cronologia, cookie e accessi, cache, dati dei siti",
+            [this]() { ShowClearDataMenu(); }, nullptr, nullptr);
+        ListActionText->Text = L"cancella dati";
+    }
+    else if (kind == ListKind::Passwords)
+    {
+        ListTitle1->Text = L"password";
+        ListTitle1->Foreground = white;
+        ListTitle2->Text = L"";
+        for (auto& saved : m_savedPasswords)
+        {
+            SavedPassword entry = saved;
+            AddListRow(HostOf(entry.server), entry.user + (entry.realm.empty() ? L"" : L"  \u00AB" + entry.realm + L"\u00BB"), [this, entry]()
+            {
+                MenuItems->Children->Clear();
+                MenuTitle->Text = ref new String((entry.server + L"  " + entry.user).c_str());
+                AddMenuItem(L"elimina", [this, entry]()
+                {
+                    m_savedPasswords.erase(std::remove_if(m_savedPasswords.begin(), m_savedPasswords.end(), [&entry](const SavedPassword& other)
+                    {
+                        return other.server == entry.server && other.realm == entry.realm;
+                    }), m_savedPasswords.end());
+                    SaveSavedPasswords();
+                    // The engine forgets the ones it was given in this run: the site asks again.
+                    if (engine.clearData)
+                        engine.clearData(LW_CLEAR_PASSWORDS);
+                    ShowList(ListKind::Passwords);
+                });
+                Menu->Visibility = Windows::UI::Xaml::Visibility::Visible;
+            }, nullptr, nullptr);
+        }
+        ListActionText->Text = L"elimina tutte";
+        empty = L"Nessuna password salvata. Quando un sito chiede nome utente e password, \u201Cricorda\u201D la tiene sul telefono, cifrata per questo telefono.";
+    }
+    else if (kind == ListKind::Permissions)
+    {
+        ListTitle1->Text = L"permessi";
+        ListTitle1->Foreground = white;
+        ListTitle2->Text = L"";
+        for (auto& saved : m_sitePermissions)
+        {
+            SitePermission entry = saved;
+            std::wstring what = entry.kind == LW_PERMISSION_GEOLOCATION ? L"posizione" : L"notifiche";
+            AddListRow(HostOf(entry.site), what + (entry.allowed ? L": consentita" : L": rifiutata"), [this, entry, what]()
+            {
+                MenuItems->Children->Clear();
+                MenuTitle->Text = ref new String((entry.site + L"  " + what).c_str());
+                AddMenuItem(entry.allowed ? L"rifiuta" : L"consenti", [this, entry]()
+                {
+                    SetSitePermission(entry.kind, entry.site, entry.allowed ? 0 : 1, true);
+                    ShowList(ListKind::Permissions);
+                });
+                AddMenuItem(L"chiedi di nuovo", [this, entry]()
+                {
+                    SetSitePermission(entry.kind, entry.site, -1, true);
+                    ShowList(ListKind::Permissions);
+                });
+                Menu->Visibility = Windows::UI::Xaml::Visibility::Visible;
+            }, nullptr, nullptr);
+        }
+        ListActionText->Text = L"elimina tutti";
+        empty = L"Nessun permesso dato. I siti che chiedono la posizione o di mostrare notifiche compaiono qui dopo la risposta.";
     }
     ListEmpty->Text = ref new String(empty.c_str());
     ListEmpty->Visibility = ListItems->Children->Size == 0 && !empty.empty() ? Windows::UI::Xaml::Visibility::Visible
@@ -3652,6 +3863,38 @@ void MainPage::ListAction_Tapped(Object^, TappedRoutedEventArgs^ e)
         std::vector<std::wstring> paths = m_pickSelected;
         AnswerPick(paths);
         HideList();
+    }
+    else if (m_listKind == ListKind::Settings)
+        ShowClearDataMenu();
+    else if (m_listKind == ListKind::Passwords)
+    {
+        if (m_savedPasswords.empty())
+            return;
+        ShowAppDialog(L"password salvate", L"Eliminare tutte le password salvate?", std::wstring(), L"elimina", [this](bool ok, const std::wstring&)
+        {
+            if (!ok)
+                return;
+            m_savedPasswords.clear();
+            SaveSavedPasswords();
+            if (engine.clearData)
+                engine.clearData(LW_CLEAR_PASSWORDS);
+            ShowList(ListKind::Passwords);
+        });
+    }
+    else if (m_listKind == ListKind::Permissions)
+    {
+        if (m_sitePermissions.empty())
+            return;
+        ShowAppDialog(L"permessi dei siti", L"Dimenticare tutte le risposte? I siti chiederanno di nuovo.", std::wstring(), L"elimina", [this](bool ok, const std::wstring&)
+        {
+            if (!ok)
+                return;
+            m_sitePermissions.clear();
+            SaveSitePermissions();
+            if (engine.clearData)
+                engine.clearData(LW_CLEAR_PERMISSIONS);
+            ShowList(ListKind::Permissions);
+        });
     }
     else if (m_listKind == ListKind::Downloads)
     {
@@ -4169,6 +4412,18 @@ void MainPage::ShowPageDialog(lw_view* view, int id, int kind, const std::wstrin
 // the page does not: cancel (or Back) gives it the server's "unauthorized" answer.
 void MainPage::ShowPasswordQuestion(lw_view* view, int id, int refused, const std::wstring& server, const std::wstring& realm)
 {
+    // A password kept for this server and realm goes at once; the question shows only when the server refuses it.
+    const SavedPassword* saved = FindSavedPassword(server, realm);
+    if (saved && !refused && engine.passwordReply)
+    {
+        Log(L"password: uso quella salvata per " + server);
+        engine.passwordReply(view, id, saved->user.c_str(), saved->password.c_str());
+        return;
+    }
+    std::wstring savedUser = saved ? saved->user : std::wstring();
+    auto tab = TabForView(view);
+    // A private tab leaves nothing behind: no "ricorda".
+    bool canRemember = !Site::app && !(tab && tab->isPrivate);
     // Whatever was open is cancelled first (that also puts the password box away, if it was another question).
     if (DialogPanel->Visibility == Windows::UI::Xaml::Visibility::Visible)
         ReplaceDialog();
@@ -4186,20 +4441,42 @@ void MainPage::ShowPasswordQuestion(lw_view* view, int id, int refused, const st
     DialogCancelText->Text = L"annulla";
     DialogCancel->Visibility = Windows::UI::Xaml::Visibility::Visible;
     DialogInput->Visibility = Windows::UI::Xaml::Visibility::Visible;
-    DialogInput->Text = L"";
+    DialogInput->Text = ref new String(savedUser.c_str());
     DialogInput->PlaceholderText = L"nome utente";
     DialogPassword->Password = L"";
     DialogPassword->PlaceholderText = L"password";
     DialogPassword->Visibility = Windows::UI::Xaml::Visibility::Visible;
-    m_dialogDone = [this, view, id](bool accepted, const std::wstring& user)
+    // Ticked when a password was kept for it: the new one takes its place.
+    m_dialogRemember = saved != nullptr;
+    UpdateRemember();
+    DialogRemember->Visibility = canRemember ? Windows::UI::Xaml::Visibility::Visible : Windows::UI::Xaml::Visibility::Collapsed;
+    m_dialogDone = [this, view, id, server, realm, canRemember](bool accepted, const std::wstring& user)
     {
         std::wstring password = DialogPassword->Password->Data();
         DialogPassword->Password = L"";
         DialogPassword->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
         DialogInput->PlaceholderText = L"";
+        if (accepted && canRemember && !user.empty())
+        {
+            auto same = [&](const SavedPassword& entry) { return entry.server == server && entry.realm == realm; };
+            size_t before = m_savedPasswords.size();
+            m_savedPasswords.erase(std::remove_if(m_savedPasswords.begin(), m_savedPasswords.end(), same), m_savedPasswords.end());
+            if (m_dialogRemember)
+            {
+                SavedPassword entry;
+                entry.server = server;
+                entry.realm = realm;
+                entry.user = user;
+                entry.password = password;
+                m_savedPasswords.push_back(entry);
+            }
+            if (m_dialogRemember || m_savedPasswords.size() != before)
+                SaveSavedPasswords();
+        }
         // The engine finds the question by its id (the tab may be gone by now).
         if (engine.passwordReply)
             engine.passwordReply(view, id, accepted ? user.c_str() : nullptr, password.c_str());
+        Vault::Wipe(password);
     };
     DialogPanel->Visibility = Windows::UI::Xaml::Visibility::Visible;
     DialogInput->Focus(Windows::UI::Xaml::FocusState::Programmatic);
@@ -4243,6 +4520,7 @@ void MainPage::CloseDialog(bool accepted)
 {
     std::wstring value = m_dialogHasInput ? std::wstring(DialogInput->Text->Data()) : std::wstring();
     DialogPanel->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+    DialogRemember->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
     if (m_dialogHasInput)
         HideKeyboard();
     if (m_dialogView)
@@ -4308,12 +4586,256 @@ void MainPage::ShowPermissionQuestion(lw_view* view, int id, int kind, const std
         engine.permissionReply(view, id, 0);
         return;
     }
-    ShowAppDialog(site, message, L"", L"consenti", [this, view, id](bool accepted, const std::wstring&)
+    // An answer kept in the settings (permessi dei siti) goes at once. A private tab neither uses nor keeps them.
+    auto tab = TabForView(view);
+    bool keep = !Site::app && !(tab && tab->isPrivate);
+    if (keep)
+    {
+        if (auto saved = FindSitePermission(kind, site))
+        {
+            Log(L"permesso: risposta salvata per " + site + (saved->allowed ? L": si" : L": no"));
+            engine.permissionReply(view, id, saved->allowed ? 1 : 0);
+            return;
+        }
+    }
+    ShowAppDialog(site, message, L"", L"consenti", [this, view, id, kind, site, keep](bool accepted, const std::wstring&)
     {
         // Pushed away by another dialog: not an answer, the site may ask again.
-        engine.permissionReply(view, id, m_dialogReplaced ? -1 : accepted ? 1 : 0);
+        int answer = m_dialogReplaced ? -1 : accepted ? 1 : 0;
+        engine.permissionReply(view, id, answer);
+        if (answer >= 0 && keep)
+            SetSitePermission(kind, site, answer, false);
     });
     DialogCancelText->Text = L"rifiuta";
+}
+
+// ---- settings ----
+
+namespace
+{
+    // One field of a line in the saved files: tabs, line ends and backslashes escaped.
+    std::wstring EscapeField(const std::wstring& text)
+    {
+        std::wstring out;
+        for (wchar_t c : text)
+        {
+            if (c == L'\\')
+                out += L"\\\\";
+            else if (c == L'\t')
+                out += L"\\t";
+            else if (c == L'\n')
+                out += L"\\n";
+            else if (c != L'\r')
+                out += c;
+        }
+        return out;
+    }
+
+    std::wstring UnescapeField(const std::wstring& text)
+    {
+        std::wstring out;
+        for (size_t i = 0; i < text.size(); ++i)
+        {
+            if (text[i] != L'\\' || i + 1 == text.size())
+            {
+                out += text[i];
+                continue;
+            }
+            wchar_t next = text[++i];
+            out += next == L't' ? L'\t' : next == L'n' ? L'\n' : next;
+        }
+        return out;
+    }
+}
+
+void MainPage::LoadSettings()
+{
+    auto values = ApplicationData::Current->LocalSettings->Values;
+    if (values->HasKey(L"searchEngine"))
+    {
+        int index = safe_cast<int>(values->Lookup(L"searchEngine"));
+        if (index >= 0 && index < searchEngineCount)
+            searchEngine = index;
+    }
+    m_blocker = !values->HasKey(L"blocker") || safe_cast<bool>(values->Lookup(L"blocker"));
+    if (!m_blocker && engine.setOption)
+        engine.setOption(LW_OPTION_BLOCKER, 0);
+    Log(std::wstring(L"impostazioni: ricerca ") + searchEngines[searchEngine].name + (m_blocker ? L", blocco acceso" : L", blocco spento"));
+}
+
+void MainPage::ShowClearDataMenu()
+{
+    MenuItems->Children->Clear();
+    MenuTitle->Text = L"cancella dati di navigazione";
+    auto ask = [this](const wchar_t* what, unsigned kinds, bool history, bool saved)
+    {
+        ShowAppDialog(L"cancella dati", std::wstring(L"Cancellare ") + what + L"?", std::wstring(), L"cancella",
+            [this, kinds, history, saved](bool ok, const std::wstring&)
+        {
+            if (ok)
+                ClearBrowsingData(kinds, history, saved);
+        });
+    };
+    AddMenuItem(L"cronologia", [ask]() { ask(L"la cronologia", 0, true, false); });
+    AddMenuItem(L"cookie e accessi ai siti", [ask]() { ask(L"i cookie? I siti chiederanno di nuovo di accedere", LW_CLEAR_COOKIES, false, false); });
+    AddMenuItem(L"cache", [ask]() { ask(L"la cache? Le pagine si scaricano di nuovo", LW_CLEAR_CACHE, false, false); });
+    AddMenuItem(L"dati salvati dai siti", [ask]() { ask(L"i dati che i siti tengono sul telefono (localStorage, IndexedDB)", LW_CLEAR_STORAGE, false, false); });
+    AddMenuItem(L"password e permessi salvati", [ask]() { ask(L"le password salvate e le risposte ai permessi", 0, false, true); });
+    AddMenuItem(L"tutto", [ask]()
+    {
+        ask(L"tutto: cronologia, cookie, cache, dati dei siti, password e permessi", LW_CLEAR_COOKIES | LW_CLEAR_CACHE | LW_CLEAR_STORAGE, true, true);
+    });
+    Menu->Visibility = Windows::UI::Xaml::Visibility::Visible;
+}
+
+void MainPage::ClearBrowsingData(unsigned what, bool history, bool saved)
+{
+    if (history)
+    {
+        m_historyEntries.clear();
+        m_historyDirty = true;
+        SaveHistory();
+        what |= LW_CLEAR_HISTORY;
+    }
+    if (saved)
+    {
+        m_savedPasswords.clear();
+        SaveSavedPasswords();
+        m_sitePermissions.clear();
+        SaveSitePermissions();
+        what |= LW_CLEAR_PASSWORDS | LW_CLEAR_PERMISSIONS;
+    }
+    if (engine.clearData)
+        engine.clearData(what);
+    else if (history && engine.clearVisitedLinks)
+        engine.clearVisitedLinks();
+    Log(L"dati cancellati: " + std::to_wstring(what));
+    ShowNotice(L"Dati cancellati.", nullptr);
+    if (ListPanel->Visibility == Windows::UI::Xaml::Visibility::Visible && m_listKind == ListKind::Settings)
+        ShowList(ListKind::Settings);
+}
+
+// LocalFolder\passwords.bin: server, realm, name, password per line, encrypted for this phone (Vault).
+void MainPage::LoadSavedPasswords()
+{
+    Vault::ReadProtectedText(L"passwords.bin").then([this](std::wstring text)
+    {
+        std::wstring copy = text;
+        m_savedPasswords.clear();
+        for (auto& line : Split(copy, L'\n'))
+        {
+            auto fields = Split(line, L'\t');
+            if (fields.size() < 4 || fields[0].empty())
+                continue;
+            SavedPassword entry;
+            entry.server = UnescapeField(fields[0]);
+            entry.realm = UnescapeField(fields[1]);
+            entry.user = UnescapeField(fields[2]);
+            entry.password = UnescapeField(fields[3]);
+            m_savedPasswords.push_back(entry);
+            Vault::Wipe(fields[3]);
+        }
+        Vault::Wipe(copy);
+        m_passwordsLoaded = true;
+        Log(L"password salvate: " + std::to_wstring(m_savedPasswords.size()));
+    }, task_continuation_context::use_current());
+}
+
+void MainPage::SaveSavedPasswords()
+{
+    std::wstring text;
+    for (auto& entry : m_savedPasswords)
+        text += EscapeField(entry.server) + L"\t" + EscapeField(entry.realm) + L"\t" + EscapeField(entry.user) + L"\t" + EscapeField(entry.password) + L"\n";
+    Vault::WriteProtectedText(L"passwords.bin", text).then([](task<void> written)
+    {
+        try
+        {
+            written.get();
+        }
+        catch (Exception^)
+        {
+        }
+    });
+    Vault::Wipe(text);
+}
+
+const SavedPassword* MainPage::FindSavedPassword(const std::wstring& server, const std::wstring& realm)
+{
+    for (auto& entry : m_savedPasswords)
+    {
+        if (entry.server == server && entry.realm == realm)
+            return &entry;
+    }
+    return nullptr;
+}
+
+// LocalSettings "sitePermissions": kind, site, 1 or 0 per line.
+void MainPage::LoadSitePermissions()
+{
+    m_sitePermissions.clear();
+    auto values = ApplicationData::Current->LocalSettings->Values;
+    if (!values->HasKey(L"sitePermissions"))
+        return;
+    for (auto& line : Split(safe_cast<String^>(values->Lookup(L"sitePermissions"))->Data(), L'\n'))
+    {
+        auto fields = Split(line, L'\t');
+        if (fields.size() < 3 || fields[1].empty())
+            continue;
+        SitePermission entry;
+        entry.kind = _wtoi(fields[0].c_str());
+        entry.site = fields[1];
+        entry.allowed = fields[2] == L"1";
+        m_sitePermissions.push_back(entry);
+    }
+}
+
+void MainPage::SaveSitePermissions()
+{
+    std::wstring text;
+    for (auto& entry : m_sitePermissions)
+        text += std::to_wstring(entry.kind) + L"\t" + OneLine(entry.site) + L"\t" + (entry.allowed ? L"1" : L"0") + L"\n";
+    ApplicationData::Current->LocalSettings->Values->Insert(L"sitePermissions", ref new String(text.c_str()));
+}
+
+const SitePermission* MainPage::FindSitePermission(int kind, const std::wstring& site)
+{
+    for (auto& entry : m_sitePermissions)
+    {
+        if (entry.kind == kind && entry.site == site)
+            return &entry;
+    }
+    return nullptr;
+}
+
+void MainPage::SetSitePermission(int kind, const std::wstring& site, int allowed, bool tellEngine)
+{
+    m_sitePermissions.erase(std::remove_if(m_sitePermissions.begin(), m_sitePermissions.end(), [&](const SitePermission& entry)
+    {
+        return entry.kind == kind && entry.site == site;
+    }), m_sitePermissions.end());
+    if (allowed >= 0)
+    {
+        SitePermission entry;
+        entry.kind = kind;
+        entry.site = site;
+        entry.allowed = allowed != 0;
+        m_sitePermissions.push_back(entry);
+    }
+    SaveSitePermissions();
+    if (tellEngine && engine.clearData)
+        engine.clearData(LW_CLEAR_PERMISSIONS);
+}
+
+void MainPage::DialogRemember_Tapped(Object^, TappedRoutedEventArgs^ e)
+{
+    e->Handled = true;
+    m_dialogRemember = !m_dialogRemember;
+    UpdateRemember();
+}
+
+void MainPage::UpdateRemember()
+{
+    DialogRememberText->Text = m_dialogRemember ? L"\u25A0  ricorda sul telefono" : L"\u25A1  ricorda sul telefono";
 }
 
 namespace

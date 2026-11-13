@@ -291,6 +291,16 @@ void removeSite(const String& domain)
     });
 }
 
+void clear()
+{
+    auto* cache = sharedCache();
+    if (!cache)
+        return;
+    cache->storage().clear(String { resourceType() }, -WallTime::infinity(), [] {
+        log("cache su disco: vuota");
+    });
+}
+
 String describe()
 {
     auto* cache = sharedCache();

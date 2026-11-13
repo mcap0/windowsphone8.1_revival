@@ -11,6 +11,7 @@
 #include <xaudio2.h>
 #undef XAudio2Create
 #include <wtf/HexNumber.h>
+#include <wtf/Seconds.h>
 #include <wtf/text/MakeString.h>
 
 extern "C" __declspec(dllimport) HRESULT __stdcall XAudio2Create(IXAudio2**, UINT32 flags, UINT32 processor);
@@ -18,23 +19,6 @@ extern "C" __declspec(dllimport) HRESULT __stdcall XAudio2Create(IXAudio2**, UIN
 namespace Lumia {
 
 namespace {
-
-// Buffers belong to the voice from submit to the end of their playing (or their flush).
-struct VoiceCallback final : IXAudio2VoiceCallback {
-    void __stdcall OnVoiceProcessingPassStart(UINT32) final { }
-    void __stdcall OnVoiceProcessingPassEnd() final { }
-    void __stdcall OnStreamEnd() final { }
-    void __stdcall OnBufferStart(void*) final { }
-    void __stdcall OnBufferEnd(void* context) final { delete static_cast<Vector<int16_t>*>(context); }
-    void __stdcall OnLoopEnd(void*) final { }
-    void __stdcall OnVoiceError(void*, HRESULT) final { }
-};
-
-VoiceCallback& voiceCallback()
-{
-    static VoiceCallback callback;
-    return callback;
-}
 
 Lock engineLock;
 IXAudio2* engine WTF_GUARDED_BY_LOCK(engineLock);
@@ -64,9 +48,50 @@ IXAudio2* ensureEngine(String& error)
 
 } // namespace
 
+// Buffers belong to the voice from submit to the end of their playing (or their flush). The end of each one sets the
+// event a feeder waits on (waitForBufferEnd).
+struct AudioOutput::Callback final : IXAudio2VoiceCallback {
+    WTF_DEPRECATED_MAKE_FAST_ALLOCATED(Callback);
+public:
+    Callback()
+        : bufferEnded(CreateEventExW(nullptr, nullptr, 0, EVENT_ALL_ACCESS))
+    {
+    }
+    ~Callback()
+    {
+        if (bufferEnded)
+            CloseHandle(bufferEnded);
+    }
+    void __stdcall OnVoiceProcessingPassStart(UINT32) final { }
+    void __stdcall OnVoiceProcessingPassEnd() final { }
+    void __stdcall OnStreamEnd() final { }
+    void __stdcall OnBufferStart(void*) final { }
+    void __stdcall OnBufferEnd(void* context) final
+    {
+        delete static_cast<Vector<int16_t>*>(context);
+        if (bufferEnded)
+            SetEvent(bufferEnded);
+    }
+    void __stdcall OnLoopEnd(void*) final { }
+    void __stdcall OnVoiceError(void*, HRESULT) final { }
+
+    HANDLE bufferEnded;
+};
+
 AudioOutput::~AudioOutput()
 {
+    // The voice goes first: DestroyVoice waits for the callbacks that use m_callback.
     close();
+    delete m_callback;
+}
+
+void AudioOutput::waitForBufferEnd(unsigned milliseconds)
+{
+    if (!m_callback || !m_callback->bufferEnded) {
+        WTF::sleep(Seconds::fromMilliseconds(std::min(milliseconds, 2u)));
+        return;
+    }
+    WaitForSingleObjectEx(m_callback->bufferEnded, milliseconds, FALSE);
 }
 
 bool AudioOutput::open(int rate, int channels, String& error)
@@ -82,8 +107,10 @@ bool AudioOutput::open(int rate, int channels, String& error)
     format.wBitsPerSample = 16;
     format.nBlockAlign = static_cast<WORD>(channels * 2);
     format.nAvgBytesPerSec = rate * format.nBlockAlign;
+    if (!m_callback)
+        m_callback = new Callback;
     IXAudio2SourceVoice* voice = nullptr;
-    HRESULT hr = xaudio->CreateSourceVoice(&voice, &format, 0, 4.0f, &voiceCallback(), nullptr, nullptr);
+    HRESULT hr = xaudio->CreateSourceVoice(&voice, &format, 0, 4.0f, m_callback, nullptr, nullptr);
     if (FAILED(hr)) {
         error = makeString("voce XAudio2 "_s, rate, " Hz "_s, channels, " canali: 0x"_s, hex(static_cast<unsigned>(hr), 8));
         return false;

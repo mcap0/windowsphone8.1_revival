@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# armcount program [arguments] — runs a Linux ARMv7 program (engine/out/jsc-linux/sysroot) under a plugin-capable qemu-arm
+# and prints how many guest instructions it executed: a deterministic cost measure for comparing two versions of ARM
+# code without the phone (qemu's own timing is not the phone's). The qemu is built from qemu-10.1 sources into
+# engine/out/qemu-plugin/b2 (configure --target-list=arm-linux-user --enable-plugins; libinsn from tests/tcg/plugins).
+set -Eeuo pipefail
+engine=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+qemu=$engine/out/qemu-plugin/b2
+exec "$qemu/qemu-arm" -L "$engine/out/jsc-linux/sysroot" -plugin "$qemu/tests/tcg/plugins/libinsn.so" -d plugin "$@"

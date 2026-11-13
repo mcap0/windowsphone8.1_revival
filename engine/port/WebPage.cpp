@@ -2,6 +2,8 @@
 #include "WebPage.h"
 
 #include "BackForwardList.h"
+#include "CacheStorage.h"
+#include <WebCore/CacheStorageProvider.h>
 
 #include "ChromeClient.h"
 #include "EditorClient.h"
@@ -63,10 +65,16 @@ namespace {
 // document.cookie reads and writes the same session the loads use.
 class StorageSessionProvider final : public WebCore::StorageSessionProvider {
 public:
-    static Ref<StorageSessionProvider> create() { return adoptRef(*new StorageSessionProvider); }
+    static Ref<StorageSessionProvider> create(bool ephemeral) { return adoptRef(*new StorageSessionProvider(ephemeral)); }
 
 private:
-    NetworkStorageSession* storageSession() const override { return &WebPage::storageSession(); }
+    explicit StorageSessionProvider(bool ephemeral)
+        : m_ephemeral(ephemeral)
+    {
+    }
+    NetworkStorageSession* storageSession() const override { return m_ephemeral ? &WebPage::ephemeralStorageSession() : &WebPage::storageSession(); }
+
+    const bool m_ephemeral;
 };
 
 // Load progress for the app's bar (LW_EVENT_PROGRESS, 0-100): WebCore's estimate for the whole page, subframes
@@ -131,13 +139,24 @@ PlatformDisplayID nextDisplayID()
 
 } // namespace
 
-Ref<WebPage> WebPage::create(lw_view& view, void* swapChainPanel, const IntSize& size, float deviceScaleFactor)
+Ref<CookieJar> WebPage::createCookieJar(bool ephemeral)
 {
-    return adoptRef(*new WebPage(view, swapChainPanel, size, deviceScaleFactor));
+    return CookieJar::create(StorageSessionProvider::create(ephemeral));
 }
 
-WebPage::WebPage(lw_view& view, void* swapChainPanel, const IntSize& size, float deviceScaleFactor)
+Ref<WebCore::SocketProvider> WebPage::socketProvider()
+{
+    return SocketProvider::singleton();
+}
+
+Ref<WebPage> WebPage::create(lw_view& view, void* swapChainPanel, const IntSize& size, float deviceScaleFactor, bool ephemeral)
+{
+    return adoptRef(*new WebPage(view, swapChainPanel, size, deviceScaleFactor, ephemeral));
+}
+
+WebPage::WebPage(lw_view& view, void* swapChainPanel, const IntSize& size, float deviceScaleFactor, bool ephemeral)
     : m_view(view)
+    , m_ephemeral(ephemeral)
     , m_swapChainPanel(swapChainPanel)
     , m_size(size)
     , m_deviceScaleFactor(deviceScaleFactor)
@@ -152,17 +171,23 @@ WebPage::WebPage(lw_view& view, void* swapChainPanel, const IntSize& size, float
 
     // An identifier, as WebKitLegacy's views have: without one the page has no media session manager, and an element's
     // play() is refused without a word (Page::mediaSessionManager).
-    auto configuration = pageConfigurationWithEmptyClients(PageIdentifier::generate(), PAL::SessionID::defaultSessionID());
+    // A private tab is WebKitLegacy's private browsing session: the memory cache and IndexedDB keep its things apart
+    // (and IndexedDB in memory), the loads go through the private storage session (FrameLoaderClient).
+    auto configuration = pageConfigurationWithEmptyClients(PageIdentifier::generate(),
+        ephemeral ? PAL::SessionID::legacyPrivateSessionID() : PAL::SessionID::defaultSessionID());
     // Session history (4c): the tab's own list, so Back is WebCore's (scroll position, form state, the cached page).
     configuration.backForwardClient = m_backForwardList.copyRef();
     configuration.historyItemClient = Lumia::historyItemClient();
     configuration.chromeClient = makeUniqueRef<ChromeClient>(*this);
     configuration.editorClient = makeUniqueRef<LumiaEditorClient>(*this);
     configuration.progressTrackerClient = makeUniqueRef<ProgressTrackerClient>(*this);
-    configuration.cookieJar = CookieJar::create(StorageSessionProvider::create());
-    configuration.storageNamespaceProvider = &Lumia::storageNamespaceProvider();
+    configuration.cookieJar = CookieJar::create(StorageSessionProvider::create(ephemeral));
+    configuration.storageNamespaceProvider = ephemeral ? &Lumia::privateStorageNamespaceProvider() : &Lumia::storageNamespaceProvider();
     configuration.databaseProvider = &Lumia::databaseProvider();
     configuration.socketProvider = SocketProvider::singleton();
+    // window.caches (CacheStorage.cpp). A private tab keeps WebCore's empty provider: nothing of it goes to disk.
+    if (!ephemeral)
+        configuration.cacheStorageProvider = Ref { Lumia::cacheStorageProvider() };
     // :visited, from the addresses visited in any tab (VisitedLinks.cpp).
     configuration.visitedLinkStore = &Lumia::visitedLinks();
     configuration.mainFrameCreationParameters = PageConfiguration::LocalMainFrameCreationParameters {
@@ -181,10 +206,9 @@ WebPage::WebPage(lw_view& view, void* swapChainPanel, const IntSize& size, float
     // WebKit's defaults first (WebCore's own are neutral: JavaScript off...), then the port's choices.
     auto& settings = m_page->settings();
     applyWebKitDefaults(settings);
-    // No service worker server in the port yet (WebKit2's lives in the network process): with none registered,
-    // ServiceWorkerProvider::singleton() RELEASE_ASSERTs on the first document. Sites see no navigator.serviceWorker
-    // and fall back, until a target site needs them (plan, phase 7 gaps).
-    settings.setServiceWorkersEnabled(false);
+    // Service workers (ServiceWorkers.cpp): the server, the workers and the pages in this one process. Not in a
+    // private tab: a registration is kept on disk, and its worker would outlive the tab.
+    settings.setServiceWorkersEnabled(!ephemeral);
     // The page just left stays alive for an instant Back (BackForwardCache, one page: Engine.cpp).
     settings.setUsesBackForwardCache(true);
     // Hidden tabs (4f) keep their timers at most once a second and their CSS animations stopped, as Safari and GTK do;
@@ -203,6 +227,19 @@ WebPage::WebPage(lw_view& view, void* swapChainPanel, const IntSize& size, float
     settings.setDOMPasteAccessRequestsEnabled(true);
     settings.setDOMPasteAllowed(false);
     settings.setWebShareEnabled(true);
+    // Small features off in WebKit's defaults for this platform: requestIdleCallback (a "testable" preference, run by
+    // WindowEventLoop's own idle timer), overscroll-behavior (off for PLATFORM(WIN) only; the scrolling tree the pans
+    // go through honours it for chaining and rubber banding), Web Locks (WebCore's in-process registry: one process
+    // here), OffscreenCanvas with its 2D context, in workers too (the build flags in engine/configure.sh).
+    settings.setRequestIdleCallbackEnabled(true);
+    settings.setOverscrollBehaviorEnabled(true);
+    settings.setWebLocksAPIEnabled(true);
+#if ENABLE(OFFSCREEN_CANVAS)
+    settings.setOffscreenCanvasEnabled(true);
+#endif
+#if ENABLE(OFFSCREEN_CANVAS_IN_WORKERS)
+    settings.setOffscreenCanvasInWorkersEnabled(true);
+#endif
     Lumia::provideDeviceFeatures(m_view, *m_page);
 
     // Always composited: every frame reaches the screen through the compositor thread, nothing is painted in software
@@ -749,6 +786,14 @@ NetworkStorageSession& WebPage::storageSession()
         }
         return session;
     }();
+    return *session.get();
+}
+
+NetworkStorageSession& WebPage::ephemeralStorageSession()
+{
+    // An ephemeral session ID: CookieJarDB in SQLite's memory (NetworkStorageSessionCurl.cpp). Never destroyed: a
+    // load of a closed private tab may still ask for it; endPrivateSession empties it instead.
+    static NeverDestroyed<std::unique_ptr<NetworkStorageSession>> session = makeUnique<NetworkStorageSession>(PAL::SessionID::legacyPrivateSessionID(), String());
     return *session.get();
 }
 

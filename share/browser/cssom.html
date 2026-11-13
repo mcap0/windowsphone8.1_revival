@@ -1,0 +1,88 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSSOM</title>
+<style id="s1">.base{color:rgb(10,10,10)} .order{color:rgb(1,1,1)}</style>
+<style id="s2">.later{color:rgb(20,20,20)} .order2{color:rgb(2,2,2)}</style>
+<style id="print" media="print">.dummy{color:black}</style>
+<style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+#out{font:12px monospace;white-space:pre-wrap}
+.w{display:inline-block;white-space:nowrap}
+</style></head><body>
+<div>Regole aggiunte con insertRule (come fanno le librerie CSS-in-JS) e un @font-face tardivo devono cambiare solo chi
+corrispondono, e nell'ordine giusto della cascata (PLAN §74.8, §76): ogni riga deve dire OK.</div>
+<div id="t">
+<span id="a" class="base">a</span> <span id="b" class="base other">b</span> <span id="c">c</span>
+<div class="p"><span id="d" class="c">d</span></div><span id="e" class="x">e</span><span id="f" class="y">f</span>
+<span id="g" class="order">g</span> <span id="h" class="order2">h</span> <span id="i" class="pr">i</span>
+<span id="j" class="burst">j</span>
+<span class="w" id="font1" style="font-family:'Tardi',monospace;font-size:20px">Testo con un font aggiunto tardi</span><br>
+<span class="w" id="font2" style="font-family:monospace;font-size:20px">Testo che non lo usa</span>
+</div>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var lines = [], out = T.$("out"), failures = 0;
+  function check(ok, s) { if (!ok) failures++; lines.push((ok ? "OK " : "ERRORE ") + s); out.textContent = lines.join("\n"); }
+  function color(id) { return getComputedStyle(T.$(id)).color; }
+  var s1 = T.$("s1").sheet, s2 = T.$("s2").sheet, pr = T.$("print").sheet;
+
+  T.afterPaint(function () {
+    // Styles resolved once (a layout) before any insertion.
+    void document.body.offsetHeight;
+
+    // 1. At the end of the last sheet in use: only the matching element changes.
+    s2.insertRule(".other{color:rgb(30,30,30)}", s2.cssRules.length);
+    check(color("b") === "rgb(30, 30, 30)" && color("a") === "rgb(10, 10, 10)", "in fondo all'ultimo foglio: b " + color("b") + ", a " + color("a"));
+
+    // 2. Same specificity, inserted later: wins over the earlier rule.
+    s2.insertRule(".order{color:rgb(3,3,3)}", s2.cssRules.length);
+    check(color("g") === "rgb(3, 3, 3)", "la regola aggiunta dopo vince a parità di specificità: " + color("g"));
+
+    // 3. At the start of a sheet: loses against the later rule of that sheet.
+    s2.insertRule(".order2{color:rgb(4,4,4)}", 0);
+    check(color("h") === "rgb(2, 2, 2)", "all'inizio del foglio perde contro la regola che segue: " + color("h"));
+
+    // 4. Into an earlier sheet: loses against the later sheet.
+    s1.insertRule(".later{color:rgb(5,5,5)} ", s1.cssRules.length);
+    document.querySelector("#c").className = "later";
+    check(color("c") === "rgb(20, 20, 20)", "in un foglio precedente perde contro il foglio dopo: " + color("c"));
+
+    // 5. Into a print-only sheet: no effect on the screen.
+    pr.insertRule(".pr{color:rgb(6,6,6)}", 0);
+    check(color("i") !== "rgb(6, 6, 6)", "in un foglio media=print non vale sullo schermo: " + color("i"));
+
+    // 6. Descendant and sibling selectors.
+    s2.insertRule(".p .c{color:rgb(7,7,7)}", s2.cssRules.length);
+    s2.insertRule(".x + .y{color:rgb(8,8,8)}", s2.cssRules.length);
+    check(color("d") === "rgb(7, 7, 7)" && color("f") === "rgb(8, 8, 8)" && color("e") !== "rgb(8, 8, 8)", "discendente e fratello: d " + color("d") + ", f " + color("f"));
+
+    // 7. A burst of 300 rules, as a CSS-in-JS library at start up; each read forces a style update.
+    var t0 = T.now();
+    for (var k = 0; k < 300; k++) {
+      s2.insertRule(".burst" + k + "{margin-left:" + k + "px}", s2.cssRules.length);
+      void getComputedStyle(T.$("j")).marginLeft;
+    }
+    s2.insertRule(".burst{margin-left:42px}", s2.cssRules.length);
+    var burst = T.now() - t0;
+    check(getComputedStyle(T.$("j")).marginLeft === "42px", "300 regole una per volta con lettura dello stile: " + Math.round(burst) + " ms");
+
+    // 8. Removing a rule still works (the old path).
+    s2.deleteRule(s2.cssRules.length - 1);
+    check(getComputedStyle(T.$("j")).marginLeft === "0px", "deleteRule: " + getComputedStyle(T.$("j")).marginLeft);
+
+    // 9. @font-face in a sheet added late: the element that names the family changes, the other does not.
+    var w1 = T.$("font1").getBoundingClientRect().width, w2 = T.$("font2").getBoundingClientRect().width;
+    var late = document.createElement("style");
+    late.textContent = "@font-face{font-family:'Tardi';src:url('/banco/poste/2b7ca72c1b51c6a6.ttf?" + Date.now() + "')}";
+    document.head.appendChild(late);
+    document.fonts.ready.then(function () {
+      T.afterPaint(function () {
+        var v1 = T.$("font1").getBoundingClientRect().width, v2 = T.$("font2").getBoundingClientRect().width;
+        check(Math.abs(v1 - w1) > 0.5 && Math.abs(v2 - w2) < 0.01, "@font-face tardivo: chi lo usa " + w1.toFixed(1) + " -> " + v1.toFixed(1) + ", chi no " + w2.toFixed(1) + " -> " + v2.toFixed(1));
+        lines.push(failures ? failures + " errori" : "tutto OK");
+        T.send("cssom", lines);
+      });
+    });
+  });
+})();
+</script></body></html>

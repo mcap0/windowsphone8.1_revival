@@ -12,6 +12,8 @@ cp "${ENGINE_OUT:-$engine/out/webkit}/bin/webkit.dll" "$engine/out/angle/bin/lib
 [[ -n ${ENGINE_FIXED_BASE:-} ]] && python3 -I "$engine/tools/fixedbase.py" "$dest/webkit.dll"
 # HTTPS roots: Fedora's copy of the Mozilla CA list (the same set as curl's cacert.pem).
 install -m 644 /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem "$dest/cacert.pem"
+# Web Audio's HRTF panner: WebCore's impulse responses (AudioBus::loadPlatformResource, AudioDestinationWP81.cpp).
+install -D -m 644 "$engine/webkit/Source/WebCore/platform/audio/resources/Composite.wav" "$dest/audio/Composite.wav"
 python3 -I "$engine/tools/checkimports.py" "$dest/webkit.dll" --package "$dest"
 # "stage": only the files above (tools/siteapp copies the staged shell into each site app).
 [[ ${1:-} == stage ]] && exit 0

@@ -1,12 +1,33 @@
 #!/usr/bin/env bash
 # deps/fetch.sh — download the pinned third-party sources into deps/src (checksums in deps/SHA256SUMS: recorded on
 # first download, verified afterwards) and unpack each into deps/src/<name>.
+# Our changes to a library are deps/patches/<name>/*.patch, applied in name order with git apply (no repository needed)
+# right after unpacking, and to a tree unpacked before a patch existed: each patch applied is listed in
+# deps/src/<name>/.patches, so none is applied twice. To change a patch, delete deps/src/<name> and run this again.
 set -Eeuo pipefail
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 src=$here/src
 sums=$here/SHA256SUMS
 mkdir -p "$src/archives"
 touch "$sums"
+
+apply_patches() {
+    local name=$1 dest=$2 patch base
+    [[ -d $here/patches/$name ]] || return 0
+    touch "$dest/.patches"
+    for patch in "$here/patches/$name"/*.patch; do
+        [[ -f $patch ]] || continue
+        base=$(basename "$patch")
+        grep -qxF "$base" "$dest/.patches" && continue
+        echo "patch $name $base"
+        # The ceiling keeps git from taking an enclosing repository for this tree's.
+        if ! (cd "$dest" && GIT_CEILING_DIRECTORIES=$(dirname "$dest") git apply --whitespace=nowarn "$patch"); then
+            echo "patch $base does not apply to $dest" >&2
+            exit 1
+        fi
+        echo "$base" >> "$dest/.patches"
+    done
+}
 
 # name version url
 while read -r name version url; do
@@ -41,8 +62,10 @@ while read -r name version url; do
         fi
         echo "$version" > "$dest/.version"
     fi
+    apply_patches "$name" "$dest"
 done <<'EOF'
 zlib 1.3.2 https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz
+zlib-ng 2.3.3 https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.3.3.tar.gz
 brotli 1.2.1 https://github.com/google/brotli/archive/refs/tags/v1.2.1.tar.gz
 nghttp2 1.70.0 https://github.com/nghttp2/nghttp2/releases/download/v1.70.0/nghttp2-1.70.0.tar.xz
 libressl 4.3.3 https://github.com/libressl/portable/releases/download/v4.3.3/libressl-4.3.3.tar.gz

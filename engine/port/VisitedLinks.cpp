@@ -2,6 +2,7 @@
 #include "VisitedLinks.h"
 
 #include "Engine.h"
+#include <WebCore/Page.h>
 #include <WebCore/SharedStringHash.h>
 #include <wtf/FileHandle.h>
 #include <wtf/FileSystem.h>
@@ -26,8 +27,11 @@ public:
         return m_hashes.contains(hash);
     }
 
-    void addVisitedLink(Page&, SharedStringHash hash) final
+    void addVisitedLink(Page& page, SharedStringHash hash) final
     {
+        // A private tab leaves no trace.
+        if (page.sessionID().isEphemeral())
+            return;
         load();
         if (!m_hashes.add(hash).isNewEntry)
             return;

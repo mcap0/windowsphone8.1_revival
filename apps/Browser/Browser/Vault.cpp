@@ -110,6 +110,46 @@ namespace Vault
         text.clear();
     }
 
+    std::wstring LocalFile(const std::wstring& name)
+    {
+        return std::wstring(ApplicationData::Current->LocalFolder->Path->Data()) + L"\\" + name;
+    }
+
+    task<std::wstring> ReadProtectedText(const std::wstring& name)
+    {
+        std::vector<unsigned char> file;
+        if (!ReadAll(LocalFile(name), file))
+            return task_from_result(std::wstring());
+        auto provider = ref new DataProtectionProvider();
+        return create_task(provider->UnprotectAsync(ToBuffer(file.data(), file.size()))).then([](task<IBuffer^> unwrapped) -> std::wstring
+        {
+            try
+            {
+                return std::wstring(CryptographicBuffer::ConvertBinaryToString(BinaryStringEncoding::Utf8, unwrapped.get())->Data());
+            }
+            catch (Exception^)
+            {
+                return std::wstring();
+            }
+        }, task_continuation_context::use_arbitrary());
+    }
+
+    task<void> WriteProtectedText(const std::wstring& name, const std::wstring& text)
+    {
+        std::wstring path = LocalFile(name);
+        if (text.empty())
+        {
+            DeleteFile(path.c_str());
+            return task_from_result();
+        }
+        auto provider = ref new DataProtectionProvider(L"LOCAL=user");
+        return create_task(provider->ProtectAsync(Utf8(text))).then([path](IBuffer^ wrapped)
+        {
+            if (!WriteAll(path, Bytes(wrapped)))
+                throw ref new FailureException(L"file protetto non scritto");
+        }, task_continuation_context::use_arbitrary());
+    }
+
     bool Exists()
     {
         WIN32_FILE_ATTRIBUTE_DATA attributes;

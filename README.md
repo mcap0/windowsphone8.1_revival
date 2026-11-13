@@ -1,5 +1,11 @@
 # Windows Phone 8.1 revival
 
+> **This is the `dev-untested` branch: newer code that has not run on any device yet.** It holds everything written
+> after `main`: the browser up to Internet 0.1.0.72 and the engine work that followed (listed in
+> [What this branch adds to main](#what-this-branch-adds-to-main)). It builds, and the parts that can run on a PC were
+> tested there under qemu, but none of it has been tried on a phone. For the code tested on the phone, use
+> [`main`](https://github.com/mcap0/windowsphone8.1_revival/tree/main).
+
 **A 2013 Nokia Lumia 1020 as a daily phone in 2026.** Microsoft switched the platform off; this repository
 switches it back on: a current WebKit, push notifications that arrive instantly again, a voice assistant that works
 with no network, Telegram, mail, maps, music, 2FA codes, and the apps of an Android phone on the Lumia's screen.
@@ -75,14 +81,69 @@ As far as I could find, these had not been done on Windows Phone 8.1 before:
 | `share/browser/` | Test pages for the browser |
 | `docs/` | Guides |
 
+## What this branch adds to main
+
+Everything below is **built but untested on any device**. Where a PC could check it (under qemu, against reference
+implementations or upstream test suites), the check is named. Speed figures are ARM instruction counts under qemu, not
+timings on a phone.
+
+**Browser app** (`apps/Browser`, Internet 0.1.0.72)
+- Private tabs (`lw_view_create_private`): cookies and IndexedDB in memory, a separate localStorage, no disk cache,
+  bytecode cache, history or visited links, permissions kept apart; all of it is emptied with the last private tab.
+- Settings page: search engine, the ad blocker switch, saved HTTP passwords (encrypted with DPAPI), remembered site
+  permissions, clearing site data.
+- "Incolla" in the text bar: pastes text copied from a page into the field being edited.
+
+**Audio and video** (`engine/port/media`)
+- HLS: play lists, variant choice, audio renditions, AES-128, MPEG-TS, fragmented MP4 and bare audio segments, live
+  reload.
+- Media Source Extensions: our stream parser and queue under WebCore's `SourceBuffer` track buffers.
+- More MP4 layouts: presentations that do not start at 0, ffmpeg's hybrid fragmented layout, one fragment index per
+  track. The demuxers are checked against `ffprobe` (`engine/tools/demuxtest.py`, nine generated variants).
+- Web Audio: output through XAudio2, an FFT of our own (`FFTFrameWP81.cpp`), WebCore's HRTF data for the panner.
+- A probe for drawing video frames from a GPU texture (`VideoProbe.cpp`), run only on request.
+
+**Web platform** (`engine/patches/0002-lumia.patch`, `engine/port`)
+- Service workers in the browser's single process, with navigation preload, and the Cache API on disk.
+- WebAssembly on 32-bit ARM: upstream builds no WebAssembly tier for 32-bit CPUs any more; WebKit's own earlier
+  32-bit BBQ tier is brought back and ported forward (`engine/tools/wasm32.py`, `engine/tools/wasm32/`), with tail
+  calls. JavaScriptCore's WebAssembly suites pass under qemu, except what is off on 32 bits.
+- OffscreenCanvas with its 2D context in workers, `requestIdleCallback`, `overscroll-behavior`.
+
+**Engine speed**
+- Style rules added or changed through the CSSOM no longer rebuild every style.
+- JavaScript bytecode cache: encoding takes 6 to 65 times fewer instructions (YouTube's player script: 5,690 M to
+  88 M), functions are encoded at rest in small slices while the page is idle, and the run loop's idle lane gives way to timers that are due. A fix in JavaScriptCore: blocks decoded
+  from the cache register their loop hints.
+- zlib-ng (NEON) in place of zlib, and libpng's NEON filters: PNG decoding takes 41% of the instructions it took.
+- TLS prefers ChaCha20-Poly1305: 3.3 times fewer instructions than AES-128-GCM on this CPU, which has no AES
+  instructions.
+- P-256 (ECDSA and ECDH in TLS) on BoringSSL's point code and fiat-crypto's field arithmetic, as a patch to LibreSSL
+  (`engine/deps/patches/libressl`): 2.6 to 17.6 times fewer instructions per operation. Checked against fiat-crypto
+  (1.8 billion field operations), 3,629 Wycheproof vectors, LibreSSL's 136 regress tests and an ECDSA TLS handshake.
+
+**Tools for testing on a PC**
+- A Linux ARMv7 `jsc` shell of our JavaScriptCore that runs under qemu (`engine/tools/jsclinux`,
+  `engine/cmake/linux-armv7.cmake`), with JavaScriptCore's own JavaScript and WebAssembly suites
+  (`engine/tools/jsctests.py`, `engine/tools/wasmtests.py`).
+- Instruction counts and profiles of ARM code under qemu (`engine/tools/armcount`, `engine/tools/armprof`).
+- Crypto and library benches and tests (`engine/tools/ecbench.py`, `engine/tools/libbench.py`, `engine/port/tests`).
+- Test pages: `share/browser/audio.html`, `cssom.html`, `sw.html`, `wasm.html`, `riproduzione.html`, `video.html`,
+  with synthetic test videos (ffmpeg's test pattern) in `share/browser/media`.
+
+**Build**: `engine/deps/fetch.sh` now applies our patches in `engine/deps/patches/<name>/` after unpacking, and
+fetches zlib-ng 2.3.3. The steps are the same as on `main` ([docs/browser.md](docs/browser.md#rebuild-the-app-package-yourself)).
+The ready-made package in `builds/` is still `main`'s 0.1.0.64; this branch has none.
+
 ## Status: what works and what does not
 
 This is work in progress. Plainly:
 
 - **Browser**: loads and renders modern sites, scrolls and types responsively, has tabs, downloads, a password
-  vault and an ad blocker. **Audio/video does not work yet**: the media pipeline (`engine/port/media`, own demuxers
-  + Media Foundation decoders) builds and installs but has not been proven on the phone; MSE/HLS/WebM are not
-  there. Many web features are missing or partial. It is slow on heavy pages (the CPU is a 2012 dual core).
+  vault and an ad blocker (as tested on `main`). **Audio/video is not proven**: the media pipeline
+  (`engine/port/media`: own demuxers, HLS, Media Source, Media Foundation decoders, Web Audio) builds, but on this
+  branch none of it has run on a device; WebM is not there. Many web features are missing or partial. It is slow on
+  heavy pages (the CPU is a 2012 dual core).
   **Do not treat it as a safe browser**: it is an unreviewed port with disabled features, custom network and cache
   code, no sandbox and no security updates. Do not use it for banking or anything you care about.
 - **Push server**: works on Wi-Fi and 4G for toasts and raw pushes. Redirecting the push client is global: while

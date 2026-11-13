@@ -4,14 +4,27 @@
 #include "Engine.h"
 #include "ScriptBytecodeCacheWP81.h"
 #include "WebCoreInstanceHandle.h"
+#include <JavaScriptCore/VMEntryScope.h>
+#include <WebCore/CommonVM.h>
+#include <WebCore/DOMWindow.h>
+#include <WebCore/Document.h>
+#include <WebCore/DocumentPage.h>
+#include <WebCore/JSDOMWindowBase.h>
+#include <WebCore/Page.h>
 #include <JavaScriptCore/BytecodeCacheError.h>
 #include <JavaScriptCore/CachedBytecode.h>
 #include <JavaScriptCore/CachedTypes.h>
 #include <JavaScriptCore/JSCellInlines.h>
+#include <JavaScriptCore/JSLock.h>
+#include <JavaScriptCore/Strong.h>
+#include <JavaScriptCore/StrongInlines.h>
+#include <JavaScriptCore/UnlinkedFunctionCodeBlock.h>
 #include <JavaScriptCore/UnlinkedFunctionExecutable.h>
 #include <array>
+#include <cstring>
 #include <wtf/CrossThreadCopier.h>
 #include <wtf/CryptographicallyRandomNumber.h>
+#include <wtf/Deque.h>
 #include <wtf/FileHandle.h>
 #include <wtf/FileSystem.h>
 #include <wtf/HashMap.h>
@@ -35,11 +48,46 @@
 // plus the new functions, to a temporary name, flushed, then renamed; the script goes on collecting on top of the new
 // file (CachedBytecode::takeUpdates). All the copying and writing is on a background queue, and nothing of an image is
 // kept in memory but the functions not written yet.
+//
+// A function is not encoded when JSC compiles it, in the middle of the page's own work: it waits, its code kept alive,
+// and the encoder takes the waiting functions at rest, in the order they were compiled (a function's update needs the
+// update of the one it sits in first: that one makes it a leaf of the image), a few milliseconds at a time, on the Web
+// thread's low lane (encodeSlice). On Gemini's first visit encoding was 15% of the Web thread during the load (profile of
+// 11/11, PLAN.md \u00a777). Each function is encoded on its own (JSC's encodeFunctionCodeBlock, shallow in WP81), as at
+// compile time: nothing it contains goes in with it.
 
 namespace WebCore {
 
 // What the cache knows of one script, for as long as its provider lives (ScriptBytecodeCacheWP81.h).
 struct ScriptBytecodeCacheState::Script {
+    // A function compiled and not encoded yet, its executable and code kept alive until then. Moved by swapping the
+    // handles (a Strong copy allocates a new one).
+    struct Deferred {
+        Deferred(JSC::VM& vm, JSC::UnlinkedFunctionExecutable* executable, JSC::UnlinkedFunctionCodeBlock* codeBlock, JSC::CodeSpecializationKind kind)
+            : executable(vm, executable)
+            , codeBlock(vm, codeBlock)
+            , kind(kind)
+        {
+        }
+        Deferred(Deferred&& other)
+            : kind(other.kind)
+        {
+            executable.swap(other.executable);
+            codeBlock.swap(other.codeBlock);
+        }
+        Deferred& operator=(Deferred&& other)
+        {
+            executable.swap(other.executable);
+            codeBlock.swap(other.codeBlock);
+            kind = other.kind;
+            return *this;
+        }
+
+        JSC::Strong<JSC::UnlinkedFunctionExecutable> executable;
+        JSC::Strong<JSC::UnlinkedFunctionCodeBlock> codeBlock;
+        JSC::CodeSpecializationKind kind;
+    };
+
     uint64_t key { 0 };
     Origin origin { Origin::External };
     // The file JSC decodes from, when the script came from the disk. JSC adds to its leaf map each function it decodes
@@ -56,6 +104,12 @@ struct ScriptBytecodeCacheState::Script {
     bool readDisk { false };
     // A write failed: the collector's base is a file that does not exist, nothing more of this script this visit.
     bool failed { false };
+    // The functions waiting for the encoder, in the order they were compiled; the first `nextDeferred` are done.
+    // Handles: created and released with the JS lock held, on the Web thread (the store's encode queue keeps the
+    // provider, hence this, alive while any wait).
+    Vector<Deferred> deferred;
+    size_t nextDeferred { 0 };
+    bool queued { false };
 };
 
 } // namespace WebCore
@@ -85,6 +139,13 @@ constexpr size_t minimumUpdateBytesLeaving = 16 * 1024;
 constexpr size_t maximumPendingBytes = 8 * 1024 * 1024;
 // Functions compiled long after the load (a page that stays open) wait this long for more to join them.
 constexpr Seconds pendingCommitDelay = 30_s;
+// The encoder's slice on the low lane: then input, normal tasks and due timers go first (RunLoop::performWork).
+constexpr Seconds encodeSliceDuration = 6_ms;
+// What the app may still spend encoding when it may not come back: suspension (the system gives a few seconds, the
+// writes need theirs) and memory pressure (the waiting code is memory too). The functions beyond are dropped: the
+// next visit compiles them again and they are cached then.
+constexpr Seconds suspensionEncodeBudget = 400_ms;
+constexpr Seconds memoryEncodeBudget = 100_ms;
 // Inline scripts seen once (stored on the second sighting), remembered across runs.
 constexpr size_t maximumSeen = 4096;
 
@@ -133,6 +194,10 @@ struct Store {
     bool seenChanged { false };
     Vector<PendingScript> pending;
     size_t pendingBytes { 0 };
+    // Scripts with functions waiting for the encoder, in the order their first one came; a script is in it once.
+    Deque<PendingScript> encodeQueue;
+    size_t deferredFunctions { 0 };
+    bool encodeScheduled { false };
     bool commitEverything { false };
     RefPtr<WorkQueue> writer;
     std::unique_ptr<RunLoop::Timer> commitTimer;
@@ -144,6 +209,9 @@ struct Store {
     unsigned stored { 0 };
     uint64_t storedBytes { 0 };
     unsigned writeFailures { 0 };
+    unsigned encoded { 0 };
+    unsigned droppedFunctions { 0 };
+    Seconds encodeTime;
 };
 
 Store& store()
@@ -384,6 +452,126 @@ bool writeImage(const Write& write)
     return false;
 }
 
+void notePending(const JSC::SourceProvider&, Script&);
+
+// One function's update: its code encoded and added to the script's collector, after its record (in the collector's
+// leaf map, or for a function inside one decoded from the file, in the map JSC fills as it decodes: the same offset in
+// every later image) is checked to be really this function's. The bytes it adds.
+size_t encodeFunction(Script& script, const Script::Deferred& function)
+{
+    auto* executable = function.executable.get();
+    if (!script.collector) {
+        if (!script.decoded)
+            return 0;
+        script.collector = JSC::CachedBytecode::createOnImage(script.decoded->size());
+    }
+    auto& collector = *script.collector;
+    auto it = collector.leafExecutables().find(executable);
+    if (it == collector.leafExecutables().end() || !it->value.describes(*executable)) {
+        if (!script.decoded)
+            return 0;
+        auto decoded = script.decoded->leafExecutables().find(executable);
+        if (decoded == script.decoded->leafExecutables().end() || !decoded->value.describes(*executable))
+            return 0;
+        collector.leafExecutables().set(executable, decoded->value);
+    }
+    JSC::BytecodeCacheError error;
+    RefPtr encoded = JSC::encodeFunctionCodeBlock(executable->vm(), function.codeBlock.get(), error);
+    if (!encoded || error.isValid())
+        return 0;
+    auto size = encoded->size();
+    if (!collector.addFunctionUpdate(executable, function.kind, encoded.releaseNonNull()))
+        return 0;
+    script.pendingBytes += size;
+    store().pendingBytes += size;
+    return size;
+}
+
+// A script whose waiting functions are done or dropped leaves the queue. JS lock held: its handles go here.
+void finishQueuedScript(PendingScript&& entry, size_t bytes)
+{
+    auto& script = *entry.script;
+    store().deferredFunctions -= script.deferred.size() - script.nextDeferred;
+    script.deferred.clear();
+    script.nextDeferred = 0;
+    script.queued = false;
+    if (bytes)
+        notePending(entry.provider, script);
+}
+
+// Encodes waiting functions, in the queue's order, until `deadline` (at least one); false when some are left.
+bool encodeDeferred(MonotonicTime deadline)
+{
+    auto& s = store();
+    if (s.encodeQueue.isEmpty())
+        return true;
+    JSC::JSLockHolder lock(WebCore::commonVM());
+    auto start = MonotonicTime::now();
+    bool first = true;
+    bool finished = true;
+    while (!s.encodeQueue.isEmpty()) {
+        auto& script = *s.encodeQueue.first().script;
+        size_t bytes = 0;
+        while (script.nextDeferred < script.deferred.size()) {
+            if (!first && MonotonicTime::now() >= deadline) {
+                finished = false;
+                break;
+            }
+            first = false;
+            // Out of the vector before encoding: its handles go at the end of this iteration, with the lock held.
+            auto function = WTF::move(script.deferred[script.nextDeferred++]);
+            --s.deferredFunctions;
+            if (script.failed)
+                continue;
+            bytes += encodeFunction(script, function);
+            ++s.encoded;
+        }
+        if (!finished) {
+            if (bytes)
+                notePending(s.encodeQueue.first().provider, script);
+            break;
+        }
+        finishQueuedScript(s.encodeQueue.takeFirst(), bytes);
+    }
+    s.encodeTime += MonotonicTime::now() - start;
+    return finished;
+}
+
+// Every waiting function goes, encoded or not. Before a clear, and when a budget runs out.
+void dropDeferred()
+{
+    auto& s = store();
+    if (s.encodeQueue.isEmpty())
+        return;
+    JSC::JSLockHolder lock(WebCore::commonVM());
+    s.droppedFunctions += s.deferredFunctions;
+    while (!s.encodeQueue.isEmpty())
+        finishQueuedScript(s.encodeQueue.takeFirst(), 0);
+}
+
+void scheduleEncoding();
+
+void encodeSlice()
+{
+    auto& s = store();
+    s.encodeScheduled = false;
+    if (!s.enabled)
+        return;
+    encodeDeferred(MonotonicTime::now() + encodeSliceDuration);
+    scheduleEncoding();
+}
+
+void scheduleEncoding()
+{
+    auto& s = store();
+    if (s.encodeScheduled || s.encodeQueue.isEmpty())
+        return;
+    s.encodeScheduled = true;
+    RunLoop::mainSingleton().dispatch(RunLoop::Priority::Low, [] {
+        encodeSlice();
+    });
+}
+
 void commitScripts(const char* reason, bool leaving, Function<void()>&& done);
 
 void commitTimerFired()
@@ -618,6 +806,21 @@ void scheduleCommit(Seconds delay)
 
 void commit(const char* reason, Function<void()>&& done)
 {
+    // The functions still waiting, as many as the budget allows: the app may not come back.
+    auto& s = store();
+    if (s.enabled && !s.encodeQueue.isEmpty()) {
+        auto budget = !strcmp(reason, "memoria") ? memoryEncodeBudget : suspensionEncodeBudget;
+        auto before = s.encoded;
+        auto start = MonotonicTime::now();
+        auto left = s.deferredFunctions;
+        if (!encodeDeferred(start + budget)) {
+            left = s.deferredFunctions;
+            dropDeferred();
+        } else
+            left = 0;
+        log("bytecode: %u funzioni codificate in %.0f ms (%s)%s", s.encoded - before, (MonotonicTime::now() - start).milliseconds(), reason,
+            left ? makeString(", "_s, left, " lasciate"_s).utf8().data() : "");
+    }
     commitScripts(reason, true, WTF::move(done));
 }
 
@@ -626,6 +829,7 @@ void clear()
     auto& s = store();
     if (!s.enabled)
         return;
+    dropDeferred();
     s.files.clear();
     s.totalSize = 0;
     s.seen.clear();
@@ -655,7 +859,9 @@ String describe()
     return makeString("bytecode: "_s, s.bypassed ? "spento a mano, "_s : ""_s, s.files.size(), " file, "_s, s.totalSize >> 10, " KB; in questa esecuzione "_s,
         s.hits, " dal disco ("_s, s.hitBytes >> 10, " KB), "_s, s.rejected, " non validi, "_s, s.misses, " da compilare, "_s,
         s.stored, " scritti ("_s, s.storedBytes >> 10, " KB nuovi), in attesa "_s, s.pending.size(), " ("_s, s.pendingBytes >> 10, " KB)"_s,
-        s.writeFailures ? makeString(", "_s, s.writeFailures, " errori di scrittura"_s) : String());
+        s.writeFailures ? makeString(", "_s, s.writeFailures, " errori di scrittura"_s) : String(),
+        "; funzioni codificate a riposo "_s, s.encoded, " in "_s, static_cast<unsigned>(s.encodeTime.milliseconds()), " ms, da codificare "_s,
+        s.deferredFunctions, s.droppedFunctions ? makeString(", lasciate "_s, s.droppedFunctions) : String());
 }
 
 } // namespace Lumia::BytecodeCache
@@ -671,12 +877,26 @@ ScriptBytecodeCacheState::ScriptBytecodeCacheState(Origin origin)
 
 ScriptBytecodeCacheState::~ScriptBytecodeCacheState() = default;
 
+// The script runs in a private tab's page: what a site's code compiles to would say on disk that it was visited, so
+// such scripts neither read nor write the cache. The hooks run inside the evaluation (or the lazy compilation) of the
+// script, whose global object is the entry scope's.
+static bool runsInPrivatePage()
+{
+    auto* scope = commonVM().entryScope;
+    auto* window = scope ? dynamicDowncast<JSDOMWindowBase>(scope->globalObject()) : nullptr;
+    if (!window)
+        return false;
+    RefPtr document = window->wrapped().documentIfLocal();
+    auto* page = document ? document->page() : nullptr;
+    return page && page->sessionID().isEphemeral();
+}
+
 ScriptBytecodeCacheState::Script* ScriptBytecodeCacheState::script(const JSC::SourceProvider& provider) const
 {
     if (m_checked)
         return m_script.get();
     m_checked = true;
-    if (!isMainThread() || !store().enabled || store().bypassed)
+    if (!isMainThread() || !store().enabled || store().bypassed || runsInPrivatePage())
         return nullptr;
     auto source = provider.source();
     auto minimum = m_origin == Origin::External ? minimumExternalLength : minimumInlineLength;
@@ -742,6 +962,13 @@ void ScriptBytecodeCacheState::cacheBytecode(const JSC::SourceProvider& provider
     if (std::exchange(script->decoded, nullptr))
         ++s.rejected;
     dropPending(*script);
+    // Functions waiting from before belong to the image being thrown away (the handles go with the JS lock held:
+    // this runs inside JSC's compilation of the script).
+    if (script->nextDeferred < script->deferred.size()) {
+        s.droppedFunctions += script->deferred.size() - script->nextDeferred;
+        s.deferredFunctions -= script->deferred.size() - script->nextDeferred;
+        script->deferred.shrink(script->nextDeferred);
+    }
     script->collector = nullptr;
     script->baseGeneration = 0;
     script->failed = false;
@@ -766,36 +993,20 @@ void ScriptBytecodeCacheState::cacheBytecode(const JSC::SourceProvider& provider
 void ScriptBytecodeCacheState::updateCache(const JSC::SourceProvider& provider, const JSC::UnlinkedFunctionExecutable* executable, JSC::CodeSpecializationKind kind, const JSC::UnlinkedFunctionCodeBlock* codeBlock) const
 {
     // A function compiled for the first time: its code goes in after what the file has, pointed at by the function's
-    // record. The record must be one this cache knows (in the collector's leaf map, or, for a function decoded from the
-    // file, in the map JSC fills as it decodes: the same offset in every later image) and really this function's.
+    // record (encodeFunction), once the encoder gets to it. Inside JSC's compilation of the function: the JS lock is held.
     auto* script = m_script.get();
-    if (!script || script->failed || !isMainThread())
+    if (!script || script->failed || !isMainThread() || !executable || !codeBlock)
         return;
-    if (!script->collector) {
-        if (!script->decoded)
-            return;
-        script->collector = JSC::CachedBytecode::createOnImage(script->decoded->size());
-    }
-    auto& collector = *script->collector;
-    auto it = collector.leafExecutables().find(executable);
-    if (it == collector.leafExecutables().end() || !it->value.describes(*executable)) {
-        if (!script->decoded)
-            return;
-        auto decoded = script->decoded->leafExecutables().find(executable);
-        if (decoded == script->decoded->leafExecutables().end() || !decoded->value.describes(*executable))
-            return;
-        collector.leafExecutables().set(executable, decoded->value);
-    }
-    JSC::BytecodeCacheError error;
-    RefPtr encoded = JSC::encodeFunctionCodeBlock(executable->vm(), codeBlock, error);
-    if (!encoded || error.isValid())
+    if (!script->collector && !script->decoded)
         return;
-    auto size = encoded->size();
-    if (!collector.addFunctionUpdate(executable, kind, encoded.releaseNonNull()))
-        return;
-    script->pendingBytes += size;
-    store().pendingBytes += size;
-    notePending(provider, *script);
+    auto& s = store();
+    auto& vm = executable->vm();
+    script->deferred.append(Script::Deferred(vm, const_cast<JSC::UnlinkedFunctionExecutable*>(executable),
+        const_cast<JSC::UnlinkedFunctionCodeBlock*>(codeBlock), kind));
+    ++s.deferredFunctions;
+    if (!std::exchange(script->queued, true))
+        s.encodeQueue.append({ Ref { const_cast<JSC::SourceProvider&>(provider) }, script });
+    scheduleEncoding();
 }
 
 bool shouldCacheInlineScriptBytecode(const String& source, JSC::SourceProviderSourceType type)

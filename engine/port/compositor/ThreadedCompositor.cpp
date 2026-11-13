@@ -143,7 +143,8 @@ ThreadedCompositor::ThreadedCompositor(LayerTreeHost& layerTreeHost, ThreadedDis
             glGetIntegerv(GL_MAX_TEXTURE_SIZE, &m_maxTextureSize);
             Lumia::log("ThreadedCompositor: contesto GL ok, finestra %d, texture max %d, GL %s / %s", !!nativeSurfaceHandle,
                 m_maxTextureSize, glGetString(GL_VERSION), glGetString(GL_RENDERER));
-            Lumia::probeSharedVideoTextures();
+            if (Lumia::takeVideoProbeRequest())
+                Lumia::probeSharedVideoTextures();
         } else
             Lumia::log("ThreadedCompositor: contesto GL NON creato (%s)", GLContext::lastErrorString());
     });

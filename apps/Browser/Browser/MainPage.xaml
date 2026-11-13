@@ -139,6 +139,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox x:Name="Field" Margin="6,6,2,6" FontSize="18" KeyDown="Field_KeyDown"
                          LostFocus="Field_LostFocus" TextChanged="Field_TextChanged"/>
@@ -149,7 +150,14 @@
                 <!-- Invio is a Border, not a Button: a Button takes the focus when tapped, and the bar's TextBox would
                      lose it — the system keyboard then hides and the bar closes on every send. A Border never takes
                      focus, so the keyboard stays up. -->
-                <Border x:Name="Send" Grid.Column="1" Background="#1976D2" Width="76" Margin="4,6,6,6"
+                <!-- What a page copied (the engine's own clipboard, which this native field cannot paste from): put
+                     where the caret is. A Border, as Invio, so the keyboard stays up. -->
+                <Border x:Name="PasteEngine" Grid.Column="1" Background="#3A3A3A" Width="76" Margin="4,6,0,6"
+                        Tapped="PasteEngine_Tapped" Visibility="Collapsed">
+                    <TextBlock Text="Incolla" FontSize="16" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border x:Name="Send" Grid.Column="2" Background="#1976D2" Width="76" Margin="4,6,6,6"
                         Tapped="Send_Click">
                     <TextBlock Text="Invio" FontSize="16" Foreground="White"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -227,6 +235,11 @@
                 <TextBox x:Name="DialogInput" Margin="12,0,12,8" FontSize="18" Visibility="Collapsed" KeyUp="DialogInput_KeyUp"/>
                 <!-- A server's password question (LW_EVENT_PASSWORD): the name goes in DialogInput, the password here. -->
                 <PasswordBox x:Name="DialogPassword" Margin="12,0,12,8" FontSize="18" Visibility="Collapsed" KeyUp="DialogPassword_KeyUp"/>
+                <!-- The same question: keep the name and password on the phone (encrypted for it) for the next time. -->
+                <Border x:Name="DialogRemember" Margin="12,0,12,8" Height="48" Background="#2A2A2A" Visibility="Collapsed"
+                        Tapped="DialogRemember_Tapped">
+                    <TextBlock x:Name="DialogRememberText" Margin="12,0" FontSize="18" Foreground="White" VerticalAlignment="Center"/>
+                </Border>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

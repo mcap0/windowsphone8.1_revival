@@ -12,7 +12,7 @@ logs=$engine/logs
 toolchain=$engine/cmake/wp81-arm.cmake
 mkdir -p "$build" "$prefix/lib" "$prefix/include" "$logs"
 
-ALL=(zlib brotli nghttp2 libressl libpsl curl icu harfbuzz libjpeg-turbo libpng libwebp libxml2 libxslt sqlite woff2)
+ALL=(zlib-ng brotli nghttp2 libressl libpsl curl icu harfbuzz libjpeg-turbo libpng libwebp libxml2 libxslt sqlite woff2)
 
 # Common flags for C libraries: Windows 8.1 API level, function/data sections so the final DLL can drop unused code.
 c_flags="-D_WIN32_WINNT=0x0603 -DWINVER=0x0603 /Gy /Gw"
@@ -25,15 +25,28 @@ cmake_dep() {
         -DCMAKE_TOOLCHAIN_FILE="$toolchain" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix" \
         -DCMAKE_PREFIX_PATH="$prefix" -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF \
         -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded \
-        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWP81_EXTRA_C_FLAGS="$c_flags" -DWP81_EXTRA_CXX_FLAGS="$c_flags" "$@"
-    cmake --build "$build/$name"
-    cmake --install "$build/$name"
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DWP81_EXTRA_C_FLAGS="$c_flags" -DWP81_EXTRA_CXX_FLAGS="$c_flags" "$@" || return 1
+    # Each step's status explicitly: the build functions run as an `if` condition, where set -e does not stop them.
+    cmake --build "$build/$name" || return 1
+    cmake --install "$build/$name" || return 1
 }
 
 build_zlib() {
     cmake_dep zlib "$src/zlib" -DZLIB_BUILD_SHARED=OFF -DZLIB_BUILD_STATIC=ON -DZLIB_BUILD_TESTING=OFF
     # zlib 1.3.2 names the static library zs.lib; FindZLIB and curl look for zlib.lib.
     cp "$prefix/lib/zs.lib" "$prefix/lib/zlib.lib"
+}
+
+# zlib-ng in place of zlib (PLAN.md \u00a777): zlib's API, names and z_stream (ZLIB_COMPAT), NEON chosen at compile time
+# (Windows on ARM always has it; Krait has no ARMv8 CRC32). On the bench PNGs with libpng's NEON filters, decoding takes
+# 41% of the instructions it took with zlib 1.3.2 (engine/tools/libbench.py, under qemu); gzip bodies 7% less.
+build_zlib-ng() {
+    # ARMv6 SIMD off: NEON does its part (slide_hash), and its MSVC intrinsic names are not clang-cl's.
+    cmake_dep zlib-ng "$src/zlib-ng" -DZLIB_COMPAT=ON -DWITH_RUNTIME_CPU_DETECTION=OFF -DWITH_ARMV8=OFF -DWITH_ARMV6=OFF \
+        -DWITH_NEON=ON -DBUILD_TESTING=OFF -DWITH_GTEST=OFF -DZLIB_ENABLE_TESTS=OFF || return 1
+    # The static library is zlibstatic.lib; FindZLIB and curl look for zlib.lib. zlib's own zs.lib must not linger.
+    cp "$prefix/lib/zlibstatic.lib" "$prefix/lib/zlib.lib" || return 1
+    rm -f "$prefix/lib/zs.lib"
 }
 
 build_brotli() {
@@ -87,7 +100,7 @@ build_libjpeg-turbo() {
 
 build_libpng() {
     cmake_dep libpng "$src/libpng" -DPNG_SHARED=OFF -DPNG_STATIC=ON -DPNG_TESTS=OFF -DPNG_TOOLS=OFF \
-        -DPNG_FRAMEWORK=OFF -DPNG_ARM_NEON=off -DZLIB_ROOT="$prefix" -DSKIP_INSTALL_FILES=ON
+        -DPNG_FRAMEWORK=OFF -DPNG_ARM_NEON=on -DZLIB_ROOT="$prefix" -DSKIP_INSTALL_FILES=ON
 }
 
 build_libwebp() {

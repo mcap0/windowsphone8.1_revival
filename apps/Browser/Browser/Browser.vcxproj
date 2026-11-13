@@ -54,6 +54,10 @@
     <None Include="webkit.dll;libEGL.dll;libGLESv2.dll;icudt77l.dat;cacert.pem">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <!-- Web Audio's HRTF impulse responses (tools/browser copies WebCore's): read as <package>\audio\Composite.wav. -->
+    <None Include="audio\Composite.wav">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

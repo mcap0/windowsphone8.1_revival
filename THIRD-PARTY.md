@@ -18,6 +18,8 @@ The project's own code is AGPL-3.0-or-later (`LICENSE`). The parts below keep th
 | `engine/port/blocklist/pgl.txt` | Peter Lowe's ad and tracking server list (pgl.yoyo.org) | McRae General Public License; credit required |
 | `engine/patches/metrosurf/`, `engine/patches/0001-metrosurf-overlay.patch` | The MetroSurf project's changes to WebKitGTK 2.54.1 (github.com/MetroSurf/MetroSurf), as diffs | same as the WebKit files they patch: LGPL-2.1 / BSD-2-Clause |
 | `engine/patches/0002-lumia.patch` | Our changes on top (WebKit not vendored) | same as the files they patch |
+| `engine/tools/wasm32/` | WebKit's 32-bit WebAssembly BBQ tier and in-place interpreter (Apple), carried from earlier WebKit sources and ported forward | BSD-2-Clause, as in WebKit |
+| `engine/deps/patches/libressl/` | P-256 code for LibreSSL 4.3.3, as a patch (LibreSSL not vendored): BoringSSL's point arithmetic and scalar recoding (Google, `crypto/fipsmodule/ec`) and fiat-crypto's generated 32-bit field arithmetic (`fiat_p256_32.h`) | ISC (BoringSSL parts), MIT / Apache-2.0 / BSD-1-Clause (fiat-crypto); the LibreSSL files keep their licence |
 | `vosk/patches/` | Patches against Vosk API, Kaldi, OpenFst (Apache-2.0) and OpenBLAS (BSD-3-Clause), none vendored | same as the files they patch |
 | `tools/wsr/testi/pinocchio1.txt` | Opening of *Le avventure di Pinocchio* (C. Collodi, 1883) | public domain |
 

@@ -1,0 +1,96 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service worker</title><style>
+body{font:15px sans-serif;background:#111;color:#ddd;margin:12px}
+#out{font:12px monospace;white-space:pre-wrap}
+iframe{width:100%;height:40px;border:1px solid #333}
+</style></head><body>
+<div>Service worker e Cache API (PLAN §76): ogni riga deve dire OK. La pagina deve essere un contesto sicuro (browsertest manda "motore sicuro").</div>
+<div id="out"></div>
+<script src="common.js"></script><script>
+(function () {
+  var lines = [], out = T.$("out"), failures = 0, finished = false;
+  function say(s) { lines.push(s); out.textContent = lines.join("\n"); }
+  function check(ok, what) { if (!ok) failures++; say((ok ? "OK " : "ERRORE ") + what); }
+  function finish() {
+    if (finished) return;
+    finished = true;
+    say(failures ? failures + " errori" : "tutto OK");
+    T.send("sw", lines);
+  }
+  setTimeout(function () { check(false, "la prova non è finita in 60 s"); finish(); }, 60000);
+
+  check(window.isSecureContext, "contesto sicuro");
+  check("caches" in window, "window.caches");
+  check("serviceWorker" in navigator, "navigator.serviceWorker");
+  if (!("caches" in window) || !("serviceWorker" in navigator)) { finish(); return; }
+
+  // 1. Cache API from the page.
+  var key = "/browser/cache-prova?" + Date.now();
+  caches.open("pagina").then(function (cache) {
+    return cache.put(new Request(key), new Response("ciao dalla cache", { headers: { "Content-Type": "text/plain", "X-Prova": "1" } }))
+      .then(function () { return cache.match(key); })
+      .then(function (response) {
+        check(!!response, "cache.match trova la risposta messa");
+        return response.text().then(function (text) {
+          check(text === "ciao dalla cache" && response.headers.get("X-Prova") === "1", "corpo e intestazioni dalla cache: " + JSON.stringify(text));
+        });
+      })
+      .then(function () { return cache.keys(); })
+      .then(function (keys) { check(keys.some(function (r) { return r.url.indexOf(key) >= 0; }), "cache.keys: " + keys.length + " voci"); })
+      .then(function () { return cache.delete(key); })
+      .then(function (deleted) { check(deleted, "cache.delete"); return cache.match(key); })
+      .then(function (response) { check(!response, "dopo delete non c'è più"); });
+  }).then(function () {
+    return caches.keys().then(function (names) { check(names.indexOf("pagina") >= 0, "caches.keys: " + names.join(", ")); });
+  }).then(function () {
+    return caches.delete("pagina").then(function (deleted) { check(deleted, "caches.delete"); });
+  }).then(worker, function (e) { check(false, "Cache API: " + e); worker(); });
+
+  // 2. A service worker for sw-scope/: install (fills its cache), activate, then a frame in its scope.
+  function worker() {
+    var t0 = T.now();
+    navigator.serviceWorker.register("sw-worker.js?" + Date.now(), { scope: "sw-scope/" }).then(function (registration) {
+      check(true, "register (scope " + registration.scope + ")");
+      var w = registration.installing || registration.waiting || registration.active;
+      function activated() {
+        say("attivo in " + Math.round(T.now() - t0) + " ms");
+        messages(registration).then(function () { frame(registration); });
+      }
+      if (w.state === "activated") { activated(); return; }
+      w.addEventListener("statechange", function () {
+        if (w.state === "activated") activated();
+        if (w.state === "redundant") { check(false, "il worker è diventato redundant"); finish(); }
+      });
+    }, function (e) { check(false, "register: " + e); finish(); });
+  }
+
+  function messages(registration) {
+    return new Promise(function (resolve) {
+      var timer = setTimeout(function () { check(false, "nessuna risposta al messaggio"); resolve(); }, 10000);
+      navigator.serviceWorker.addEventListener("message", function (event) {
+        clearTimeout(timer);
+        check(event.data && event.data.eco === "ping" && event.data.da === "worker", "postMessage pagina -> worker -> pagina");
+        resolve();
+      });
+      registration.active.postMessage("ping");
+    });
+  }
+
+  function frame(registration) {
+    window.addEventListener("message", function (event) {
+      var d = event.data || {};
+      if (d.errore) check(false, "pagina del worker: " + d.errore);
+      else {
+        check(d.controllato, "la pagina nel suo scope è controllata dal worker");
+        check(d.dato === "dal worker 1", "fetch risposto dal worker: " + JSON.stringify(d.dato));
+        check(d.cached === "dalla cache del worker", "fetch risposto dalla cache del worker: " + JSON.stringify(d.cached));
+        check(d.rete === 404, "fetch non gestito va alla rete (stato " + d.rete + ")");
+      }
+      registration.unregister().then(function (ok) { check(ok, "unregister"); finish(); }, function (e) { check(false, "unregister: " + e); finish(); });
+    });
+    var f = document.createElement("iframe");
+    f.src = "sw-scope/frame.html";
+    document.body.appendChild(f);
+  }
+})();
+</script></body></html>

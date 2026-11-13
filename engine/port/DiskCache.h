@@ -9,6 +9,8 @@ namespace Lumia::DiskCache {
 void initialize();
 // "Cancella dati del sito": every entry whose host is `domain` or one of its subdomains.
 void removeSite(const String& domain);
+// lw_clear_data: every entry.
+void clear();
 // "memoria": how big it is, as a log line.
 String describe();
 

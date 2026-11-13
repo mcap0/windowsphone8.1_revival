@@ -27,8 +27,12 @@ void postConsoleMessage(lw_view&, int level, const String& message, const String
 // frame and stays valid for the duration of the callback only (lumiaweb.h).
 void postFieldEvent(lw_view&, lw_event_type, const lw_field& field, const String& text);
 
-// media/VideoProbe.cpp: the compositor's thread, its context current, once.
+// media/VideoProbe.cpp: the compositor's thread, its context current. Only on request ("sonda video": the next tab's
+// compositor runs it): it answered its questions on 11/11 (PLAN.md \u00a775.4), and at every start it held the Web thread
+// for ~30 ms (the compositor's context is made under performTaskSync) and made a Direct3D device of its own.
 void probeSharedVideoTextures();
+bool takeVideoProbeRequest();
+void requestVideoProbe();
 
 // Diagnostics from any thread (engine checkpoints, WebKit's own log lines): LW_EVENT_TRACE with no view.
 void log(const char* format, ...);
@@ -64,10 +68,14 @@ WebKit::WebPage* liveWebPage(lw_view*);
 // (lw_set_site_user_agent), else the default (lw_config.user_agent). navigatorPlatform: what navigator.platform says
 // with it (null: the engine's default).
 String userAgent(const lw_view&, const URL&);
+// Without a view (a service worker's loads): the site's, else the default.
+String userAgent(const URL&);
 String navigatorPlatform(const lw_view&, const URL&);
 
 // Web thread: the view is on the screen and the app runs, so the user can be asked something.
 bool isViewActive(const lw_view&);
+// A private tab (lw_view_create_private, or a window one of them opened).
+bool isViewPrivate(const lw_view&);
 
 // Web thread: shows the page's dialog through LW_EVENT_DIALOG and waits for lw_dialog_reply. nullopt = cancelled (or
 // dismissed because the tab cannot show it), else the value (empty but for prompts).

@@ -28,4 +28,10 @@ namespace Vault
     void Remove();
     // Overwrites the string's characters before it is released.
     void Wipe(std::wstring& text);
+
+    // Internet's saved passwords for servers that ask (HTTP authentication): one text in LocalFolder\<name>, DPAPI
+    // "LOCAL=user" (useless on another phone). Read: empty when there is none or it cannot be read. Write: empty text
+    // removes the file.
+    concurrency::task<std::wstring> ReadProtectedText(const std::wstring& name);
+    concurrency::task<void> WriteProtectedText(const std::wstring& name, const std::wstring& text);
 }

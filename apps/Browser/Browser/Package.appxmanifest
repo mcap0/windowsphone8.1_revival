@@ -3,7 +3,7 @@
          xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest"
          xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest"
          xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="DumbPhone.Browser" Publisher="CN=DumbPhone" Version="0.1.0.67" />
+  <Identity Name="DumbPhone.Browser" Publisher="CN=DumbPhone" Version="0.1.0.72" />
   <mp:PhoneIdentity PhoneProductId="afcc45ef-005b-42f6-b2bd-18695a1f8826" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Internet</DisplayName>

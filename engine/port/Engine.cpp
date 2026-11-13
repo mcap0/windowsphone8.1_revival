@@ -13,6 +13,7 @@
 #include "PlatformStrategies.h"
 #include "ScrollingTreeDispatcher.h"
 #include "SocketStreamHandleImplCurl.h"
+#include "ServiceWorkers.h"
 #include "Storage.h"
 #include "ThreadedCompositor.h"
 #include "WebCoreInstanceHandle.h"
@@ -76,6 +77,7 @@
 #include <WebCore/LocalFrameInlines.h>
 #include <WebCore/ProcessCapabilities.h>
 #include <WebCore/ScriptController.h>
+#include <WebCore/Settings.h>
 #include <WebCore/TextIterator.h>
 #include <WebCore/UserAgent.h>
 #include <WebCore/VisibleSelection.h>
@@ -110,6 +112,8 @@ struct lw_view {
     RefPtr<WebKit::WebPage> page; // Web thread only, like everything below but `leaving` and `dialog`
     String userAgent;
     bool visible { true };
+    // Set before the page is made, never changed.
+    bool isPrivate { false };
     // lw_view_find: a new text searches from the current match on, the same text from the one after it.
     String lastFindText;
     // A command that leaves the page (Lumia::Leaving), set by the app's thread and cleared when the command runs: the
@@ -514,6 +518,7 @@ void webThreadMain()
             CurlContext::singleton().sslHandle().setCACertPath(WTF::move(caBundle));
     }
     Lumia::initializeStorage();
+    Lumia::initializeServiceWorkers();
     Lumia::DiskCache::initialize();
     Lumia::BytecodeCache::initialize();
     installMemoryMonitor();
@@ -644,6 +649,11 @@ String userAgent(const lw_view& view, const URL& url)
 {
     if (!view.userAgent.isEmpty())
         return view.userAgent;
+    return userAgent(url);
+}
+
+String userAgent(const URL& url)
+{
     if (auto agent = siteUserAgent(url); !agent.isEmpty())
         return agent;
     static NeverDestroyed<String> defaultUserAgent = [] {
@@ -677,6 +687,11 @@ String navigatorPlatform(const lw_view& view, const URL& url)
 bool isViewActive(const lw_view& view)
 {
     return isActive(view);
+}
+
+bool isViewPrivate(const lw_view& view)
+{
+    return view.isPrivate;
 }
 
 // A page put text on the engine's clipboard (shims/wp81shims.c): the app hears of it (LW_EVENT_CLIPBOARD), since only
@@ -773,9 +788,11 @@ RefPtr<Page> createWindow(lw_view& opener, const URL& url, const String& referre
         log("finestra %d: rifiutata dall'app", id);
         return nullptr;
     }
-    // As lw_view_create, here on the Web thread already: WebCore loads the page's URL into it and sets its opener.
+    // As lw_view_create, here on the Web thread already: WebCore loads the page's URL into it and sets its opener. A
+    // private tab's windows are private (they share its cookies).
+    view->isPrivate = opener.isPrivate;
     views().add(view);
-    view->page = WebKit::WebPage::create(*view, panel, size, scale);
+    view->page = WebKit::WebPage::create(*view, panel, size, scale, view->isPrivate);
     if (!isActive(*view))
         setActive(*view, false);
     log("finestra %d: scheda pronta dopo %.0f ms per %s", id, (MonotonicTime::now() - start).milliseconds(), url.string().utf8().data());
@@ -912,6 +929,7 @@ void lw_suspend(void (*done)(void*), void* context)
         }
         afterQueuedPageTasks(stopped, 500_ms, [suspension] {
             Lumia::flushStorage([suspension] { });
+            Lumia::flushServiceWorkers([suspension] { });
             Lumia::saveVisitedLinks();
             // The functions the pages compiled since the last commit: the app may not come back from this suspension.
             Lumia::BytecodeCache::commit("sospensione", [suspension] { });
@@ -963,6 +981,26 @@ void lw_clear_visited_links(void)
 {
     postToWebThread([] {
         Lumia::clearVisitedLinks();
+    });
+}
+
+void lw_clear_data(unsigned what)
+{
+    postToWebThread([what] {
+        Lumia::clearData(what);
+    });
+}
+
+void lw_set_option(int option, int value)
+{
+    postToWebThread([option, value] {
+        switch (option) {
+        case LW_OPTION_BLOCKER:
+            Lumia::setBlockerEnabled(!!value);
+            break;
+        default:
+            log("opzione sconosciuta: %d", option);
+        }
     });
 }
 
@@ -1067,6 +1105,20 @@ namespace WebCore {
 void setDevelopmentTrustworthyHostWP81(const String&); // SecurityOrigin.cpp
 }
 
+#if ENABLE(CSS_SELECTOR_JIT)
+// "cssjit": the CSS selector JIT (WebCore/cssjit, on ARMv7 since this port brought it back) off or on, in every tab and
+// in the tabs opened after. Off, style matching and querySelector take WebCore's interpreter (SelectorChecker): the
+// page's cssSelectorJITCompilerEnabled setting, read by ElementRuleCollector, :has() and (WP81) SelectorQuery; selectors
+// already compiled stay, unused. On at every start. Web thread.
+static bool s_cssSelectorJITEnabled = true;
+
+static void applyCSSSelectorJIT(WebKit::WebPage& page)
+{
+    if (auto* corePage = page.corePage())
+        corePage->settings().setCSSSelectorJITCompilerEnabled(s_cssSelectorJITEnabled);
+}
+#endif
+
 void lw_command(const char* command)
 {
     postToWebThread([command = String::fromUTF8(command)] {
@@ -1125,6 +1177,28 @@ void lw_command(const char* command)
         else if (command.startsWith("blocco"_s)) {
             // "blocco": the ad and tracker blocker off or on; "blocco <host>": that site excluded; "blocco stato".
             Lumia::blockerCommand(command.substring(6).trim(isASCIIWhitespace));
+        } else if (command == "sonda video"_s) {
+            // "sonda video": the GPU questions of media/VideoProbe.cpp, answered in the log by the next tab's compositor.
+            Lumia::requestVideoProbe();
+            log("sonda video: alla prossima scheda");
+        } else if (command == "sw"_s) {
+            // "sw": the service workers that run and the loads they are answering.
+            log("%s", Lumia::describeServiceWorkers().utf8().data());
+        } else if (command == "cssjit"_s) {
+#if ENABLE(CSS_SELECTOR_JIT)
+            // Every tab's style is computed again at once, so a style the JIT got wrong shows (or goes) right away.
+            s_cssSelectorJITEnabled = !s_cssSelectorJITEnabled;
+            for (auto* view : views()) {
+                if (!view->page)
+                    continue;
+                applyCSSSelectorJIT(*view->page);
+                if (auto* corePage = view->page->corePage())
+                    corePage->setNeedsRecalcStyleInAllFrames();
+            }
+            log("cssjit: selettori CSS compilati %s, stili ricalcolati", s_cssSelectorJITEnabled ? "accesi" : "spenti");
+#else
+            log("cssjit: non compilato in questo motore");
+#endif
         } else if (command == "ritmo"_s) {
             // "ritmo": the pacing of rendering updates while a page loads (LayerTreeHost::loadPacingDelay) off or on,
             // for a bench of the same engine with and without.
@@ -1148,16 +1222,31 @@ void lw_command(const char* command)
 // YouTube waited 6 s, 15 s on claude.ai's login. The input lane keeps their order (a view is created before its first
 // load); lw_view_destroy stays behind the page's own work.
 
-lw_view* lw_view_create(void* swapChainPanel, int width, int height, float deviceScale)
+static lw_view* createView(void* swapChainPanel, int width, int height, float deviceScale, bool isPrivate)
 {
     auto* view = new lw_view;
+    view->isPrivate = isPrivate;
     postToWebThread([view, swapChainPanel, width, height, deviceScale] {
         views().add(view);
-        view->page = WebKit::WebPage::create(*view, swapChainPanel, { width, height }, deviceScale);
+        view->page = WebKit::WebPage::create(*view, swapChainPanel, { width, height }, deviceScale, view->isPrivate);
+#if ENABLE(CSS_SELECTOR_JIT)
+        if (!s_cssSelectorJITEnabled)
+            applyCSSSelectorJIT(*view->page);
+#endif
         if (!isActive(*view))
             setActive(*view, false);
     }, true);
     return view;
+}
+
+lw_view* lw_view_create(void* swapChainPanel, int width, int height, float deviceScale)
+{
+    return createView(swapChainPanel, width, height, deviceScale, false);
+}
+
+lw_view* lw_view_create_private(void* swapChainPanel, int width, int height, float deviceScale)
+{
+    return createView(swapChainPanel, width, height, deviceScale, true);
 }
 
 void lw_view_destroy(lw_view* view)
@@ -1171,7 +1260,15 @@ void lw_view_destroy(lw_view* view)
         deviceFeaturesViewWillClose(*view);
         if (RefPtr page = std::exchange(view->page, nullptr))
             page->close();
+        bool wasPrivate = view->isPrivate;
         delete view;
+        if (wasPrivate) {
+            bool anotherPrivate = false;
+            for (auto* other : views())
+                anotherPrivate = anotherPrivate || other->isPrivate;
+            if (!anotherPrivate)
+                Lumia::endPrivateSession();
+        }
     });
 }
 

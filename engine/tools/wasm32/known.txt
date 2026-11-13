@@ -1,0 +1,10 @@
+# Failures of engine/tools/wasmtests.py that are not bugs of the 32-bit port: features off on 32 bits, the 32-bit
+# address space, tests of what only fast memory or OMG does. One line per test: group/name: reason. Errors that only
+# say a feature is off (SIMD, memory64, wide arithmetic, JSPI) are recognised by wasmtests.py itself.
+js-api/memory-toResizableBuffer.js: maxByteLength of 65536 pages is 4 GiB, more than a 32-bit size_t; it saturates at the largest buffer
+stress/tail-call-unused-pins.js: needs a Signaling (fast, 4 GiB reserved) memory, impossible in a 32-bit address space
+stress/inline-wasm-simd-into-non-simd.js: SIMD (OMG inlining test, wabt with simd)
+stress/wasmgc-const-v128.js: SIMD (v128 constant in a GC struct)
+stress/exports-getter.js: a 1e8-iteration benchmark: 14 s per 1e6 under qemu, passes given the time
+stress/exports-getter-fold.js: a 1e8-iteration benchmark, as exports-getter.js
+ipint/ipint-test-gc-starter.js: a template for new tests, its module is the empty string (upstream does not run ipint-tests)

@@ -1,6 +1,8 @@
 #include "config.h"
 #include "MediaData.h"
 
+#include <wtf/Scope.h>
+
 #include <WebCore/HTTPHeaderNames.h>
 #include <WebCore/PlatformMediaResourceLoader.h>
 #include <WebCore/ResourceError.h>
@@ -323,11 +325,24 @@ void MediaData::schedulePump()
     });
 }
 
+void MediaData::setResting(bool resting)
+{
+    ASSERT(isMainThread());
+    if (std::exchange(m_resting, resting) == resting)
+        return;
+    if (onRestingChanged)
+        onRestingChanged(resting);
+}
+
 void MediaData::pump()
 {
     ASSERT(isMainThread());
     uint64_t from = 0;
     bool cancel = false;
+    bool resting = false;
+    auto updateResting = makeScopeExit([&] {
+        setResting(resting);
+    });
     {
         Locker locker { m_lock };
         m_pumpScheduled = false;
@@ -336,8 +351,10 @@ void MediaData::pump()
         bool retry = std::exchange(m_retryNow, false);
         if (m_noRanges) {
             // One body from its first byte: asked again only after a failure.
-            if (m_fetching || !retry)
+            if (m_fetching || !retry) {
+                resting = !m_fetching;
                 return;
+            }
             from = 0;
         } else if (m_waiting) {
             // What a read waits for decides. It is left to the request in flight when that one is about to bring it.
@@ -359,6 +376,7 @@ void MediaData::pump()
             from = firstMissingFrom(m_readPosition - m_readPosition % blockSize, limit);
             if (from >= limit || (m_total >= 0 && from >= static_cast<uint64_t>(m_total))) {
                 m_fetchPosition = std::max(m_fetchPosition, limit);
+                resting = true;
                 return;
             }
         }

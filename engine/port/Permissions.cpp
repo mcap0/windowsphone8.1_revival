@@ -56,14 +56,15 @@ HashMap<String, bool>& decisions()
     return map;
 }
 
-String keyFor(lw_permission_kind kind, const String& origin)
+// A private tab's answers are its own (they neither come from the normal tabs nor stay after it).
+String keyFor(lw_view* view, lw_permission_kind kind, const String& origin)
 {
-    return makeString(static_cast<int>(kind), ' ', origin);
+    return makeString(view && isViewPrivate(*view) ? "p "_s : ""_s, static_cast<int>(kind), ' ', origin);
 }
 
-std::optional<bool> decided(lw_permission_kind kind, const String& origin)
+std::optional<bool> decided(lw_view* view, lw_permission_kind kind, const String& origin)
 {
-    auto found = decisions().find(keyFor(kind, origin));
+    auto found = decisions().find(keyFor(view, kind, origin));
     if (found == decisions().end())
         return std::nullopt;
     return found->value;
@@ -71,7 +72,7 @@ std::optional<bool> decided(lw_permission_kind kind, const String& origin)
 
 void ask(lw_view* view, lw_permission_kind kind, const String& origin, Decision&& decision)
 {
-    if (auto known = decided(kind, origin)) {
+    if (auto known = decided(view, kind, origin)) {
         decision(*known);
         return;
     }
@@ -81,7 +82,7 @@ void ask(lw_view* view, lw_permission_kind kind, const String& origin, Decision&
         decision(false);
         return;
     }
-    auto key = keyFor(kind, origin);
+    auto key = keyFor(view, kind, origin);
     for (auto& question : questions().values()) {
         if (question.key == key) {
             question.waiting.append(WTF::move(decision));
@@ -107,6 +108,17 @@ void answer(int id, std::optional<bool> allowed)
     for (auto& decision : question.waiting)
         decision(allowed.value_or(false));
 }
+
+} // namespace
+
+void forgetPermissions(bool privateOnly)
+{
+    decisions().removeIf([privateOnly](auto& entry) {
+        return entry.key.startsWith("p "_s) == privateOnly;
+    });
+}
+
+namespace {
 
 // ---- geolocation ----
 
@@ -394,7 +406,7 @@ private:
         RefPtr origin = context ? context->securityOrigin() : nullptr;
         if (!origin)
             return Permission::Denied;
-        auto known = decided(LW_PERMISSION_NOTIFICATIONS, origin->toString());
+        auto known = decided(m_view, LW_PERMISSION_NOTIFICATIONS, origin->toString());
         if (!known)
             return Permission::Default;
         return *known ? Permission::Granted : Permission::Denied;

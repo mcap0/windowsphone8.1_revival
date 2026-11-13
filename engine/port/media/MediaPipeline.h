@@ -11,6 +11,8 @@
 #include "AudioOutput.h"
 #include "Demux.h"
 #include "MediaData.h"
+#include "MediaFetcher.h"
+#include "MediaQueue.h"
 #include "MediaDecoder.h"
 #include "VideoLayer.h"
 #include <WebCore/IntSize.h>
@@ -31,8 +33,18 @@ class MediaPipeline final : public ThreadSafeRefCounted<MediaPipeline, WTF::Dest
 public:
     enum class Event : uint8_t { Metadata, Ready, Waiting, Resumed, SeekDone, Ended, DurationChanged, SizeChanged, Failed };
 
+    // Where the samples come from: a resource (its bytes, and for HLS the fetcher of the resources it names), or the
+    // queue a MediaSource fills, with the tracks its initialization segments declared.
+    struct Source {
+        RefPtr<MediaData> data;
+        RefPtr<MediaFetcher> fetcher;
+        String url;
+        RefPtr<MediaQueue> queue;
+        std::vector<Media::Track> tracks;
+    };
+
     // `notify` is called on the Web thread.
-    static Ref<MediaPipeline> create(Ref<MediaData>&&, Ref<WebCore::CoordinatedPlatformLayerBufferProxy>&&, Function<void(Event)>&& notify);
+    static Ref<MediaPipeline> create(Source&&, Ref<WebCore::CoordinatedPlatformLayerBufferProxy>&&, Function<void(Event)>&& notify);
     ~MediaPipeline();
 
     // Web thread.
@@ -40,6 +52,8 @@ public:
     void shutdown();
     void setPlaying(bool);
     void seek(long long timeUs);
+    // A seek whose samples are not there yet (Media Source): playback stops and the time shown is the target's.
+    void suspendForSeek(long long timeUs);
     void setRate(double);
     void setVolume(float);
     void setVisible(bool);
@@ -54,11 +68,18 @@ public:
     bool ended() const;
     String failure() const;
     bool failedInNetwork() const;
+    bool live() const { return m_live; }
+    // -1: not known this way (see Demuxer::bufferedEndUs).
+    long long bufferedEndUs() const { return m_bufferedEndUs; }
     unsigned decodedFrames() const { return m_decodedFrames; }
     unsigned droppedFrames() const { return m_droppedFrames; }
 
 private:
-    MediaPipeline(Ref<MediaData>&&, Ref<WebCore::CoordinatedPlatformLayerBufferProxy>&&, Function<void(Event)>&&);
+    MediaPipeline(Source&&, Ref<WebCore::CoordinatedPlatformLayerBufferProxy>&&, Function<void(Event)>&&);
+    bool sourceFailed() const;
+    String sourceFailure() const;
+    void setStalled(bool, bool tell);
+    void updateStarving();
 
     void run();
     bool open();
@@ -79,10 +100,17 @@ private:
     void report(bool final);
 
     long long clockUs() const WTF_REQUIRES_LOCK(m_lock);
+    long long positionUs() const WTF_REQUIRES_LOCK(m_lock); // the clock, whatever a seek on its way shows
     long long audioClockUs() const WTF_REQUIRES_LOCK(m_lock);
     void updateRunning() WTF_REQUIRES_LOCK(m_lock);
 
-    const Ref<MediaData> m_data;
+    const RefPtr<MediaData> m_data;
+    const RefPtr<MediaFetcher> m_fetcher;
+    const String m_url;
+    const RefPtr<MediaQueue> m_queue;
+    std::vector<Media::Track> m_queueTracks;
+    std::atomic<bool> m_live { false };
+    std::atomic<long long> m_bufferedEndUs { -1 };
     const Ref<WebCore::CoordinatedPlatformLayerBufferProxy> m_proxy;
     const Ref<VideoTextures> m_textures;
     Function<void(Event)> m_notify; // Web thread

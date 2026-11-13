@@ -11,9 +11,22 @@
 #include <windows.h>
 #include <d3d11.h>
 #include <dxgi.h>
+#include <atomic>
 #include <string>
 
 namespace Lumia {
+
+static std::atomic<bool> videoProbeRequested { false };
+
+void requestVideoProbe()
+{
+    videoProbeRequested = true;
+}
+
+bool takeVideoProbeRequest()
+{
+    return videoProbeRequested.exchange(false);
+}
 
 void probeSharedVideoTextures()
 {

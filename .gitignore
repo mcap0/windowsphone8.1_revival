@@ -59,3 +59,7 @@ backups/
 
 # Ready-made packages (docs/browser.md, "Ready-made package")
 !builds/*.appx
+
+# staged into the browser app by tools/browser stage
+apps/Browser/Browser/audio/
+apps/Browser/Browser/icudt77l.dat
